@@ -2,7 +2,7 @@
 export default function OwnerReviewPage() {
     return (
         <div className="">
-        <h1>리뷰 페이지</h1>
+        <h1>점주 리뷰 페이지</h1>
         </div>
     );
 }

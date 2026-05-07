@@ -5,8 +5,8 @@ export default function CustomerLandingPage() {
   return (
     <div className="w-full h-dvh flex flex-col items-center justify-center">
       <Link href='/common/login'>Login</Link>
-      <Link href='/common/signup'>Signup</Link>
-      <Link href='/browse'>둘러보기</Link>
+      <Link href='/common/signup'>회원가입</Link>
+      <Link href='/customer/home'>둘러보기</Link>
       <Link href='/owner'>사장님이신가요?</Link>
     </div>
   );
