@@ -1,9 +1,85 @@
 @import "tailwindcss";
 
-:root {
+@font-face {
+  font-family: 'Pretendard';
+  src: url('../assets/fonts/PretendardVariable.woff2') format('woff2');
 }
 
 @theme{
+    --font-sans: "Pretendard Variable", "Pretendard", system-ui, sans-serif;
+
+  --text-h-24: 24px;
+  --text-h-24--line-height: 36px;
+  --text-h-24--letter-spacing: -0.008em;
+
+  --text-h-20: 20px;
+  --text-h-20--line-height: 32px;
+  --text-h-20--letter-spacing: -0.008em;
+
+  --text-b-18: 18px;
+  --text-b-18--line-height: 26px;
+  --text-b-18--letter-spacing: -0.005em;
+
+  --text-b-16: 16px;
+  --text-b-16--line-height: 24px;
+  --text-b-16--letter-spacing: -0.04em;
+
+  --text-l-14: 14px;
+  --text-l-14--line-height: 20px;
+  --text-l-14--letter-spacing: 0.0125em;
+
+  --text-l-12: 12px;
+  --text-l-12--line-height: 18px;
+  --text-l-12--letter-spacing: 0.014em;
+
+  --text-c-11: 11px;
+  --text-c-11--line-height: 16px;
+  --text-c-11--letter-spacing: 0.015em;
+
+  --font-weight-b: 700;
+  --font-weight-sb: 600;
+  --font-weight-m: 500;
+  --font-weight-r: 400;
+  
+    --color-orange-95: #2E0C02;
+    --color-orange-90: #491304;
+    --color-orange-80: #862307;
+    --color-orange-70: #CC350B;
+    --color-orange-60: #F45C33;
+    --color-orange-50: #FFA086;
+    --color-orange-40: #FABBAA;
+    --color-orange-30: #FCD2C6;
+    --color-orange-20: #FDE8E3;
+    --color-orange-10: #FEF7F5;
+
+    --color-neutral-95: #0E0E10;
+    --color-neutral-90: #17171A;
+    --color-neutral-80: #27282B;
+    --color-neutral-70: #35373B;
+    --color-neutral-60: #484950;
+    --color-neutral-50: #5B5C63;
+    --color-neutral-40: #777982;
+    --color-neutral-30: #9798A1;
+    --color-neutral-20: #BABBC1;
+    --color-neutral-10: #DCDDDF;
+    --color-neutral-5: #EDEEEF;
+    --color-neutral-1: #F7F7F8;
+
+    --color-blue-90: #001536;
+    --color-blue-50: #0066FF;
+    --color-blue-10: #EAF2FE;
+
+    --color-green-90: #00240C;
+    --color-green-50: #00BF40;
+    --color-green-10: #F2FFF6;
+
+    --color-yellow-90: #361E00;
+    --color-yellow-50: #FFA938;
+    --color-yellow-10: #FFFCF7;
+
+    --color-red-90: #0E0E10;
+    --color-red-50: #F7F7F8;
+    --color-red-10: #FFFAFA;
 }
 
 body {
