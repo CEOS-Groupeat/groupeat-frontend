@@ -1,12 +1,15 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 @font-face {
   font-family: 'Pretendard';
   src: url('../assets/fonts/PretendardVariable.woff2') format('woff2');
 }
 
-@theme{
-    --font-sans: "Pretendard Variable", "Pretendard", system-ui, sans-serif;
+@theme {
+  --font-sans:
+    'Poppins', 'Pretendard Variable', 'Pretendard', system-ui, sans-serif;
 
   --text-h-24: 24px;
   --text-h-24--line-height: 36px;
@@ -40,46 +43,46 @@
   --font-weight-sb: 600;
   --font-weight-m: 500;
   --font-weight-r: 400;
-  
-    --color-orange-95: #2E0C02;
-    --color-orange-90: #491304;
-    --color-orange-80: #862307;
-    --color-orange-70: #CC350B;
-    --color-orange-60: #F45C33;
-    --color-orange-50: #FFA086;
-    --color-orange-40: #FABBAA;
-    --color-orange-30: #FCD2C6;
-    --color-orange-20: #FDE8E3;
-    --color-orange-10: #FEF7F5;
 
-    --color-neutral-95: #0E0E10;
-    --color-neutral-90: #17171A;
-    --color-neutral-80: #27282B;
-    --color-neutral-70: #35373B;
-    --color-neutral-60: #484950;
-    --color-neutral-50: #5B5C63;
-    --color-neutral-40: #777982;
-    --color-neutral-30: #9798A1;
-    --color-neutral-20: #BABBC1;
-    --color-neutral-10: #DCDDDF;
-    --color-neutral-5: #EDEEEF;
-    --color-neutral-1: #F7F7F8;
+  --color-orange-95: #2e0c02;
+  --color-orange-90: #491304;
+  --color-orange-80: #862307;
+  --color-orange-70: #cc350b;
+  --color-orange-60: #f45c33;
+  --color-orange-50: #ffa086;
+  --color-orange-40: #fabbaa;
+  --color-orange-30: #fcd2c6;
+  --color-orange-20: #fde8e3;
+  --color-orange-10: #fef7f5;
 
-    --color-blue-90: #001536;
-    --color-blue-50: #0066FF;
-    --color-blue-10: #EAF2FE;
+  --color-neutral-95: #0e0e10;
+  --color-neutral-90: #17171a;
+  --color-neutral-80: #27282b;
+  --color-neutral-70: #35373b;
+  --color-neutral-60: #484950;
+  --color-neutral-50: #5b5c63;
+  --color-neutral-40: #777982;
+  --color-neutral-30: #9798a1;
+  --color-neutral-20: #babbc1;
+  --color-neutral-10: #dcdddf;
+  --color-neutral-5: #edeeef;
+  --color-neutral-1: #f7f7f8;
 
-    --color-green-90: #00240C;
-    --color-green-50: #00BF40;
-    --color-green-10: #F2FFF6;
+  --color-blue-90: #001536;
+  --color-blue-50: #0066ff;
+  --color-blue-10: #eaf2fe;
 
-    --color-yellow-90: #361E00;
-    --color-yellow-50: #FFA938;
-    --color-yellow-10: #FFFCF7;
+  --color-green-90: #00240c;
+  --color-green-50: #00bf40;
+  --color-green-10: #f2fff6;
 
-    --color-red-90: #0E0E10;
-    --color-red-50: #F7F7F8;
-    --color-red-10: #FFFAFA;
+  --color-yellow-90: #361e00;
+  --color-yellow-50: #ffa938;
+  --color-yellow-10: #fffcf7;
+
+  --color-red-90: #0e0e10;
+  --color-red-50: #f7f7f8;
+  --color-red-10: #fffafa;
 }
 
 body {
