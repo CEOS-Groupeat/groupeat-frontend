@@ -90,6 +90,50 @@
   --color-yellow-90: #302400;
   --color-yellow-100: #1c1500;
 
+  /* 
+     Semantic Colors 
+ */
+
+  /* Brand */
+  --color-brand-default: var(--color-orange-50);
+  --color-brand-strong: var(--color-orange-60);
+  --color-brand-background: var(--color-orange-10);
+
+  /* Border */
+  --color-border-strong: #5b5c633d;
+  --color-border-default: #5b5c6329;
+  --color-border-subtle: #5b5c6314;
+
+  /* Text */
+  --color-text-default: var(--color-gray-80);
+  --color-text-strong: var(--color-gray-95);
+  --color-text-subtle: var(--color-gray-60);
+  --color-text-subtlest: var(--color-gray-40);
+  --color-text-placeholder: var(--color-gray-30);
+  --color-text-disabled: var(--color-gray-20);
+  --color-text-inverse: var(--color-gray-5);
+
+  /* Status */
+  --color-status-danger: var(--color-red-60);
+  --color-status-danger-bg: var(--color-red-10);
+  --color-status-success: var(--color-green-60);
+  --color-status-success-bg: var(--color-green-10);
+  --color-status-info: var(--color-blue-60);
+  --color-status-info-bg: var(--color-blue-10);
+  --color-status-warning: var(--color-yellow-60);
+  --color-status-warning-bg: var(--color-yellow-10);
+
+  /* Static */
+  --color-static-white: var(--color-gray-0);
+  --color-static-black: var(--color-gray-100);
+
+  /* Background */
+  --color-background-default: var(--color-gray-5);
+  --color-background-disabled: var(--color-gray-20);
+  --color-background-subtle: var(--color-gray-10);
+  --color-background-assistive: var(--color-gray-15);
+  --color-background-dim: #171719bf;
+
   @keyframes fade-in-up {
     from {
       opacity: 0;
