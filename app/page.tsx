@@ -121,12 +121,15 @@ export default function CustomerLandingPage() {
           </div>
 
           <div className="flex justify-center items-center gap-3 mt-8">
-            <button className="flex w-39.5 h-12 px-5 py-2 bg-white justify-center items-center gap-1.5 rounded-full border border-px border-neutral-10 z-20">
+            <a
+              href="mailto:contact@groupeat.com"
+              className="flex w-39.5 h-12 px-5 py-2 bg-white justify-center items-center gap-1.5 rounded-full border border-px border-neutral-10 z-20"
+            >
               <MailIcon width={24} height={24} />
               <p className="text-neutral-80 text-b-16 font-semibold">
                 협업 문의하기
               </p>
-            </button>
+            </a>
             <button className="flex w-39.5 h-12 px-5 py-2 bg-orange-60 justify-center items-center gap-1.5 rounded-full border border-px border-orange-60 z-20">
               <AlarmIcon width={24} height={24} />
               <p className="text-white text-b-16 font-semibold">
