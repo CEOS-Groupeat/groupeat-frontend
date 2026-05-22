@@ -20,9 +20,9 @@ export default function StoreCard({ store }: StoreCardProps) {
       <div className="p-2.5 bg-background-default flex flex-col gap-2">
         <div className="flex flex-col gap-1.5">
           <div className="w-fit px-1.5 py-0.5 bg-background-subtlest rounded-[4px]">
-            <span className="text-caption2 font-semibold text-text-subtle tracking-tight">
+            <div className="text-caption2 font-semibold text-text-subtle tracking-tight">
               {store.category}
-            </span>
+            </div>
           </div>
 
           <div className="pl-0.5">
