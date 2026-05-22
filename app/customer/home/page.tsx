@@ -8,7 +8,7 @@ import HomeHero from './_components/HomeHero';
 import StoreSection from './_components/StoreSection';
 import {
   popularStores,
-  pickupStores,
+  discountStores,
   recommendedStores,
 } from './_mocks/stores.mock';
 import { Fragment } from 'react';
@@ -28,10 +28,10 @@ export default async function CustomerHomePage() {
     },
 
     {
-      id: 'pickup',
-      title: '픽업 가능 가게',
-      description: '이번 주에 바로 음식이 준비되는 가게를 추천드려요',
-      stores: pickupStores,
+      id: 'discount',
+      title: '할인율 높은 가게',
+      description: '단체 주문 시 할인율이 높은 가게를 추천드려요',
+      stores: discountStores,
     },
 
     {
@@ -46,18 +46,15 @@ export default async function CustomerHomePage() {
     return (
       <div className="pt-[19px]">
         <div className="pt-1">
-          <div className="w-[375px] h-2 bg-border-strong opacity-30" />
+          <div className="w-full h-2 bg-border-strong opacity-30" />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center">
-      <p>서버 상태: {serverMessage}</p>
-      <h1>1.0.0 고객 메인 페이지(홈)</h1>
-
-      <div className="flex flex-col w-[375px] bg-background-default overflow-hidden">
+    <div className="w-full min-h-screen flex flex-col justify-center items-center">
+      <div className="w-full flex flex-col bg-background-default overflow-hidden">
         <HomeHero />
 
         {sections.map((section, index) => (
@@ -78,8 +75,6 @@ export default async function CustomerHomePage() {
           </Fragment>
         ))}
       </div>
-
-      <Link href="/customer/search">조건에 맞는 가게 찾기</Link>
     </div>
   );
 }

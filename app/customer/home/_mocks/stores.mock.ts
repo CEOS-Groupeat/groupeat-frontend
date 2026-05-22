@@ -33,7 +33,7 @@ export const popularStores: Store[] = [
   },
 ];
 
-export const pickupStores: Store[] = [
+export const discountStores: Store[] = [
   {
     id: 4,
     name: '익선잡방',

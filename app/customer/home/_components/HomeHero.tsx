@@ -6,7 +6,7 @@ import Filter from '@/public/icons/icon-filter.svg';
 
 export default function HomeHero() {
   return (
-    <section className="w-[375px] bg-brand-default overflow-hidden">
+    <section className="w-full bg-brand-default overflow-hidden">
       {/* HEADER */}
       <div className="h-16 overflow-hidden">
         <div className="h-14 px-4 py-2.5 flex items-center justify-between">
