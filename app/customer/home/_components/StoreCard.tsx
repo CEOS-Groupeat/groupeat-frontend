@@ -1,6 +1,8 @@
 import Image from 'next/image';
 
 import { Store } from '../_types/store.type';
+import Star from '@/public/icons/icon_star.svg';
+import Location from '@/public/icons/icon_place.svg';
 
 interface StoreCardProps {
   store: Store;
@@ -38,7 +40,7 @@ export default function StoreCard({ store }: StoreCardProps) {
 
         <div className="flex flex-col gap-0.5">
           <div className="flex items-center gap-1 text-xs text-text-subtle">
-            <span>⭐</span>
+            <Star />
 
             <span>
               {store.rating} ({store.reviewCount})
@@ -46,7 +48,7 @@ export default function StoreCard({ store }: StoreCardProps) {
           </div>
 
           <div className="flex items-center gap-1 text-xs text-text-subtle">
-            <span>📍</span>
+            <Location />
 
             <span>{store.location}</span>
           </div>
