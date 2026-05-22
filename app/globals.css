@@ -149,16 +149,16 @@
   --color-border-subtle: #5b5c6314;
 
   /* Text */
-  --color-text-default: var(--color-gray-80);
+  --color-text-default: var(--color-gray-90);
   --color-text-strong: var(--color-gray-95);
   --color-text-subtle: var(--color-gray-60);
-  --color-text-subtlest: var(--color-gray-40);
+  --color-text-subtlest: var(--color-gray-50);
   --color-text-placeholder: var(--color-gray-30);
   --color-text-disabled: var(--color-gray-20);
   --color-text-inverse: var(--color-gray-5);
 
   /* Status */
-  --color-status-danger: var(--color-red-60);
+  --color-status-danger: var(--color-red-50);
   --color-status-danger-bg: var(--color-red-10);
   --color-status-success: var(--color-green-60);
   --color-status-success-bg: var(--color-green-10);
@@ -174,9 +174,9 @@
   /* Background */
   --color-background-default: var(--color-gray-5);
   --color-background-disabled: var(--color-gray-20);
-  --color-background-subtle: var(--color-gray-10);
-  --color-background-assistive: var(--color-gray-15);
-  --color-background-dim: #171719bf;
+  --color-background-subtle: var(--color-gray-13);
+  --color-background-subtlest: var(--color-gray-15);
+  --color-background-dim: #1717198C;
 
   --color-icon-default: var(--color-gray-70);
   --color-icon-active: var(--color-orange-50);
@@ -198,6 +198,19 @@
   }
 
   --animate-fade-in-up: fade-in-up 1s ease-out forwards;
+}
+
+@utility scrollbar-hide {
+  /* Chrome, Safari, Opera */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Firefox */
+  scrollbar-width: none;
+
+  /* IE, Edge */
+  -ms-overflow-style: none;
 }
 
 body {
