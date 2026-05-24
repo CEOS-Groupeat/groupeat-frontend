@@ -139,8 +139,6 @@ export default function CustomerLandingPage() {
             </button>
           </div>
         </main>
-        {/*나중에 지우기*/}
-        <Link href="/customer/home">로그인-고객</Link>
       </section>
 
       {/* 푸터 영역, 폰트 지정 예정 */}
