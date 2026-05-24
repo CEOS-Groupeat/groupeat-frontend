@@ -4,7 +4,7 @@ import { create } from 'zustand';
 interface Agreement {
   termsId: number;
   agreed: boolean;
-  required: boolean; // 필수 동의 여부 판별용
+  required: boolean;
 }
 
 interface SignupState {
@@ -17,7 +17,6 @@ interface SignupState {
   agreements: Agreement[];
   phoneNumber: string;
 
-  // 💡 memberId 상태와 액션 추가
   memberId: number | null;
   setMemberId: (id: number) => void;
 

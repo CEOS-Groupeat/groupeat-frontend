@@ -9,7 +9,7 @@ import DefaultButton from '@/components/DefaultButton';
 
 export default function PhoneVerifyStep() {
   const router = useRouter();
-  const { phoneNumber, setPhoneNumber, signupToken, agreements, setMemberId } =
+  const { phoneNumber, setPhoneNumber, signupToken, agreements, memberType, setMemberId } =
     useSignupStore();
   const [code, setCode] = useState('');
   const [isVerified, setIsVerified] = useState(false);
@@ -54,6 +54,7 @@ export default function PhoneVerifyStep() {
         body: JSON.stringify({
           signupToken,
           phoneNumber,
+          memberType,
           agreements: agreements.map(({ termsId, agreed }) => ({
             termsId,
             agreed,
