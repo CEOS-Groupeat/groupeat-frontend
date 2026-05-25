@@ -1,8 +1,7 @@
 import Logo from '@/public/icons/icon-logo_customer_home.svg';
 import Bell from '@/public/icons/icon-bell.svg';
 import Cart from '@/public/icons/icon-shopping_cart.svg';
-import Search from '@/public/icons/icon-search.svg';
-import Filter from '@/public/icons/icon-filter.svg';
+import HomeSearchBar from './HomeSearchBar';
 
 export default function HomeHero() {
   return (
@@ -34,19 +33,7 @@ export default function HomeHero() {
           단체주문 음식점 찾기
         </h1>
 
-        <div className="w-full h-11 bg-background-default rounded-[36px] pr-1.5 px-4 py-[6px] flex justify-between items-center overflow-hidden">
-          <div className="flex items-center gap-1.5">
-            <Search />
-
-            <span className="text-body text-text-placeholder">
-              가게나 메뉴를 검색해 보세요
-            </span>
-          </div>
-
-          <button className="w-14 self-stretch px-3 py-2.5 bg-background-subtlest rounded-3xl flex justify-center items-center gap-1">
-            <Filter />
-          </button>
-        </div>
+        <HomeSearchBar />
       </div>
     </section>
   );

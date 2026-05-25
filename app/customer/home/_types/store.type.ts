@@ -1,3 +1,4 @@
+// export type { Store } from '@/app/customer/search/_types/store.type';
 export interface Store {
   id: number;
   name: string;
