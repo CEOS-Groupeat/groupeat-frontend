@@ -5,12 +5,18 @@ import { useMutation } from '@tanstack/react-query';
 import { fetchClient } from '@/lib/fetchClient';
 import { useSignupStore } from '@/store/useSignupStore';
 import { useRouter } from 'next/navigation';
-import DefaultButton from '@/components/DefaultButton';
+import DefaultButton from '@/components/ButtonDefault';
 
 export default function PhoneVerifyStep() {
   const router = useRouter();
-  const { phoneNumber, setPhoneNumber, signupToken, agreements, memberType, setMemberId } =
-    useSignupStore();
+  const {
+    phoneNumber,
+    setPhoneNumber,
+    signupToken,
+    agreements,
+    memberType,
+    setMemberId,
+  } = useSignupStore();
   const [code, setCode] = useState('');
   const [isVerified, setIsVerified] = useState(false);
 

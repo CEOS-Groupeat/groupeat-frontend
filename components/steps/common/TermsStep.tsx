@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import CheckboxFalse from '@/public/icons/icon_checkboxFalse.svg';
 import CheckboxTrue from '@/public/icons/icon_checkboxTrue.svg';
 import { useSignupStore } from '@/store/useSignupStore';
-import DefaultButton from '@/components/DefaultButton';
+import DefaultButton from '@/components/ButtonDefault';
 import { fetchClient } from '@/lib/fetchClient';
 
 export default function TermsStep() {
@@ -113,8 +113,14 @@ export default function TermsStep() {
                 <span className="text-label1">
                   {term.title}
                   {term.required ? (
-                    <span className="text-label1 text-text-strong ml-1 mr-2">(필수)</span>
-                  ) : <span className="text-label1 text-text-strong ml-1 mr-2">(선택)</span>}
+                    <span className="text-label1 text-text-strong ml-1 mr-2">
+                      (필수)
+                    </span>
+                  ) : (
+                    <span className="text-label1 text-text-strong ml-1 mr-2">
+                      (선택)
+                    </span>
+                  )}
                 </span>
               </button>
 

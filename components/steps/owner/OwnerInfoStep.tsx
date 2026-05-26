@@ -1,13 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import DefaultButton from '@/components/DefaultButton';
+import DefaultButton from '@/components/ButtonDefault';
 import { useBusinessSignupStore } from '@/store/useBusinessSignupStore';
+import TextField from '@/components/TextField';
+import { useSignupStore } from '@/store/useSignupStore';
 
 export default function OwnerInfoStep() {
-  const router = useRouter();
-  
+  const { nextStep } = useSignupStore();
   // 설계했던 사업자 전용 스토어에서 상태 업데이트 함수를 꺼냅니다.
   const { updatePayload } = useBusinessSignupStore();
 
@@ -52,7 +52,7 @@ export default function OwnerInfoStep() {
       gender: formData.gender,
     });
 
-    router.push('/signup/business/verification');
+    nextStep();
   };
 
   return (
@@ -64,7 +64,6 @@ export default function OwnerInfoStep() {
           </h2>
 
           <div className="flex flex-col items-start gap-6 self-stretch w-full">
-            
             {/* 1. 사업자 유형 선택 (필수) */}
             <div className="flex flex-col gap-2 w-full">
               <label className="text-label1 text-text-default font-medium">
@@ -95,54 +94,42 @@ export default function OwnerInfoStep() {
             </div>
 
             {/* 2. 대표자명 입력 (필수) */}
-            <div className="flex flex-col gap-2 w-full">
-              <label className="text-label1 text-text-default font-medium">
-                대표자명 <span className="text-brand-default">*</span>
-              </label>
-              <input
-                type="text"
-                name="representativeName"
-                value={formData.representativeName}
-                onChange={handleChange}
-                className="w-full h-11 pl-4 pr-3 py-3 rounded-lg border border-px border-border-default placeholder:text-body placeholder:text-text-placeholder focus:outline-none focus:border-border-active"
-                placeholder="대표자명 입력"
-              />
-            </div>
+            <TextField
+              label="대표자명"
+              required
+              name="representativeName"
+              value={formData.representativeName}
+              onChange={handleChange}
+              placeholder="대표자명 입력"
+            />
 
             {/* 3. 상호명 입력 (필수) */}
-            <div className="flex flex-col gap-2 w-full">
-              <label className="text-label1 text-text-default font-medium">
-                상호명 <span className="text-brand-default">*</span>
-              </label>
-              <input
-                type="text"
-                name="businessName"
-                value={formData.businessName}
-                onChange={handleChange}
-                className="w-full h-11 pl-4 pr-3 py-3 rounded-lg border border-px border-border-default placeholder:text-body placeholder:text-text-placeholder focus:outline-none focus:border-border-active"
-                placeholder="상호명 입력"
-              />
-            </div>
+            <TextField
+              label="상호명"
+              required
+              name="businessName"
+              value={formData.businessName}
+              onChange={handleChange}
+              placeholder="상호명 입력"
+            />
 
             {/* 4. 개업연월일 입력 (필수) */}
-            <div className="flex flex-col gap-2 w-full">
-              <label className="text-label1 text-text-default font-medium">
-                개업연월일 <span className="text-brand-default">*</span>
-              </label>
-              <input
-                type="text"
-                name="openedDate"
-                value={formData.openedDate}
-                onChange={handleChange}
-                className="w-full h-11 pl-4 pr-3 py-3 rounded-lg border border-px border-border-default placeholder:text-body placeholder:text-text-placeholder focus:outline-none focus:border-border-active"
-                placeholder="YYYY-MM-DD 형식으로 입력 (예: 2026-05-24)"
-              />
-            </div>
+            <TextField
+              label="개업연월일"
+              required
+              name="openedDate"
+              value={formData.openedDate}
+              onChange={handleChange}
+              placeholder="YYYY-MM-DD 형식으로 입력 (예: 2026-05-24)"
+            />
 
             {/* 5. 나이 입력 (선택) */}
             <div className="flex flex-col gap-2 w-full">
               <label className="text-label1 text-text-default font-medium">
-                생년월일 <span className="text-text-subtlest font-normal text-caption1">(선택)</span>
+                생년월일{' '}
+                <span className="text-text-subtlest font-normal text-caption1">
+                  (선택)
+                </span>
               </label>
               <input
                 type="number"
@@ -155,24 +142,22 @@ export default function OwnerInfoStep() {
             </div>
 
             {/* 6. 이메일 입력 (선택) */}
-            <div className="flex flex-col gap-2 w-full">
-              <label className="text-label1 text-text-default font-medium">
-                이메일 <span className="text-text-subtlest font-normal text-caption1">(선택)</span>
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full h-11 pl-4 pr-3 py-3 rounded-lg border border-px border-border-default placeholder:text-body placeholder:text-text-placeholder focus:outline-none focus:border-border-active"
-                placeholder="example@email.com"
-              />
-            </div>
+            <TextField
+              label="이메일"
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="example@email.com"
+            />
 
             {/* 7. 성별 선택 (선택) */}
             <div className="flex flex-col gap-2 w-full">
               <label className="text-label1 text-text-default font-medium">
-                성별 <span className="text-text-subtlest font-normal text-caption1">(선택)</span>
+                성별{' '}
+                <span className="text-text-subtlest font-normal text-caption1">
+                  (선택)
+                </span>
               </label>
               <div className="flex w-full items-center gap-3">
                 <button
@@ -197,7 +182,6 @@ export default function OwnerInfoStep() {
                 </button>
               </div>
             </div>
-
           </div>
         </div>
       </div>

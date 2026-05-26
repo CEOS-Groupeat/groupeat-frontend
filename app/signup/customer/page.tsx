@@ -8,7 +8,7 @@ import SignupHeader from '@/components/signup/SignupHeader';
 import { fetchClient } from '@/lib/fetchClient';
 import CheckboxTrue from '@/public/icons/icon_checkboxTrue.svg';
 import CheckboxFalse from '@/public/icons/icon_checkboxFalse.svg';
-import DefaultButton from '@/components/DefaultButton';
+import DefaultButton from '@/components/ButtonDefault';
 import { useSignupStore } from '@/store/useSignupStore';
 
 // 약관 타입 정의

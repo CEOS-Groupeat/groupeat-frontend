@@ -1,7 +1,7 @@
 // app/signup/steps/UserTypeStep.tsx
 'use client';
 
-import DefaultButton from '@/components/DefaultButton';
+import DefaultButton from '@/components/ButtonDefault';
 import { useSignupStore } from '@/store/useSignupStore';
 
 export default function UserTypeStep() {
@@ -53,7 +53,9 @@ export default function UserTypeStep() {
 
       {/* 다음 버튼 영역 */}
       <div className="fixed bottom-6 left-0 w-full flex justify-center px-4">
-        <DefaultButton onClick={nextStep} disabled={!memberType}>다음</DefaultButton>
+        <DefaultButton onClick={nextStep} disabled={!memberType}>
+          다음
+        </DefaultButton>
       </div>
     </div>
   );
