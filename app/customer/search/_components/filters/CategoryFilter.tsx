@@ -8,29 +8,23 @@ const CATEGORIES = [
 ];
 
 interface CategoryFilterProps {
-  value: string[] | undefined;
-  onChange: (value: string[]) => void;
+  value: string | undefined;
+  onChange: (value: string) => void;
   onConfirm: () => void; // 카테고리는 자동 닫힘 없음 — 필요 시 부모가 호출
 }
 
 export default function CategoryFilter({
-  value = [],
+  value,
   onChange,
 }: CategoryFilterProps) {
-  const selected = value ?? [];
-
   const handleToggle = (id: string) => {
-    const isSelected = selected.includes(id);
-    const next = isSelected
-      ? selected.filter((v) => v !== id) // 선택 해제
-      : [...selected, id]; // 선택 추가
-    onChange(next);
+    onChange(value === id ? '' : id);
   };
 
   return (
     <div className="mt-3 flex gap-2.5 flex-wrap">
       {CATEGORIES.map((cat) => {
-        const isSelected = selected.includes(cat.id);
+        const isSelected = value === cat.id;
 
         return (
           <button

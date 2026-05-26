@@ -22,7 +22,7 @@ export function useSearchStores() {
       ([key, value]) => {
         if (value === undefined || value === null || value === '') return;
 
-        if (key === 'categories' && Array.isArray(value)) {
+        if (key === 'category' && Array.isArray(value)) {
           value.forEach((v) => queryParams.append('categories', v));
         } else {
           queryParams.append(key, String(value));

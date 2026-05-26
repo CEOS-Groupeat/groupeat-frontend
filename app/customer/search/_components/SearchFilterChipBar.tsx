@@ -7,7 +7,7 @@ import DownArrow from '@/public/icons/icon_arrow_down.svg';
 const FILTER_CHIPS: { key: keyof StoreSearchParams; label: string }[] = [
   { key: 'location', label: '위치' },
   { key: 'pickupDate', label: '픽업 날짜' },
-  { key: 'categories', label: '카테고리' },
+  { key: 'category', label: '카테고리' },
   { key: 'quantity', label: '수량' },
   { key: 'budget', label: '1인당 예산' },
 ];
@@ -26,7 +26,7 @@ function getChipLabel(
   if (!value) return '';
   if (key === 'quantity') return `${value}개`;
   if (key === 'budget') return `${(value as number).toLocaleString()}원`;
-  if (key === 'categories') return (value as string[]).join(', ');
+  if (key === 'category') return value as string;
   if (key === 'pickupDate') {
     const d = new Date(value as string);
     return `${d.getMonth() + 1}월 ${d.getDate()}일`;
