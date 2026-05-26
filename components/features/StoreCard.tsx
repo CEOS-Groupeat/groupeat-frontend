@@ -3,16 +3,14 @@ import Star from '@/public/icons/icon_star.svg';
 import Location from '@/public/icons/icon_place.svg';
 import BadgeCategory from '@/components/ui/BadgeCategory';
 import type { Store } from '@/app/customer/search/_types/store.type';
+//공통 타입 위치를 정하기 !
 
-interface SearchStoreCardProps {
+interface StoreCardProps {
   store: Store;
   onClick?: () => void;
 }
 
-export default function SearchStoreCard({
-  store,
-  onClick,
-}: SearchStoreCardProps) {
+export default function StoreCard({ store, onClick }: StoreCardProps) {
   return (
     <button
       type="button"
