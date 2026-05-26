@@ -161,7 +161,7 @@ function SearchContent() {
       </div>
 
       {/* ── 가게 목록 / 로딩 / 빈 결과 ── */}
-      <div className="flex-1 px-4">
+      <div className="flex-1 px-4 pb-6">
         {isLoading ? (
           // 로딩 스켈레톤
           <div className="grid grid-cols-2 gap-2">
