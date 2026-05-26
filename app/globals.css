@@ -2,7 +2,6 @@
 
 @import 'tailwindcss';
 
-
 @font-face {
   font-family: 'Pretendard';
   src: url('../assets/fonts/PretendardVariable.woff2') format('woff2');
@@ -129,11 +128,7 @@
   /* Yellow */
   --color-yellow-10: #fcf4d6;
   --color-yellow-20: #fddc69;
-<<<<<<< Updated upstream
   --color-yellow-25: #f7cf42;
-=======
-  --color-yellow-25: #fddc69;
->>>>>>> Stashed changes
   --color-yellow-30: #f1c21b;
   --color-yellow-40: #d2a106;
   --color-yellow-50: #b28600;
