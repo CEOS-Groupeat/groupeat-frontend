@@ -19,7 +19,7 @@ export const useAuthQuery = () => {
   const query = useQuery({
     queryKey: ['me'],
     queryFn: fetchMe,
-    retry: false, // 실패 시 재시도 안 함 (토큰 만료나 미로그인 상태일 확률이 높음)
+    retry: false,
     staleTime: 1000 * 60 * 30, // 30분 동안은 캐시된 정보 사용
   });
 

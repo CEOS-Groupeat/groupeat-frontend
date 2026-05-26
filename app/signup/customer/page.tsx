@@ -8,7 +8,7 @@ import SignupHeader from '@/components/signup/SignupHeader';
 import { fetchClient } from '@/lib/fetchClient';
 import CheckboxTrue from '@/public/icons/icon_checkboxTrue.svg';
 import CheckboxFalse from '@/public/icons/icon_checkboxFalse.svg';
-import DefaultButton from '@/components/DefaultButton';
+import DefaultButton from '@/components/ButtonDefault';
 import { useSignupStore } from '@/store/useSignupStore';
 
 // 약관 타입 정의
@@ -40,9 +40,7 @@ export default function CustomerSignupPage() {
   const { data: terms = [] } = useQuery<Term[]>({
     queryKey: ['terms', 'CUSTOMER'],
     queryFn: async () => {
-      const response = (await fetchClient(
-        '/api/terms?targetType=CUSTOMER'
-      )) as Response;
+      const response = await fetchClient('/api/terms?targetType=CUSTOMER');
       return response as unknown as Term[];
     },
   });
@@ -65,7 +63,7 @@ export default function CustomerSignupPage() {
   const submitSignupMutation = useMutation({
     mutationFn: async () => {
       const agreements = terms.map((term) => ({
-        termstermsId: term.termsId,
+        termsId: term.termsId,
         agreed: !!checkedTerms[term.termsId],
       }));
 
@@ -129,7 +127,7 @@ export default function CustomerSignupPage() {
             </label>
             <input
               id="userAge"
-              type="number"
+              type="date"
               value={birth}
               onChange={(e) => setBirth(e.target.value)}
               className="w-full h-11 px-4 rounded-lg border border-border-strong bg-background-default focus:ring-1 focus:ring-brand-default outline-none"
