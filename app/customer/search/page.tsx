@@ -7,6 +7,7 @@ import { useSearchStore } from '@/store/useSearchStore';
 import { useSearchStores } from '@/hooks/useSearchStores';
 import type { StoreSearchParams } from '@/app/customer/search/_types/store.type';
 
+import CartButton from '@/components/ui/CartButton';
 import SearchField from '@/components/ui/SearchField';
 import StoreCard from '@/components/features/StoreCard';
 import SearchFilterChipBar from './_components/SearchFilterChipBar';
@@ -17,7 +18,6 @@ import FilterBottomSheet from './_components/FilterBottomSheet';
 import BackIcon from '@/public/icons/icon_arrow_Left.svg';
 import FilterIcon from '@/public/icons/icon_filter.svg';
 import ResetIcon from '@/public/icons/icon_reset.svg';
-import CartIcon from '@/public/icons/icon_shoppingCart.svg';
 
 // ─── 정렬 옵션 ───────────────────────────────────────
 function SearchContent() {
@@ -92,9 +92,7 @@ function SearchContent() {
           </div>
 
           {/* 장바구니 */}
-          <button type="button" className="size-6 relative">
-            <CartIcon className="size-5 text-icon-default" />
-          </button>
+          <CartButton count={0} onClick={() => router.push('/customer/cart')} />
         </div>
       </div>
 
