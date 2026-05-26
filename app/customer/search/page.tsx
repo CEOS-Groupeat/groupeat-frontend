@@ -7,6 +7,7 @@ import { useSearchStore } from '@/store/useSearchStore';
 import { useSearchStores } from '@/hooks/useSearchStores';
 import type { StoreSearchParams } from '@/app/customer/search/_types/store.type';
 
+import SearchField from '@/components/ui/SearchField';
 import StoreCard from '@/components/features/StoreCard';
 import SearchFilterChipBar from './_components/SearchFilterChipBar';
 import SearchSortDropdown from './_components/SearchSortDropdown';
@@ -77,23 +78,16 @@ function SearchContent() {
               <BackIcon className="size-6 text-icon-subtle" />
             </button>
 
-            {/* 검색바 — 키워드 있으면 filled, 없으면 outlined */}
-            <input
+            {/* 검색바 — SearchField 공통 컴포넌트 적용 */}
+            <SearchField
               value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && searchInput.trim()) {
-                  router.push(
-                    `/customer/search?keyword=${encodeURIComponent(searchInput.trim())}`
-                  );
-                }
-              }}
-              placeholder="검색어를 입력하세요"
-              className={`flex-1 h-11 pl-4 pr-3 py-1 rounded-full outline-none ${
-                keyword
-                  ? 'bg-background-subtle'
-                  : 'bg-background-default outline outline-1 outline-border-strong'
-              }`}
+              onChange={setSearchInput}
+              onSearch={(keyword) =>
+                router.push(
+                  `/customer/search?keyword=${encodeURIComponent(keyword)}`
+                )
+              }
+              variant={keyword ? 'filled' : 'outlined'}
             />
           </div>
 
