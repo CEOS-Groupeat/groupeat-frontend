@@ -248,11 +248,27 @@ export default function FilterBottomSheet({
                       <span className="text-base font-semibold text-text-default">
                         {item.label}
                       </span>
-                      {selectedValue !== undefined && !isExpanded && (
-                        <span className="text-xs font-medium text-brand-default">
-                          {formatChipLabel(item.key, selectedValue)}
-                        </span>
-                      )}
+                      {selectedValue !== undefined &&
+                        !isExpanded &&
+                        (item.key === 'pickupDate' ? (
+                          <div className="flex items-center gap-1">
+                            <span className="text-xs font-medium text-brand-default leading-4">
+                              {formatPickupDate(selectedValue as string)}
+                            </span>
+                            {filters.pickupTime && (
+                              <>
+                                <div className="size-[2.5px] bg-brand-default rounded-full" />
+                                <span className="text-xs font-medium text-brand-default leading-4">
+                                  {formatPickupTime(filters.pickupTime)}
+                                </span>
+                              </>
+                            )}
+                          </div>
+                        ) : (
+                          <span className="text-xs font-medium text-brand-default leading-4">
+                            {formatChipLabel(item.key, selectedValue)}
+                          </span>
+                        ))}
                     </div>
                     {isExpanded ? (
                       <UpArrow className="size-5 text-icon-default" />
