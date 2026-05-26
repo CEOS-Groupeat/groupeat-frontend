@@ -51,10 +51,10 @@ export default function SearchFilterChipBar({
               key={chip.key}
               type="button"
               onClick={() => onChipClick(chip.key)}
-              className={`flex-shrink-0 h-8 pl-2.5 pr-3.5 py-2 rounded-full flex items-center gap-1 transition-colors ${
+              className={`flex-shrink-0 pl-2.5 pr-3.5 py-2 rounded-full flex items-center gap-1 transition-colors ${
                 isActive
                   ? 'bg-brand-background text-brand-default' // ✅ 활성: 브랜드 배경
-                  : 'bg-background-default outline outline-1 outline-border-default text-text-default' // ✅ 기본
+                  : 'bg-background-default outline outline-1 outline-offset-[-1px] outline-border-default text-text-default' // ✅ 기본
               }`}
             >
               <DownArrow className="size-4 shrink-0" />
