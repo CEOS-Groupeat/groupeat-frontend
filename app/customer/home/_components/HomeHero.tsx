@@ -12,7 +12,7 @@ export default function HomeHero() {
           <div className="flex items-center">
             <Logo />
 
-            <span className="text-static-white text-lg font-medium font-['Poppins'] leading-6">
+            <span className="text-static-white text-lg font-medium font-poppins leading-6">
               Groupeat
             </span>
           </div>

@@ -1,4 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
 @import 'tailwindcss';
+
 
 @font-face {
   font-family: 'Pretendard';
@@ -6,6 +9,8 @@
 }
 
 @theme {
+  --font-poppins: 'Poppins', sans-serif;
+
   /* Display: 32px / 42px / -1.2% */
   --text-display: 2rem;
   --text-display--line-height: 2.625rem;
@@ -50,7 +55,7 @@
   --text-caption2: 0.6875rem;
   --text-caption2--line-height: 1rem;
   --text-caption2--letter-spacing: 0.015em;
-  
+
   /* 
      Atomic Colors (Base Palette)
  */
@@ -124,7 +129,11 @@
   /* Yellow */
   --color-yellow-10: #fcf4d6;
   --color-yellow-20: #fddc69;
+<<<<<<< Updated upstream
   --color-yellow-25: #f7cf42;
+=======
+  --color-yellow-25: #fddc69;
+>>>>>>> Stashed changes
   --color-yellow-30: #f1c21b;
   --color-yellow-40: #d2a106;
   --color-yellow-50: #b28600;
@@ -176,7 +185,7 @@
   --color-background-disabled: var(--color-gray-20);
   --color-background-subtle: var(--color-gray-13);
   --color-background-subtlest: var(--color-gray-15);
-  --color-background-dim: #1717198C;
+  --color-background-dim: #1717198c;
 
   --color-icon-default: var(--color-gray-70);
   --color-icon-active: var(--color-orange-50);
