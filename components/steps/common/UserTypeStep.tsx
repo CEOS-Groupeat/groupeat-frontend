@@ -1,11 +1,10 @@
 // app/signup/steps/UserTypeStep.tsx
 'use client';
 
-import DefaultButton from '@/components/DefaultButton';
+import DefaultButton from '@/components/ButtonDefault';
 import { useSignupStore } from '@/store/useSignupStore';
 
 export default function UserTypeStep() {
-  // Zustand 스토어에서 상태와 액션을 꺼내옵니다.
   const { memberType, setMemberType, nextStep } = useSignupStore();
 
   return (
@@ -50,12 +49,13 @@ export default function UserTypeStep() {
         </div>
       </div>
 
-      {/* 중간 여백을 꽉 채워서 다음 버튼을 화면 최하단으로 밀어냅니다 */}
       <div className="flex-1" />
 
       {/* 다음 버튼 영역 */}
       <div className="fixed bottom-6 left-0 w-full flex justify-center px-4">
-        <DefaultButton onClick={nextStep} disabled={!memberType}>다음</DefaultButton>
+        <DefaultButton onClick={nextStep} disabled={!memberType}>
+          다음
+        </DefaultButton>
       </div>
     </div>
   );

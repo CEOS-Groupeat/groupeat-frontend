@@ -4,39 +4,27 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import CheckboxFalse from '@/public/icons/icon_checkboxFalse.svg';
 import CheckboxTrue from '@/public/icons/icon_checkboxTrue.svg';
-import { useSignupStore } from '@/store/useSignupStore';
-import DefaultButton from '@/components/DefaultButton';
+import DefaultButton from '@/components/ButtonDefault';
 import { fetchClient } from '@/lib/fetchClient';
+import { useBusinessSignupStore } from '@/store/useBusinessSignupStore';
+import { useSignupStore } from '@/store/useSignupStore';
 
-// 1. API 응답 스펙에 맞춘 타입 정의
-interface Term {
-  termsId: number;
-  title: string;
-  content: string;
-  required: boolean;
-  targetType: string;
-  version: string;
-}
-
-export default function TermsStep() {
-  const { setAgreements, nextStep } = useSignupStore();
+export default function OwnerTermsStep() {
+  const { nextStep } = useSignupStore();
+  const { updatePayload } = useBusinessSignupStore();
 
   const [checkedTerms, setCheckedTerms] = useState<{ [key: number]: boolean }>(
     {}
   );
 
-  // 3. 서버에서 COMMON 약관 불러오기
   const { data: terms = [], isLoading } = useQuery<Term[]>({
-    queryKey: ['terms', 'COMMON'],
+    queryKey: ['terms', 'BUSINESS'],
     queryFn: async () => {
-      const response = (await fetchClient(
-        '/api/terms?targetType=COMMON'
-      )) as Response;
+      const response = await fetchClient('/api/terms?targetType=BUSINESS');
       return response as unknown as Term[];
     },
   });
 
-  // 4. 파생 상태 계산 (데이터가 있을 때만 true가 되도록 terms.length > 0 조건 추가)
   const isAllChecked =
     terms.length > 0 && terms.every((term) => checkedTerms[term.termsId]);
 
@@ -66,26 +54,25 @@ export default function TermsStep() {
     const agreementsPayload = terms.map((term) => ({
       termsId: term.termsId,
       agreed: !!checkedTerms[term.termsId],
-      required: term.required,
     }));
 
-    setAgreements(agreementsPayload);
+    updatePayload({ agreements: agreementsPayload });
+
     nextStep();
   };
 
   if (isLoading) {
     return (
       <div className="w-full py-10 text-center text-body text-text-subtlest">
-        약관을 불러오는 중...
+        사업자 약관을 불러오는 중...
       </div>
-      // todo: TermSkeleton 만들기
     );
   }
 
   return (
     <div className="w-full flex flex-col items-start justify-center self-stretch gap-2 mt-3 pb-24">
       <div className="flex w-full flex-col items-start gap-2">
-        <h2 className="text-body font-semibold">공통 약관 동의</h2>
+        <h2 className="text-body font-semibold">사업자 약관 동의</h2>
       </div>
 
       <div className="flex flex-col items-start gap-4 self-stretch">
@@ -123,8 +110,14 @@ export default function TermsStep() {
                 <span className="text-label1">
                   {term.title}
                   {term.required ? (
-                    <span className="text-label1 text-text-strong ml-1 mr-2">(필수)</span>
-                  ) : <span className="text-label1 text-text-strong ml-1 mr-2">(선택)</span>}
+                    <span className="text-label1 text-text-strong ml-1 mr-2">
+                      (필수)
+                    </span>
+                  ) : (
+                    <span className="text-label1 text-text-strong ml-1 mr-2">
+                      (선택)
+                    </span>
+                  )}
                 </span>
               </button>
 

@@ -14,11 +14,7 @@ import {
 import { Fragment } from 'react';
 
 export default async function CustomerHomePage() {
-  const serverMessage = await checkServerHealth().catch((error) => {
-    console.error('서버 상태 확인 실패:', error);
-    return '서버 상태를 확인할 수 없습니다.';
-  });
-
+  
   const sections = [
     {
       id: 'popular',
