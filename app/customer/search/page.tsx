@@ -7,7 +7,7 @@ import { useSearchStore } from '@/store/useSearchStore';
 import { useSearchStores } from '@/hooks/useSearchStores';
 import type { StoreSearchParams } from '@/app/customer/search/_types/store.type';
 
-import SearchStoreCard from './_components/SearchStoreCard';
+import StoreCard from '@/components/features/StoreCard';
 import SearchFilterChipBar from './_components/SearchFilterChipBar';
 import SearchSortDropdown from './_components/SearchSortDropdown';
 import SearchEmptyState from './_components/SearchEmptyState';
@@ -192,7 +192,7 @@ function SearchContent() {
           // ✅ 2열 그리드
           <div className="grid grid-cols-2 gap-2">
             {stores.map((store) => (
-              <SearchStoreCard
+              <StoreCard
                 key={store.storeId}
                 store={store}
                 onClick={() =>
