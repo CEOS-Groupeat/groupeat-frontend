@@ -2,12 +2,12 @@ import RightChevron from '@/public/icons/icon-right_chevron.svg';
 
 import StoreCard from './StoreCard';
 
-import { Store } from '../_types/store.type';
+import { HomeStore } from '../_types/store.type';
 
 interface StoreSectionProps {
   title: string;
   description: string;
-  stores: Store[];
+  stores: HomeStore[];
 }
 
 export default function StoreSection({
