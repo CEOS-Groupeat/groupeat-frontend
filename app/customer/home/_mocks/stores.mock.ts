@@ -1,3 +1,4 @@
+// MVP 구현범위: 고객 메인 페이지-가게 추천 api 대신 mocks 데이터로 구현
 import { Store } from '../_types/store.type';
 
 export const popularStores: Store[] = [
@@ -19,7 +20,7 @@ export const popularStores: Store[] = [
     rating: 4.9,
     reviewCount: 33,
     location: '성북구 성북동',
-    image: '/images/day-brunch.png',
+    image: '/images/bean-archive.png',
   },
   {
     id: 3,
