@@ -87,7 +87,9 @@ function SearchContent() {
                   `/customer/search?keyword=${encodeURIComponent(keyword)}`
                 )
               }
-              variant={keyword ? 'filled' : 'outlined'}
+              placeholder="검색어를 입력하세요"
+              variant={searchInput ? 'filled' : 'outlined'}
+              showIcon={searchInput ? false : true}
             />
           </div>
 
