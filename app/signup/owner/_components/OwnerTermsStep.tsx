@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import CheckboxFalse from '@/public/icons/icon_checkboxFalse.svg';
 import CheckboxTrue from '@/public/icons/icon_checkboxTrue.svg';
-import DefaultButton from '@/components/ButtonDefault';
+import DefaultButton from '@/components/ui/ButtonDefault';
 import { fetchClient } from '@/lib/fetchClient';
 import { useBusinessSignupStore } from '@/store/useBusinessSignupStore';
 import { useSignupStore } from '@/store/useSignupStore';

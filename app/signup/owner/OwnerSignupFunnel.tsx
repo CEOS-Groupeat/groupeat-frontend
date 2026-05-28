@@ -4,9 +4,9 @@
 import { useSignupStore } from '@/store/useSignupStore';
 
 import SignupHeader from '@/components/signup/SignupHeader';
-import OwnerInfoStep from '@/components/steps/owner/OwnerInfoStep';
-import OwnerTermsStep from '@/components/steps/owner/OwnerTermsStep';
-import OwnerVerifyStep from '@/components/steps/owner/OwnerVerifyStep';
+import OwnerInfoStep from '@/app/signup/owner/_components/OwnerInfoStep';
+import OwnerTermsStep from '@/app/signup/owner/_components/OwnerTermsStep';
+import OwnerVerifyStep from '@/app/signup/owner/_components/OwnerVerifyStep';
 
 export default function OwnerSignupFunnel() {
   const { step } = useSignupStore();

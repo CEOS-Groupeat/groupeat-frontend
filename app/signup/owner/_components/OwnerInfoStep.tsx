@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import DefaultButton from '@/components/ButtonDefault';
+import DefaultButton from '@/components/ui/ButtonDefault';
 import { useBusinessSignupStore } from '@/store/useBusinessSignupStore';
-import TextField from '@/components/TextField';
+import TextField from '@/components/ui/TextField';
 import { useSignupStore } from '@/store/useSignupStore';
 
 export default function OwnerInfoStep() {

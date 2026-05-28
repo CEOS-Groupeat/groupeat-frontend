@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import CheckboxFalse from '@/public/icons/icon_checkboxFalse.svg';
 import CheckboxTrue from '@/public/icons/icon_checkboxTrue.svg';
 import { useSignupStore } from '@/store/useSignupStore';
-import DefaultButton from '@/components/ButtonDefault';
+import DefaultButton from '@/components/ui/ButtonDefault';
 import { fetchClient } from '@/lib/fetchClient';
 
 export default function TermsStep() {

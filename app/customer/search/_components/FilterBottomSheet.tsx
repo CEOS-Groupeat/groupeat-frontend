@@ -286,12 +286,14 @@ export default function FilterBottomSheet({
                     />
                   )}
                   {isExpanded && item.key === 'pickupDate' && (
-                    <DateFilter
-                      date={filters.pickupDate}
-                      time={filters.pickupTime}
-                      onDateChange={(v) => updateFilter('pickupDate', v)}
-                      onTimeChange={(v) => updateFilter('pickupTime', v)}
-                    />
+                    <div className="mt-3">
+                      <DateFilter
+                        date={filters.pickupDate}
+                        time={filters.pickupTime}
+                        onDateChange={(v) => updateFilter('pickupDate', v)}
+                        onTimeChange={(v) => updateFilter('pickupTime', v)}
+                      />
+                    </div>
                   )}
                   {isExpanded && item.key === 'quantity' && (
                     <QuantityFilter

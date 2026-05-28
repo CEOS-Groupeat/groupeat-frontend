@@ -151,6 +151,7 @@
   --color-border-strong: #5b5c633d;
   --color-border-default: #5b5c6329;
   --color-border-subtle: #5b5c6314;
+  --color-border-divider: #F0F0F199;
 
   /* Text */
   --color-text-default: var(--color-gray-90);
@@ -181,6 +182,7 @@
   --color-background-subtle: var(--color-gray-13);
   --color-background-subtlest: var(--color-gray-15);
   --color-background-dim: #1717198c;
+  --color-background-toast: #171719D9;
 
   --color-icon-default: var(--color-gray-70);
   --color-icon-active: var(--color-orange-50);
@@ -190,6 +192,8 @@
   --color-icon-star: var(--color-yellow-25);
   --color-icon-subtlest: var(--color-gray-30);
 
+  --color-hover: #00000008;
+  
   @keyframes fade-in-up {
     from {
       opacity: 0;

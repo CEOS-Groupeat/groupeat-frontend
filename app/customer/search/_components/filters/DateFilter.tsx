@@ -166,7 +166,7 @@ export default function DateFilter({
   };
 
   return (
-    <div className="mt-3 flex flex-col gap-6">
+    <div className="flex flex-col gap-6">
       {/* ── 캘린더 ── */}
       <div className="flex flex-col gap-2">
         {/* ✅ 커스텀 네비게이션 — flex justify-center 로 가운데 정렬 */}
