@@ -28,7 +28,7 @@ const FILTER_ITEMS: { key: keyof StoreSearchParams; label: string }[] = [
   { key: 'pickupDate', label: '픽업 일자' },
   { key: 'quantity', label: '수량' },
   { key: 'budget', label: '1인당 예산' },
-  { key: 'categories', label: '카테고리' },
+  { key: 'category', label: '카테고리' },
 ];
 
 // ─── Props ──────────────────────────────────────────
@@ -53,7 +53,7 @@ const DRAG_THRESHOLD = 60;
 function formatChipLabel(key: keyof StoreSearchParams, value: unknown): string {
   if (key === 'quantity') return `${value}개`;
   if (key === 'budget') return formatBudget(value as number); // ✅ 30,000원~ 처리
-  if (key === 'categories') return (value as string[]).join(' · ');
+  if (key === 'category') return value as string;
   if (key === 'pickupDate') return formatPickupDate(value as string);
   return String(value);
 }
@@ -248,11 +248,27 @@ export default function FilterBottomSheet({
                       <span className="text-base font-semibold text-text-default">
                         {item.label}
                       </span>
-                      {selectedValue !== undefined && !isExpanded && (
-                        <span className="text-xs font-medium text-brand-default">
-                          {formatChipLabel(item.key, selectedValue)}
-                        </span>
-                      )}
+                      {selectedValue !== undefined &&
+                        !isExpanded &&
+                        (item.key === 'pickupDate' ? (
+                          <div className="flex items-center gap-1">
+                            <span className="text-xs font-medium text-brand-default leading-4">
+                              {formatPickupDate(selectedValue as string)}
+                            </span>
+                            {filters.pickupTime && (
+                              <>
+                                <div className="size-[2.5px] bg-brand-default rounded-full" />
+                                <span className="text-xs font-medium text-brand-default leading-4">
+                                  {formatPickupTime(filters.pickupTime)}
+                                </span>
+                              </>
+                            )}
+                          </div>
+                        ) : (
+                          <span className="text-xs font-medium text-brand-default leading-4">
+                            {formatChipLabel(item.key, selectedValue)}
+                          </span>
+                        ))}
                     </div>
                     {isExpanded ? (
                       <UpArrow className="size-5 text-icon-default" />
@@ -293,10 +309,10 @@ export default function FilterBottomSheet({
                       onConfirm={closeFilter}
                     />
                   )}
-                  {isExpanded && item.key === 'categories' && (
+                  {isExpanded && item.key === 'category' && (
                     <CategoryFilter
-                      value={filters.categories}
-                      onChange={(v) => updateFilter('categories', v)}
+                      value={filters.category}
+                      onChange={(v) => updateFilter('category', v)}
                       onConfirm={closeFilter}
                     />
                   )}

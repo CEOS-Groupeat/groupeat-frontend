@@ -33,6 +33,6 @@ export interface StoreSearchParams {
   pickupTime?: string; // "12:00"
   quantity?: number;
   budget?: number; // minPrice/maxPrice → budget
-  categories?: string[]; // category → categories (배열)
+  category?: string;
   sort?: string; // "RECOMMEND" | "NONE"
 }

@@ -7,7 +7,7 @@ import DownArrow from '@/public/icons/icon_arrow_down.svg';
 const FILTER_CHIPS: { key: keyof StoreSearchParams; label: string }[] = [
   { key: 'location', label: '위치' },
   { key: 'pickupDate', label: '픽업 날짜' },
-  { key: 'categories', label: '카테고리' },
+  { key: 'category', label: '카테고리' },
   { key: 'quantity', label: '수량' },
   { key: 'budget', label: '1인당 예산' },
 ];
@@ -26,7 +26,7 @@ function getChipLabel(
   if (!value) return '';
   if (key === 'quantity') return `${value}개`;
   if (key === 'budget') return `${(value as number).toLocaleString()}원`;
-  if (key === 'categories') return (value as string[]).join(', ');
+  if (key === 'category') return value as string;
   if (key === 'pickupDate') {
     const d = new Date(value as string);
     return `${d.getMonth() + 1}월 ${d.getDate()}일`;
@@ -51,10 +51,10 @@ export default function SearchFilterChipBar({
               key={chip.key}
               type="button"
               onClick={() => onChipClick(chip.key)}
-              className={`flex-shrink-0 h-8 pl-2.5 pr-3.5 py-2 rounded-full flex items-center gap-1 transition-colors ${
+              className={`flex-shrink-0 pl-2.5 pr-3.5 py-2 rounded-full flex items-center gap-1 transition-colors ${
                 isActive
                   ? 'bg-brand-background text-brand-default' // ✅ 활성: 브랜드 배경
-                  : 'bg-background-default outline outline-1 outline-border-default text-text-default' // ✅ 기본
+                  : 'bg-background-default outline outline-1 outline-offset-[-1px] outline-border-default text-text-default' // ✅ 기본
               }`}
             >
               <DownArrow className="size-4 shrink-0" />
