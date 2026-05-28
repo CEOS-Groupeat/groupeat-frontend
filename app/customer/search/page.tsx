@@ -7,6 +7,8 @@ import { useSearchStore } from '@/store/useSearchStore';
 import { useSearchStores } from '@/hooks/useSearchStores';
 import type { StoreSearchParams } from '@/app/customer/search/_types/store.type';
 
+import CartButton from '@/components/ui/CartButton';
+import SearchField from '@/components/ui/SearchField';
 import StoreCard from '@/components/features/StoreCard';
 import SearchFilterChipBar from './_components/SearchFilterChipBar';
 import SearchSortDropdown from './_components/SearchSortDropdown';
@@ -16,7 +18,6 @@ import FilterBottomSheet from './_components/FilterBottomSheet';
 import BackIcon from '@/public/icons/icon_arrow_Left.svg';
 import FilterIcon from '@/public/icons/icon_filter.svg';
 import ResetIcon from '@/public/icons/icon_reset.svg';
-import CartIcon from '@/public/icons/icon_shoppingCart.svg';
 
 // ─── 정렬 옵션 ───────────────────────────────────────
 function SearchContent() {
@@ -77,30 +78,21 @@ function SearchContent() {
               <BackIcon className="size-6 text-icon-subtle" />
             </button>
 
-            {/* 검색바 — 키워드 있으면 filled, 없으면 outlined */}
-            <input
+            {/* 검색바 — SearchField 공통 컴포넌트 적용 */}
+            <SearchField
               value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && searchInput.trim()) {
-                  router.push(
-                    `/customer/search?keyword=${encodeURIComponent(searchInput.trim())}`
-                  );
-                }
-              }}
-              placeholder="검색어를 입력하세요"
-              className={`flex-1 h-11 pl-4 pr-3 py-1 rounded-full outline-none ${
-                keyword
-                  ? 'bg-background-subtle'
-                  : 'bg-background-default outline outline-1 outline-border-strong'
-              }`}
+              onChange={setSearchInput}
+              onSearch={(keyword) =>
+                router.push(
+                  `/customer/search?keyword=${encodeURIComponent(keyword)}`
+                )
+              }
+              variant={keyword ? 'filled' : 'outlined'}
             />
           </div>
 
           {/* 장바구니 */}
-          <button type="button" className="size-6 relative">
-            <CartIcon className="size-5 text-icon-default" />
-          </button>
+          <CartButton count={0} onClick={() => router.push('/customer/cart')} />
         </div>
       </div>
 
@@ -169,7 +161,7 @@ function SearchContent() {
       </div>
 
       {/* ── 가게 목록 / 로딩 / 빈 결과 ── */}
-      <div className="flex-1 px-4">
+      <div className="flex-1 px-4 pb-6">
         {isLoading ? (
           // 로딩 스켈레톤
           <div className="grid grid-cols-2 gap-2">
