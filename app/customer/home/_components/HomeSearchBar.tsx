@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSearchStore } from '@/store/useSearchStore';
 
@@ -26,37 +26,27 @@ export default function HomeSearchBar() {
     );
   };
 
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-  const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setKeyword(event.target.value);
-
-    const textarea = textareaRef.current;
-    if (!textarea) return;
-
-    textarea.style.height = 'auto';
-    textarea.style.height = `${textarea.scrollHeight}px`;
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setKeyword(e.target.value);
   };
 
   return (
     <>
-      <div className="w-full min-h-11 bg-background-default rounded-[36px] pr-1.5 px-4 py-[6px] flex justify-between items-center overflow-hidden">
-        <div className="flex items-center gap-1.5 flex-1 min-w-0">
+      <div className="w-full min-h-11 bg-background-default rounded-[36px] pr-1.5 pl-4 py-1.5 flex justify-between items-center overflow-hidden">
+        <div className="flex items-center gap-1.5 flex-1">
           <Search className="shrink-0" />
 
-          <textarea
-            ref={textareaRef}
+          <input
             value={keyword}
             onChange={handleChange}
-            onKeyDown={(event) => {
-              if (event.key === 'Enter' && !event.shiftKey) {
-                event.preventDefault();
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
                 handleSearch();
               }
             }}
-            rows={1}
             placeholder="가게나 메뉴를 검색해 보세요"
-            className="min-w-0 flex-1 resize-none bg-transparent outline-none text-body text-text-default placeholder:text-text-placeholder"
+            className="w-full outline-none text-body text-text-default placeholder:text-text-placeholder"
           />
         </div>
 
