@@ -23,7 +23,10 @@ export default function HomePage() {
   };
 
   return (
-    <div className="flex w-full h-screen flex-col items-center justify-center gap-4">
+    <div className="flex w-full h-screen flex-col items-center justify-center gap-4 z-Hide">
+      <div className='w-50 h-50 bg-black z-10'>
+
+      </div>
       <div className="absolute top-0 w-full h-120 bg-icon-active">
         <div>그루핏</div>
         <div>우리행사에딱맞는단체주문음식점을찾아보세요</div>
