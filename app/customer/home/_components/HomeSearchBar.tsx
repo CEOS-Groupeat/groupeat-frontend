@@ -1,12 +1,12 @@
 'use client';
 
-import { ChangeEvent, useRef, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSearchStore } from '@/store/useSearchStore';
 
-import Search from '@/public/icons/icon-search.svg';
 import Filter from '@/public/icons/icon-filter.svg';
 
+import SearchField from '@/components/ui/SearchField';
 import FilterBottomSheet from '../../search/_components/FilterBottomSheet';
 
 export default function HomeSearchBar() {
@@ -26,40 +26,20 @@ export default function HomeSearchBar() {
     );
   };
 
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-  const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setKeyword(event.target.value);
-
-    const textarea = textareaRef.current;
-    if (!textarea) return;
-
-    textarea.style.height = 'auto';
-    textarea.style.height = `${textarea.scrollHeight}px`;
+  const handleChange = (value: string) => {
+    setKeyword(value);
   };
 
   return (
     <>
-      <div className="w-full min-h-11 bg-background-default rounded-[36px] pr-1.5 px-4 py-[6px] flex justify-between items-center overflow-hidden">
-        <div className="flex items-center gap-1.5 flex-1 min-w-0">
-          <Search className="shrink-0" />
-
-          <textarea
-            ref={textareaRef}
-            value={keyword}
-            onChange={handleChange}
-            onKeyDown={(event) => {
-              if (event.key === 'Enter' && !event.shiftKey) {
-                event.preventDefault();
-                handleSearch();
-              }
-            }}
-            rows={1}
-            placeholder="가게나 메뉴를 검색해 보세요"
-            className="min-w-0 flex-1 resize-none bg-transparent outline-none text-body text-text-default placeholder:text-text-placeholder"
-          />
-        </div>
-
+      <SearchField
+        value={keyword}
+        onChange={handleChange}
+        onSearch={handleSearch}
+        placeholder="가게나 메뉴를 검색해 보세요"
+        variant={'outlined'}
+        showIcon={true}
+      >
         <button
           type="button"
           onClick={() => setIsFilterOpen(true)}
@@ -67,7 +47,7 @@ export default function HomeSearchBar() {
         >
           <Filter />
         </button>
-      </div>
+      </SearchField>
 
       <FilterBottomSheet
         isOpen={isFilterOpen}

@@ -1,11 +1,11 @@
 import Image from 'next/image';
 
-import { Store } from '../_types/store.type';
+import { HomeStore } from '../_types/store.type';
 import Star from '@/public/icons/icon_star.svg';
 import Location from '@/public/icons/icon_place.svg';
 
 interface StoreCardProps {
-  store: Store;
+  store: HomeStore;
 }
 
 export default function StoreCard({ store }: StoreCardProps) {
