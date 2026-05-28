@@ -26,8 +26,8 @@ export default function CustomerLandingPage() {
 
       {/* 메인 콘텐츠 영역 */}
       <section className="relative flex flex-col flex-1 w-full justify-center items-center py-12 overflow-hidden animate-fade-in-up">
-        <div className="w-full absolute inset-0 flex justify-center items-center pointer-events-none z-0">
-          <div className="absolute flex justify-center items-center pointer-events-none z-0 w-110.5 h-110.5 -translate-y-8 opacity-35 bg-[radial-gradient(ellipse_70.71%_70.71%_at_50.00%_50.00%,#FCD2C6_0%,rgba(252,210,198,0)_70%)] rounded-[260px]" />
+        <div className="w-full absolute inset-0 flex justify-center items-center pointer-events-none -z-Base">
+          <div className="absolute flex justify-center items-center pointer-events-none -z-Base w-110.5 h-110.5 -translate-y-8 opacity-35 bg-[radial-gradient(ellipse_70.71%_70.71%_at_50.00%_50.00%,#FCD2C6_0%,rgba(252,210,198,0)_70%)] rounded-[260px]" />
         </div>
 
         <main className="relative z-10 flex flex-col items-center justify-center w-full">

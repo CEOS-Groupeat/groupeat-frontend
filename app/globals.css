@@ -147,6 +147,7 @@
   --color-border-strong: #5b5c633d;
   --color-border-default: #5b5c6329;
   --color-border-subtle: #5b5c6314;
+  --color-border-divider: #f0f0f199;
 
   /* Text */
   --color-text-default: var(--color-gray-80);
@@ -174,9 +175,10 @@
   /* Background */
   --color-background-default: var(--color-gray-5);
   --color-background-disabled: var(--color-gray-20);
-  --color-background-subtle: var(--color-gray-10);
-  --color-background-assistive: var(--color-gray-15);
-  --color-background-dim: #171719bf;
+  --color-background-subtle: var(--color-gray-13);
+  --color-background-subtlest: var(--color-gray-15);
+  --color-background-dim: #1717198c;
+  --color-background-toast: #171719d9;
 
   --color-icon-default: var(--color-gray-70);
   --color-icon-active: var(--color-orange-50);
@@ -185,6 +187,32 @@
   --color-icon-subtle: var(--color-gray-60);
   --color-icon-star: var(--color-yellow-25);
   --color-icon-subtlest: var(--color-gray-30);
+
+  --color-hover: #00000008;
+
+  --z-hide: -1;
+
+  /* Base */
+  --z-base: 0;
+
+  /* Dropdown / Sticky (100 ~ 200) */
+  --z-dropdown: 100;
+  --z-sticky: 200;
+
+  /* Overlay / Backdrop (400 ~ 600) */
+  --z-overlay: 400;
+  --z-backdrop: 500;
+
+  /* Drawer / Modal (700 ~ 800) */
+  --z-drawer: 700;
+  --z-modal: 800;
+
+  /* Toast / Notification (900 이상) */
+  --z-toast: 900;
+  --z-notification: 990;
+
+  /* (옵션) 절대적으로 가장 위에 있어야 하는 비상용 토큰 */
+  --z-max: 9999;
 
   @keyframes fade-in-up {
     from {
