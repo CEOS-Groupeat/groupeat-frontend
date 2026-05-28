@@ -1,12 +1,12 @@
 'use client';
 
-import { ChangeEvent, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSearchStore } from '@/store/useSearchStore';
 
-import Search from '@/public/icons/icon-search.svg';
 import Filter from '@/public/icons/icon-filter.svg';
 
+import SearchField from '@/components/ui/SearchField';
 import FilterBottomSheet from '../../search/_components/FilterBottomSheet';
 
 export default function HomeSearchBar() {
@@ -26,30 +26,20 @@ export default function HomeSearchBar() {
     );
   };
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setKeyword(e.target.value);
+  const handleChange = (value: string) => {
+    setKeyword(value);
   };
 
   return (
     <>
-      <div className="w-full min-h-11 bg-background-default rounded-[36px] pr-1.5 pl-4 py-1.5 flex justify-between items-center overflow-hidden">
-        <div className="flex items-center gap-1.5 flex-1">
-          <Search className="shrink-0" />
-
-          <input
-            value={keyword}
-            onChange={handleChange}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                e.preventDefault();
-                handleSearch();
-              }
-            }}
-            placeholder="가게나 메뉴를 검색해 보세요"
-            className="w-full outline-none text-body text-text-default placeholder:text-text-placeholder"
-          />
-        </div>
-
+      <SearchField
+        value={keyword}
+        onChange={handleChange}
+        onSearch={handleSearch}
+        placeholder="가게나 메뉴를 검색해 보세요"
+        variant={'outlined'}
+        showIcon={true}
+      >
         <button
           type="button"
           onClick={() => setIsFilterOpen(true)}
@@ -57,7 +47,7 @@ export default function HomeSearchBar() {
         >
           <Filter />
         </button>
-      </div>
+      </SearchField>
 
       <FilterBottomSheet
         isOpen={isFilterOpen}
