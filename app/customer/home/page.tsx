@@ -1,9 +1,6 @@
 {
   /* 고객 메인 페이지입니다. */
 }
-import { checkServerHealth } from '@/utils/useStoreFetch';
-import Link from 'next/link';
-
 import HomeHero from './_components/HomeHero';
 import StoreSection from './_components/StoreSection';
 import SectionDivider from '@/components/ui/SectionDivider';
@@ -15,6 +12,7 @@ import {
 import { Fragment } from 'react';
 
 export default async function CustomerHomePage() {
+  // MVP 구현범위: 고객 메인 페이지-가게 추천 api 대신 mocks 데이터로 구현.
   const sections = [
     {
       id: 'popular',
@@ -39,7 +37,7 @@ export default async function CustomerHomePage() {
   ];
 
   return (
-    <div className="w-full min-h-screen flex flex-col justify-center items-center">
+    <div className="w-full min-h-screen flex flex-col">
       <div className="w-full flex flex-col bg-background-default overflow-hidden">
         <HomeHero />
 
