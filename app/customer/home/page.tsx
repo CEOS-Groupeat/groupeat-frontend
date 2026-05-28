@@ -6,6 +6,7 @@ import Link from 'next/link';
 
 import HomeHero from './_components/HomeHero';
 import StoreSection from './_components/StoreSection';
+import SectionDivider from '@/components/ui/SectionDivider';
 import {
   popularStores,
   discountStores,
@@ -14,7 +15,6 @@ import {
 import { Fragment } from 'react';
 
 export default async function CustomerHomePage() {
-  
   const sections = [
     {
       id: 'popular',
@@ -38,16 +38,6 @@ export default async function CustomerHomePage() {
     },
   ];
 
-  function SectionDivider() {
-    return (
-      <div className="pt-[19px]">
-        <div className="pt-1">
-          <div className="w-full h-2 bg-border-strong opacity-30" />
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="w-full min-h-screen flex flex-col justify-center items-center">
       <div className="w-full flex flex-col bg-background-default overflow-hidden">
@@ -55,19 +45,12 @@ export default async function CustomerHomePage() {
 
         {sections.map((section, index) => (
           <Fragment key={section.id}>
-            {index === 0 ? (
-              <div className="pt-5 px-4">
-                <StoreSection {...section} />
-              </div>
-            ) : (
-              <>
-                <SectionDivider />
-
-                <div className="pt-[19px] px-4">
-                  <StoreSection {...section} />
-                </div>
-              </>
-            )}
+            <div className="py-[19px] px-4">
+              <StoreSection {...section} />
+            </div>
+            <SectionDivider
+              className={`mt-1 ${index === sections.length - 1 ? 'bg-transparent' : ''}`}
+            />
           </Fragment>
         ))}
       </div>

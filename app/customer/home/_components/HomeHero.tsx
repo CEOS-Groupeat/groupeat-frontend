@@ -23,7 +23,7 @@ export default function HomeHero() {
 
       {/* Header and Search Container */}
 
-      <div className="px-4 pt-3 pb-5 flex flex-col gap-4">
+      <div className="px-4 pt-3 pb-5 flex flex-col gap-4 mb-[1px]">
         <h1 className="text-text-inverse text-[22px] font-bold font-['Pretendard'] leading-8 tracking-[-0.01em]">
           우리 행사에 딱 맞는
           <br />
