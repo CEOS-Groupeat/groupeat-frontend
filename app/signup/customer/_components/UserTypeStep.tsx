@@ -1,7 +1,7 @@
 // app/signup/steps/UserTypeStep.tsx
 'use client';
 
-import DefaultButton from '@/components/ButtonDefault';
+import DefaultButton from '@/components/ui/ButtonDefault';
 import { useSignupStore } from '@/store/useSignupStore';
 
 export default function UserTypeStep() {

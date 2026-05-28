@@ -4,9 +4,9 @@
 import { useEffect, useRef } from 'react';
 import { useSignupStore } from '@/store/useSignupStore';
 
-import UserTypeStep from '@/components/steps/common/UserTypeStep';
-import TermsStep from '@/components/steps/common/TermsStep';
-import PhoneVerifyStep from '@/components/steps/common/PhoneVerifyStep';
+import UserTypeStep from '@/app/signup/customer/_components/UserTypeStep';
+import TermsStep from '@/app/signup/customer/_components/TermsStep';
+import PhoneVerifyStep from '@/app/signup/customer/_components/PhoneVerifyStep';
 import SignupHeader from '@/components/signup/SignupHeader';
 
 export default function SignupFunnel({

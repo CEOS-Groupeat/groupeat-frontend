@@ -5,7 +5,7 @@ import { useMutation } from '@tanstack/react-query';
 import { fetchClient } from '@/lib/fetchClient';
 import { useSignupStore } from '@/store/useSignupStore';
 import { useRouter } from 'next/navigation';
-import DefaultButton from '@/components/ButtonDefault';
+import DefaultButton from '@/components/ui/ButtonDefault';
 
 export default function PhoneVerifyStep() {
   const router = useRouter();

@@ -1,6 +1,6 @@
 // types/store.ts
 
-// 응답 타입
+// (이전에 정의한 공통 응답 포맷)
 export interface ApiResponse<T> {
   isSuccess: boolean;
   code: string;
@@ -8,7 +8,6 @@ export interface ApiResponse<T> {
   data: T;
 }
 
-// 가게 상세
 export interface StoreDetail {
   storeId: number;
   imageUrl: string;
@@ -18,7 +17,7 @@ export interface StoreDetail {
   reviewCount: number;
   phoneNumber: string;
   description: string;
-  closedDays: string;
+  closedDays: string | null; // 휴무일이 없는 경우 null이 올 수 있으므로 유니온 타입 지정
   pickupOpenTime: string;
   pickupCloseTime: string;
   minOrderDays: number;
@@ -26,3 +25,39 @@ export interface StoreDetail {
   discountRate: number;
   orderProcess: string;
 }
+
+export interface PickupTimeInfo {
+  date: string;
+  dailyAvailableQuantity: number;
+  openTime: string;
+  closeTime: string;
+  intervalMinutes: number;
+}
+
+export interface MenuOption {
+  optionId: number;
+  name: string;
+  additionalPrice: number;
+}
+
+export interface MenuOptionGroup {
+  optionGroupId: number;
+  name: string;
+  isRequired: boolean;
+  isMultiple: boolean;
+  options: MenuOption[];
+}
+
+export interface Menu {
+  menuId: number;
+  name: string;
+  basePrice: number;
+  description: string;
+  imageUrl: string;
+  optionGroups: MenuOptionGroup[];
+}
+
+export interface MenusResponse {
+  menus: Menu[];
+}
+

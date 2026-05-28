@@ -1,4 +1,4 @@
-import DefaultButton from '@/components/ButtonDefault';
+import DefaultButton from '@/components/ui/ButtonDefault';
 
 export default function OwnerVerifyStep() {
   const handleClick = () => {};
