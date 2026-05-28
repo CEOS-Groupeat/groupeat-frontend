@@ -1,0 +1,101 @@
+// MVP 구현범위: 고객 메인 페이지-가게 추천 api 대신 mocks 데이터로 구현
+import { HomeStore } from '../_types/store.type';
+
+export const popularStores: HomeStore[] = [
+  {
+    id: 1,
+    name: '사르르 연남',
+    category: '샌드위치&김밥',
+    priceRange: '5,500원 ~ 9,000원/개',
+    rating: 4.8,
+    reviewCount: 45,
+    location: '마포구 연남동',
+    image: '/images/saruru-yeonnam.png',
+  },
+  {
+    id: 2,
+    name: '빈카이브',
+    category: '디저트',
+    priceRange: '8,500원 ~ 12,000원/개',
+    rating: 4.9,
+    reviewCount: 33,
+    location: '성북구 성북동',
+    image: '/images/bean-archive.png',
+  },
+  {
+    id: 3,
+    name: '데이브런치',
+    category: '샌드위치&김밥',
+    priceRange: '7,000원 ~ 12,000원/개',
+    rating: 4.7,
+    reviewCount: 3,
+    location: '마포구 아현동',
+    image: '/images/day-brunch.png',
+  },
+];
+
+export const discountStores: HomeStore[] = [
+  {
+    id: 4,
+    name: '익선잡방',
+    category: '음료',
+    priceRange: '5,000원 ~ 12,000원/개',
+    rating: 4.1,
+    reviewCount: 3,
+    location: '종로구 익선동',
+    image: '/images/ikseon-jabbang.png',
+  },
+  {
+    id: 5,
+    name: '하울즈',
+    category: '샌드위치&김밥',
+    priceRange: '7,000원 ~ 12,000원/개',
+    rating: 4.7,
+    reviewCount: 3,
+    location: '마포구 아현동',
+    image: '/images/howls.png',
+  },
+  {
+    id: 6,
+    name: '데이브런치',
+    category: '샌드위치&김밥',
+    priceRange: '7,000원 ~ 12,000원/개',
+    rating: 4.7,
+    reviewCount: 3,
+    location: '마포구 아현동',
+    image: '/images/day-brunch.png',
+  },
+];
+
+export const recommendedStores: HomeStore[] = [
+  {
+    id: 7,
+    name: '데이브런치',
+    category: '샌드위치&김밥',
+    priceRange: '7,000원 ~ 12,000원/개',
+    rating: 4.7,
+    reviewCount: 3,
+    location: '마포구 아현동',
+    image: '/images/day-brunch.png',
+  },
+  {
+    id: 8,
+    name: '마이엑스',
+    category: '샌드위치&김밥',
+    priceRange: '11,000원 ~ 20,000원/개',
+    rating: 4.9,
+    reviewCount: 12,
+    location: '마포구 연남동',
+    image: '/images/my-x.png',
+  },
+  {
+    id: 9,
+    name: '하울즈',
+    category: '샌드위치&김밥',
+    priceRange: '7,000원 ~ 12,000원/개',
+    rating: 4.7,
+    reviewCount: 3,
+    location: '마포구 아현동',
+    image: '/images/howls.png',
+  },
+];

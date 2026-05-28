@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
 @import 'tailwindcss';
 
 @font-face {
@@ -6,6 +8,8 @@
 }
 
 @theme {
+  --font-poppins: 'Poppins', sans-serif;
+
   /* Display: 32px / 42px / -1.2% */
   --text-display: 2rem;
   --text-display--line-height: 2.625rem;
@@ -50,7 +54,7 @@
   --text-caption2: 0.6875rem;
   --text-caption2--line-height: 1rem;
   --text-caption2--letter-spacing: 0.015em;
-  
+
   /* 
      Atomic Colors (Base Palette)
  */
@@ -147,19 +151,19 @@
   --color-border-strong: #5b5c633d;
   --color-border-default: #5b5c6329;
   --color-border-subtle: #5b5c6314;
-  --color-border-divider: #f0f0f199;
+  --color-border-divider: #F0F0F199;
 
   /* Text */
-  --color-text-default: var(--color-gray-80);
+  --color-text-default: var(--color-gray-90);
   --color-text-strong: var(--color-gray-95);
   --color-text-subtle: var(--color-gray-60);
-  --color-text-subtlest: var(--color-gray-40);
+  --color-text-subtlest: var(--color-gray-50);
   --color-text-placeholder: var(--color-gray-30);
   --color-text-disabled: var(--color-gray-20);
   --color-text-inverse: var(--color-gray-5);
 
   /* Status */
-  --color-status-danger: var(--color-red-60);
+  --color-status-danger: var(--color-red-50);
   --color-status-danger-bg: var(--color-red-10);
   --color-status-success: var(--color-green-60);
   --color-status-success-bg: var(--color-green-10);
@@ -178,7 +182,7 @@
   --color-background-subtle: var(--color-gray-13);
   --color-background-subtlest: var(--color-gray-15);
   --color-background-dim: #1717198c;
-  --color-background-toast: #171719d9;
+  --color-background-toast: #171719D9;
 
   --color-icon-default: var(--color-gray-70);
   --color-icon-active: var(--color-orange-50);
@@ -226,6 +230,19 @@
   }
 
   --animate-fade-in-up: fade-in-up 1s ease-out forwards;
+}
+
+@utility scrollbar-hide {
+  /* Chrome, Safari, Opera */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Firefox */
+  scrollbar-width: none;
+
+  /* IE, Edge */
+  -ms-overflow-style: none;
 }
 
 body {

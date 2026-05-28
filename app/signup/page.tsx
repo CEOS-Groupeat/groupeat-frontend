@@ -1,5 +1,6 @@
+// app/signup/page.tsx
 import { redirect } from 'next/navigation';
-import SignupForm from './SignupForm';
+import SignupFunnel from './SignupFunnel';
 
 export default async function SignupPage({
   searchParams,
@@ -8,10 +9,10 @@ export default async function SignupPage({
 }) {
   const { signupToken } = await searchParams;
 
-  // 토큰이 없으면 비정상 접근이므로 로그인 페이지로 강제 이동
   if (!signupToken) {
     redirect('/login');
   }
 
-  return <SignupForm initialToken={signupToken} />;
+  // 낚아챈 토큰을 Funnel 컨트롤러로 전달
+  return <SignupFunnel initialToken={signupToken} />; 
 }
