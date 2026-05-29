@@ -11,7 +11,7 @@ interface StoreCardProps {
 
 export default function StoreCard({ store }: StoreCardProps) {
   return (
-    <div className="w-48 rounded-xl outline outline-1 outline-border-subtle overflow-hidden shrink-0 font-['Pretendard']">
+    <div className="w-48 rounded-xl outline outline-1 outline-offset-[-1px] outline-border-subtle overflow-hidden shrink-0 font-['Pretendard']">
       <div className="relative h-[90px]">
         <Image
           src={store.image}
