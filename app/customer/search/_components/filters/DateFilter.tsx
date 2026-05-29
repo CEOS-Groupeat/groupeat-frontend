@@ -4,7 +4,9 @@ import { useRef, useState } from 'react';
 import { DayPicker } from 'react-day-picker';
 import type { DayButtonProps } from 'react-day-picker';
 import { ko } from 'date-fns/locale';
-// ✅ 제거: import 'react-day-picker/style.css' → 홈 페이지 달력 버그 원인
+import 'react-day-picker/style.css';
+import PrevMonth from '@/public/icons/icon_calendarButton_left.svg';
+import NextMonth from '@/public/icons/icon_calendarButton_right.svg';
 
 // ─── 시간 슬롯 ────────────────────────────────────────
 const AM_SLOTS = ['10:00', '10:30', '11:00', '11:30'];
@@ -182,15 +184,7 @@ export default function DateFilter({
             }`}
             aria-label="이전 달"
           >
-            <svg width="6" height="10" viewBox="0 0 6 10" fill="none">
-              <path
-                d="M5 1L1 5L5 9"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <PrevMonth className="shrink-0" />
           </button>
 
           <span className="text-lg font-medium text-text-default">
@@ -204,15 +198,7 @@ export default function DateFilter({
             className="p-2 rounded-full hover:bg-background-subtle transition-colors"
             aria-label="다음 달"
           >
-            <svg width="6" height="10" viewBox="0 0 6 10" fill="none">
-              <path
-                d="M1 1L5 5L1 9"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <NextMonth className="shrink-0" />
           </button>
         </div>
 
