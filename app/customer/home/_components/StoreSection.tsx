@@ -1,4 +1,5 @@
 import RightChevron from '@/public/icons/icon-right_chevron.svg';
+import RightGradientOverlay from '@/public/components/gradient_overlay_right.svg';
 
 import StoreCard from './StoreCard';
 
@@ -32,10 +33,13 @@ export default function StoreSection({
         </p>
       </div>
 
-      <div className="flex gap-2 overflow-x-auto scrollbar-hide">
-        {stores.map((store) => (
-          <StoreCard key={store.id} store={store} />
-        ))}
+      <div className="relative flex">
+        <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+          {stores.map((store) => (
+            <StoreCard key={store.id} store={store} />
+          ))}
+        </div>
+        <RightGradientOverlay className="absolute right-0 top-0 pointer-events-none" />
       </div>
     </section>
   );
