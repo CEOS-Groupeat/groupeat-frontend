@@ -26,7 +26,7 @@ export default function QuantityFilter({
   if (value !== undefined) {
     return (
       <div className="w-full h-11 pl-4 pr-3 py-3 rounded-lg flex items-center bg-background-subtle">
-        <span className="text-base text-text-default font-['Pretendard'] font-normal">
+        <span className="text-body text-text-default font-['Pretendard'] font-normal">
           {value}
         </span>
       </div>
@@ -47,7 +47,7 @@ export default function QuantityFilter({
       onBlur={handleConfirm}
       className="w-full h-11 pl-4 pr-3 py-3 rounded-lg
           outline outline-1 outline-offset-[-1px] outline-border-strong
-          font-['Pretendard'] font-normal placeholder:font-normal text-base text-text-default placeholder:text-text-placeholder"
+          font-['Pretendard'] font-normal text-body text-text-default placeholder:text-text-placeholder placeholder:font-normal"
       autoFocus
     />
   );
