@@ -88,7 +88,7 @@ export default function BudgetFilter({ value, onChange }: BudgetFilterProps) {
         <Slider.Track className="relative h-2 w-full rounded-full bg-background-subtlest">
           <Slider.Range className="absolute h-full rounded-full bg-brand-default" />
         </Slider.Track>
-        <Slider.Thumb className="block size-5 rounded-full bg-brand-default cursor-pointer" />
+        <Slider.Thumb className="block size-5 rounded-full bg-brand-default cursor-pointer touch-none" />
       </Slider.Root>
 
       <div className="mt-0.5 flex justify-between font-medium font-['Pretendard'] text-caption2 text-text-subtlest">
