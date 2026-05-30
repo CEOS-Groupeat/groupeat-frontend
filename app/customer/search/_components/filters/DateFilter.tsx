@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useMemo } from 'react';
 import { DayPicker } from 'react-day-picker';
 import { ko } from 'date-fns/locale';
 import { AM_SLOTS, PM_SLOTS } from '@/app/customer/search/_constants/timeSlots';
@@ -38,8 +38,11 @@ export default function DateFilter({
 }: DateFilterProps) {
   const timeRef = useRef<HTMLDivElement>(null);
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const today = useMemo(() => {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }, []);
 
   // ✅ 월 탐색 상태 직접 관리 → 화살표 가운데 정렬 가능
   const [viewMonth, setViewMonth] = useState<Date>(
