@@ -306,7 +306,6 @@ export default function FilterBottomSheet({
                     <BudgetFilter
                       value={filters.budget}
                       onChange={(v) => updateFilter('budget', v)}
-                      onConfirm={closeFilter}
                     />
                   )}
                   {isExpanded && item.key === 'category' && (
