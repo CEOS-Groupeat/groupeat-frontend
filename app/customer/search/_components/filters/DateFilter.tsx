@@ -2,32 +2,12 @@
 
 import { useRef, useState } from 'react';
 import { DayPicker } from 'react-day-picker';
-import type { DayButtonProps } from 'react-day-picker';
 import { ko } from 'date-fns/locale';
-import 'react-day-picker/style.css';
+import { AM_SLOTS, PM_SLOTS } from '@/app/customer/search/_constants/timeSlots';
+import CustomDayButton from '../CustomDayButton';
+
 import PrevMonth from '@/public/icons/icon_calendarButton_left.svg';
 import NextMonth from '@/public/icons/icon_calendarButton_right.svg';
-
-// ─── 시간 슬롯 ────────────────────────────────────────
-const AM_SLOTS = ['10:00', '10:30', '11:00', '11:30'];
-const PM_SLOTS = [
-  '12:00',
-  '12:30',
-  '13:00',
-  '13:30',
-  '14:00',
-  '14:30',
-  '15:00',
-  '15:30',
-  '16:00',
-  '16:30',
-  '17:00',
-  '17:30',
-  '18:00',
-  '18:30',
-  '19:00',
-  '19:30',
-];
 
 // ─── 포맷 헬퍼 ───────────────────────────────────────
 export function formatPickupDate(dateStr: string): string {
@@ -40,43 +20,6 @@ export function formatPickupTime(time: string): string {
   const period = h < 12 ? '오전' : '오후';
   const hour = h === 0 ? 12 : h > 12 ? h - 12 : h;
   return `${period} ${hour}:${String(m).padStart(2, '0')}`;
-}
-
-// ─── 커스텀 날짜 버튼 — "오늘" 레이블 포함 ──────────
-function CustomDayButton({
-  day,
-  modifiers,
-  onClick,
-  ...props
-}: DayButtonProps) {
-  const isToday = modifiers.today ?? false;
-  const isSelected = modifiers.selected ?? false;
-  const isDisabled = modifiers.disabled ?? false;
-  const isOutside = modifiers.outside ?? false;
-
-  return (
-    <div className="relative flex flex-col items-center pb-4">
-      <button
-        {...props}
-        onClick={onClick}
-        disabled={isDisabled || isOutside}
-        className={`size-10 rounded-lg flex justify-center items-center text-base transition-colors ${
-          isSelected
-            ? 'bg-brand-default text-white'
-            : isDisabled || isOutside
-              ? 'text-text-placeholder cursor-not-allowed'
-              : 'text-text-default hover:bg-background-subtle'
-        }`}
-      >
-        {day.date.getDate()}
-      </button>
-      {isToday && (
-        <span className="absolute bottom-0 text-[9px] font-medium text-brand-default leading-4">
-          오늘
-        </span>
-      )}
-    </div>
-  );
 }
 
 // ─── Props ───────────────────────────────────────────
