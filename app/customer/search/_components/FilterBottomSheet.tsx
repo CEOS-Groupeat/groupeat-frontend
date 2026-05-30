@@ -313,7 +313,6 @@ export default function FilterBottomSheet({
                     <CategoryFilter
                       value={filters.category}
                       onChange={(v) => updateFilter('category', v)}
-                      onConfirm={closeFilter}
                     />
                   )}
                 </div>
