@@ -189,7 +189,7 @@ function SearchContent() {
             ))}
           </div>
         ) : stores.length === 0 ? (
-          <SearchEmptyState keyword={keyword} />
+          <SearchEmptyState />
         ) : (
           // ✅ 2열 그리드
           <div className="grid grid-cols-2 gap-2">
