@@ -19,7 +19,14 @@ export default function StoreCard({ store, onClick }: StoreCardProps) {
     >
       <div className="relative w-full h-24">
         <Image
-          src={store.imageUrl}
+          //imageUrl이 잘못된 형식으로 올 경우 방어 처리
+          src={
+            store.imageUrl?.startsWith('/') ||
+            store.imageUrl?.startsWith('http://') ||
+            store.imageUrl?.startsWith('https://')
+              ? store.imageUrl
+              : `/${store.imageUrl}`
+          }
           alt={store.name}
           fill
           className="object-cover"
