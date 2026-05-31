@@ -36,8 +36,11 @@ function SearchContent() {
 
   // ── 키워드로 진입 시 API 호출 ──
   useEffect(() => {
-    if (keyword) search({ keyword, sort });
-  }, [keyword, sort]);
+    if (keyword) {
+      clearResults();
+      search({ keyword, sortType: sort, ...appliedFilters });
+    }
+  }, [keyword, sort, appliedFilters, clearResults, search]);
 
   // ── 활성 필터 수 ──
   const activeFilterCount = Object.keys(appliedFilters).filter(
@@ -60,7 +63,7 @@ function SearchContent() {
   // ── 필터 재설정 ──
   const handleFilterReset = () => {
     clearResults();
-    if (keyword) search({ keyword, sort });
+    if (keyword) search({ keyword, sortType: sort });
   };
 
   return (
@@ -108,7 +111,7 @@ function SearchContent() {
             value={sort}
             onChange={(v) => {
               setSort(v);
-              if (keyword) search({ keyword, sort: v, ...appliedFilters });
+              if (keyword) search({ keyword, sortType: v, ...appliedFilters });
             }}
           />
 
