@@ -1,7 +1,6 @@
 'use client';
 
-import { formatPickupDate } from './filters/DateFilter';
-import { formatBudget } from './filters/BudgetFilter';
+import { formatChipLabel } from '../_utils/formatChipLabel';
 import type { StoreSearchParams } from '@/app/customer/search/_types/store.type';
 import DownArrow from '@/public/icons/icon_arrow_down.svg';
 import { FILTER_CHIPS_ITEMS } from '../_constants/filterItems';
@@ -9,20 +8,6 @@ import { FILTER_CHIPS_ITEMS } from '../_constants/filterItems';
 interface SearchFilterChipBarProps {
   filters: StoreSearchParams;
   onChipClick: (key: keyof StoreSearchParams) => void; // 칩 클릭 → 바텀시트 열기
-}
-
-// 칩 표시 텍스트
-function getChipLabel(
-  key: keyof StoreSearchParams,
-  filters: StoreSearchParams
-): string {
-  const value = filters[key];
-  if (!value) return '';
-  if (key === 'quantity') return `${value}개`;
-  if (key === 'budget') return formatBudget(value as number);
-  if (key === 'category') return value as string;
-  if (key === 'pickupDate') return formatPickupDate(value as string);
-  return String(value);
 }
 
 export default function SearchFilterChipBar({
@@ -35,7 +20,9 @@ export default function SearchFilterChipBar({
       <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-hide px-4">
         {FILTER_CHIPS_ITEMS.map((chip) => {
           const isActive = filters[chip.key] !== undefined;
-          const label = isActive ? getChipLabel(chip.key, filters) : chip.label;
+          const label = isActive
+            ? formatChipLabel(chip.key, filters[chip.key])
+            : chip.label;
 
           return (
             <button

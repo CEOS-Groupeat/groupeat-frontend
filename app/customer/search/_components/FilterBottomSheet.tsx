@@ -6,8 +6,8 @@ import type {
   SearchStoresResponse,
   StoreSearchParams,
 } from '@/app/customer/search/_types/store.type';
-import { formatBudget } from '../_components/filters/BudgetFilter';
 import { FILTER_ITEMS } from '../_constants/filterItems';
+import { formatChipLabel } from '../_utils/formatChipLabel';
 
 import DownArrow from '@/public/icons/icon_arrow_down.svg';
 import UpArrow from '@/public/icons/icon_arrow_up.svg';
@@ -41,15 +41,6 @@ const SNAP_HEIGHTS: Record<SnapPoint, string> = {
   full: '85dvh',
 };
 const DRAG_THRESHOLD = 60;
-
-// ─── 칩 표시 텍스트 포맷 ────────────────────────────
-function formatChipLabel(key: keyof StoreSearchParams, value: unknown): string {
-  if (key === 'quantity') return `${value}개`;
-  if (key === 'budget') return formatBudget(value as number); // ✅ 30,000원~ 처리
-  if (key === 'category') return value as string;
-  if (key === 'pickupDate') return formatPickupDate(value as string);
-  return String(value);
-}
 
 export default function FilterBottomSheet({
   isOpen,
