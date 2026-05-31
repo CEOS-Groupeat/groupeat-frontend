@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { useSearchStores } from '@/hooks/useSearchStores';
 import type {
   SearchStoresResponse,
@@ -24,7 +24,7 @@ import CategoryFilter from '../_components/filters/CategoryFilter';
 
 // ─── 필터 항목 메타 ──────────────────────────────────
 const FILTER_ITEMS: { key: keyof StoreSearchParams; label: string }[] = [
-  { key: 'location', label: '위치' },
+  { key: 'region', label: '위치' },
   { key: 'pickupDate', label: '픽업 일자' },
   { key: 'quantity', label: '수량' },
   { key: 'budget', label: '1인당 예산' },
@@ -75,10 +75,10 @@ export default function FilterBottomSheet({
   const dragStartSnap = useRef<SnapPoint>('half');
 
   // ── 닫기 ──
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setSnap('half');
     onClose();
-  };
+  }, [onClose]);
 
   // ── 재설정 ──
   const handleReset = () => {
@@ -102,7 +102,7 @@ export default function FilterBottomSheet({
     };
     document.addEventListener('keydown', handler);
     return () => document.removeEventListener('keydown', handler);
-  }, [isOpen]);
+  }, [isOpen, handleClose]);
 
   // ── 드래그 ──
   const handleDragStart = (e: React.PointerEvent) => {
@@ -134,17 +134,16 @@ export default function FilterBottomSheet({
     setFilters((prev) => {
       const next = { ...prev };
       delete next[key];
-      if (key === 'pickupDate') delete next['pickupTime']; // ✅ 함께 삭제
+      if (key === 'pickupDate') delete next['pickupTimes']; // ✅ 함께 삭제
       return next;
     });
   };
 
   // ── 검색 ──
-  // FilterBottomSheet.tsx
   const handleSearch = async () => {
     const result = await search(filters);
     onSearchResult(
-      result ?? { storeList: [], page: 0, size: 0, totalElements: 0 },
+      result ?? { storeList: [], totalElements: 0 },
       filters // 필터 같이 전달
     );
     handleClose();
@@ -255,11 +254,11 @@ export default function FilterBottomSheet({
                             <span className="text-xs font-medium text-brand-default leading-4">
                               {formatPickupDate(selectedValue as string)}
                             </span>
-                            {filters.pickupTime && (
+                            {filters.pickupTimes && (
                               <>
                                 <div className="size-[2.5px] bg-brand-default rounded-full" />
                                 <span className="text-xs font-medium text-brand-default leading-4">
-                                  {formatPickupTime(filters.pickupTime)}
+                                  {formatPickupTime(filters.pickupTimes[0])}
                                 </span>
                               </>
                             )}
@@ -278,10 +277,10 @@ export default function FilterBottomSheet({
                   </button>
 
                   {/* 각 필터 컴포넌트 — 조건만 여기서, 로직은 컴포넌트 안에 */}
-                  {isExpanded && item.key === 'location' && (
+                  {isExpanded && item.key === 'region' && (
                     <LocationFilter
-                      value={filters.location}
-                      onChange={(v) => updateFilter('location', v)}
+                      value={filters.region}
+                      onChange={(v) => updateFilter('region', v)}
                       onConfirm={closeFilter}
                     />
                   )}
@@ -289,9 +288,9 @@ export default function FilterBottomSheet({
                     <div className="mt-3">
                       <DateFilter
                         date={filters.pickupDate}
-                        time={filters.pickupTime}
+                        time={filters.pickupTimes?.[0]}
                         onDateChange={(v) => updateFilter('pickupDate', v)}
-                        onTimeChange={(v) => updateFilter('pickupTime', v)}
+                        onTimeChange={(v) => updateFilter('pickupTimes', [v])}
                       />
                     </div>
                   )}
