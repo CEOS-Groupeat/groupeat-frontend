@@ -1,16 +1,12 @@
 'use client';
 
-// ─── 카테고리 목록 (정적) ────────────────────────────
-const CATEGORIES = [
-  { id: '샌드위치&김밥', label: '샌드위치&김밥' },
-  { id: '음료', label: '음료' },
-  { id: '디저트', label: '디저트' },
-];
+import Image from 'next/image';
+import { CATEGORIES } from '@/app/customer/search/_constants/category';
+import categoryImage from '@/public/images/image_category.png';
 
 interface CategoryFilterProps {
   value: string | undefined;
   onChange: (value: string) => void;
-  onConfirm: () => void; // 카테고리는 자동 닫힘 없음 — 필요 시 부모가 호출
 }
 
 export default function CategoryFilter({
@@ -22,32 +18,37 @@ export default function CategoryFilter({
   };
 
   return (
-    <div className="mt-3 flex gap-2.5 flex-wrap">
-      {CATEGORIES.map((cat) => {
-        const isSelected = value === cat.id;
+    <div className="flex gap-2.5 flex-wrap">
+      {CATEGORIES.map((category) => {
+        const isSelected = value === category.id;
 
         return (
           <button
-            key={cat.id}
+            key={category.id}
             type="button"
-            onClick={() => handleToggle(cat.id)}
-            className={`w-28 px-3 py-2 rounded-lg flex flex-col items-center gap-2.5 transition-colors ${
+            onClick={() => handleToggle(category.id)}
+            className={`w-[107px] h-[78px] px-3 py-2 rounded-lg flex flex-col items-center gap-2.5 shrink-0 transition-colors ${
               isSelected
-                ? 'bg-brand-background' // ✅ 선택됨
-                : 'bg-background-default outline outline-1 outline-border-default' // ✅ 미선택
+                ? 'bg-brand-background'
+                : 'bg-background-default outline outline-1 outline-offset-[-1px] outline-border-default'
             }`}
           >
             {/* 카테고리 이미지 — 추후 실제 이미지로 교체 */}
-            <div className="size-8 rounded-sm bg-background-subtlest" />
-
+            <Image
+              src={categoryImage}
+              alt="category"
+              width={32}
+              height={32}
+              className="h-auto shrink-0"
+            />
             <span
-              className={`text-sm leading-5 ${
+              className={`text-label1 font-['Pretendard'] shrink ${
                 isSelected
-                  ? 'text-brand-default font-semibold' // ✅ 선택됨
-                  : 'text-text-default font-medium' // ✅ 미선택
+                  ? 'text-brand-default font-semibold'
+                  : 'text-text-default font-medium'
               }`}
             >
-              {cat.label}
+              {category.label}
             </span>
           </button>
         );

@@ -25,19 +25,30 @@ function SearchContent() {
   const searchParams = useSearchParams();
   const keyword = searchParams.get('keyword') ?? '';
 
-  const { results, appliedFilters, setResults, clearResults } =
-    useSearchStore();
+  const {
+    results,
+    appliedFilters,
+    setResults,
+    clearResults,
+    clearResultsOnly,
+  } = useSearchStore();
   const { search, data: keywordData, isLoading } = useSearchStores();
 
-  const [sort, setSort] = useState('DISCOUNT');
+  const [sort, setSort] = useState('NONE');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filterKey, setFilterKey] = useState(0); // key를 위한 state 추가
   const [searchInput, setSearchInput] = useState(keyword); //직접 입력 가능한 input
+  const [initialOpenFilter, setInitialOpenFilter] = useState<
+    keyof StoreSearchParams | undefined
+  >();
 
   // ── 키워드로 진입 시 API 호출 ──
   useEffect(() => {
-    if (keyword) search({ keyword, sort });
-  }, [keyword, sort]);
+    if (keyword) {
+      clearResultsOnly();
+      search({ keyword, sortType: sort });
+    }
+  }, [keyword, sort, search, clearResultsOnly]);
 
   // ── 활성 필터 수 ──
   const activeFilterCount = Object.keys(appliedFilters).filter(
@@ -55,12 +66,15 @@ function SearchContent() {
   };
 
   // ── 필터 칩 클릭 → 바텀시트 열기 ──
-  const handleChipClick = () => handleOpenFilter();
+  const handleChipClick = (key: keyof StoreSearchParams) => {
+    setInitialOpenFilter(key);
+    handleOpenFilter();
+  };
 
   // ── 필터 재설정 ──
   const handleFilterReset = () => {
     clearResults();
-    if (keyword) search({ keyword, sort });
+    if (keyword) search({ keyword, sortType: sort });
   };
 
   return (
@@ -108,7 +122,7 @@ function SearchContent() {
             value={sort}
             onChange={(v) => {
               setSort(v);
-              if (keyword) search({ keyword, sort: v, ...appliedFilters });
+              if (keyword) search({ keyword, sortType: v, ...appliedFilters });
             }}
           />
 
@@ -181,7 +195,7 @@ function SearchContent() {
             ))}
           </div>
         ) : stores.length === 0 ? (
-          <SearchEmptyState keyword={keyword} />
+          <SearchEmptyState />
         ) : (
           // ✅ 2열 그리드
           <div className="grid grid-cols-2 gap-2">
@@ -208,6 +222,7 @@ function SearchContent() {
           setIsFilterOpen(false);
         }}
         initialFilters={appliedFilters}
+        initialOpenFilter={initialOpenFilter}
       />
     </div>
   );

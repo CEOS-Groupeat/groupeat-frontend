@@ -53,8 +53,8 @@ export default function HomeSearchBar() {
         isOpen={isFilterOpen}
         onClose={() => setIsFilterOpen(false)}
         onSearchResult={(data, filters) => {
-          setResults(data, filters); // ✅ 필터도 저장
-          router.push('/customer/search'); // 검색 페이지로 이동
+          setResults(data, filters); 
+          router.push('/customer/search'); 
         }}
       />
     </>

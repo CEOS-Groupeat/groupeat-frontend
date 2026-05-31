@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { fetchClient } from '@/lib/fetchClient';
 import type {
   ApiResponse,
@@ -11,19 +11,18 @@ export function useSearchStores() {
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const search = async (params: StoreSearchParams = {}) => {
+  const search = useCallback(async (params: StoreSearchParams = {}) => {
     setLoading(true);
     setError(null);
 
-    // ✅ categories 배열은 ?categories=한식&categories=도시락 형태로 직렬화
     const queryParams = new URLSearchParams();
 
     (Object.entries(params) as [keyof StoreSearchParams, unknown][]).forEach(
       ([key, value]) => {
         if (value === undefined || value === null || value === '') return;
 
-        if (key === 'category' && Array.isArray(value)) {
-          value.forEach((v) => queryParams.append('categories', v));
+        if (key === 'pickupTimes' && Array.isArray(value)) {
+          value.forEach((v) => queryParams.append('pickupTimes', v));
         } else {
           queryParams.append(key, String(value));
         }
@@ -48,7 +47,7 @@ export function useSearchStores() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   const reset = () => {
     setData(null);
