@@ -25,11 +25,16 @@ function SearchContent() {
   const searchParams = useSearchParams();
   const keyword = searchParams.get('keyword') ?? '';
 
-  const { results, appliedFilters, setResults, clearResults } =
-    useSearchStore();
+  const {
+    results,
+    appliedFilters,
+    setResults,
+    clearResults,
+    clearResultsOnly,
+  } = useSearchStore();
   const { search, data: keywordData, isLoading } = useSearchStores();
 
-  const [sort, setSort] = useState('DISCOUNT');
+  const [sort, setSort] = useState('NONE');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filterKey, setFilterKey] = useState(0); // key를 위한 state 추가
   const [searchInput, setSearchInput] = useState(keyword); //직접 입력 가능한 input
@@ -37,10 +42,10 @@ function SearchContent() {
   // ── 키워드로 진입 시 API 호출 ──
   useEffect(() => {
     if (keyword) {
-      clearResults();
-      search({ keyword, sortType: sort, ...appliedFilters });
+      clearResultsOnly();
+      search({ keyword, sortType: sort });
     }
-  }, [keyword, sort, appliedFilters, clearResults, search]);
+  }, [keyword, sort]);
 
   // ── 활성 필터 수 ──
   const activeFilterCount = Object.keys(appliedFilters).filter(

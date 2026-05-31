@@ -9,6 +9,7 @@ interface SearchStore {
   appliedFilters: StoreSearchParams;
   setResults: (data: SearchStoresResponse, filters?: StoreSearchParams) => void;
   clearResults: () => void;
+  clearResultsOnly: () => void;
 }
 
 export const useSearchStore = create<SearchStore>((set) => ({
@@ -17,4 +18,5 @@ export const useSearchStore = create<SearchStore>((set) => ({
   setResults: (data, filters = {}) =>
     set({ results: data, appliedFilters: filters }), //  필터도 함께 저장
   clearResults: () => set({ results: null, appliedFilters: {} }),
+  clearResultsOnly: () => set({ results: null }),
 }));
