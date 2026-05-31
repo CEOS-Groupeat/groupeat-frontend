@@ -44,13 +44,13 @@ export default function SearchFilterChipBar({
               onClick={() => onChipClick(chip.key)}
               className={`flex-shrink-0 pl-2.5 pr-3.5 py-2 rounded-full flex items-center gap-1 transition-colors ${
                 isActive
-                  ? 'bg-brand-background text-brand-default' // ✅ 활성: 브랜드 배경
-                  : 'bg-background-default outline outline-1 outline-offset-[-1px] outline-border-default text-text-default' // ✅ 기본
+                  ? 'bg-brand-background text-brand-default'
+                  : 'bg-background-default outline outline-1 outline-offset-[-1px] outline-border-default text-text-default'
               }`}
             >
               <DownArrow className="size-4 shrink-0" />
               <span
-                className={`text-xs leading-4 whitespace-nowrap ${isActive ? 'font-semibold' : 'font-normal'}`}
+                className={`text-label2 whitespace-nowrap ${isActive ? 'font-semibold' : 'font-normal'}`}
               >
                 {label}
               </span>
@@ -59,7 +59,7 @@ export default function SearchFilterChipBar({
         })}
       </div>
       {/* 오른쪽 페이드 */}
-      <div className="absolute right-0 top-0 bottom-0 w-11 bg-gradient-to-l from-white/80 to-transparent pointer-events-none" />
+      <div className="absolute size-11 right-0 top-0 bottom-0 bg-gradient-to-l from-white/80 to-transparent pointer-events-none" />
     </div>
   );
 }
