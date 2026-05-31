@@ -1,25 +1,29 @@
-import StoreDetail from '@/app/customer/store/[storeId]/_components/StoreDetail';
-import StoreHeader from '@/app/customer/store/[storeId]/_components/StoreHeader';
-import StoreOptions from '@/app/customer/store/[storeId]/_components/StoreOptions';
+// app/customer/store/[storeId]/page.tsx (또는 CustomerStoreDetailPage)
 
-{
-  /* 가게 상세 페이지입니다. */
-}
+import StoreDetail from './_components/StoreDetail';
+import StoreHeader from './_components/StoreHeader';
+import StoreOptions from './_components/StoreOptions';
+import FloatingCartBar from './_components/FloatingCartBar';
 
-export default function CustomerStoreDetailPage() {
+export default function CustomerStoreDetailPage({
+  params,
+}: {
+  params: { storeId: string };
+}) {
   return (
-    <div className="flex flex-col w-full bg-background-default">
-      {/* 상단 헤더 (이미지 + 뒤로가기/장바구니 아이콘) */}
+    <div className="flex flex-col w-full relative pb-30">
       <StoreHeader />
-      
-      {/* StoreDetail이 이미지를 덮도록 위로 당기고(-mt-6) 둥근 모서리 적용 */}
+
       <div className="relative z-20 -mt-6 w-full bg-white rounded-t-[30px] overflow-hidden">
         <StoreDetail />
       </div>
-      
+
       <div className="w-full h-2 bg-border-divider" />
-      
+
+      {/* 이 안에서는 +버튼을 누를 때 MenuBottomSheet만 띄웁니다 */}
       <StoreOptions />
+
+      <FloatingCartBar storeId={params.storeId} />
     </div>
   );
 }

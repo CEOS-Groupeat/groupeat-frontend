@@ -1,9 +1,9 @@
 'use client';
 
 // app/signup/customer/page.tsx
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import SignupHeader from '@/components/signup/SignupHeader';
 import { fetchClient } from '@/lib/fetchClient';
 import CheckboxTrue from '@/public/icons/icon_checkboxTrue.svg';
@@ -11,7 +11,13 @@ import CheckboxFalse from '@/public/icons/icon_checkboxFalse.svg';
 import DefaultButton from '@/components/ui/ButtonDefault';
 import { useSignupStore } from '@/store/useSignupStore';
 
-// 약관 타입 정의
+interface ApiResponse<T> {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  data: T;
+}
+
 interface Term {
   termsId: number;
   title: string;
@@ -22,13 +28,38 @@ interface Term {
 }
 
 export default function CustomerSignupPage() {
-  const { memberId } = useSignupStore();
+  const searchParams = useSearchParams();
   const router = useRouter();
 
-  // 폼 상태 관리
+  const urlMemberId = searchParams.get('memberId');
+  const urlMemberType = searchParams.get('memberType');
+
+  const { memberId, setMemberId, memberType, setMemberType } = useSignupStore();
+
+  useEffect(() => {
+    if (urlMemberId && !memberId) {
+      setMemberId(Number(urlMemberId));
+    }
+    if (urlMemberType && !memberType) {
+      if (urlMemberType === 'CUSTOMER' || urlMemberType === 'BUSINESS') {
+        setMemberType(urlMemberType);
+      }
+    }
+  }, [
+    urlMemberId,
+    urlMemberType,
+    memberId,
+    memberType,
+    setMemberId,
+    setMemberType,
+  ]);
+
+  const finalMemberId = memberId || (urlMemberId ? Number(urlMemberId) : null);
+
+  // 폼 상태 관리 (수정된 페이로드 반영: birthDate로 관리)
   const [name, setName] = useState('');
+  const [birthDate, setBirthDate] = useState(''); // <input type="date">의 결과물인 "YYYY-MM-DD"가 그대로 담깁니다.
   const [email, setEmail] = useState('');
-  const [birth, setBirth] = useState('');
   const [gender, setGender] = useState<'MALE' | 'FEMALE' | null>(null);
 
   // 약관 체크 상태
@@ -40,8 +71,13 @@ export default function CustomerSignupPage() {
   const { data: terms = [] } = useQuery<Term[]>({
     queryKey: ['terms', 'CUSTOMER'],
     queryFn: async () => {
-      const response = await fetchClient('/api/terms?targetType=CUSTOMER');
-      return response as unknown as Term[];
+      const response = (await fetchClient(
+        '/api/terms?targetType=CUSTOMER'
+      )) as ApiResponse<Term[]>;
+      
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const payload = response.isSuccess !== undefined ? response : (response as any).data;
+      return payload.data || [];
     },
   });
 
@@ -52,9 +88,12 @@ export default function CustomerSignupPage() {
     }));
   };
 
-  // 필수값 검증
+  // 필수값 검증 로직 (생년월일 필드 빈 값 검사 추가)
   const isFormValid =
     name.trim() !== '' &&
+    birthDate.trim() !== '' &&
+    finalMemberId !== null &&
+    gender !== null &&
     terms
       .filter((term) => term.required)
       .every((term) => checkedTerms[term.termsId]);
@@ -62,17 +101,21 @@ export default function CustomerSignupPage() {
   // 2. 고객 회원가입 최종 제출 (POST)
   const submitSignupMutation = useMutation({
     mutationFn: async () => {
+      if (!finalMemberId) {
+        throw new Error('회원 식별 정보가 없습니다. 다시 시도해주세요.');
+      }
+
       const agreements = terms.map((term) => ({
         termsId: term.termsId,
         agreed: !!checkedTerms[term.termsId],
       }));
 
       const payload = {
-        memberId: memberId,
+        memberId: finalMemberId,
         agreements,
         name,
         email,
-        birth: Number(birth),
+        birthDate, // "YYYY-MM-DD" 형태의 문자열 전달
         gender,
       };
 
@@ -83,9 +126,10 @@ export default function CustomerSignupPage() {
     },
     onSuccess: () => {
       alert('고객 회원가입이 완료되었습니다.');
-      router.replace('/'); // 성공 시 홈으로 리다이렉트
+      router.replace('/'); 
     },
-    onError: () => {
+    onError: (error) => {
+      console.error(error);
       alert('회원가입 처리 중 오류가 발생했습니다.');
     },
   });
@@ -117,21 +161,20 @@ export default function CustomerSignupPage() {
             />
           </div>
 
-          {/* 2. 생년월일 입력 */}
+          {/* 2. 생년월일 입력 (<input type="date">) */}
           <div className="flex flex-col gap-2">
             <label
-              htmlFor="userAge"
+              htmlFor="userBirth"
               className="text-label1 text-text-default font-medium"
             >
-              생년월일
+              생년월일 <span className="text-brand-default">*</span>
             </label>
             <input
-              id="userAge"
+              id="userBirth"
               type="date"
-              value={birth}
-              onChange={(e) => setBirth(e.target.value)}
-              className="w-full h-11 px-4 rounded-lg border border-border-strong bg-background-default focus:ring-1 focus:ring-brand-default outline-none"
-              placeholder="숫자로 입력"
+              value={birthDate}
+              onChange={(e) => setBirthDate(e.target.value)}
+              className="w-full h-11 px-4 rounded-lg border border-border-strong bg-background-default focus:ring-1 focus:ring-brand-default outline-none text-text-default"
             />
           </div>
 
@@ -156,7 +199,7 @@ export default function CustomerSignupPage() {
           {/* 4. 성별 선택 */}
           <div className="flex flex-col gap-2">
             <label className="text-label1 text-text-default font-medium">
-              성별
+              성별 <span className="text-brand-default">*</span>
             </label>
             <div className="flex w-full items-center gap-3">
               <button
@@ -185,7 +228,7 @@ export default function CustomerSignupPage() {
           {/* 5. 약관 동의 영역 */}
           <div className="flex flex-col gap-3 mt-4">
             <p className="text-label1 text-text-default font-medium">
-              고객 약관 동의
+              고객 약관 동의 <span className="text-brand-default">*</span>
             </p>
             {terms.map((term) => (
               <div
@@ -231,7 +274,6 @@ export default function CustomerSignupPage() {
         </div>
       </div>
 
-      {/* 최종 제출 버튼 영역 */}
       <div className="fixed bottom-6 left-0 w-full px-4">
         <DefaultButton
           onClick={() => submitSignupMutation.mutate()}
