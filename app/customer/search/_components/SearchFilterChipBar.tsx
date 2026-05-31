@@ -5,7 +5,7 @@ import DownArrow from '@/public/icons/icon_arrow_down.svg';
 
 // 필터 칩 항목 정의
 const FILTER_CHIPS: { key: keyof StoreSearchParams; label: string }[] = [
-  { key: 'location', label: '위치' },
+  { key: 'region', label: '위치' },
   { key: 'pickupDate', label: '픽업 날짜' },
   { key: 'category', label: '카테고리' },
   { key: 'quantity', label: '수량' },
