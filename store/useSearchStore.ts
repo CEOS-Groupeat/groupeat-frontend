@@ -16,7 +16,7 @@ export const useSearchStore = create<SearchStore>((set) => ({
   results: null,
   appliedFilters: {},
   setResults: (data, filters = {}) =>
-    set({ results: data, appliedFilters: filters }), //  필터도 함께 저장
+    set({ results: data, appliedFilters: filters }), 
   clearResults: () => set({ results: null, appliedFilters: {} }),
   clearResultsOnly: () => set({ results: null }),
 }));
