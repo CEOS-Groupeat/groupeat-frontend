@@ -32,7 +32,7 @@ export default function StoreCard({ store, onClick }: StoreCardProps) {
         />
       </div>
 
-      <div className="self-stretch bg-background-default p-2.5 flex flex-col items-center justify-center gap-2.5">
+      <div className="self-stretch bg-background-default p-2.5 flex flex-col gap-2.5">
         <div className="flex flex-col gap-2">
           {/* 카테고리 + 이름 + 가격 */}
           <div className="flex flex-col gap-1.5">
