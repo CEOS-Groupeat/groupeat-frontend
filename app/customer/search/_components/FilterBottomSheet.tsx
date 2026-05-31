@@ -32,6 +32,7 @@ interface FilterBottomSheetProps {
     filters?: StoreSearchParams
   ) => void;
   initialFilters?: StoreSearchParams;
+  initialOpenFilter?: keyof StoreSearchParams;
 }
 // ─── 스냅 포인트 ─────────────────────────────────────
 type SnapPoint = 'half' | 'full';
@@ -55,11 +56,12 @@ export default function FilterBottomSheet({
   onClose,
   onSearchResult,
   initialFilters = {},
+  initialOpenFilter,
 }: FilterBottomSheetProps) {
   const [snap, setSnap] = useState<SnapPoint>('half');
   const [filters, setFilters] = useState<StoreSearchParams>(initialFilters);
   const [openFilter, setOpenFilter] = useState<keyof StoreSearchParams | null>(
-    null
+    initialOpenFilter ?? null
   );
 
   const { isLoading, search } = useSearchStores();

@@ -38,6 +38,9 @@ function SearchContent() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filterKey, setFilterKey] = useState(0); // key를 위한 state 추가
   const [searchInput, setSearchInput] = useState(keyword); //직접 입력 가능한 input
+  const [initialOpenFilter, setInitialOpenFilter] = useState<
+    keyof StoreSearchParams | undefined
+  >();
 
   // ── 키워드로 진입 시 API 호출 ──
   useEffect(() => {
@@ -63,7 +66,10 @@ function SearchContent() {
   };
 
   // ── 필터 칩 클릭 → 바텀시트 열기 ──
-  const handleChipClick = () => handleOpenFilter();
+  const handleChipClick = (key: keyof StoreSearchParams) => {
+    setInitialOpenFilter(key);
+    handleOpenFilter();
+  };
 
   // ── 필터 재설정 ──
   const handleFilterReset = () => {
@@ -216,6 +222,7 @@ function SearchContent() {
           setIsFilterOpen(false);
         }}
         initialFilters={appliedFilters}
+        initialOpenFilter={initialOpenFilter}
       />
     </div>
   );
