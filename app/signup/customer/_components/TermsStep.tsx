@@ -21,8 +21,9 @@ export default function TermsStep() {
     queryFn: async () => {
       const response = (await fetchClient(
         '/api/terms?targetType=COMMON'
-      )) as Response;
-      return response as unknown as Term[];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      )) as any;
+      return response.data;
     },
   });
 
