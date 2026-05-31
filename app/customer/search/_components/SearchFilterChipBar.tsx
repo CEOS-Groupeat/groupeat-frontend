@@ -1,5 +1,6 @@
 'use client';
 
+import { formatBudget } from './filters/BudgetFilter';
 import type { StoreSearchParams } from '@/app/customer/search/_types/store.type';
 import DownArrow from '@/public/icons/icon_arrow_down.svg';
 import { FILTER_CHIPS_ITEMS } from '../_constants/filterItems';
@@ -17,7 +18,7 @@ function getChipLabel(
   const value = filters[key];
   if (!value) return '';
   if (key === 'quantity') return `${value}개`;
-  if (key === 'budget') return `${(value as number).toLocaleString()}원`;
+  if (key === 'budget') return formatBudget(value as number);
   if (key === 'category') return value as string;
   if (key === 'pickupDate') {
     const d = new Date(value as string);
