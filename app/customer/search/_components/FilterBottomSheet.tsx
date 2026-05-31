@@ -7,6 +7,7 @@ import type {
   StoreSearchParams,
 } from '@/app/customer/search/_types/store.type';
 import { formatBudget } from '../_components/filters/BudgetFilter';
+import { FILTER_ITEMS } from '../_constants/filterItems';
 
 import DownArrow from '@/public/icons/icon_arrow_down.svg';
 import UpArrow from '@/public/icons/icon_arrow_up.svg';
@@ -21,15 +22,6 @@ import DateFilter, {
 } from '../_components/filters/DateFilter';
 import BudgetFilter from '../_components/filters/BudgetFilter';
 import CategoryFilter from '../_components/filters/CategoryFilter';
-
-// ─── 필터 항목 메타 ──────────────────────────────────
-const FILTER_ITEMS: { key: keyof StoreSearchParams; label: string }[] = [
-  { key: 'region', label: '위치' },
-  { key: 'pickupDate', label: '픽업 일자' },
-  { key: 'quantity', label: '수량' },
-  { key: 'budget', label: '1인당 예산' },
-  { key: 'category', label: '카테고리' },
-];
 
 // ─── Props ──────────────────────────────────────────
 interface FilterBottomSheetProps {

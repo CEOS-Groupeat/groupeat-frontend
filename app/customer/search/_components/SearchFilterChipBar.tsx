@@ -2,15 +2,7 @@
 
 import type { StoreSearchParams } from '@/app/customer/search/_types/store.type';
 import DownArrow from '@/public/icons/icon_arrow_down.svg';
-
-// 필터 칩 항목 정의
-const FILTER_CHIPS: { key: keyof StoreSearchParams; label: string }[] = [
-  { key: 'region', label: '위치' },
-  { key: 'pickupDate', label: '픽업 날짜' },
-  { key: 'category', label: '카테고리' },
-  { key: 'quantity', label: '수량' },
-  { key: 'budget', label: '1인당 예산' },
-];
+import { FILTER_CHIPS_ITEMS } from '../_constants/filterItems';
 
 interface SearchFilterChipBarProps {
   filters: StoreSearchParams;
@@ -42,7 +34,7 @@ export default function SearchFilterChipBar({
     //  가로 스크롤 + 오른쪽 페이드 그라데이션
     <div className="relative">
       <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-hide px-4">
-        {FILTER_CHIPS.map((chip) => {
+        {FILTER_CHIPS_ITEMS.map((chip) => {
           const isActive = filters[chip.key] !== undefined;
           const label = isActive ? getChipLabel(chip.key, filters) : chip.label;
 
