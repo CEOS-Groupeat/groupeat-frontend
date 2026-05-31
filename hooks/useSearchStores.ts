@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { fetchClient } from '@/lib/fetchClient';
 import type {
   ApiResponse,
@@ -11,7 +11,7 @@ export function useSearchStores() {
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const search = async (params: StoreSearchParams = {}) => {
+  const search = useCallback(async (params: StoreSearchParams = {}) => {
     setLoading(true);
     setError(null);
 
@@ -47,7 +47,7 @@ export function useSearchStores() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   const reset = () => {
     setData(null);

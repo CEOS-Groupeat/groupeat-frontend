@@ -45,7 +45,7 @@ function SearchContent() {
       clearResultsOnly();
       search({ keyword, sortType: sort });
     }
-  }, [keyword, sort]);
+  }, [keyword, sort, search, clearResultsOnly]);
 
   // ── 활성 필터 수 ──
   const activeFilterCount = Object.keys(appliedFilters).filter(
