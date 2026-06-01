@@ -6,6 +6,7 @@ import { useRecentSearches } from '@/hooks/useRecentSearches';
 
 import SearchBar from '@/components/ui/SearchBar';
 import CloseIcon from '@/public/icons/icon_close.svg';
+import BackIcon from '@/public/icons/icon_arrow_Left.svg';
 
 export default function RecentSearchPage() {
   const router = useRouter();
@@ -19,7 +20,15 @@ export default function RecentSearchPage() {
   return (
     <div className="w-full min-h-screen bg-background-default flex flex-col">
       {/* 상단 검색창 */}
-      <div className="px-4 pt-16">
+      <div className="px-4 pt-16 flex items-center gap-1">
+        {/* 뒤로가기 */}
+        <button
+          type="button"
+          onClick={() => router.back()}
+          className="h-6 flex items-center"
+        >
+          <BackIcon className="size-6 text-icon-subtle" />
+        </button>
         <SearchBar onChange={setSearchInput} />
       </div>
 
