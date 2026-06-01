@@ -10,9 +10,10 @@ import FilterBottomSheet from '@/app/customer/search/_components/FilterBottomShe
 
 interface SearchBarProps {
   onFocus?: () => void;
+  onChange?: (value: string) => void;
 }
 
-export default function SearchBar({ onFocus }: SearchBarProps) {
+export default function SearchBar({ onFocus, onChange }: SearchBarProps) {
   const router = useRouter();
   const { setResults } = useSearchStore();
 
@@ -25,24 +26,31 @@ export default function SearchBar({ onFocus }: SearchBarProps) {
     router.push(`/customer/search?keyword=${encodeURIComponent(trimmed)}`);
   };
 
+  const handleChange = (value: string) => {
+    setKeyword(value);
+    onChange?.(value); // 추가 - 외부로 전달
+  };
+
   return (
     <>
       <SearchField
         value={keyword}
-        onChange={setKeyword}
+        onChange={handleChange}
         onSearch={handleSearch}
         onFocus={onFocus}
         placeholder="가게나 메뉴를 검색해 보세요"
         variant="outlined"
-        showIcon={true}
+        showIcon={!keyword}
       >
-        <button
-          type="button"
-          onClick={() => setIsFilterOpen(true)}
-          className="w-14 shrink-0 self-stretch px-3 py-2.5 bg-background-subtlest rounded-3xl flex justify-center items-center gap-1"
-        >
-          <Filter />
-        </button>
+        {!keyword && (
+          <button
+            type="button"
+            onClick={() => setIsFilterOpen(true)}
+            className="w-14 shrink-0 self-stretch px-3 py-2.5 bg-background-subtlest rounded-3xl flex justify-center items-center gap-1"
+          >
+            <Filter />
+          </button>
+        )}
       </SearchField>
 
       <FilterBottomSheet
