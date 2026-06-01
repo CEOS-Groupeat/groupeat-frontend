@@ -9,6 +9,7 @@ interface SearchFieldProps {
   variant?: 'filled' | 'outlined';
   children?: React.ReactNode;
   showIcon?: boolean;
+  autoFocus?: boolean;
 }
 
 export default function SearchField({
@@ -20,6 +21,7 @@ export default function SearchField({
   variant = 'outlined',
   children,
   showIcon,
+  autoFocus,
 }: SearchFieldProps) {
   return (
     <div
@@ -42,6 +44,7 @@ export default function SearchField({
             }
           }}
           placeholder={placeholder}
+          autoFocus={autoFocus}
           className="w-full outline-none text-body text-text-default placeholder:text-text-placeholder"
         />
       </div>
