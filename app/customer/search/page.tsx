@@ -4,6 +4,7 @@ import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import { useSearchStore } from '@/store/useSearchStore';
+import { useRecentSearches } from '@/hooks/useRecentSearches';
 import { useSearchStores } from '@/hooks/useSearchStores';
 import type { StoreSearchParams } from '@/app/customer/search/_types/store.type';
 
@@ -19,7 +20,6 @@ import BackIcon from '@/public/icons/icon_arrow_Left.svg';
 import FilterIcon from '@/public/icons/icon_filter.svg';
 import ResetIcon from '@/public/icons/icon_reset.svg';
 
-// ─── 정렬 옵션 ───────────────────────────────────────
 function SearchContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -36,19 +36,20 @@ function SearchContent() {
 
   const [sort, setSort] = useState('NONE');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [filterKey, setFilterKey] = useState(0); // key를 위한 state 추가
-  const [searchInput, setSearchInput] = useState(keyword); //직접 입력 가능한 input
+  const [filterKey, setFilterKey] = useState(0);
+  const [searchInput, setSearchInput] = useState(keyword);
   const [initialOpenFilter, setInitialOpenFilter] = useState<
     keyof StoreSearchParams | undefined
   >();
 
-  // ── 키워드로 진입 시 API 호출 ──
+  const { add } = useRecentSearches();
   useEffect(() => {
     if (keyword) {
+      add(keyword);
       clearResultsOnly();
       search({ keyword, sortType: sort });
     }
-  }, [keyword, sort, search, clearResultsOnly]);
+  }, [keyword, add, sort, search, clearResultsOnly]);
 
   // ── 활성 필터 수 ──
   const activeFilterCount = Object.keys(appliedFilters).filter(
@@ -101,6 +102,7 @@ function SearchContent() {
                   `/customer/search?keyword=${encodeURIComponent(keyword)}`
                 )
               }
+              onFocus={() => router.push('/customer/search/recent')}
               placeholder="검색어를 입력하세요"
               variant={searchInput ? 'filled' : 'outlined'}
               showIcon={searchInput ? false : true}
@@ -143,7 +145,6 @@ function SearchContent() {
                   </span>
                 </button>
 
-                {/* ✅ 리셋 버튼 분리 */}
                 <button
                   type="button"
                   onClick={handleFilterReset}
@@ -197,7 +198,6 @@ function SearchContent() {
         ) : stores.length === 0 ? (
           <SearchEmptyState />
         ) : (
-          // ✅ 2열 그리드
           <div className="grid grid-cols-2 gap-2">
             {stores.map((store) => (
               <StoreCard
