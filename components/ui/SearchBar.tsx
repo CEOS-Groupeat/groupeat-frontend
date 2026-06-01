@@ -7,6 +7,7 @@ import { useSearchStore } from '@/store/useSearchStore';
 import Filter from '@/public/icons/icon-filter.svg';
 import SearchField from '@/components/ui/SearchField';
 import FilterBottomSheet from '@/app/customer/search/_components/FilterBottomSheet';
+import DeleteIcon from '@/public/icons/icon_delete.svg';
 
 interface SearchBarProps {
   onFocus?: () => void;
@@ -43,7 +44,16 @@ export default function SearchBar({ onFocus, onChange }: SearchBarProps) {
         showIcon={!keyword}
       >
         {keyword ? (
-          <div className="w-14 h-10 shrink-0" />
+          <button
+            type="button"
+            onClick={() => {
+              setKeyword('');
+              onChange?.('');
+            }}
+            className="w-14 h-10 shrink-0 self-stretch px-3 py-2.5 flex justify-center items-center"
+          >
+            <DeleteIcon className="size-6" />
+          </button>
         ) : (
           <button
             type="button"
