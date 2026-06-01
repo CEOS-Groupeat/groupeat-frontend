@@ -42,7 +42,9 @@ export default function SearchBar({ onFocus, onChange }: SearchBarProps) {
         variant="outlined"
         showIcon={!keyword}
       >
-        {!keyword && (
+        {keyword ? (
+          <div className="w-14 h-10 shrink-0" />
+        ) : (
           <button
             type="button"
             onClick={() => setIsFilterOpen(true)}
