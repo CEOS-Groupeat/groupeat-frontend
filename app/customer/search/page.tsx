@@ -4,6 +4,7 @@ import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import { useSearchStore } from '@/store/useSearchStore';
+import { useRecentSearches } from '@/hooks/useRecentSearches';
 import { useSearchStores } from '@/hooks/useSearchStores';
 import type { StoreSearchParams } from '@/app/customer/search/_types/store.type';
 
@@ -35,19 +36,20 @@ function SearchContent() {
 
   const [sort, setSort] = useState('NONE');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [filterKey, setFilterKey] = useState(0); 
-  const [searchInput, setSearchInput] = useState(keyword); 
+  const [filterKey, setFilterKey] = useState(0);
+  const [searchInput, setSearchInput] = useState(keyword);
   const [initialOpenFilter, setInitialOpenFilter] = useState<
     keyof StoreSearchParams | undefined
   >();
 
-  // ── 키워드로 진입 시 API 호출 ──
+  const { add } = useRecentSearches();
   useEffect(() => {
     if (keyword) {
+      add(keyword);
       clearResultsOnly();
       search({ keyword, sortType: sort });
     }
-  }, [keyword, sort, search, clearResultsOnly]);
+  }, [keyword, add, sort, search, clearResultsOnly]);
 
   // ── 활성 필터 수 ──
   const activeFilterCount = Object.keys(appliedFilters).filter(
@@ -100,6 +102,7 @@ function SearchContent() {
                   `/customer/search?keyword=${encodeURIComponent(keyword)}`
                 )
               }
+              onFocus={() => router.push('/customer/search/recent')}
               placeholder="검색어를 입력하세요"
               variant={searchInput ? 'filled' : 'outlined'}
               showIcon={searchInput ? false : true}
