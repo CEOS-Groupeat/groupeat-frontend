@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 // app/signup/customer/page.tsx
@@ -10,6 +11,7 @@ import CheckboxTrue from '@/public/icons/icon_checkboxTrue.svg';
 import CheckboxFalse from '@/public/icons/icon_checkboxFalse.svg';
 import DefaultButton from '@/components/ui/ButtonDefault';
 import { useSignupStore } from '@/store/useSignupStore';
+import ToastError from '@/components/ui/ToastError';
 
 interface ApiResponse<T> {
   isSuccess: boolean;
@@ -36,6 +38,8 @@ export default function CustomerSignupPage() {
 
   const { memberId, setMemberId, memberType, setMemberType } = useSignupStore();
 
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
   useEffect(() => {
     if (urlMemberId && !memberId) {
       setMemberId(Number(urlMemberId));
@@ -56,27 +60,25 @@ export default function CustomerSignupPage() {
 
   const finalMemberId = memberId || (urlMemberId ? Number(urlMemberId) : null);
 
-  // 폼 상태 관리 (수정된 페이로드 반영: birthDate로 관리)
   const [name, setName] = useState('');
-  const [birthDate, setBirthDate] = useState(''); // <input type="date">의 결과물인 "YYYY-MM-DD"가 그대로 담깁니다.
+  const [isNameError, setIsNameError] = useState(false);
+  const [birthDate, setBirthDate] = useState('');
   const [email, setEmail] = useState('');
   const [gender, setGender] = useState<'MALE' | 'FEMALE' | null>(null);
 
-  // 약관 체크 상태
   const [checkedTerms, setCheckedTerms] = useState<{ [key: number]: boolean }>(
     {}
   );
 
-  // 1. 서버에서 고객 약관 목록 불러오기 (GET)
   const { data: terms = [] } = useQuery<Term[]>({
     queryKey: ['terms', 'CUSTOMER'],
     queryFn: async () => {
       const response = (await fetchClient(
         '/api/terms?targetType=CUSTOMER'
       )) as ApiResponse<Term[]>;
-      
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const payload = response.isSuccess !== undefined ? response : (response as any).data;
+
+      const payload =
+        response.isSuccess !== undefined ? response : (response as any).data;
       return payload.data || [];
     },
   });
@@ -88,17 +90,28 @@ export default function CustomerSignupPage() {
     }));
   };
 
-  // 필수값 검증 로직 (생년월일 필드 빈 값 검사 추가)
-  const isFormValid =
-    name.trim() !== '' &&
-    birthDate.trim() !== '' &&
-    finalMemberId !== null &&
-    gender !== null &&
+  const hasRequiredName = name.trim() !== '';
+  const hasAllRequiredTerms =
+    terms.length > 0 &&
     terms
       .filter((term) => term.required)
       .every((term) => checkedTerms[term.termsId]);
 
-  // 2. 고객 회원가입 최종 제출 (POST)
+  const handleSubmitClick = () => {
+    if (!hasRequiredName) {
+      setIsNameError(true);
+      return;
+    }
+
+    if (!hasAllRequiredTerms) {
+      setToastMessage('필수 약관에 동의해주세요.');
+      setTimeout(() => setToastMessage(null), 2000);
+      return;
+    }
+
+    submitSignupMutation.mutate();
+  };
+
   const submitSignupMutation = useMutation({
     mutationFn: async () => {
       if (!finalMemberId) {
@@ -115,27 +128,35 @@ export default function CustomerSignupPage() {
         agreements,
         name,
         email,
-        birthDate, // "YYYY-MM-DD" 형태의 문자열 전달
+        birthDate,
         gender,
       };
 
-      return fetchClient('/api/signup/customer', {
+      const response = (await fetchClient('/api/signup/customer', {
         method: 'POST',
         body: JSON.stringify(payload),
-      });
+      })) as any;
+
+      const result =
+        response.isSuccess !== undefined ? response : response.data;
+      if (!result?.isSuccess) {
+        throw new Error(result?.message || '회원가입 처리에 거절당했습니다.');
+      }
+
+      return result;
     },
     onSuccess: () => {
       alert('고객 회원가입이 완료되었습니다.');
-      router.replace('/'); 
+      router.replace('/');
     },
-    onError: (error) => {
+    onError: (error: any) => {
       console.error(error);
-      alert('회원가입 처리 중 오류가 발생했습니다.');
+      alert(error.message || '회원가입 처리 중 오류가 발생했습니다.');
     },
   });
 
   return (
-    <div className="flex flex-col w-full bg-white px-4 min-h-screen">
+    <div className="flex flex-col w-full bg-white px-4 min-h-screen relative">
       <SignupHeader />
 
       <div className="flex-1 flex flex-col gap-3 mt-5 pb-24">
@@ -145,7 +166,7 @@ export default function CustomerSignupPage() {
 
         <div className="flex flex-col gap-6">
           {/* 1. 이름 입력 */}
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col items-start w-full gap-2">
             <label
               htmlFor="userName"
               className="text-label1 text-text-default font-medium"
@@ -154,14 +175,30 @@ export default function CustomerSignupPage() {
             </label>
             <input
               id="userName"
+              type="text"
               value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full h-11 px-4 rounded-lg border border-border-strong bg-background-default focus:ring-1 focus:ring-brand-default outline-none"
+              onChange={(e) => {
+                setName(e.target.value);
+                if (isNameError) setIsNameError(false); // 타이핑 시 에러 해제
+              }}
+              onBlur={() => {
+                if (name.trim() === '') setIsNameError(true); // 포커스 풀릴 때 빈 값이면 에러 트리거
+              }}
+              className={`w-full h-11 p-3 pl-4 rounded-lg border border-px transition-colors ${
+                isNameError
+                  ? 'border-status-danger'
+                  : 'border-border-strong bg-background-default focus:border-border-active'
+              } placeholder:text-body placeholder:text-text-placeholder focus:outline-none disabled:bg-neutral-5 disabled:text-text-disabled`}
               placeholder="이름 입력"
             />
+            {isNameError && (
+              <p className="text-status-danger text-caption1">
+                이름을 입력해주세요
+              </p>
+            )}
           </div>
 
-          {/* 2. 생년월일 입력 (<input type="date">) */}
+          {/* 2. 생년월일 입력 */}
           <div className="flex flex-col gap-2">
             <label
               htmlFor="userBirth"
@@ -275,12 +312,20 @@ export default function CustomerSignupPage() {
       </div>
 
       <div className="fixed bottom-6 left-0 w-full px-4">
-        <DefaultButton
-          onClick={() => submitSignupMutation.mutate()}
-          disabled={!isFormValid || submitSignupMutation.isPending}
-        >
-          {submitSignupMutation.isPending ? '처리 중...' : '확인'}
-        </DefaultButton>
+        <div className="w-full flex flex-col gap-3.5 justify-center items-center">
+          {toastMessage && (
+            <div className="gap-3.5 animate-in fade-in slide-in-from-top-5 duration-300">
+              <ToastError text={toastMessage} />
+            </div>
+          )}
+          <DefaultButton
+            // 수정 4: 변경된 클릭 핸들러 연결 및 disabled 조건 최소화
+            onClick={handleSubmitClick}
+            disabled={submitSignupMutation.isPending}
+          >
+            {submitSignupMutation.isPending ? '처리 중...' : '확인'}
+          </DefaultButton>
+        </div>
       </div>
     </div>
   );
