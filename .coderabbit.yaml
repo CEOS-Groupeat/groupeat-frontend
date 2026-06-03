@@ -1,0 +1,29 @@
+# .coderabbit.yaml
+
+# AI가 리뷰 코멘트를 남길 언어
+language: "ko-KR"
+
+reviews:
+  # 커스텀 프롬프트
+  profile: |
+    Along with standard code quality checks, please strictly follow these project-specific rules:
+    
+    1. React Hooks: Ensure dependency arrays in React Hooks (e.g., useEffect, useCallback) are correctly specified and no necessary dependencies are missing.
+    2. Next.js App Router: Verify the proper separation and usage of Client Components and Server Components. Ensure 'use client' directives are used only when necessary.
+    3. TypeScript Strictness: Strictly avoid the use of 'any' types. Ensure that variables, props, and return values have explicitly defined types or interfaces.
+    4. State Management (Zustand): Check for anti-patterns in state management that could trigger unnecessary re-renders (e.g., exporting the entire store instead of specific selectors).
+    5. Maintainability: Suggest more readable, concise, and modular code if a function is too long or complex.
+    6. Error Handling & Edge Cases: Detect and flag any missing error handling for abnormal user behaviors, invalid inputs, or unexpected edge cases. Ensure appropriate safeguards (e.g., try-catch blocks, form validations, or fallback UIs) are implemented.
+
+  # AI가 치명적인 문제를 발견했을 때 자동으로 'Request Changes'를 날릴지 여부
+  request_changes_workflow: false 
+  
+  # PR의 변경 사항을 요약해주는 기능 켜기
+  high_level_summary: true
+
+# 리뷰 제외 파일 설정
+ignore:
+  - "public/**"
+  - "*.config.js"
+  - "node_modules/**"
+  - "dist/**"
