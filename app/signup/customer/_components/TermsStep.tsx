@@ -7,6 +7,7 @@ import CheckboxTrue from '@/public/icons/icon_checkboxTrue.svg';
 import { useSignupStore } from '@/store/useSignupStore';
 import DefaultButton from '@/components/ui/ButtonDefault';
 import { fetchClient } from '@/lib/fetchClient';
+import { Term } from '@/types/term';
 
 export default function TermsStep() {
   const { setAgreements, nextStep } = useSignupStore();
