@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation';
 import BackIcon from '@/public/icons/icon_arrow_Left.svg';
 import CartIcon from '@/public/icons/icon_shoppingCart.svg';
-import Image from 'next/image';
 
 export default function StoreHeader() {
   const router = useRouter();

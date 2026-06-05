@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import Image from 'next/image';
 import logo from '@/public/images/image_logo.png';
 import logo_text from '@/public/images/image_logo_text.png';

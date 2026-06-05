@@ -8,6 +8,7 @@ import DefaultButton from '@/components/ui/ButtonDefault';
 import { fetchClient } from '@/lib/fetchClient';
 import { useBusinessSignupStore } from '@/store/useBusinessSignupStore';
 import { useSignupStore } from '@/store/useSignupStore';
+import { Term } from '@/types/term';
 
 export default function OwnerTermsStep() {
   const { nextStep } = useSignupStore();

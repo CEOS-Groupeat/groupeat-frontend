@@ -1,8 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
-import { fetchClient } from '@/lib/fetchClient';
 import { Menu } from '@/types/store';
 import DownArrow from '@/public/icons/icon_arrow_down.svg';
 import UpArrow from '@/public/icons/icon_arrow_up.svg';
@@ -21,7 +19,6 @@ interface MenuCard {
 }
 
 export default function MenuBottomSheet({
-  storeId,
   menu,
   onClose,
 }: MenuBottomSheetProps) {
