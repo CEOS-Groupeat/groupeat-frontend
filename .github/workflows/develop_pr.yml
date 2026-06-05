@@ -58,7 +58,8 @@ jobs:
         with:
           name: vercel-build-output
           path: .vercel
-          retention-days: 1 # 용량 절약을 위해 1일 후 자동 삭제
+          include-hidden-files: true
+          retention-days: 1
 
   # 2단계: Vercel 프리뷰 배포 (CD)
   vercel-preview-deploy:
