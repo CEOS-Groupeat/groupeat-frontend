@@ -1,7 +1,6 @@
 name: Groupeat PR Pipeline (CI & Vercel Preview)
 
 env:
-  # 중복되는 환경변수는 최상단으로 빼서 관리하기 쉽게 만듭니다.
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -27,7 +26,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'pnpm'
 
       - name: Install Dependencies
@@ -45,14 +44,11 @@ jobs:
       - name: Pull Vercel Environment Information
         run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
 
-      # 기존 pnpm build 대신 vercel build를 사용하여 한 번만 빌드합니다.
-      # 여기서 환경 변수를 확실하게 주입합니다.
       - name: Build Project Artifacts
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
         env:
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
 
-      # 완성된 빌드 결과물(.vercel 폴더)을 GitHub 아티팩트로 업로드(저장) 합니다.
       - name: Upload Vercel Build Artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -73,17 +69,24 @@ jobs:
         uses: pnpm/action-setup@v3
         with:
           version: 9
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
 
       - name: Install Vercel CLI
         run: pnpm install --global vercel@latest
 
-      # 1단계에서 저장해둔 빌드 결과물을 다운로드합니다.
       - name: Download Vercel Build Artifacts
         uses: actions/download-artifact@v4
         with:
           name: vercel-build-output
           path: .vercel
 
-      # 추가 빌드 없이, 다운로드 받은 결과물을 바로 배포합니다. (--prebuilt)
       - name: Deploy Project Artifacts to Vercel Preview
         run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
