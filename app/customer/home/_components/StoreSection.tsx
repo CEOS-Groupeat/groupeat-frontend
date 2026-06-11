@@ -1,13 +1,14 @@
 import RightChevron from '@/public/icons/icon-right_chevron.svg';
+import RightGradientOverlay from '@/public/components/gradient_overlay_right.svg';
 
 import StoreCard from './StoreCard';
 
-import { Store } from '../_types/store.type';
+import { HomeStore } from '../_types/store.type';
 
 interface StoreSectionProps {
   title: string;
   description: string;
-  stores: Store[];
+  stores: HomeStore[];
 }
 
 export default function StoreSection({
@@ -17,25 +18,28 @@ export default function StoreSection({
 }: StoreSectionProps) {
   return (
     <section className="w-full flex flex-col gap-3">
-      <div className="flex flex-col gap-0.5">
-        <div className="flex items-center justify-between mb-[2px]">
-          <h2 className="text-text-default text-lg font-bold font-['Pretendard'] leading-6">
-            {title}
-          </h2>
+      <div className="flex flex-col gap-0.5 font-['Pretendard']">
+        <div className="flex items-center justify-between">
+          <h2 className="text-body text-text-default font-bold">{title}</h2>
 
-          {/*추후에 기능명세서보고 링크걸기*/}
+          {/*추후 버튼 기능 추가 예정 */}
           <button className="flex items-center justify-center">
-            <RightChevron className="text-text-subtlest" />
+            <RightChevron className="text-text-subtlest ml-2.5" />
           </button>
         </div>
 
-        <p className="text-label2 text-text-subtle">{description}</p>
+        <p className="text-label2 font-normal text-text-subtle">
+          {description}
+        </p>
       </div>
 
-      <div className="flex gap-2 overflow-x-auto scrollbar-hide">
-        {stores.map((store) => (
-          <StoreCard key={store.id} store={store} />
-        ))}
+      <div className="relative flex">
+        <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+          {stores.map((store) => (
+            <StoreCard key={store.id} store={store} />
+          ))}
+        </div>
+        <RightGradientOverlay className="absolute right-0 top-0 pointer-events-none" />
       </div>
     </section>
   );

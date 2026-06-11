@@ -1,55 +1,52 @@
 import Image from 'next/image';
 
-import { Store } from '../_types/store.type';
+import { HomeStore } from '../_types/store.type';
+
 import Star from '@/public/icons/icon_star.svg';
 import Location from '@/public/icons/icon_place.svg';
 
 interface StoreCardProps {
-  store: Store;
+  store: HomeStore;
 }
 
 export default function StoreCard({ store }: StoreCardProps) {
   return (
-    <div className="w-48 rounded-xl outline outline-1 outline-offset-[-1px] outline-border-subtle overflow-hidden shrink-0">
-      <Image
-        src={store.image}
-        alt={store.name}
-        width={208}
-        height={96}
-        className="w-52 h-24 object-cover"
-      />
+    <div className="w-48 rounded-xl outline outline-1 outline-offset-[-1px] outline-border-subtle overflow-hidden shrink-0 font-['Pretendard']">
+      <div className="relative h-[90px]">
+        <Image
+          src={store.image}
+          alt={store.name}
+          fill
+          className="object-cover"
+        />
+      </div>
 
-      <div className="p-2.5 bg-background-default flex flex-col gap-2">
+      <div className="p-2.5 flex flex-col gap-2.5">
         <div className="flex flex-col gap-1.5">
           <div className="w-fit px-1.5 py-0.5 bg-background-subtlest rounded-[4px]">
-            <div className="text-caption2 font-semibold text-text-subtle tracking-tight">
+            <div className="text-caption2 font-semibold text-text-subtle">
               {store.category}
             </div>
           </div>
 
-          <div className="pl-0.5">
-            <h3 className="text-body font-semibold text-text-default">
+          <div className="pl-0.5 text-text-default">
+            <h3 className="text-body font-semibold tracking-tight">
               {store.name}
             </h3>
-
-            <p className="text-label1 font-medium text-text-default">
-              {store.priceRange}
-            </p>
+            <p className="text-label1 font-medium">{store.priceRange}</p>
           </div>
         </div>
 
-        <div className="flex flex-col gap-0.5">
-          <div className="flex items-center gap-1 text-xs text-text-subtle">
-            <Star />
-
+        <div className="flex flex-col text-caption1 text-text-subtle font-normal">
+          <div className="flex items-center h-[18px] gap-0.5">
+            <Star className="size-3.5" />
             <span>
               {store.rating} ({store.reviewCount})
             </span>
           </div>
 
-          <div className="flex items-center gap-1 text-xs text-text-subtle">
-            <Location />
-
+          <div className="flex items-center h-[18px] gap-0.5">
+            <Location className="size-3.5" />
             <span>{store.location}</span>
           </div>
         </div>

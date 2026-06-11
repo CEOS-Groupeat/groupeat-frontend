@@ -1,7 +1,7 @@
 // MVP 구현범위: 고객 메인 페이지-가게 추천 api 대신 mocks 데이터로 구현
-import { Store } from '../_types/store.type';
+import { HomeStore } from '../_types/store.type';
 
-export const popularStores: Store[] = [
+export const popularStores: HomeStore[] = [
   {
     id: 1,
     name: '사르르 연남',
@@ -34,7 +34,7 @@ export const popularStores: Store[] = [
   },
 ];
 
-export const discountStores: Store[] = [
+export const discountStores: HomeStore[] = [
   {
     id: 4,
     name: '익선잡방',
@@ -67,7 +67,7 @@ export const discountStores: Store[] = [
   },
 ];
 
-export const recommendedStores: Store[] = [
+export const recommendedStores: HomeStore[] = [
   {
     id: 7,
     name: '데이브런치',

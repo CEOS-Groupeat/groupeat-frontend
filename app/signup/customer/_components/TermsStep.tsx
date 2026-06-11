@@ -7,6 +7,7 @@ import CheckboxTrue from '@/public/icons/icon_checkboxTrue.svg';
 import { useSignupStore } from '@/store/useSignupStore';
 import DefaultButton from '@/components/ui/ButtonDefault';
 import { fetchClient } from '@/lib/fetchClient';
+import { Term } from '@/types/term';
 
 export default function TermsStep() {
   const { setAgreements, nextStep } = useSignupStore();
@@ -21,8 +22,9 @@ export default function TermsStep() {
     queryFn: async () => {
       const response = (await fetchClient(
         '/api/terms?targetType=COMMON'
-      )) as Response;
-      return response as unknown as Term[];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      )) as any;
+      return response.data;
     },
   });
 

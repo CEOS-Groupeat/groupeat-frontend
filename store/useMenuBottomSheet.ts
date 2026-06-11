@@ -60,8 +60,7 @@ export const useMenuBottomSheet = (storeId: string, menu: Menu, onClose: () => v
     },
     onSuccess: () => {
       alert('장바구니에 담겼습니다.');
-      onClose(); // 바텀시트 닫기
-      // 필요하다면 여기서 queryClient.invalidateQueries({ queryKey: ['cart'] }) 호출
+      onClose();
     },
     onError: () => {
       alert('장바구니 담기에 실패했습니다.');

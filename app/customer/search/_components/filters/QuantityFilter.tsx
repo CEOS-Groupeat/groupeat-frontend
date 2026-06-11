@@ -25,29 +25,30 @@ export default function QuantityFilter({
   // 선택 완료 상태 → bg-background-subtle 박스
   if (value !== undefined) {
     return (
-      <div className="h-11 pl-4 pr-3 py-3 bg-background-subtle rounded-lg flex items-center mt-3">
-        <span className="text-base text-text-default">{value}</span>
+      <div className="w-full h-11 pl-4 pr-3 py-3 rounded-lg flex items-center bg-background-subtle">
+        <span className="text-body text-text-default font-['Pretendard'] font-normal">
+          {value}
+        </span>
       </div>
     );
   }
 
   // 미선택 상태 → 숫자 input
   return (
-    <div className="mt-3">
-      <input
-        type="number"
-        inputMode="numeric"
-        placeholder="수량을 입력하세요"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') handleConfirm();
-        }}
-        className="w-full h-11 pl-4 pr-3 py-3 bg-background-default rounded-lg
-          outline outline-1 outline-border-strong
-          text-base text-text-default placeholder:text-text-placeholder"
-        autoFocus
-      />
-    </div>
+    <input
+      type="number"
+      inputMode="numeric"
+      placeholder="수량을 입력하세요"
+      value={input}
+      onChange={(e) => setInput(e.target.value.replace(/[^0-9]/g, ''))}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') handleConfirm();
+      }}
+      onBlur={handleConfirm}
+      className="w-full h-11 pl-4 pr-3 py-3 rounded-lg
+          outline outline-1 outline-offset-[-1px] outline-border-strong
+          font-['Pretendard'] font-normal text-body text-text-default placeholder:text-text-placeholder placeholder:font-normal"
+      autoFocus
+    />
   );
 }

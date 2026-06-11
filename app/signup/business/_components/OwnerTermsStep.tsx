@@ -8,6 +8,7 @@ import DefaultButton from '@/components/ui/ButtonDefault';
 import { fetchClient } from '@/lib/fetchClient';
 import { useBusinessSignupStore } from '@/store/useBusinessSignupStore';
 import { useSignupStore } from '@/store/useSignupStore';
+import { Term } from '@/types/term';
 
 export default function OwnerTermsStep() {
   const { nextStep } = useSignupStore();
@@ -20,8 +21,14 @@ export default function OwnerTermsStep() {
   const { data: terms = [], isLoading } = useQuery<Term[]>({
     queryKey: ['terms', 'BUSINESS'],
     queryFn: async () => {
-      const response = await fetchClient('/api/terms?targetType=BUSINESS');
-      return response as unknown as Term[];
+      const response = (await fetchClient(
+        '/api/terms?targetType=BUSINESS'
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      )) as any;
+      
+      // (혹시 모를 이중 래핑 방어 코드 포함)
+      const payload = response.isSuccess !== undefined ? response : response.data;
+      return payload.data || [];
     },
   });
 

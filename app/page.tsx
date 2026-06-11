@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import Image from 'next/image';
 import logo from '@/public/images/image_logo.png';
 import logo_text from '@/public/images/image_logo_text.png';
@@ -6,6 +5,7 @@ import LandingPage_Discount from '@/public/images/image_landingPage_discount.svg
 import CheckIcon from '@/public/icons/icon_check.svg';
 import MailIcon from '@/public/icons/icon_email_unread.svg';
 import AlarmIcon from '@/public/icons/icon_alarm.svg';
+import Link from 'next/link';
 
 {
   /* 랜딩 페이지입니다. 해당 페이지에서는 비로그인 사용자의 둘러보기 페이지, 로그인/회원가입 페이지, 사업자용 랜딩 페이지로 이동합니다. */
@@ -27,8 +27,8 @@ export default function CustomerLandingPage() {
 
       {/* 메인 콘텐츠 영역 */}
       <section className="relative flex flex-col flex-1 w-full justify-center items-center py-12 overflow-hidden animate-fade-in-up">
-        <div className="w-full absolute inset-0 flex justify-center items-center pointer-events-none z-0">
-          <div className="absolute flex justify-center items-center pointer-events-none z-0 w-110.5 h-110.5 -translate-y-8 opacity-35 bg-[radial-gradient(ellipse_70.71%_70.71%_at_50.00%_50.00%,#FCD2C6_0%,rgba(252,210,198,0)_70%)] rounded-[260px]" />
+        <div className="w-full absolute inset-0 flex justify-center items-center pointer-events-none -z-Base">
+          <div className="absolute flex justify-center items-center pointer-events-none -z-Base w-110.5 h-110.5 -translate-y-8 opacity-35 bg-[radial-gradient(ellipse_70.71%_70.71%_at_50.00%_50.00%,#FCD2C6_0%,rgba(252,210,198,0)_70%)] rounded-[260px]" />
         </div>
 
         <main className="relative z-10 flex flex-col items-center justify-center w-full">
@@ -131,12 +131,12 @@ export default function CustomerLandingPage() {
                 협업 문의하기
               </p>
             </a>
-            <button className="flex w-39.5 h-12 px-5 py-2 bg-orange-60 justify-center items-center gap-1.5 rounded-full border border-px border-orange-60 z-20">
+            <Link href='https://www.instagram.com/groupeat_order/' target="_blank" rel="noopener noreferrer" className="flex w-39.5 h-12 px-5 py-2 bg-orange-60 justify-center items-center gap-1.5 rounded-full border border-px border-orange-60 z-20">
               <AlarmIcon width={24} height={24} />
               <p className="text-white text-body font-semibold whitespace-nowrap">
                 출시 알림받기
               </p>
-            </button>
+            </Link>
           </div>
         </main>
       </section>

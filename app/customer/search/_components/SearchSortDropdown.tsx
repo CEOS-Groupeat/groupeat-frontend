@@ -2,14 +2,7 @@
 
 import { useState } from 'react';
 import DownArrow from '@/public/icons/icon_arrow_down.svg';
-
-const SORT_OPTIONS = [
-  { value: 'DISCOUNT', label: '할인율 높은 순' },
-  { value: 'PRICE_LOW', label: '가격 낮은 순' },
-  { value: 'PRICE_HIGH', label: '가격 높은 순' },
-  { value: 'ORDER', label: '주문 많은 순' },
-  { value: 'RATING', label: '별점 높은 순' },
-];
+import { SORT_OPTIONS } from '../_constants/sortOptions';
 
 interface SearchSortDropdownProps {
   value: string;
@@ -22,17 +15,17 @@ export default function SearchSortDropdown({
 }: SearchSortDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const selected =
-    SORT_OPTIONS.find((o) => o.value === value) ?? SORT_OPTIONS[0];
+    SORT_OPTIONS.find((s) => s.value === value) ?? SORT_OPTIONS[0];
 
   return (
-    <div className="relative">
+    <div className="relative font-['Pretendard']">
       {/* 트리거 */}
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        className="h-8 px-1.5 inline-flex items-center gap-1"
+        className="w-full h-[34px] px-1.5 inline-flex items-center gap-1"
       >
-        <span className="text-xs text-text-default leading-4">
+        <span className="text-label2 text-text-default font-normal">
           {selected.label}
         </span>
         <DownArrow className="size-4" />
@@ -41,12 +34,11 @@ export default function SearchSortDropdown({
       {/* 드롭다운 */}
       {isOpen && (
         <>
-          {/* 외부 클릭 닫기 */}
           <div
-            className="fixed inset-0 z-10"
+            className="fixed inset-0 z-base"
             onClick={() => setIsOpen(false)}
           />
-          <div className="absolute right-0 top-full z-20 rounded-lg shadow-[0px_0px_15px_0px_rgba(0,0,0,0.05)] outline outline-1 outline-border-subtle bg-background-default overflow-hidden min-w-[96px]">
+          <div className="absolute right-0 top-full z-dropdown rounded-lg shadow-[0px_0px_15px_0px_rgba(0,0,0,0.05)] outline outline-1 outline-offset-[-1px] outline-border-subtle bg-background-default overflow-hidden min-w-[104px]">
             {SORT_OPTIONS.map((option) => (
               <button
                 key={option.value}
@@ -55,10 +47,10 @@ export default function SearchSortDropdown({
                   onChange(option.value);
                   setIsOpen(false);
                 }}
-                className={`w-full h-12 px-3 flex items-center text-xs leading-4 hover:bg-background-subtle transition-colors ${
+                className={`w-full h-12 px-3 py-3.5 flex items-center transition ${
                   option.value === value
-                    ? 'text-brand-default font-semibold'
-                    : 'text-text-strong font-normal'
+                    ? 'text-caption1 text-brand-default font-semibold'
+                    : 'text-text-strong text-xs font-normal leading-4 tracking-tight'
                 }`}
               >
                 {option.label}
