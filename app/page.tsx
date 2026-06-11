@@ -5,6 +5,7 @@ import LandingPage_Discount from '@/public/images/image_landingPage_discount.svg
 import CheckIcon from '@/public/icons/icon_check.svg';
 import MailIcon from '@/public/icons/icon_email_unread.svg';
 import AlarmIcon from '@/public/icons/icon_alarm.svg';
+import Link from 'next/link';
 
 {
   /* 랜딩 페이지입니다. 해당 페이지에서는 비로그인 사용자의 둘러보기 페이지, 로그인/회원가입 페이지, 사업자용 랜딩 페이지로 이동합니다. */
@@ -130,12 +131,12 @@ export default function CustomerLandingPage() {
                 협업 문의하기
               </p>
             </a>
-            <button className="flex w-39.5 h-12 px-5 py-2 bg-orange-60 justify-center items-center gap-1.5 rounded-full border border-px border-orange-60 z-20">
+            <Link href='https://www.instagram.com/groupeat_order/' target="_blank" rel="noopener noreferrer" className="flex w-39.5 h-12 px-5 py-2 bg-orange-60 justify-center items-center gap-1.5 rounded-full border border-px border-orange-60 z-20">
               <AlarmIcon width={24} height={24} />
               <p className="text-white text-body font-semibold whitespace-nowrap">
                 출시 알림받기
               </p>
-            </button>
+            </Link>
           </div>
         </main>
       </section>
