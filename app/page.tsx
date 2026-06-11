@@ -153,10 +153,10 @@ export default function CustomerLandingPage() {
             </p>
             <div className="flex flex-col items-start gap-1.5">
               <p className="text-[14px] text-[#777982]">
-                Email: contact@groupeat.com
+                Email: groupeat2026@gmail.com
               </p>
               <p className="text-[14px] text-[#777982]">
-                Instagram: @groupeat_official
+                Instagram: @groupeat_order
               </p>
             </div>
           </div>
