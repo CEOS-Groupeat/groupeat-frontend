@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchClient } from '@/lib/fetchClient';
 import DownArrow from '@/public/icons/icon_arrow_down.svg';
 import UpArrow from '@/public/icons/icon_arrow_up.svg';
-import DateFilter from '@/app/customer/search/_components/filters/DateFilter';
+//import DateFilter from '@/app/customer/search/_components/filters/DateFilter';
 //  PickupTimeInfo 타입 임포트 추가
 import {
   ApiResponse,
@@ -95,7 +95,7 @@ export default function StoreOptions() {
             {isDateExpanded && (
               <div className="w-full flex flex-col animate-in fade-in slide-in-from-top-2 duration-200 pb-5">
                 <div className="pb-5">
-                  <DateFilter
+                  {/* <DateFilter
                     date={selectedDate}
                     time={selectedTime}
                     onDateChange={setSelectedDate}
@@ -104,7 +104,7 @@ export default function StoreOptions() {
                     // openTime={pickupData?.openTime}
                     // closeTime={pickupData?.closeTime}
                     // interval={pickupData?.intervalMinutes}
-                  />
+                  /> */}
                 </div>
 
                 <div className="w-full flex flex-col items-start gap-0.5 self-stretch">
