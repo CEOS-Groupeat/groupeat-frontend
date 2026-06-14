@@ -273,9 +273,9 @@ export default function FilterBottomSheet({
                     <div className="mt-3">
                       <DateFilter
                         date={filters.pickupDate}
-                        time={filters.pickupTimes?.[0]}
+                        times={filters.pickupTimes ?? []}
                         onDateChange={(v) => updateFilter('pickupDate', v)}
-                        onTimeChange={(v) => updateFilter('pickupTimes', [v])}
+                        onTimeChange={(times) => updateFilter('pickupTimes', times)}
                       />
                     </div>
                   )}

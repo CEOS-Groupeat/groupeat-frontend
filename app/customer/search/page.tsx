@@ -87,7 +87,7 @@ function SearchContent() {
             {/* 뒤로가기 */}
             <button
               type="button"
-              onClick={() => router.back()}
+              onClick={() => router.replace('/customer/home')}
               className="h-6 flex items-center"
             >
               <BackIcon className="size-6 text-icon-subtle" />
