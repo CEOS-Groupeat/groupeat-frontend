@@ -25,18 +25,20 @@ export default function CartHeader({
         </span>
       </div>
 
-      <div className="flex justify-between w-full px-4 py-1.5 mb-3 font-['Pretendard']">
-        <span className="text-label2 font-medium text-text-default">
-          가게({totalStoreCount})
-        </span>
-        <button
-          type="button"
-          onClick={onDeleteAll}
-          className="text-xs text-text-subtle font-normal leading-4 underline"
-        >
-          전체 삭제
-        </button>
-      </div>
+      {totalStoreCount > 0 && (
+        <div className="flex justify-between w-full px-4 py-1.5 mb-3 font-['Pretendard']">
+          <span className="text-label2 font-medium text-text-default">
+            가게({totalStoreCount})
+          </span>
+          <button
+            type="button"
+            onClick={onDeleteAll}
+            className="text-xs text-text-subtle font-normal leading-4 underline"
+          >
+            전체 삭제
+          </button>
+        </div>
+      )}
     </>
   );
 }
