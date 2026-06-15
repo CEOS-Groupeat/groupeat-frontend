@@ -21,7 +21,7 @@ export default function CartStoreHeader({
   const router = useRouter();
 
   return (
-      <div className="flex gap-1 pt-5">
+      <div className="flex gap-1 pt-5 border-t border-border-default">
         <button type="button" onClick={onSelectAll} className="flex shrink-0">
           {allSelected ? (
             <RadioOn className="size-6 text-icon-default" />
