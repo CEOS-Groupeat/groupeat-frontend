@@ -1,9 +1,14 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
 import Logo from '@/public/icons/icon-logo_customer_home.svg';
 import Bell from '@/public/icons/icon-bell.svg';
 import Cart from '@/public/icons/icon-shopping_cart.svg';
 import HomeSearchBar from './HomeSearchBar';
 
 export default function HomeHero() {
+  const router = useRouter();
+
   return (
     <section className="w-full bg-brand-default">
       {/* Header Container */}
@@ -17,7 +22,9 @@ export default function HomeHero() {
 
         <div className="flex items-center gap-2">
           <Bell />
+          <button type="button" onClick={() => router.push('/customer/cart')}>
           <Cart />
+          </button>
         </div>
       </div>
 
