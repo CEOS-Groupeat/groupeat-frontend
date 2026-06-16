@@ -19,7 +19,7 @@ export default function CartStoreGroup({
   onSelectAll,
   onDelete,
 }: CartStoreGroupProps) {
-  const allSelected = storeCart.cartItems.some((item) =>
+  const hasSelected = storeCart.cartItems.some((item) =>
     selectedIds.includes(item.cartItemId)
   );
 
@@ -31,12 +31,12 @@ export default function CartStoreGroup({
   return (
     <div className="flex flex-col px-4">
       <CartStoreHeader
-      storeId={storeCart.storeId}
-      storeName={storeCart.storeName}
-      allSelected={allSelected}
-      onSelectAll={handleSelectAll}
+        storeId={storeCart.storeId}
+        storeName={storeCart.storeName}
+        hasSelected={hasSelected}
+        onSelectAll={handleSelectAll}
       />
-      
+
       <div className="flex flex-col">
         {storeCart.cartItems.map((item) => (
           <CartListItem
