@@ -20,9 +20,7 @@
     ],
     "paths": {
       "@/*": ["./*"]
-    },
-    //openAPI TypeScript관련인데 무슨옵션인지 잘 모르겠음
-    "noUncheckedIndexedAccess": true
+    }
   },
   "include": [
     "next-env.d.ts",
