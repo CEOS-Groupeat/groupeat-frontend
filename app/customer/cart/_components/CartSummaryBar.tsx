@@ -19,7 +19,7 @@ export default function CartSummaryBar({
   cartData,
   onOrder,
 }: CartSummaryBarProps) {
-  if (!summary) return null;
+  if (!summary || summary.calculatedItems.length === 0) return null;
 
   const firstCalculatedItem: CalculatedCartItem = summary.calculatedItems[0];
   const firstItemName =
