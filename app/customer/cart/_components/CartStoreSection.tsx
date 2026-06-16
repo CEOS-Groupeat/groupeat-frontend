@@ -19,7 +19,7 @@ export default function CartStoreGroup({
   onSelectAll,
   onDelete,
 }: CartStoreGroupProps) {
-  const allSelected = storeCart.cartItems.every((item) =>
+  const allSelected = storeCart.cartItems.some((item) =>
     selectedIds.includes(item.cartItemId)
   );
 
