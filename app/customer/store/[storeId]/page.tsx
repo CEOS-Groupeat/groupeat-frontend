@@ -20,7 +20,6 @@ export default function CustomerStoreDetailPage({
 
       <div className="w-full h-2 bg-border-divider" />
 
-      {/* 이 안에서는 +버튼을 누를 때 MenuBottomSheet만 띄웁니다 */}
       <StoreOptions />
 
       <FloatingCartBar storeId={params.storeId} />
