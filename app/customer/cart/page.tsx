@@ -121,7 +121,7 @@ export default function CartPage() {
           ))}
 
           <CartSummaryBar
-            summary={summary ?? null}
+            summary={selectedIds.length === 0 ? null : (summary ?? null)}
             cartData={cartData}
             onOrder={() => router.push('/customer/order/request')}
           />
