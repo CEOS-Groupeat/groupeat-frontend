@@ -4,6 +4,7 @@ import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import { useSearchStore } from '@/store/useSearchStore';
+import { useRecentSearches } from '@/hooks/useRecentSearches';
 import { useSearchStores } from '@/hooks/useSearchStores';
 import type { StoreSearchParams } from '@/app/customer/search/_types/store.type';
 
@@ -19,25 +20,36 @@ import BackIcon from '@/public/icons/icon_arrow_Left.svg';
 import FilterIcon from '@/public/icons/icon_filter.svg';
 import ResetIcon from '@/public/icons/icon_reset.svg';
 
-// ─── 정렬 옵션 ───────────────────────────────────────
 function SearchContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const keyword = searchParams.get('keyword') ?? '';
 
-  const { results, appliedFilters, setResults, clearResults } =
-    useSearchStore();
+  const {
+    results,
+    appliedFilters,
+    setResults,
+    clearResults,
+    clearResultsOnly,
+  } = useSearchStore();
   const { search, data: keywordData, isLoading } = useSearchStores();
 
-  const [sort, setSort] = useState('DISCOUNT');
+  const [sort, setSort] = useState('NONE');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [filterKey, setFilterKey] = useState(0); // key를 위한 state 추가
-  const [searchInput, setSearchInput] = useState(keyword); //직접 입력 가능한 input
+  const [filterKey, setFilterKey] = useState(0);
+  const [searchInput, setSearchInput] = useState(keyword);
+  const [initialOpenFilter, setInitialOpenFilter] = useState<
+    keyof StoreSearchParams | undefined
+  >();
 
-  // ── 키워드로 진입 시 API 호출 ──
+  const { add } = useRecentSearches();
   useEffect(() => {
-    if (keyword) search({ keyword, sort });
-  }, [keyword, sort]);
+    if (keyword) {
+      add(keyword);
+      clearResultsOnly();
+      search({ keyword, sortType: sort });
+    }
+  }, [keyword, add, sort, search, clearResultsOnly]);
 
   // ── 활성 필터 수 ──
   const activeFilterCount = Object.keys(appliedFilters).filter(
@@ -55,12 +67,15 @@ function SearchContent() {
   };
 
   // ── 필터 칩 클릭 → 바텀시트 열기 ──
-  const handleChipClick = () => handleOpenFilter();
+  const handleChipClick = (key: keyof StoreSearchParams) => {
+    setInitialOpenFilter(key);
+    handleOpenFilter();
+  };
 
   // ── 필터 재설정 ──
   const handleFilterReset = () => {
     clearResults();
-    if (keyword) search({ keyword, sort });
+    if (keyword) search({ keyword, sortType: sort });
   };
 
   return (
@@ -72,7 +87,7 @@ function SearchContent() {
             {/* 뒤로가기 */}
             <button
               type="button"
-              onClick={() => router.back()}
+              onClick={() => router.replace('/customer/home')}
               className="h-6 flex items-center"
             >
               <BackIcon className="size-6 text-icon-subtle" />
@@ -87,6 +102,7 @@ function SearchContent() {
                   `/customer/search?keyword=${encodeURIComponent(keyword)}`
                 )
               }
+              onFocus={() => router.push('/customer/search/recent')}
               placeholder="검색어를 입력하세요"
               variant={searchInput ? 'filled' : 'outlined'}
               showIcon={searchInput ? false : true}
@@ -108,7 +124,7 @@ function SearchContent() {
             value={sort}
             onChange={(v) => {
               setSort(v);
-              if (keyword) search({ keyword, sort: v, ...appliedFilters });
+              if (keyword) search({ keyword, sortType: v, ...appliedFilters });
             }}
           />
 
@@ -129,7 +145,6 @@ function SearchContent() {
                   </span>
                 </button>
 
-                {/* ✅ 리셋 버튼 분리 */}
                 <button
                   type="button"
                   onClick={handleFilterReset}
@@ -181,9 +196,8 @@ function SearchContent() {
             ))}
           </div>
         ) : stores.length === 0 ? (
-          <SearchEmptyState keyword={keyword} />
+          <SearchEmptyState />
         ) : (
-          // ✅ 2열 그리드
           <div className="grid grid-cols-2 gap-2">
             {stores.map((store) => (
               <StoreCard
@@ -208,6 +222,7 @@ function SearchContent() {
           setIsFilterOpen(false);
         }}
         initialFilters={appliedFilters}
+        initialOpenFilter={initialOpenFilter}
       />
     </div>
   );

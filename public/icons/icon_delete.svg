@@ -1,5 +1,5 @@
-<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="24" height="24" rx="12" transform="matrix(-1 0 0 1 24 0)" fill="#A1A3AA"/>
+<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="24" height="24" rx="12" transform="matrix(-1 0 0 1 24 0)" fill="currentColor"/>
 <path d="M16 15.7813L8 7.78125" stroke="#DBDCDF" stroke-width="2" stroke-linecap="round"/>
 <path d="M8 15.7812L16 7.78125" stroke="#DBDCDF" stroke-width="2" stroke-linecap="round"/>
 </svg>

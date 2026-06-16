@@ -1,3 +1,4 @@
+// 모든 API 응답의 공통 래퍼
 export interface ApiResponse<T> {
   isSuccess: boolean;
   code: string;
@@ -5,6 +6,7 @@ export interface ApiResponse<T> {
   data: T;
 }
 
+// API 응답에서 storeList 배열의 각 요소 타입
 export interface Store {
   storeId: number;
   imageUrl: string;
@@ -14,25 +16,23 @@ export interface Store {
   maxPrice: number;
   phoneNumber: string;
   rating: number;
-  pickupTimeRange: string | null;
+  pickupTimeRange: string;
 }
 
-// 실제 API 응답 구조로 수정
+// 검색 API 응답의 data 부분
 export interface SearchStoresResponse {
-  storeList: Store[]; 
-  page: number;
-  size: number;
+  storeList: Store[];
   totalElements: number;
 }
 
-// 실제 쿼리 파라미터명으로 수정
+// 검색 API 요청할 때 보내는 파라미터
 export interface StoreSearchParams {
   keyword?: string;
-  location?: string;
+  region?: string;
   pickupDate?: string; // "2026-05-12"
-  pickupTime?: string; // "12:00"
+  pickupTimes?: string[]; // ["12:00:00", "13:00:00"]
   quantity?: number;
-  budget?: number; // minPrice/maxPrice → budget
+  budget?: number; // 10000
   category?: string;
-  sort?: string; // "RECOMMEND" | "NONE"
+  sortType?: string; // "NONE"
 }
