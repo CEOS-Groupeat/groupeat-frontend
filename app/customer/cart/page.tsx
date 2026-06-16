@@ -16,7 +16,7 @@ import ToastError from '@/components/ui/ToastError';
 export default function CartPage() {
   const router = useRouter();
 
-  const { data: cartData, isLoading, isError } = useCart();
+  const { data: cartData, isLoading } = useCart();
   const { mutateAsync: deleteItem } = useDeleteCartItem();
   const { mutate: calculateCart, data: summary } = useCalculateCart();
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
@@ -98,12 +98,6 @@ export default function CartPage() {
       {isLoading ? (
         <div className="flex-1 flex items-center justify-center">
           <span className="text-sm text-text-subtle">로딩 중...</span>
-        </div>
-      ) : isError ? (
-        <div className="flex-1 flex items-center justify-center">
-          <span className="text-sm text-text-subtle">
-            장바구니를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.
-          </span>
         </div>
       ) : !cartData || cartData?.storeCarts.length === 0 ? (
         <CartEmptyState />
