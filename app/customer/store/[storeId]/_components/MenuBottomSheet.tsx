@@ -77,7 +77,7 @@ export default function MenuBottomSheet({
       (group) => group.isRequired
     );
     const hasAllRequired = requiredGroups.every(
-      (group) => selectedOptions[group.optionGroupId]?.length > 0
+      (group) => (selectedOptions[group.optionGroupId] ?? []).length > 0
     );
     return hasAllRequired && typeof quantity === 'number' && quantity > 0;
   };
