@@ -22,7 +22,7 @@ export default function CartStoreHeader({
 
   return (
     <div className="flex gap-1 pt-5 border-t border-border-default">
-      <button type="button" onClick={onSelectAll} className="flex shrink-0">
+      <button type="button" onClick={onSelectAll} aria-label={hasSelected ? '매장 선택 해제' : '매장 선택'}  aria-pressed={hasSelected} className="flex shrink-0">
         {hasSelected ? (
           <RadioOn className="size-6 text-icon-default" />
         ) : (
@@ -35,6 +35,7 @@ export default function CartStoreHeader({
       <button
         type="button"
         onClick={() => router.push(`/customer/store/${storeId}`)}
+        aria-label={`${storeName} 매장으로 이동`}
         className="flex items-center shrink-0"
       >
         <ToStoreIcon className="size-4 text-icon-subtle" />
