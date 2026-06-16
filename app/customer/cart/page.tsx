@@ -11,6 +11,7 @@ import CartHeader from './_components/CartHeader';
 import CartStoreSection from './_components/CartStoreSection';
 import CartSummaryBar from './_components/CartSummaryBar';
 import CartEmptyState from './_components/CartEmptyState';
+import ToastError from '@/components/ui/ToastError';
 
 export default function CartPage() {
   const router = useRouter();
@@ -19,6 +20,7 @@ export default function CartPage() {
   const { mutateAsync: deleteItem } = useDeleteCartItem();
   const { mutate: calculateCart, data: summary } = useCalculateCart();
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [showError, setShowError] = useState(false);
 
   useEffect(() => {
     if (selectedIds.length > 0) {
@@ -55,9 +57,14 @@ export default function CartPage() {
     }
   };
 
-  const handleDelete = (cartItemId: number) => {
-    deleteItem(cartItemId);
-    setSelectedIds((prev) => prev.filter((id) => id !== cartItemId));
+  const handleDelete = async (cartItemId: number) => {
+    try {
+      await deleteItem(cartItemId);
+      setSelectedIds((prev) => prev.filter((id) => id !== cartItemId));
+    } catch {
+      setShowError(true);
+      setTimeout(() => setShowError(false), 2000);
+    }
   };
 
   const handleDeleteAll = async () => {
@@ -65,15 +72,25 @@ export default function CartPage() {
       cartData?.storeCarts
         .flatMap((store) => store.cartItems)
         .map((item) => item.cartItemId) ?? [];
-
-    await Promise.all(allItemIds.map((id) => deleteItem(id)));
-    setSelectedIds([]);
+    try {
+      await Promise.all(allItemIds.map((id) => deleteItem(id)));
+      setSelectedIds([]);
+    } catch {
+      setShowError(true);
+      setTimeout(() => setShowError(false), 2000);
+    }
   };
 
   const totalStoreCount = cartData?.storeCarts.length ?? 0;
 
   return (
     <div className="w-full min-h-screen bg-background-default flex flex-col pb-44">
+      {showError && (
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-toast">
+          <ToastError text="삭제에 실패했어요" />
+        </div>
+      )}
+
       <CartHeader
         totalStoreCount={totalStoreCount}
         onDeleteAll={handleDeleteAll}
