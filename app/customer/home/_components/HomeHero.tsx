@@ -22,8 +22,12 @@ export default function HomeHero() {
 
         <div className="flex items-center gap-2">
           <Bell />
-          <button type="button" onClick={() => router.push('/customer/cart')}>
-          <Cart />
+          <button
+            type="button"
+            aria-label="장바구니로 이동"
+            onClick={() => router.push('/customer/cart')}
+          >
+            <Cart />
           </button>
         </div>
       </div>
