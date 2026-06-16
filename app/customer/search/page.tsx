@@ -204,7 +204,7 @@ function SearchContent() {
                 key={store.storeId}
                 store={store}
                 onClick={() =>
-                  router.push(`/customer/store/detail?storeId=${store.storeId}`)
+                  router.push(`/customer/store/${store.storeId}`)
                 }
               />
             ))}

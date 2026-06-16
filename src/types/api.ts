@@ -1,4 +1,4 @@
-import { paths } from './schema';
+import { components, paths } from './schema';
 
 export type GetResponse<T extends keyof paths> = 
   paths[T] extends { get: { responses: { 200: { content: { '*/*': infer R } } } } } ? R : never;
@@ -32,3 +32,7 @@ export type CartItem = NonNullable<StoreCart['cartItems']>[number];
 export type AddCartItemPayload = PostRequest<'/api/carts/items'>;
 export type CartCalculateResponse = PostResponse<'/api/carts/calculate'>;
 export type DeleteCartItem = DeleteResponse<'/api/carts/items/{cartItemId}'>;
+
+// Menu APIs
+export type MenuListApiResponse = GetResponse<'/api/stores/{storeId}/menus'>;
+export type Menu = components['schemas']['MenuDetailDTO'];

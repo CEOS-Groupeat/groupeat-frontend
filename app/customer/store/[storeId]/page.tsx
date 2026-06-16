@@ -21,8 +21,6 @@ export default function CustomerStoreDetailPage({
       <div className="w-full h-2 bg-border-divider" />
 
       <StoreOptions />
-
-      <FloatingCartBar storeId={params.storeId} />
     </div>
   );
 }
