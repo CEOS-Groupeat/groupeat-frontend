@@ -26,7 +26,7 @@ export default function CustomerStoreReviewPage() {
         onChange={(v) => {
           setSort(v);
         }}
-        totalCount={34}
+        totalCount={mockReviews.length}
       />
       {mockReviews.map((review) => (
         <ReviewCard key={review.reviewId} review={review} />
