@@ -1,12 +1,8 @@
 'use client';
 
+import type { RatingDistribution } from '../_types/review.type';
 import StarIcon from '@/public/icons/icon_star.svg';
 import StarHalfIcon from '@/public/icons/icon_star_half.svg';
-
-interface RatingDistribution {
-  score: number;
-  count: number;
-}
 
 interface ReviewSummaryProps {
   averageRating: number;

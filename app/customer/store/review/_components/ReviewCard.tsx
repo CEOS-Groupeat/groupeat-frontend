@@ -1,27 +1,8 @@
 'use client';
 
+import type { Review } from '../_types/review.type';
 import Image from 'next/image';
 import StarIcon from '@/public/icons/icon_star.svg';
-
-interface OwnerReply {
-  storeName: string;
-  content: string;
-  createdAt: string;
-}
-
-interface Review {
-  reviewId: number;
-  userName: string;
-  rating: number;
-  createdAt: string;
-  eventType: string;
-  headCount: number;
-  budgetPerPerson: number;
-  content: string;
-  images: string[];
-  menuTags: string[];
-  ownerReply?: OwnerReply;
-}
 
 interface ReviewCardProps {
   review: Review;
