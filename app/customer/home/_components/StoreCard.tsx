@@ -39,7 +39,7 @@ export default function StoreCard({ store }: StoreCardProps) {
 
         <div className="flex flex-col text-caption1 text-text-subtle font-normal">
           <div className="flex items-center h-[18px] gap-0.5">
-            <Star className="size-3.5" />
+            <Star className="size-3.5 text-icon-star" />
             <span>
               {store.rating} ({store.reviewCount})
             </span>
