@@ -5,6 +5,7 @@ import CloseIcon from '@/public/icons/icon_close.svg';
 import CheckboxFalseIcon from '@/public/icons/icon_checkboxFalse.svg';
 import CheckboxTrueIcon from '@/public/icons/icon_checkboxTrue.svg';
 import type { CartItem } from '../_types/cart.type';
+import { parseMenuSummary } from '../_utils/parseMenuSummary';
 
 interface CartItemProps {
   item: CartItem;
@@ -19,6 +20,8 @@ export default function CartListItem({
   onSelect,
   onDelete,
 }: CartItemProps) {
+  const { menuTitle, options } = parseMenuSummary(item.menuSummary);
+
   return (
     <div className="flex flex-col gap-3 py-4">
       <div className="flex justify-between items-start">
@@ -35,7 +38,7 @@ export default function CartListItem({
             )}
           </button>
 
-          <div className="flex items-start gap-3">
+          <div className="flex items-start gap-3 font-['Pretendard']">
             <div className="relative size-[70px] rounded-lg overflow-hidden shrink-0">
               <Image
                 src={
@@ -50,9 +53,16 @@ export default function CartListItem({
                 className="object-cover"
               />
             </div>
-            <span className="text-body font-medium text-text-default font-['Pretendard']">
-              {item.menuSummary}
-            </span>
+            <div className="flex flex-col gap-0.5">
+              <span className="text-body font-medium text-text-default">
+                {menuTitle}
+              </span>
+              {options.length > 0 && (
+                <span className="text-label1 text-text-subtle font-normal whitespace-pre-line">
+                  {options.join('\n')}
+                </span>
+              )}
+            </div>
           </div>
         </div>
 
