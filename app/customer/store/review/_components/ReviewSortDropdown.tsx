@@ -49,7 +49,7 @@ export default function ReviewSortDropdown({
                   onChange(option.value);
                   setIsOpen(false);
                 }}
-                className={`w-26 h-12 px-3 py-3.5 flex items-center transition ${
+                className={`w-full h-12 px-3 py-3.5 flex items-center transition ${
                   option.value === value
                     ? 'text-caption1 text-brand-default font-semibold'
                     : 'text-text-strong text-xs font-normal leading-4 tracking-tight'
