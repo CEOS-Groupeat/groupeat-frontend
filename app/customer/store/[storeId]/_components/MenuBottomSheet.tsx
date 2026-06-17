@@ -4,9 +4,12 @@ import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchClient } from '@/lib/fetchClient';
 import { Menu } from '@/src/types/api';
+import ToastError from '@/components/ui/ToastError';
+import ButtonDefault from '@/components/ui/ButtonDefault';
 import DownArrow from '@/public/icons/icon_arrow_down.svg';
 import UpArrow from '@/public/icons/icon_arrow_up.svg';
 import Ellipse from '@/public/icons/icon_ellipse.svg';
+import DefaultButton from '@/components/ui/ButtonDefault';
 
 interface MenuBottomSheetProps {
   storeId: string;
@@ -40,6 +43,8 @@ export default function MenuBottomSheet({
     Record<number, number[]>
   >({});
   const [expandedGroupId, setExpandedGroupId] = useState<number | null>(null);
+  const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const toggleOption = (
     groupId: number,
@@ -152,13 +157,17 @@ export default function MenuBottomSheet({
       onClose();
     },
     onError: (error: Error) => {
-      alert(`장바구니 담기 실패: ${error.message}`);
+      setErrorMessage(`장바구니 담기 실패: ${error.message}`);
+      setShowError(true);
+      setTimeout(() => setShowError(false), 2000);
     },
   });
 
   const handleSubmitCart = () => {
     if (!pickupDate || !pickupTime) {
-      alert('픽업 시간을 먼저 선택해주세요.');
+      setErrorMessage('픽업 시간을 먼저 선택해주세요.');
+      setShowError(true);
+      setTimeout(() => setShowError(false), 2000);
       return;
     }
     if (cards.length === 0) return;
@@ -259,17 +268,12 @@ export default function MenuBottomSheet({
         </div>
 
         <div className="flex items-center justify-center px-4 pb-6 mt-6 shrink-0">
-          <button
+          <ButtonDefault
             onClick={handleSaveForm}
             disabled={!isFormValid()}
-            className={`w-full h-12 rounded-lg font-bold transition-colors ${
-              isFormValid()
-                ? 'bg-brand-default text-white'
-                : 'bg-background-subtlest text-text-subtlest'
-            }`}
           >
             {mode === 'EDIT' ? '옵션 수정하기' : '메뉴 담기'}
-          </button>
+          </ButtonDefault>
         </div>
       </>
     );
@@ -362,13 +366,12 @@ export default function MenuBottomSheet({
         </div>
 
         <div className="px-4 pb-6 pt-2 shrink-0 mt-auto">
-          <button
-            className="w-full h-12 bg-brand-default text-white rounded-lg font-bold shrink-0 disabled:bg-background-subtlest disabled:text-text-subtlest"
+          <DefaultButton
             onClick={handleSubmitCart}
             disabled={addCartMutation.isPending || cards.length === 0}
           >
             {addCartMutation.isPending ? '담는 중...' : '메뉴 담기'}
-          </button>
+          </DefaultButton>
         </div>
       </div>
     );
@@ -376,6 +379,12 @@ export default function MenuBottomSheet({
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-background-dim/40">
+      {showError && (
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-toast">
+          <ToastError text={errorMessage} />
+        </div>
+      )}
+
       <div className="absolute inset-0" onClick={onClose} />
 
       <div className="relative w-full bg-background-default rounded-t-[35px] flex flex-col max-h-[80vh] overflow-hidden animate-in slide-in-from-bottom-full duration-200">

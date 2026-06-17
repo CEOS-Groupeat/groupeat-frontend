@@ -7,6 +7,7 @@ import { fetchClient } from '@/lib/fetchClient';
 import CalendarIcon from '@/public/icons/icon_calendar.svg';
 import { useCartStore } from '@/store/useCartStore';
 import { CartListResponse, StoreCart, CartItem } from '@/src/types/api';
+import DefaultButton from '@/components/ui/ButtonDefault';
 
 export default function FloatingCartBar({
   storeId,
@@ -94,12 +95,11 @@ export default function FloatingCartBar({
           </div>
         </div>
 
-        <button
-          onClick={() => router.push('/cart')}
-          className="w-full h-[52px] bg-brand-default text-white rounded-lg font-bold"
+        <DefaultButton
+          onClick={() => router.push('/customer/cart')}
         >
           장바구니 가기
-        </button>
+        </DefaultButton>
       </div>
     </div>
   );
