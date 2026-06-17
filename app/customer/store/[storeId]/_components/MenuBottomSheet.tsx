@@ -165,7 +165,7 @@ export default function MenuBottomSheet({
 
   const handleSubmitCart = () => {
     if (!pickupDate || !pickupTime) {
-      setErrorMessage('픽업 시간을 먼저 선택해주세요.');
+      setErrorMessage('픽업 날짜를 먼저 선택해주세요.');
       setShowError(true);
       setTimeout(() => setShowError(false), 2000);
       return;
@@ -268,10 +268,7 @@ export default function MenuBottomSheet({
         </div>
 
         <div className="flex items-center justify-center px-4 pb-6 mt-6 shrink-0">
-          <ButtonDefault
-            onClick={handleSaveForm}
-            disabled={!isFormValid()}
-          >
+          <ButtonDefault onClick={handleSaveForm} disabled={!isFormValid()}>
             {mode === 'EDIT' ? '옵션 수정하기' : '메뉴 담기'}
           </ButtonDefault>
         </div>
@@ -379,11 +376,7 @@ export default function MenuBottomSheet({
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-background-dim/40">
-      {showError && (
-        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-toast">
-          <ToastError text={errorMessage} />
-        </div>
-      )}
+      {showError && <ToastError text={errorMessage} />}
 
       <div className="absolute inset-0" onClick={onClose} />
 

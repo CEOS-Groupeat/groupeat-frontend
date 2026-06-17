@@ -212,7 +212,7 @@
   --z-index-modal: 800;
 
   /* Toast / Notification (900 이상) */
-  --z-index-toast: 900;
+  --z-index-toast: 1000;
   --z-index-notification: 990;
 
   /* (옵션) 절대적으로 가장 위에 있어야 하는 비상용 토큰 */
