@@ -30,8 +30,8 @@ export default function CartPage() {
 
   const handleSelect = (cartItemId: number) => {
     const targetStoreItems =
-      cartData?.storeCarts
-        .find((store) =>
+      cartData
+        ?.find((store) =>
           store.cartItems.some((item) => item.cartItemId === cartItemId)
         )
         ?.cartItems.map((item) => item.cartItemId) ?? [];
@@ -69,8 +69,8 @@ export default function CartPage() {
 
   const handleDeleteAll = async () => {
     const allItemIds =
-      cartData?.storeCarts
-        .flatMap((store) => store.cartItems)
+      cartData
+        ?.flatMap((store) => store.cartItems)
         .map((item) => item.cartItemId) ?? [];
     try {
       await Promise.all(allItemIds.map((id) => deleteItem(id)));
@@ -81,7 +81,7 @@ export default function CartPage() {
     }
   };
 
-  const totalStoreCount = cartData?.storeCarts.length ?? 0;
+  const totalStoreCount = cartData?.length ?? 0;
 
   return (
     <div className="w-full min-h-screen bg-background-default flex flex-col pb-44">
@@ -90,7 +90,8 @@ export default function CartPage() {
           <ToastError text="삭제에 실패했어요" />
         </div>
       )}
-      {/* 영준: 토스트 위치 수정 확인 부탁드립니다 */}
+      {/* 영준: 토스트 위치 수정 확인 부탁드립니다
+          승연: 수정 예정입니다 */}
 
       <CartHeader
         totalStoreCount={totalStoreCount}
@@ -100,11 +101,11 @@ export default function CartPage() {
         <div className="flex-1 flex items-center justify-center">
           <span className="text-sm text-text-subtle">로딩 중...</span>
         </div>
-      ) : !cartData || cartData?.storeCarts.length === 0 ? (
+      ) : !cartData || cartData?.length === 0 ? (
         <CartEmptyState />
       ) : (
         <>
-          {cartData?.storeCarts.map((storeCart) => (
+          {cartData?.map((storeCart) => (
             <CartStoreSection
               key={storeCart.storeId}
               storeCart={storeCart}

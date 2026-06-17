@@ -1,9 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchClient } from '@/lib/fetchClient';
+import { useCartStore } from '@/store/useCartStore';
 import type { ApiResponse, CartListResponse } from '../_types/cart.type';
+import { useEffect } from 'react';
 
 export function useCart() {
-  return useQuery({
+  const setStoreCarts = useCartStore((state) => state.setStoreCarts);
+
+  const query = useQuery({
     queryKey: ['cart'],
     queryFn: async () => {
       const res =
@@ -12,4 +16,12 @@ export function useCart() {
       return res.data?.storeCarts || [];
     },
   });
+
+  useEffect(() => {
+    if (query.data) {
+      setStoreCarts(query.data);
+    }
+  }, [query.data, setStoreCarts]);
+
+  return query;
 }
