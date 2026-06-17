@@ -12,8 +12,9 @@ export const mockReviews = [
     images: ['/images/customer_review_1.png', '/images/customer_review_2.png'],
     menuTags: ['반반 세트', '참치 김밥 + 에그마요 샌드위치 세트'],
     ownerReply: {
+      storeName: '데이브런치',
       content:
-        '세빙빙님, 맛있게 드셔주셔서 감사합니다! 오늘도 좋은 하루 보내세요:)',
+        '세빙빙님, 맛있게 드셔주셔서 감사합니다!\n오늘도 좋은 하루 보내세요:)',
       createdAt: '오늘',
     },
   },

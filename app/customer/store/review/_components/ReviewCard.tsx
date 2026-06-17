@@ -4,6 +4,7 @@ import Image from 'next/image';
 import StarIcon from '@/public/icons/icon_star.svg';
 
 interface OwnerReply {
+  storeName: string;
   content: string;
   createdAt: string;
 }
@@ -123,13 +124,13 @@ export default function ReviewCard({ review }: ReviewCardProps) {
         <div className="px-4 py-3 bg-border-divider rounded-r-2xl rounded-bl-2xl flex flex-col gap-0.5">
           <div className="flex justify-between items-center">
             <span className="text-label1 text-text-default font-semibold">
-              데이브런치
+              {review.ownerReply.storeName}
             </span>
             <span className="text-caption2 text-text-subtlest font-normal">
               {review.ownerReply.createdAt}
             </span>
           </div>
-          <p className="text-label2 text-text-strong font-normal">
+          <p className="text-label2 text-text-strong font-normal whitespace-pre-line">
             {review.ownerReply.content}
           </p>
         </div>
