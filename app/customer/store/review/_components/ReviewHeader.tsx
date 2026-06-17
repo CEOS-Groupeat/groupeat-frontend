@@ -3,9 +3,12 @@
 import { useRouter } from 'next/navigation';
 import BackIcon from '@/public/icons/icon_arrow_Left.svg';
 
-export default function ReviewHeader() {
+interface ReviewHeaderProps {
+  storeName: string;
+}
+
+export default function ReviewHeader({ storeName }: ReviewHeaderProps) {
   const router = useRouter();
-  const storeName = '데이브런치';
 
   return (
     <div className="flex w-full mt-10 p-4 relative">

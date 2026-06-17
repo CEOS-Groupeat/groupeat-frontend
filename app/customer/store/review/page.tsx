@@ -15,7 +15,7 @@ export default function CustomerStoreReviewPage() {
   const [sort, setSort] = useState('LATEST');
   return (
     <div className="w-full min-h-screen bg-background-default flex flex-col mb-10">
-      <ReviewHeader />
+      <ReviewHeader storeName={'데이브런치'} />
       <ReviewSummary
         averageRating={mockReviewSummary.averageRating}
         distribution={mockReviewSummary.distribution}
