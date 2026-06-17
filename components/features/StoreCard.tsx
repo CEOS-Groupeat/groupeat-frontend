@@ -49,7 +49,7 @@ export default function StoreCard({ store, onClick }: StoreCardProps) {
           {/* 별점 + 위치 => 위치코드는 추후 수정 예정 */}
           <div className="flex flex-col">
             <div className="flex items-center gap-0.5">
-              <Star className="size-3.5" />
+              <Star className="size-3.5 text-icon-star" />
               <span className="text-caption2 text-text-subtle">
                 {store.rating}
               </span>
