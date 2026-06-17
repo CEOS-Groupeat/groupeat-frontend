@@ -13,6 +13,11 @@ import ReviewCard from './_components/ReviewCard';
 
 export default function CustomerStoreReviewPage() {
   const [sort, setSort] = useState('LATEST');
+  const sortedReviews = [...mockReviews].sort((a, b) => {
+    if (sort === 'RATING_HIGH') return b.rating - a.rating;
+    if (sort === 'RATING_LOW') return a.rating - b.rating;
+    return 0;
+  });
   return (
     <div className="w-full min-h-screen bg-background-default flex flex-col mb-10">
       <ReviewHeader storeName={'데이브런치'} />
@@ -28,7 +33,7 @@ export default function CustomerStoreReviewPage() {
         }}
         totalCount={mockReviews.length}
       />
-      {mockReviews.map((review) => (
+      {sortedReviews.map((review) => (
         <ReviewCard key={review.reviewId} review={review} />
       ))}
     </div>

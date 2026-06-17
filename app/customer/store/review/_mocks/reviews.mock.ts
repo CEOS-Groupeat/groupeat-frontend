@@ -21,7 +21,7 @@ export const mockReviews = [
   {
     reviewId: 2,
     userName: '세빙빙',
-    rating: 5,
+    rating: 1,
     createdAt: '3일 전',
     eventType: '강연',
     headCount: 56,
@@ -40,7 +40,7 @@ export const mockReviews = [
   {
     reviewId: 3,
     userName: '세빙빙',
-    rating: 5,
+    rating: 3,
     createdAt: '3일 전',
     eventType: '강연',
     headCount: 56,
