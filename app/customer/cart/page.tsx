@@ -85,13 +85,7 @@ export default function CartPage() {
 
   return (
     <div className="w-full min-h-screen bg-background-default flex flex-col pb-44">
-      {showError && (
-        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-toast">
-          <ToastError text="삭제에 실패했어요" />
-        </div>
-      )}
-      {/* 영준: 토스트 위치 수정 확인 부탁드립니다
-          승연: 수정 예정입니다 */}
+      {showError && <ToastError text="삭제에 실패했어요" />}
 
       <CartHeader
         totalStoreCount={totalStoreCount}
