@@ -1,4 +1,3 @@
-// ReviewSummary.tsx
 'use client';
 
 import StarIcon from '@/public/icons/icon_star.svg';
@@ -52,11 +51,11 @@ export default function ReviewSummary({
           const barWidth = (count / maxCount) * 100;
 
           return (
-            <div key={score} className="h-4 relative flex items-center font-['Pretendard']">
+            <div key={score} className="h-4 relative flex items-center">
               <span className="w-[19px] text-caption2 font-medium text-text-default">
                 {score}점
               </span>
-              <div className="relative w-30 h-1 mx-2.5 bg-border-default rounded-full px-2.5">
+              <div className="relative w-30 h-1 mx-2.5 bg-border-default rounded-full">
                 <div
                   className="absolute left-0 top-0 h-1 bg-brand-default rounded-full"
                   style={{ width: `${barWidth}%` }}

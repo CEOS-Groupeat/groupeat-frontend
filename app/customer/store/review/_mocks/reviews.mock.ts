@@ -59,7 +59,7 @@ export const mockReviews = [
 ];
 
 export const mockReviewSummary = {
-  averageRating: 3.2,
+  averageRating: 4.7,
   distribution: [
     { score: 5, count: 30 },
     { score: 4, count: 1 },
