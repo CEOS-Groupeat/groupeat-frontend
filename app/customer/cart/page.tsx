@@ -90,6 +90,7 @@ export default function CartPage() {
           <ToastError text="삭제에 실패했어요" />
         </div>
       )}
+      {/* 영준: 토스트 위치 수정 확인 부탁드립니다 */}
 
       <CartHeader
         totalStoreCount={totalStoreCount}

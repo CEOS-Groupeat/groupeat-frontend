@@ -6,9 +6,10 @@ export function useCart() {
   return useQuery({
     queryKey: ['cart'],
     queryFn: async () => {
-      const res = await fetchClient<ApiResponse<CartListResponse>>('/api/carts');
+      const res =
+        await fetchClient<ApiResponse<CartListResponse>>('/api/carts');
       if (!res.isSuccess) throw new Error(res.message);
-      return res.data;
+      return res.data?.storeCarts || [];
     },
   });
 }

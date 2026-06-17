@@ -313,11 +313,7 @@ function CustomerSignupForm() {
 
       <div className="fixed bottom-6 left-0 w-full px-4">
         <div className="w-full flex flex-col gap-3.5 justify-center items-center">
-          {toastMessage && (
-            <div className="gap-3.5 animate-in fade-in slide-in-from-top-5 duration-300">
-              <ToastError text={toastMessage} />
-            </div>
-          )}
+          {toastMessage && <ToastError text={toastMessage} />}
           <DefaultButton
             onClick={handleSubmitClick}
             disabled={submitSignupMutation.isPending}

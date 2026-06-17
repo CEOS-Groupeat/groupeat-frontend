@@ -4,9 +4,9 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { fetchClient } from '@/lib/fetchClient';
-import CalendarIcon from '@/public/icons/icon_calendar.svg';
 import { useCartStore } from '@/store/useCartStore';
 import { CartListResponse, StoreCart, CartItem } from '@/src/types/api';
+import OrderSummaryBar from '@/components/cart/OrderSummaryBar';
 
 export default function FloatingCartBar({
   storeId,
@@ -52,10 +52,8 @@ export default function FloatingCartBar({
     0
   );
 
-  const firstItemName =
-    currentStoreCart.cartItems[0].menuSummary?.split(' ')[0] || '메뉴';
-  const summaryText =
-    currentStoreCart.cartItems.length > 1
+  const firstItemName = currentStoreCart.cartItems[0].menuSummary?.split(' ')[0] || '메뉴';
+  const summaryText = currentStoreCart.cartItems.length > 1
       ? `${firstItemName} 외 ${currentStoreCart.cartItems.length - 1}건`
       : firstItemName;
 
@@ -66,41 +64,14 @@ export default function FloatingCartBar({
   const finalTotal = currentStoreCart.storeTotalPrice || 0;
 
   return (
-    <div className="fixed bottom-0 left-0 w-full z-40 animate-in slide-in-from-bottom-full duration-300">
-      <div className="bg-white rounded-t-[35px] shadow-[0_-4px_20px_rgba(0,0,0,0.08)] px-4 pt-5 pb-8">
-        <div className="flex items-center gap-1.5 pb-4 pl-1">
-          <CalendarIcon className="w-4 h-4 text-icon-subtlest" />
-          <span className="text-label2 text-text-subtlest font-medium">
-            {pickupDateTime || '픽업 일시 미지정'}
-          </span>
-        </div>
-
-        <div className="flex justify-between items-end pb-5 pl-1 pr-1">
-          <div className="flex flex-col gap-1.5">
-            <p className="text-body text-text-default font-medium">
-              {summaryText}
-            </p>
-            <p className="text-body font-bold text-brand-default">
-              총 {totalQuantity}개
-            </p>
-          </div>
-          <div className="flex flex-col items-end gap-1">
-            <p className="text-caption1 text-text-subtlest line-through">
-              {originalTotal.toLocaleString()}원
-            </p>
-            <p className="text-headline3 font-bold text-text-default">
-              {finalTotal.toLocaleString()}원
-            </p>
-          </div>
-        </div>
-
-        <button
-          onClick={() => router.push('/cart')}
-          className="w-full h-[52px] bg-brand-default text-white rounded-lg font-bold"
-        >
-          장바구니 가기
-        </button>
-      </div>
-    </div>
+    <OrderSummaryBar
+      pickupDateTime={pickupDateTime || '픽업 일시 미지정'}
+      summaryText={summaryText}
+      totalQuantity={totalQuantity}
+      originalPrice={originalTotal}
+      finalPrice={finalTotal}
+      buttonText="장바구니 가기"
+      onButtonClick={() => router.push('/customer/cart')}
+    />
   );
 }

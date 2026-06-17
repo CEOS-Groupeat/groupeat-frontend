@@ -211,19 +211,14 @@ export default function StoreOptions() {
                           {quantityInCart > 0 ? (
                             <button
                               onClick={() => handleMenuSelect(menu)}
-                              className="relative z-10 w-6 h-6 flex items-center justify-center text-white text-xs font-semibold"
-                              style={{
-                                borderRadius: 'var(--Radius-full, 999px)',
-                                background: 'var(--brand-default, #F45C33)',
-                                boxShadow: '0 0 13px 0 rgba(0, 0, 0, 0.20)',
-                              }}
+                              className="relative z-10 w-6.5 h-6.5 flex items-center justify-center text-label2 rounded-full bg-brand-default text-white"
                             >
                               {quantityInCart}
                             </button>
                           ) : (
                             <button
                               onClick={() => handleMenuSelect(menu)}
-                              className="relative z-10 w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-sm text-lg leading-none"
+                              className="relative z-10 w-6.5 h-6.5 bg-white rounded-full flex items-center justify-center shadow-sm text-lg leading-none"
                             >
                               +
                             </button>
