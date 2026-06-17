@@ -5,7 +5,6 @@ import type {
   CalculatedCartResponse,
   CalculatedCartItem,
   StoreCart,
-  CartItem,
 } from '../_types/cart.type';
 
 interface CartSummaryBarProps {
@@ -24,9 +23,9 @@ export default function CartSummaryBar({
   const firstCalculatedItem: CalculatedCartItem = summary.calculatedItems[0];
   const firstItemName =
     cartData
-      ?.find((store: StoreCart) => store.storeId === summary.storeId)
+      ?.find((store) => store.storeId === summary.storeId)
       ?.cartItems.find(
-        (item: CartItem) => item.cartItemId === firstCalculatedItem.cartItemId
+        (item) => item.cartItemId === firstCalculatedItem.cartItemId
       )?.menuSummary ?? '';
 
   const summaryText =
