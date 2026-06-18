@@ -1,7 +1,7 @@
 'use client';
 
 import { CATEGORIES } from '@/app/customer/search/_constants/category';
-import CategoryImage from '@/public/iconscategory_placeholder.svg';
+import CategoryImage from '@/public/icons/category_placeholder.svg';
 
 interface CategoryFilterProps {
   value: string | undefined;
@@ -33,7 +33,7 @@ export default function CategoryFilter({
                 : 'bg-background-default outline outline-1 outline-offset-[-1px] outline-border-default'
             }`}
           >
-            <CategoryImage aria-hidden="true"/>
+            <CategoryImage aria-hidden="true" />
             <span
               className={`text-label1 font-['Pretendard'] shrink ${
                 isSelected
