@@ -33,7 +33,7 @@ export default function CategoryFilter({
                 : 'bg-background-default outline outline-1 outline-offset-[-1px] outline-border-default'
             }`}
           >
-            <CategoryImage aria-hidden="true" />
+            <CategoryImage className="w-9 h-9" aria-hidden="true" />
             <span
               className={`text-label1 font-['Pretendard'] shrink ${
                 isSelected
