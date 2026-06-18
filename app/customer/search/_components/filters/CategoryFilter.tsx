@@ -1,8 +1,7 @@
 'use client';
 
-import Image from 'next/image';
 import { CATEGORIES } from '@/app/customer/search/_constants/category';
-import categoryImage from '@/public/images/image_category.png';
+import CategoryImage from '@/public/iconscategory_placeholder.svg';
 
 interface CategoryFilterProps {
   value: string | undefined;
@@ -27,20 +26,13 @@ export default function CategoryFilter({
             key={category.id}
             type="button"
             onClick={() => handleToggle(category.id)}
-            className={`w-[107px] h-[78px] px-3 py-2 rounded-lg flex flex-col items-center gap-2.5 shrink-0 transition-colors ${
+            className={`w-[107px] h-[74px] px-3 py-2 rounded-lg flex flex-col items-center gap-0.5 shrink-0 transition-colors ${
               isSelected
                 ? 'bg-brand-background'
                 : 'bg-background-default outline outline-1 outline-offset-[-1px] outline-border-default'
             }`}
           >
-            {/* 카테고리 이미지 — 추후 실제 이미지로 교체 */}
-            <Image
-              src={categoryImage}
-              alt="category"
-              width={32}
-              height={32}
-              className="h-auto shrink-0"
-            />
+            <CategoryImage />
             <span
               className={`text-label1 font-['Pretendard'] shrink ${
                 isSelected
