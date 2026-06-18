@@ -26,13 +26,14 @@ export default function CategoryFilter({
             key={category.id}
             type="button"
             onClick={() => handleToggle(category.id)}
+            aria-pressed={isSelected}
             className={`w-[107px] h-[74px] px-3 py-2 rounded-lg flex flex-col items-center gap-0.5 shrink-0 transition-colors ${
               isSelected
                 ? 'bg-brand-background'
                 : 'bg-background-default outline outline-1 outline-offset-[-1px] outline-border-default'
             }`}
           >
-            <CategoryImage />
+            <CategoryImage aria-hidden="true"/>
             <span
               className={`text-label1 font-['Pretendard'] shrink ${
                 isSelected
