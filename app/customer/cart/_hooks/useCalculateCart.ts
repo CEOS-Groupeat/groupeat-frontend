@@ -1,11 +1,11 @@
 import { useMutation } from '@tanstack/react-query';
 import { fetchClient } from '@/lib/fetchClient';
-import type { ApiResponse, CalculateCartRequest, CalculatedCartResponse } from '../_types/cart.type';
+import type { CalculateCartRequest, CartCalculateResponse } from '@/src/types/api';
 
 export function useCalculateCart() {
   return useMutation({
     mutationFn: async (request: CalculateCartRequest) => {
-      const res = await fetchClient<ApiResponse<CalculatedCartResponse>>('/api/carts/calculate', {
+      const res = await fetchClient<CartCalculateResponse>('/api/carts/calculate', {
         method: 'POST',
         body: JSON.stringify(request),
       });
