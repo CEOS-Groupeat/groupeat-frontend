@@ -19,12 +19,14 @@ export default function CartStoreSection({
   onSelectAll,
   onDelete,
 }: CartStoreSectionProps) {
-  const hasSelected = (storeCart.cartItems ?? []).some((item) =>
-    selectedIds.includes(item.cartItemId ?? 0)
-  );
+  const hasSelected = (storeCart.cartItems ?? [])
+    .filter((item) => item.cartItemId !== undefined)
+    .some((item) => selectedIds.includes(item.cartItemId!));
 
   const handleSelectAll = () => {
-    const ids = (storeCart.cartItems ?? []).map((item) => item.cartItemId ?? 0);
+    const ids = (storeCart.cartItems ?? [])
+      .filter((item) => item.cartItemId !== undefined)
+      .map((item) => item.cartItemId!);
     onSelectAll(ids);
   };
 
@@ -42,7 +44,10 @@ export default function CartStoreSection({
           <CartListItem
             key={item.cartItemId}
             item={item}
-            isSelected={selectedIds.includes(item.cartItemId ?? 0)}
+            isSelected={
+              item.cartItemId !== undefined &&
+              selectedIds.includes(item.cartItemId!)
+            }
             onSelect={onSelect}
             onDelete={onDelete}
           />
