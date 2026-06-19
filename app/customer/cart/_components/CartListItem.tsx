@@ -4,7 +4,7 @@ import Image from 'next/image';
 import CloseIcon from '@/public/icons/icon_close.svg';
 import CheckboxFalseIcon from '@/public/icons/icon_checkboxFalse.svg';
 import CheckboxTrueIcon from '@/public/icons/icon_checkboxTrue.svg';
-import type { CartItem } from '../_types/cart.type';
+import type { CartItem } from '@/src/types/api';
 import { parseMenuSummary } from '../_utils/parseMenuSummary';
 
 interface CartItemProps {
@@ -20,7 +20,7 @@ export default function CartListItem({
   onSelect,
   onDelete,
 }: CartItemProps) {
-  const { menuTitle, options } = parseMenuSummary(item.menuSummary);
+  const { menuTitle, options } = parseMenuSummary(item.menuSummary ?? '');
 
   return (
     <div className="flex flex-col gap-3 py-4">
@@ -28,7 +28,7 @@ export default function CartListItem({
         <div className="flex items-start gap-1">
           <button
             type="button"
-            onClick={() => onSelect(item.cartItemId)}
+            onClick={() => onSelect(item.cartItemId ?? 0)}
             className="size-6 flex items-center justify-center shrink-0"
           >
             {isSelected ? (
@@ -48,7 +48,7 @@ export default function CartListItem({
                     ? item.imageUrl
                     : '/images/image_logo.png'
                 }
-                alt={item.menuSummary}
+                alt={item.menuSummary ?? ''}
                 fill
                 className="object-cover"
               />
@@ -68,7 +68,7 @@ export default function CartListItem({
 
         <button
           type="button"
-          onClick={() => onDelete(item.cartItemId)}
+          onClick={() => onDelete(item.cartItemId ?? 0)}
           className="shrink-0"
         >
           <CloseIcon className="size-4 text-icon-default" />
@@ -81,7 +81,7 @@ export default function CartListItem({
             수량
           </span>
           <span className="text-caption1 font-medium text-text-default">
-            {item.quantity}개
+            {item.quantity ?? 0}개
           </span>
         </div>
 
@@ -90,7 +90,7 @@ export default function CartListItem({
             1인당 금액
           </span>
           <span className="text-caption1 font-medium text-text-default">
-            {item.unitPrice.toLocaleString()}원
+            {(item.unitPrice ?? 0).toLocaleString()}원
           </span>
         </div>
 
@@ -99,7 +99,7 @@ export default function CartListItem({
             할인 금액
           </span>
           <span className="text-xs font-semibold text-brand-strong">
-            -{item.discountAmount.toLocaleString()}원
+            -{(item.discountAmount ?? 0).toLocaleString()}원
           </span>
         </div>
 
@@ -109,10 +109,11 @@ export default function CartListItem({
           </span>
           <div className="flex items-center gap-1">
             <span className="text-xs font-normal leading-4 text-text-subtlest line-through">
-              {(item.unitPrice * item.quantity).toLocaleString()}원
+              {((item.unitPrice ?? 0) * (item.quantity ?? 0)).toLocaleString()}
+              원
             </span>
             <span className="text-body font-semibold text-text-default">
-              {item.finalPrice.toLocaleString()}원
+              {(item.finalPrice ?? 0).toLocaleString()}원
             </span>
           </div>
         </div>

@@ -2,9 +2,9 @@
 
 import CartStoreHeader from './CartStoreHeader';
 import CartListItem from './CartListItem';
-import type { StoreCart } from '../_types/cart.type';
+import type { StoreCart } from '@/src/types/api';
 
-interface CartStoreGroupProps {
+interface CartStoreSectionProps {
   storeCart: StoreCart;
   selectedIds: number[];
   onSelect: (cartItemId: number) => void;
@@ -12,37 +12,37 @@ interface CartStoreGroupProps {
   onDelete: (cartItemId: number) => void;
 }
 
-export default function CartStoreGroup({
+export default function CartStoreSection({
   storeCart,
   selectedIds,
   onSelect,
   onSelectAll,
   onDelete,
-}: CartStoreGroupProps) {
-  const hasSelected = storeCart.cartItems.some((item) =>
-    selectedIds.includes(item.cartItemId)
+}: CartStoreSectionProps) {
+  const hasSelected = (storeCart.cartItems ?? []).some((item) =>
+    selectedIds.includes(item.cartItemId ?? 0)
   );
 
   const handleSelectAll = () => {
-    const ids = storeCart.cartItems.map((item) => item.cartItemId);
+    const ids = (storeCart.cartItems ?? []).map((item) => item.cartItemId ?? 0);
     onSelectAll(ids);
   };
 
   return (
     <div className="flex flex-col px-4">
       <CartStoreHeader
-        storeId={storeCart.storeId}
-        storeName={storeCart.storeName}
+        storeId={storeCart.storeId ?? 0}
+        storeName={storeCart.storeName ?? ''}
         hasSelected={hasSelected}
         onSelectAll={handleSelectAll}
       />
 
       <div className="flex flex-col">
-        {storeCart.cartItems.map((item) => (
+        {(storeCart.cartItems ?? []).map((item) => (
           <CartListItem
             key={item.cartItemId}
             item={item}
-            isSelected={selectedIds.includes(item.cartItemId)}
+            isSelected={selectedIds.includes(item.cartItemId ?? 0)}
             onSelect={onSelect}
             onDelete={onDelete}
           />
