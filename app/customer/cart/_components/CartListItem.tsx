@@ -33,6 +33,7 @@ export default function CartListItem({
             }
             className="size-6 flex items-center justify-center shrink-0"
             disabled={item.cartItemId === undefined}
+            aria-label={`${item.menuSummary ?? '메뉴'} 선택`}
           >
             {isSelected ? (
               <CheckboxTrueIcon className="text-icon-default" />
@@ -76,6 +77,7 @@ export default function CartListItem({
           }
           className="shrink-0"
           disabled={item.cartItemId === undefined}
+          aria-label={`${item.menuSummary ?? '메뉴'} 삭제`}
         >
           <CloseIcon className="size-4 text-icon-default" />
         </button>
