@@ -58,7 +58,7 @@ export default function HomePage() {
               <button
                 type="button"
                 onClick={() => handleLogin('kakao', 'CUSTOMER')}
-                className="flex flex-col items-center transition-opacity"
+                className="flex flex-col items-center transition-opacity cursor-pointer"
               >
                 <KakaoLoginButton />
                 <p className="text-label1 text-text-subtle font-medium">
@@ -69,7 +69,7 @@ export default function HomePage() {
               <button
                 type="button"
                 onClick={() => handleLogin('naver', 'CUSTOMER')}
-                className="flex flex-col items-center transition-opacity"
+                className="flex flex-col items-center transition-opacity cursor-pointer"
               >
                 <NaverLoginButton />
                 <p className="text-label1 text-text-subtle font-medium">
@@ -80,7 +80,7 @@ export default function HomePage() {
               <button
                 type="button"
                 onClick={() => handleLogin('google', 'CUSTOMER')}
-                className="flex flex-col items-center transition-opacity"
+                className="flex flex-col items-center transition-opacity cursor-pointer"
               >
                 <GoogleLoginButton />
                 <p className="text-label1 text-text-subtle font-medium">구글</p>

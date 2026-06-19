@@ -4,20 +4,24 @@ interface SearchFieldProps {
   value: string;
   onChange: (value: string) => void;
   onSearch: (keyword: string) => void;
+  onFocus?: () => void;
   placeholder?: string;
   variant?: 'filled' | 'outlined';
   children?: React.ReactNode;
   showIcon?: boolean;
+  autoFocus?: boolean;
 }
 
 export default function SearchField({
   value,
   onChange,
   onSearch,
+  onFocus,
   placeholder,
   variant = 'outlined',
   children,
   showIcon,
+  autoFocus,
 }: SearchFieldProps) {
   return (
     <div
@@ -33,12 +37,14 @@ export default function SearchField({
         <input
           value={value}
           onChange={(e) => onChange(e.target.value)}
+          onFocus={onFocus}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && value.trim()) {
               onSearch(value.trim());
             }
           }}
           placeholder={placeholder}
+          autoFocus={autoFocus}
           className="w-full outline-none text-body text-text-default placeholder:text-text-placeholder"
         />
       </div>

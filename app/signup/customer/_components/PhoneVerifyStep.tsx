@@ -47,6 +47,7 @@ export default function PhoneVerifyStep() {
       }),
     onSuccess: () => {
       alert('인증번호가 발송되었습니다. ');
+      
       setIsError(false); // 재발송 시 기존 에러 초기화
       setCode('');
     },

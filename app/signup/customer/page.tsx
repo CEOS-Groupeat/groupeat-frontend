@@ -2,7 +2,7 @@
 'use client';
 
 // app/signup/customer/page.tsx
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
 import SignupHeader from '@/components/signup/SignupHeader';
@@ -29,7 +29,7 @@ interface Term {
   version: string;
 }
 
-export default function CustomerSignupPage() {
+function CustomerSignupForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -179,10 +179,10 @@ export default function CustomerSignupPage() {
               value={name}
               onChange={(e) => {
                 setName(e.target.value);
-                if (isNameError) setIsNameError(false); // 타이핑 시 에러 해제
+                if (isNameError) setIsNameError(false);
               }}
               onBlur={() => {
-                if (name.trim() === '') setIsNameError(true); // 포커스 풀릴 때 빈 값이면 에러 트리거
+                if (name.trim() === '') setIsNameError(true);
               }}
               className={`w-full h-11 p-3 pl-4 rounded-lg border border-px transition-colors ${
                 isNameError
@@ -313,13 +313,8 @@ export default function CustomerSignupPage() {
 
       <div className="fixed bottom-6 left-0 w-full px-4">
         <div className="w-full flex flex-col gap-3.5 justify-center items-center">
-          {toastMessage && (
-            <div className="gap-3.5 animate-in fade-in slide-in-from-top-5 duration-300">
-              <ToastError text={toastMessage} />
-            </div>
-          )}
+          {toastMessage && <ToastError text={toastMessage} />}
           <DefaultButton
-            // 수정 4: 변경된 클릭 핸들러 연결 및 disabled 조건 최소화
             onClick={handleSubmitClick}
             disabled={submitSignupMutation.isPending}
           >
@@ -328,5 +323,19 @@ export default function CustomerSignupPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function CustomerSignupPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex w-full min-h-screen items-center justify-center bg-white text-text-default">
+          로딩 중...
+        </div>
+      }
+    >
+      <CustomerSignupForm />
+    </Suspense>
   );
 }

@@ -1,0 +1,33 @@
+# .coderabbit.yaml
+
+# AI가 리뷰 코멘트를 남길 기본 언어
+language: 'ko-KR'
+
+reviews:
+  # AI의 어조 설정: "chill"(부드러운 조언) 또는 "assertive"(엄격한 지적)
+  profile: 'assertive'
+  request_changes_workflow: false
+  high_level_summary: true
+
+  auto_review:
+    base_branches:
+      - 'develop'
+      # 만약 모든 브랜치를 대상으로 하려면 - ".*" 를 입력하면 됩니다.
+
+# 특정 경로나 파일은 리뷰 대상에서 제외
+ignore:
+  - 'public/**'
+  - '*.config.js'
+  - 'node_modules/**'
+  - 'dist/**'
+
+# 프로젝트 맞춤형 커스텀 프롬프트 (여기에 작성해야 정상 인식됩니다)
+instructions: |
+  Along with standard code quality checks, please strictly follow these project-specific rules:
+
+  1. React Hooks: Ensure dependency arrays in React Hooks (e.g., useEffect, useCallback) are correctly specified and no necessary dependencies are missing.
+  2. Next.js App Router: Verify the proper separation and usage of Client Components and Server Components. Ensure 'use client' directives are used only when necessary.
+  3. TypeScript Strictness: Strictly avoid the use of 'any' types. Ensure that variables, props, and return values have explicitly defined types or interfaces.
+  4. State Management (Zustand): Check for anti-patterns in state management that could trigger unnecessary re-renders.
+  5. Maintainability: Suggest more readable, concise, and modular code if a function is too long or complex.
+  6. Error Handling & Edge Cases: Detect and flag any missing error handling for abnormal user behaviors, invalid inputs, or unexpected edge cases. Ensure appropriate safeguards (e.g., try-catch blocks, form validations, or fallback UIs) are implemented.
