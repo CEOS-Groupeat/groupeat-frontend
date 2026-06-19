@@ -21,6 +21,7 @@ export default function HomeHero() {
         </div>
 
         <div className="flex items-center gap-2">
+          {/* 여기 stroke옵션 지정해줘야할것같음 */}
           <Bell />
           <button
             type="button"

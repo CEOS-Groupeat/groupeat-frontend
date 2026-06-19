@@ -89,6 +89,7 @@
   --color-gray-100: #000000;
 
   /* Green */
+  --color-green-5: #ecf8f0;
   --color-green-10: #defbe6;
   --color-green-20: #a7f0ba;
   --color-green-30: #6fdc8c;
@@ -166,7 +167,7 @@
   --color-status-danger: var(--color-red-50);
   --color-status-danger-bg: var(--color-red-10);
   --color-status-success: var(--color-green-60);
-  --color-status-success-bg: var(--color-green-10);
+  --color-status-success-bg: var(--color-green-5);
   --color-status-info: var(--color-blue-60);
   --color-status-info-bg: var(--color-blue-10);
   --color-status-warning: var(--color-yellow-60);
