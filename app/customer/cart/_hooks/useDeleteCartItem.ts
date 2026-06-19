@@ -1,13 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchClient } from '@/lib/fetchClient';
-import { ApiResponse } from '@/types/store';
+import type { DeleteCartItem } from '@/src/types/api';
 
 export function useDeleteCartItem() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (cartItemId: number) => {
-      const res = await fetchClient<ApiResponse<string>>(
+      const res = await fetchClient<DeleteCartItem>(
         `/api/carts/items/${cartItemId}`,
         {
           method: 'DELETE',

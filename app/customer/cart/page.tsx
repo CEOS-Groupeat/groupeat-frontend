@@ -32,9 +32,9 @@ export default function CartPage() {
     const targetStoreItems =
       cartData
         ?.find((store) =>
-          store.cartItems.some((item) => item.cartItemId === cartItemId)
+          (store.cartItems ?? []).some((item) => item.cartItemId === cartItemId)
         )
-        ?.cartItems.map((item) => item.cartItemId) ?? [];
+        ?.cartItems?.map((item) => item.cartItemId ?? 0) ?? [];
 
     setSelectedIds((prev) => {
       if (prev.includes(cartItemId)) {
@@ -70,8 +70,9 @@ export default function CartPage() {
   const handleDeleteAll = async () => {
     const allItemIds =
       cartData
-        ?.flatMap((store) => store.cartItems)
-        .map((item) => item.cartItemId) ?? [];
+        ?.flatMap((store) => store.cartItems ?? [])
+        .filter((item) => item.cartItemId !== undefined)
+        .map((item) => item.cartItemId!) ?? [];
     try {
       await Promise.all(allItemIds.map((id) => deleteItem(id)));
       setSelectedIds([]);
@@ -101,7 +102,7 @@ export default function CartPage() {
         <>
           {cartData?.map((storeCart) => (
             <CartStoreSection
-              key={storeCart.storeId}
+              key={storeCart.storeId ?? 0}
               storeCart={storeCart}
               selectedIds={selectedIds}
               onSelect={handleSelect}
