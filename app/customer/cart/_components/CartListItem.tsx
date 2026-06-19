@@ -28,8 +28,11 @@ export default function CartListItem({
         <div className="flex items-start gap-1">
           <button
             type="button"
-            onClick={() => onSelect(item.cartItemId ?? 0)}
+            onClick={() =>
+              item.cartItemId !== undefined && onSelect(item.cartItemId)
+            }
             className="size-6 flex items-center justify-center shrink-0"
+            disabled={item.cartItemId === undefined}
           >
             {isSelected ? (
               <CheckboxTrueIcon className="text-icon-default" />
@@ -68,8 +71,11 @@ export default function CartListItem({
 
         <button
           type="button"
-          onClick={() => onDelete(item.cartItemId ?? 0)}
+          onClick={() =>
+            item.cartItemId !== undefined && onDelete(item.cartItemId)
+          }
           className="shrink-0"
+          disabled={item.cartItemId === undefined}
         >
           <CloseIcon className="size-4 text-icon-default" />
         </button>
