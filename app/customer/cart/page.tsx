@@ -71,7 +71,8 @@ export default function CartPage() {
     const allItemIds =
       cartData
         ?.flatMap((store) => store.cartItems ?? [])
-        .map((item) => item.cartItemId ?? 0) ?? [];
+        .filter((item) => item.cartItemId !== undefined)
+        .map((item) => item.cartItemId!) ?? [];
     try {
       await Promise.all(allItemIds.map((id) => deleteItem(id)));
       setSelectedIds([]);
