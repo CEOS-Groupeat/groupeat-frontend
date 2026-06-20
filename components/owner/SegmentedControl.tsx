@@ -39,7 +39,7 @@ export default function SegmentedControl({
       {items.map((item) => (
         <ToggleGroup.Item
           key={item.value}
-          className={ITEM_BASE_CLASSES}
+          className={`${ITEM_BASE_CLASSES} group`}
           value={item.value}
           aria-label={`${item.label} 탭`}
         >
@@ -47,7 +47,7 @@ export default function SegmentedControl({
             {item.label}
           </span>
           {item.count !== undefined && (
-            <span className="font-semibold data-[state=on]:text-text-subtle">
+            <span className="font-semibold group-data-[state=on]:text-text-subtle">
               {item.count}
             </span>
           )}
