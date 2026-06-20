@@ -185,6 +185,7 @@
   --color-background-subtlest: var(--color-gray-15);
   --color-background-dim: #1717198c;
   --color-background-toast: #171719d9;
+  --color-background-transparent: #f0f0f1cc;
 
   --color-icon-default: var(--color-gray-70);
   --color-icon-active: var(--color-orange-50);
