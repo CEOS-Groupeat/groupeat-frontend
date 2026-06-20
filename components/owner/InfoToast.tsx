@@ -12,7 +12,7 @@ export default function InfoToast() {
     fixed bottom-24 left-4 right-4 animate-in slide-in-from-bottom-4 fade-in duration-300`}
     >
       <div className="flex justify-center items-center gap-1.5">
-        <Notice className="size-4" />
+        <Notice className="size-4 text-icon-disable" />
         <span className="text-label2 text-text-default font-medium">
           주문 유의사항
         </span>
