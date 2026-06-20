@@ -195,6 +195,10 @@
   --color-icon-star: var(--color-yellow-25);
   --color-icon-subtlest: var(--color-gray-30);
 
+  /* Label */
+  --color-label-normal: #17171a;
+  --color-label-light: #5b5c63;
+
   --color-hover: #00000008;
 
   --z-index-hide: -1;
