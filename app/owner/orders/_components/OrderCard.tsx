@@ -1,6 +1,10 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
 import RightChevronIcon from '@/public/icons/icon-right_chevron.svg';
 
 interface OrderCardProps {
+  orderId: number;
   status: 'pending' | 'confirmed' | 'past';
   isReorder: boolean;
   groupName: string;
@@ -10,13 +14,13 @@ interface OrderCardProps {
   paymentMethod: 'PREPAID' | 'ON_SITE';
   items: { menuName: string; quantity: number }[];
   //orderDate: string; (추후 구현 예정)
-  pastStatus?: 'REJECTED' | 'CANCELLED' | 'PICKUP_COMPLETED';
+  pastStatus?: 'REJECTED' | 'CANCELLED' | 'COMPLETED';
   onReject?: () => void;
   onApprove?: () => void;
-  onDetailClick?: () => void; // (추후 구현 예정)
 }
 
 export default function OrderCard({
+  orderId,
   status,
   isReorder,
   groupName,
@@ -29,12 +33,11 @@ export default function OrderCard({
   pastStatus,
   onReject,
   onApprove,
-  onDetailClick,
 }: OrderCardProps) {
+  const router = useRouter();
+
   return (
-    <div
-      className={`w-full px-3 bg-background-default rounded-xl shadow-[6px_6px_54px_0px_rgba(0,0,0,0.05)] outline outline-1 outline-offset-[-1px] outline-border-subtle flex flex-col overflow-hidden font-['Pretendard'] ${status === 'pending' ? 'py-[14px]' : 'py-4'}`}
-    >
+    <div className="w-full px-3 bg-background-default rounded-xl shadow-[6px_6px_54px_0px_rgba(0,0,0,0.05)] outline outline-1 outline-offset-[-1px] outline-border-subtle flex flex-col overflow-hidden font-['Pretendard'] py-[14px]">
       {/* 뱃지 영역 */}
       <div className="flex items-center gap-2">
         {isReorder && (
@@ -50,9 +53,7 @@ export default function OrderCard({
       </div>
 
       {/* 주문 정보 영역 */}
-      <div
-        className={`flex flex-col gap-1.5 ${status === 'pending' ? 'mt-2' : 'mt-2.5'}`}
-      >
+      <div className="flex flex-col gap-1.5 mt-2">
         <div className="flex justify-between items-center">
           <div className="flex flex-col">
             <span className="text-caption1 font-normal text-text-subtlest">
@@ -64,7 +65,7 @@ export default function OrderCard({
           </div>
           <button
             type="button"
-            onClick={onDetailClick}
+            onClick={() => router.push(`/owner/orders/${orderId}`)}
             aria-label="주문 상세 보기"
           >
             <RightChevronIcon className="size-5 text-icon-subtlest" />

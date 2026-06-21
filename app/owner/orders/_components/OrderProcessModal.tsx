@@ -1,4 +1,4 @@
-import DialogModal from '../ui/DialogModal';
+import DialogModal from '../../../../components/ui/DialogModal';
 import InfoIcon from '@/public/icons/icon_modal_info.svg';
 
 interface OrderProcessModalProps {
