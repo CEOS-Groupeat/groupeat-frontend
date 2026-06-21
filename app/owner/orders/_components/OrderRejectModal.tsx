@@ -1,4 +1,4 @@
-import DialogModal from '../ui/DialogModal';
+import DialogModal from '../../../../components/ui/DialogModal';
 import AlertIcon from '@/public/icons/icon_modal_alert.svg';
 
 interface OrderRejectModalProps {

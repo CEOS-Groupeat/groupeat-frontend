@@ -1,12 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import OwnerOrderHeader from '@/components/owner/OwnerOrderHeader';
-import SegmentedControl from '@/components/owner/SegmentedControl';
-import OrderEmptyState from '@/components/owner/OrderEmptyState';
-import InfoToast from '@/components/owner/InfoToast';
-import OrderProcessModal from '@/components/owner/OrderProcessModal';
-import OrderRejectModal from '@/components/owner/OrderRejectModal';
+import OwnerOrderHeader from '@/app/owner/orders/_components/OwnerOrderHeader';
+import SegmentedControl from '@/app/owner/orders/_components/SegmentedControl';
+import OrderEmptyState from '@/app/owner/orders/_components/OrderEmptyState';
+import InfoToast from '@/app/owner/orders/_components/InfoToast';
+import OrderProcessModal from '@/app/owner/orders/_components/OrderProcessModal';
+import OrderRejectModal from '@/app/owner/orders/_components/OrderRejectModal';
 import OrderList from './_components/OrderList';
 
 import { MOCK_ORDERS } from '@/app/owner/orders/_constants/orders.mock';
