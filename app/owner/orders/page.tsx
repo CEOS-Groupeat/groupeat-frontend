@@ -12,9 +12,18 @@ import OrderList from './_components/OrderList';
 import { MOCK_ORDERS } from '@/app/owner/orders/_constants/orders.mock';
 
 const INITIAL_COUNTS = [
-  { value: 'pending', count: 3 },
-  { value: 'confirmed', count: 0 },
-  { value: 'past', count: 0 },
+  {
+    value: 'pending',
+    count: MOCK_ORDERS.filter((o) => o.status === 'pending').length,
+  },
+  {
+    value: 'confirmed',
+    count: MOCK_ORDERS.filter((o) => o.status === 'confirmed').length,
+  },
+  {
+    value: 'past',
+    count: MOCK_ORDERS.filter((o) => o.status === 'past').length,
+  },
 ];
 
 export default function Orders() {
@@ -41,7 +50,7 @@ export default function Orders() {
         <>
           {activeTab === 'pending' && (
             <OrderList
-              orders={MOCK_ORDERS}
+              orders={MOCK_ORDERS.filter((order) => order.status === 'pending')}
               onReject={(orderId) => {
                 setRejectOrderId(orderId);
                 setShowRejectModal(true);
@@ -49,12 +58,18 @@ export default function Orders() {
               onApprove={(orderId) => console.log('승인', orderId)}
             />
           )}
-          {/* 추후 구현 예정 (확정, 지난 주문 탭)
           {activeTab === 'confirmed' && (
-            <OrderList orders={MOCK_CONFIRMED_ORDERS} />
+            <OrderList
+              orders={MOCK_ORDERS.filter(
+                (order) => order.status === 'confirmed'
+              )}
+            />
           )}
-          {activeTab === 'past' && <OrderList orders={MOCK_PAST_ORDERS} />} 
-          */}
+          {activeTab === 'past' && (
+            <OrderList
+              orders={MOCK_ORDERS.filter((order) => order.status === 'past')}
+            />
+          )}
         </>
       )}
       {activeTab === 'pending' && (
