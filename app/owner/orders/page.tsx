@@ -23,6 +23,7 @@ export default function Orders() {
   const [counts] = useState(INITIAL_COUNTS);
   const [showProcessModal, setShowProcessModal] = useState(false);
   const [showRejectModal, setShowRejectModal] = useState(false);
+  const [rejectOrderId, setRejectOrderId] = useState<number | null>(null);
 
   const activeCount = counts.find((c) => c.value === activeTab)?.count ?? 0;
 
@@ -41,7 +42,10 @@ export default function Orders() {
           {activeTab === 'pending' && (
             <OrderList
               orders={MOCK_ORDERS}
-              onReject={() => setShowRejectModal(true)}
+              onReject={(orderId) => {
+                setRejectOrderId(orderId);
+                setShowRejectModal(true);
+              }}
               onApprove={(orderId) => console.log('승인', orderId)}
             />
           )}
@@ -59,12 +63,17 @@ export default function Orders() {
       {showProcessModal && (
         <OrderProcessModal onClose={() => setShowProcessModal(false)} />
       )}
-      {showRejectModal && (
+      {showRejectModal && rejectOrderId !== null && (
         <OrderRejectModal
-          onClose={() => setShowRejectModal(false)}
+          onClose={() => {
+            setShowRejectModal(false);
+            setRejectOrderId(null);
+          }}
           onReject={() => {
             // 거절 API 연동 예정
+            console.log('거절된 주문 ID:', rejectOrderId);
             setShowRejectModal(false);
+            setRejectOrderId(null);
           }}
         />
       )}
