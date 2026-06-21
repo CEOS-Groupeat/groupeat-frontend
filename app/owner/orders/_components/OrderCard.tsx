@@ -35,9 +35,7 @@ export default function OrderCard({
   const router = useRouter();
 
   return (
-    <div
-      className={`w-full px-3 bg-background-default rounded-xl shadow-[6px_6px_54px_0px_rgba(0,0,0,0.05)] outline outline-1 outline-offset-[-1px] outline-border-subtle flex flex-col overflow-hidden font-['Pretendard'] ${status === 'pending' ? 'py-[14px]' : 'py-4'}`}
-    >
+    <div className="w-full px-3 bg-background-default rounded-xl shadow-[6px_6px_54px_0px_rgba(0,0,0,0.05)] outline outline-1 outline-offset-[-1px] outline-border-subtle flex flex-col overflow-hidden font-['Pretendard'] py-[14px]">
       {/* 뱃지 영역 */}
       <div className="flex items-center gap-2">
         {isReorder && (
