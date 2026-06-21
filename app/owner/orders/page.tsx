@@ -5,6 +5,11 @@ import OwnerOrderHeader from '@/components/owner/OwnerOrderHeader';
 import SegmentedControl from '@/components/owner/SegmentedControl';
 import OrderEmptyState from '@/components/owner/OrderEmptyState';
 import InfoToast from '@/components/owner/InfoToast';
+import OrderProcessModal from '@/components/owner/OrderProcessModal';
+import OrderRejectModal from '@/components/owner/OrderRejectModal';
+import OrderList from './_components/OrderList';
+
+import { MOCK_ORDERS } from '@/app/owner/orders/_constants/orders.mock';
 
 const INITIAL_COUNTS = [
   { value: 'pending', count: 3 },
@@ -15,7 +20,9 @@ const INITIAL_COUNTS = [
 export default function Orders() {
   const [activeTab, setActiveTab] = useState('pending');
   // 사업자 대시보드 api 연동 후 실제 카운트로 교체할 예정
-  const [counts, setCounts] = useState(INITIAL_COUNTS);
+  const [counts] = useState(INITIAL_COUNTS);
+  const [showProcessModal, setShowProcessModal] = useState(false);
+  const [showRejectModal, setShowRejectModal] = useState(false);
 
   const activeCount = counts.find((c) => c.value === activeTab)?.count ?? 0;
 
@@ -30,10 +37,37 @@ export default function Orders() {
       {activeCount === 0 ? (
         <OrderEmptyState />
       ) : (
-        // activeTab에 따라 대기중/확정/지난주문 컴포넌트 분기 처리 예정
-        <div className="px-4">대기중/확정/지난주문 컴포넌트 분기 처리 예정</div>
+        <>
+          {activeTab === 'pending' && (
+            <OrderList
+              orders={MOCK_ORDERS}
+              onReject={() => setShowRejectModal(true)}
+              onApprove={(orderId) => console.log('승인', orderId)}
+            />
+          )}
+          {/* 추후 구현 예정 (확정, 지난 주문 탭)
+          {activeTab === 'confirmed' && (
+            <OrderList orders={MOCK_CONFIRMED_ORDERS} />
+          )}
+          {activeTab === 'past' && <OrderList orders={MOCK_PAST_ORDERS} />} 
+          */}
+        </>
       )}
-      {activeTab === 'pending' && <InfoToast />}
+      {activeTab === 'pending' && (
+        <InfoToast onInfoClick={() => setShowProcessModal(true)} />
+      )}
+      {showProcessModal && (
+        <OrderProcessModal onClose={() => setShowProcessModal(false)} />
+      )}
+      {showRejectModal && (
+        <OrderRejectModal
+          onClose={() => setShowRejectModal(false)}
+          onReject={() => {
+            // 거절 API 연동 예정
+            setShowRejectModal(false);
+          }}
+        />
+      )}
     </div>
   );
 }
