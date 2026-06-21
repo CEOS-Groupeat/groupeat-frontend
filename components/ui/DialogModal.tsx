@@ -42,7 +42,7 @@ export default function DialogModal({
                 {title}
               </p>
               {description && (
-                <p className="text-label1 font-normal text-label-light">
+                <p className="text-label1 font-normal text-label-light whitespace-nowrap">
                   {description}
                 </p>
               )}
