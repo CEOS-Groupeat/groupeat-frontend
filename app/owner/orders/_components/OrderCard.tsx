@@ -1,3 +1,6 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
 import RightChevronIcon from '@/public/icons/icon-right_chevron.svg';
 
 interface OrderCardProps {
@@ -13,7 +16,6 @@ interface OrderCardProps {
   pastStatus?: 'REJECTED' | 'CANCELLED' | 'PICKUP_COMPLETED';
   onReject?: () => void;
   onApprove?: () => void;
-  onDetailClick?: () => void; // (추후 구현 예정)
 }
 
 export default function OrderCard({
@@ -29,8 +31,9 @@ export default function OrderCard({
   pastStatus,
   onReject,
   onApprove,
-  onDetailClick,
 }: OrderCardProps) {
+  const router = useRouter();
+
   return (
     <div
       className={`w-full px-3 bg-background-default rounded-xl shadow-[6px_6px_54px_0px_rgba(0,0,0,0.05)] outline outline-1 outline-offset-[-1px] outline-border-subtle flex flex-col overflow-hidden font-['Pretendard'] ${status === 'pending' ? 'py-[14px]' : 'py-4'}`}
@@ -64,7 +67,7 @@ export default function OrderCard({
           </div>
           <button
             type="button"
-            onClick={onDetailClick}
+            onClick={() => router.push('/owner/orders/[orderId]')}
             aria-label="주문 상세 보기"
           >
             <RightChevronIcon className="size-5 text-icon-subtlest" />
