@@ -12,7 +12,6 @@ export default function OrderRejectModal({
 }: OrderRejectModalProps) {
   return (
     <DialogModal
-      type="alert"
       icon={<AlertIcon />}
       title="해당 주문을 거절하시겠습니까?"
       description="거절 시 고객에게 전달되며, 결제금이 전액 환불돼요."

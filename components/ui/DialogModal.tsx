@@ -1,5 +1,4 @@
 interface DialogModalProps {
-  type: 'info' | 'alert';
   icon: React.ReactNode;
   title: string;
   description?: string;
@@ -8,7 +7,6 @@ interface DialogModalProps {
     onClick: () => void;
   };
   secondaryButton?: {
-    // alert일 때만 사용
     label: string;
     onClick: () => void;
   };
