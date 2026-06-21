@@ -42,6 +42,8 @@ export default function DialogModal({
         <div
           role="dialog"
           aria-modal="true"
+          aria-labelledby="dialog-title"
+          aria-describedby={description ? 'dialog-description' : undefined}
           className="w-80 rounded-2xl bg-background-default shadow-[0px_24px_38px_-10px_rgba(23,23,23,0.12),0px_10px_15px_-5px_rgba(23,23,23,0.10)] overflow-hidden"
           onClick={(e) => e.stopPropagation()}
         >
@@ -51,11 +53,17 @@ export default function DialogModal({
                 {icon}
               </div>
               <div className="flex flex-col items-center gap-1 text-center">
-                <p className="text-headline3 font-semibold text-label-normal whitespace-pre-line">
+                <p
+                  id="dialog-title"
+                  className="text-headline3 font-semibold text-label-normal whitespace-pre-line"
+                >
                   {title}
                 </p>
                 {description && (
-                  <p className="text-label1 font-normal text-label-light whitespace-nowrap">
+                  <p
+                    id="dialog-description"
+                    className="text-label1 font-normal text-label-light whitespace-nowrap"
+                  >
                     {description}
                   </p>
                 )}
