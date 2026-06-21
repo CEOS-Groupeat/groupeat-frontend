@@ -11,6 +11,9 @@ import OrderList from './_components/OrderList';
 
 import { MOCK_ORDERS } from '@/app/owner/orders/_constants/orders.mock';
 
+import { useApproveOrder } from './_hooks/useApproveOrder';
+import { useRejectOrder } from './_hooks/useRejectOrder';
+
 const INITIAL_COUNTS = [
   {
     value: 'pending',
@@ -33,7 +36,8 @@ export default function Orders() {
   const [showProcessModal, setShowProcessModal] = useState(false);
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [rejectOrderId, setRejectOrderId] = useState<number | null>(null);
-
+  const { mutateAsync: approveOrder } = useApproveOrder();
+  const { mutateAsync: rejectOrder } = useRejectOrder();
   const activeCount = counts.find((c) => c.value === activeTab)?.count ?? 0;
 
   return (
@@ -55,7 +59,13 @@ export default function Orders() {
                 setRejectOrderId(orderId);
                 setShowRejectModal(true);
               }}
-              onApprove={(orderId) => console.log('승인', orderId)}
+              onApprove={async (orderId) => {
+                try {
+                  await approveOrder(orderId);
+                } catch (error) {
+                  console.error('승인 실패:', error);
+                }
+              }}
             />
           )}
           {activeTab === 'confirmed' && (
@@ -84,11 +94,17 @@ export default function Orders() {
             setShowRejectModal(false);
             setRejectOrderId(null);
           }}
-          onReject={() => {
-            // 거절 API 연동 예정
-            console.log('거절된 주문 ID:', rejectOrderId);
-            setShowRejectModal(false);
-            setRejectOrderId(null);
+          onReject={async () => {
+            try {
+              await rejectOrder({
+                orderId: rejectOrderId,
+                rejectReason: '재료 소진',
+              });
+              setShowRejectModal(false);
+              setRejectOrderId(null);
+            } catch (error) {
+              console.error('거절 실패:', error);
+            }
           }}
         />
       )}
