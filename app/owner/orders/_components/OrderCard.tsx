@@ -53,9 +53,7 @@ export default function OrderCard({
       </div>
 
       {/* 주문 정보 영역 */}
-      <div
-        className={`flex flex-col gap-1.5 ${status === 'pending' ? 'mt-2' : 'mt-2.5'}`}
-      >
+      <div className="flex flex-col gap-1.5 mt-2">
         <div className="flex justify-between items-center">
           <div className="flex flex-col">
             <span className="text-caption1 font-normal text-text-subtlest">
