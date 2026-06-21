@@ -62,6 +62,7 @@ export default function Orders() {
               onApprove={async (orderId) => {
                 try {
                   await approveOrder(orderId);
+                  setActiveTab('confirmed');
                 } catch (error) {
                   console.error('승인 실패:', error);
                 }
@@ -102,6 +103,7 @@ export default function Orders() {
               });
               setShowRejectModal(false);
               setRejectOrderId(null);
+              setActiveTab('past');
             } catch (error) {
               console.error('거절 실패:', error);
             }
