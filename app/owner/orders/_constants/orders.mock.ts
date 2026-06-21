@@ -110,6 +110,6 @@ export const MOCK_ORDERS = [
     paymentMethod: 'ON_SITE' as const,
     items: [{ menuName: '반반 세트', quantity: 55 }],
     orderDate: '2026-06-15T10:00:00',
-    pastStatus: 'PICKUP_COMPLETED' as const,
+    pastStatus: 'COMPLETED' as const,
   },
 ];

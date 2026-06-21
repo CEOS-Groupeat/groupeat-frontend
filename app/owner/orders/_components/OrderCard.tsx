@@ -13,7 +13,7 @@ interface OrderCardProps {
   paymentMethod: 'PREPAID' | 'ON_SITE';
   items: { menuName: string; quantity: number }[];
   //orderDate: string; (추후 구현 예정)
-  pastStatus?: 'REJECTED' | 'CANCELLED' | 'PICKUP_COMPLETED';
+  pastStatus?: 'REJECTED' | 'CANCELLED' | 'COMPLETED';
   onReject?: () => void;
   onApprove?: () => void;
 }
