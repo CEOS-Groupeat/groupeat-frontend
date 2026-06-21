@@ -19,7 +19,15 @@ export default function OrderList({
       {orders.map((order) => (
         <OrderCard
           key={order.orderId}
-          {...order}
+          status={order.status}
+          isReorder={order.isReorder}
+          groupName={order.groupName}
+          customerName={order.customerName}
+          pickupDate={order.pickupDate}
+          paymentAmount={order.paymentAmount}
+          paymentMethod={order.paymentMethod}
+          items={order.items}
+          pastStatus={order.pastStatus}
           onReject={() => onReject(order.orderId)}
           onApprove={onApprove ? () => onApprove(order.orderId) : undefined}
           onDetailClick={
