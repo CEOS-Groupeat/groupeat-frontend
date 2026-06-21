@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import RightChevronIcon from '@/public/icons/icon-right_chevron.svg';
 
 interface OrderCardProps {
+  orderId: number;
   status: 'pending' | 'confirmed' | 'past';
   isReorder: boolean;
   groupName: string;
@@ -19,6 +20,7 @@ interface OrderCardProps {
 }
 
 export default function OrderCard({
+  orderId,
   status,
   isReorder,
   groupName,
@@ -63,7 +65,7 @@ export default function OrderCard({
           </div>
           <button
             type="button"
-            onClick={() => router.push('/owner/orders/[orderId]')}
+            onClick={() => router.push(`/owner/orders/${orderId}`)}
             aria-label="주문 상세 보기"
           >
             <RightChevronIcon className="size-5 text-icon-subtlest" />

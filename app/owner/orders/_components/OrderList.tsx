@@ -17,6 +17,7 @@ export default function OrderList({
       {orders.map((order) => (
         <OrderCard
           key={order.orderId}
+          orderId={order.orderId}
           status={order.status}
           isReorder={order.isReorder}
           groupName={order.groupName}
