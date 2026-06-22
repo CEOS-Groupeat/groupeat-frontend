@@ -5,6 +5,7 @@ import DashBoardCardB from '@/components/owner/DashboardCardB';
 import OpenChip from '@/components/owner/OpenChip';
 import OrderList from '@/components/owner/OrderList';
 import OwnerHeader from '@/components/owner/OwnerHeader';
+import OwnerNavbar from '@/components/owner/OwnerNavbar';
 import ArrowRight from '@/public/icons/icon_arrow_right.svg';
 import Link from 'next/link';
 
@@ -42,7 +43,7 @@ const orderMock = [
 }
 export default function OwnerHomePage() {
   return (
-    <div className="flex flex-col items-center w-full min-h-screen">
+    <div className="flex flex-col items-center w-full min-h-screen pb-23 bg-background-default">
       <OwnerHeader />
 
       <div className="flex px-4 flex-col w-full mt-4.5 gap-2.5 items-start self-stretch ">
@@ -116,6 +117,8 @@ export default function OwnerHomePage() {
           />
         </div>
       </div>
+
+      <OwnerNavbar />
     </div>
   );
 }
