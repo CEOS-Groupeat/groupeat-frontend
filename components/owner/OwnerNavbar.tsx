@@ -63,11 +63,15 @@ const NavigationMenu = ({
       }`}
     >
       <div className="flex items-center justify-center w-5 h-5 shrink-0">
-        {active ? <IconOn className="w-full h-full" /> : <IconOff className="w-full h-full" />}
+        {active ? (
+          <IconOn className="w-full h-full" />
+        ) : (
+          <IconOff className="w-full h-full" />
+        )}
       </div>
 
       <p
-        className={`whitespace-nowrap text-caption2 font-medium transition-colors ${
+        className={`whitespace-nowrap font-['Pretendard'] text-caption2 font-medium transition-colors ${
           active ? 'text-brand-default' : 'text-background-dim'
         }`}
       >

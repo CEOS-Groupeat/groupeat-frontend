@@ -8,11 +8,13 @@ import InfoToast from '@/app/owner/orders/_components/InfoToast';
 import OrderProcessModal from '@/app/owner/orders/_components/OrderProcessModal';
 import OrderRejectModal from '@/app/owner/orders/_components/OrderRejectModal';
 import OrderList from './_components/OrderList';
+import OwnerNavbar from '@/components/owner/OwnerNavbar';
 
 import { MOCK_ORDERS } from '@/app/owner/orders/_constants/orders.mock';
 
 import { useApproveOrder } from './_hooks/useApproveOrder';
 import { useRejectOrder } from './_hooks/useRejectOrder';
+import { usePickupComplete } from './_hooks/usePickupComplete';
 
 const INITIAL_COUNTS = [
   {
@@ -38,6 +40,8 @@ export default function Orders() {
   const [rejectOrderId, setRejectOrderId] = useState<number | null>(null);
   const { mutateAsync: approveOrder } = useApproveOrder();
   const { mutateAsync: rejectOrder } = useRejectOrder();
+  const { mutateAsync: pickupComplete } = usePickupComplete();
+
   const activeCount = counts.find((c) => c.value === activeTab)?.count ?? 0;
 
   return (
@@ -74,6 +78,14 @@ export default function Orders() {
               orders={MOCK_ORDERS.filter(
                 (order) => order.status === 'confirmed'
               )}
+              onPickupComplete={async (orderId) => {
+                try {
+                  await pickupComplete(orderId);
+                  setActiveTab('past');
+                } catch (error) {
+                  console.error('픽업 완료 처리 실패:', error);
+                }
+              }}
             />
           )}
           {activeTab === 'past' && (
@@ -110,6 +122,7 @@ export default function Orders() {
           }}
         />
       )}
+      <OwnerNavbar />
     </div>
   );
 }
