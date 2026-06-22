@@ -17,6 +17,7 @@ interface OrderCardProps {
   pastStatus?: 'REJECTED' | 'CANCELLED' | 'COMPLETED';
   onReject?: () => void;
   onApprove?: () => void;
+  onPickupComplete?: () => void;
 }
 
 export default function OrderCard({
@@ -33,6 +34,7 @@ export default function OrderCard({
   pastStatus,
   onReject,
   onApprove,
+  onPickupComplete,
 }: OrderCardProps) {
   const router = useRouter();
 
@@ -135,6 +137,7 @@ export default function OrderCard({
         {status === 'confirmed' && (
           <button
             type="button"
+            onClick={onPickupComplete}
             className="flex-1 h-[38px] rounded-lg bg-brand-background text-label2 font-semibold text-brand-default"
           >
             {paymentMethod === 'PREPAID' ? '픽업 예정' : '현장 결제 예정'}
