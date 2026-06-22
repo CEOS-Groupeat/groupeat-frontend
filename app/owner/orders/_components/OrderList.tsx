@@ -15,7 +15,7 @@ export default function OrderList({
   onPickupComplete,
 }: OrderListProps) {
   return (
-    <div className="px-4 flex flex-col gap-3 pb-23">
+    <div className="px-4 flex flex-col gap-3 pb-[92px]">
       {orders.map((order) => (
         <OrderCard
           key={order.orderId}
