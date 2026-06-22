@@ -140,7 +140,7 @@ export default function OrderCard({
             onClick={onPickupComplete}
             className="flex-1 h-[38px] rounded-lg bg-brand-background text-label2 font-semibold text-brand-default"
           >
-            {paymentMethod === 'PREPAID' ? '픽업 예정' : '현장 결제 예정'}
+            픽업 완료
           </button>
         )}
         {status === 'past' && (
