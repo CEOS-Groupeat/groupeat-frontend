@@ -8,6 +8,7 @@ import InfoToast from '@/app/owner/orders/_components/InfoToast';
 import OrderProcessModal from '@/app/owner/orders/_components/OrderProcessModal';
 import OrderRejectModal from '@/app/owner/orders/_components/OrderRejectModal';
 import OrderList from './_components/OrderList';
+import OwnerNavbar from '@/components/owner/OwnerNavbar';
 
 import { MOCK_ORDERS } from '@/app/owner/orders/_constants/orders.mock';
 
@@ -121,6 +122,7 @@ export default function Orders() {
           }}
         />
       )}
+      <OwnerNavbar />
     </div>
   );
 }
