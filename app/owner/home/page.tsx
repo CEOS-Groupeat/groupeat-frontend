@@ -43,28 +43,35 @@ const orderMock = [
 }
 export default function OwnerHomePage() {
   return (
+<<<<<<< HEAD
+    <main className="flex flex-col items-center w-full min-h-screen pb-10 bg-static-white">
+=======
     <div className="flex flex-col items-center w-full min-h-screen pb-23 bg-background-default">
+>>>>>>> 4eb0c4772c1a31e8f6d114a9e93aa119948d6bcd
       <OwnerHeader />
 
-      <div className="flex px-4 flex-col w-full mt-4.5 gap-2.5 items-start self-stretch ">
-        <div className="w-full flex justify-between items-center">
+      <section className="flex flex-col items-start w-full gap-2.5 px-4 mt-5">
+        <div className="flex items-center justify-between w-full">
           <div className="flex flex-col items-start gap-1">
-            <h2 className="text-headline2 text-[20px] font-bold">
+            <h2 className="text-[20px] font-bold text-headline2 text-text-default">
               {storeInfo.storeName} 사장님
             </h2>
-            <p className="text-label2">오늘의 단체주문 현황을 확인하세요</p>
+            <p className="text-label2 text-text-subtlest">
+              오늘의 단체주문 현황을 확인하세요
+            </p>
           </div>
-          {storeInfo.isOpen ? <OpenChip /> : <ClosedChip />}
+          {/* 3. 단일 Chip 컴포넌트로 분기 처리 */}
+          <OpenChip isOpen={storeInfo.isOpen} />
         </div>
-      </div>
+      </section>
 
-      <div className="w-full flex px-4 mt-4 mb-2">
-        {storeInfo.pendingOrderCount > 0 && (
+      {storeInfo.pendingOrderCount > 0 && (
+        <section className="w-full px-4 mt-4">
           <AlertCard pendingCount={storeInfo.pendingOrderCount} />
-        )}
-      </div>
+        </section>
+      )}
 
-      <div className="w-full flex px-4 gap-2">
+      <section className="flex w-full gap-2 px-4 mt-6">
         <DashboardCardA
           text="오늘 픽업 건"
           icon="box"
@@ -75,34 +82,34 @@ export default function OwnerHomePage() {
           icon="terminated"
           count={storeInfo.expiredOrderCount}
         />
-      </div>
+      </section>
 
-      <div className="w-full flex flex-col px-4 mt-7">
-        <div className="w-full flex px-1 justify-between items-center self-stretch">
-          <h2 className="text-text-default text-headline3 font-semibold">
+      <section className="flex flex-col w-full px-4 mt-8">
+        <div className="flex items-center justify-between w-full px-1">
+          <h2 className="font-semibold text-headline3 text-text-default">
             오늘 픽업 건
           </h2>
           <Link href="/owner/order">
-            <ArrowRight className="text-icon-subtlest w-5 h-5" />
+            <ArrowRight className="w-5 h-5 text-icon-subtlest" />
           </Link>
         </div>
-        <div className="w-full flex flex-col gap-2 mt-4">
+        <div className="flex flex-col w-full gap-2 mt-4">
           {orderMock.map((order) => (
             <OrderList key={order.orderId} {...order} />
           ))}
         </div>
-      </div>
+      </section>
 
-      <div className="w-full flex flex-col px-4 mt-7">
-        <div className="w-full flex px-1 justify-between items-center self-stretch">
-          <h2 className="text-text-default text-headline3 font-semibold">
+      <section className="flex flex-col w-full px-4 mt-8">
+        <div className="flex items-center justify-between w-full px-1">
+          <h2 className="font-semibold text-headline3 text-text-default">
             매출 요약
           </h2>
           <Link href="/owner/order/summary">
-            <ArrowRight className="text-icon-subtlest w-5 h-5" />
+            <ArrowRight className="w-5 h-5 text-icon-subtlest" />
           </Link>
         </div>
-        <div className="w-full flex mt-2 gap-2">
+        <div className="flex w-full gap-2 mt-4">
           <DashBoardCardB
             text="이번 주 주문 수"
             icon="people"
@@ -116,9 +123,14 @@ export default function OwnerHomePage() {
             increasedCount={5}
           />
         </div>
+<<<<<<< HEAD
+      </section>
+    </main>
+=======
       </div>
 
       <OwnerNavbar />
     </div>
+>>>>>>> 4eb0c4772c1a31e8f6d114a9e93aa119948d6bcd
   );
 }
