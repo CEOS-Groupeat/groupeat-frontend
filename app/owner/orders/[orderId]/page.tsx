@@ -1,24 +1,20 @@
 import OrderCard from '@/app/customer/order/request/_components/OrderCard';
 import OrderPrice from '@/app/customer/order/request/_components/OrderPrice';
+import BackButton from '@/components/ui/BackButton';
 import SectionDivider from '@/components/ui/SectionDivider';
-import ArrowLeft from '@/public/icons/icon_arrow_Left.svg';
 import Ellipse from '@/public/icons/icon_ellipse.svg';
-import { useRouter } from 'next/navigation';
 
 export default function OwnerOrderDetail() {
-    
   const cancelOrder = () => {
     // todo: 주문취소
     return;
   };
 
-  const router = useRouter();
-
   return (
     <div className="w-full flex pb-16 flex-col items-center gap-6 bg-white">
       <header className="w-full flex pt-10 items-start gap-2.5 self-stretch">
         <div className="w-full flex p-4 items-center justify-between self-stretch">
-          <ArrowLeft className="w-5 h-5" onClick={() => router.back()} />
+          <BackButton />
           <h1 className="text-text-default text-headline3 font-semibold">
             주문 상세
           </h1>
