@@ -1,4 +1,4 @@
-import OrderCard from '@/app/owner/orders/_components/OrderCard';
+import OrderCard from '@/app/owner/orders/_components/OrderDetailCard';
 import { MOCK_ORDERS } from '@/app/owner/orders/_constants/orders.mock';
 
 interface OrderListProps {
