@@ -8,18 +8,22 @@ interface StatusBarProps {
 
 export default function StatusBar({ currentStep }: StatusBarProps) {
   const steps = ['승인 대기', '픽업 예정', '픽업 완료'];
+  const imageLeftPositions = ['10%', '50%', '90%'];
 
   return (
-    <div className="w-full inline-flex flex-col items-center justify-center gap-4">
-      {/* 1. 상단 프로필 이미지 */}
-      <img
-        className="object-cover size-12 rounded-[999px]"
-        src="https://placehold.co/52x52"
-        alt="가게 프로필"
-      />
-
+    <div className="w-full inline-flex flex-col items-center justify-center pt-16 pb-2">
       {/* 2. 상태 바 전체 컨테이너 */}
       <div className="relative flex flex-col items-center justify-start px-5 py-4 w-80 h-16 gap-2.5">
+        <img
+          src="https://placehold.co/52x52"
+          alt="가게 프로필"
+          className="absolute -top-16 object-cover w-[52px] h-[52px] rounded-[999px] transition-all duration-500 ease-in-out z-10 shadow-sm"
+          style={{
+            left: imageLeftPositions[currentStep] || '50%',
+            transform: 'translateX(-50%)', // 기준점을 이미지의 정중앙으로 맞춤
+          }}
+        />
+
         {/* ─── 1층: 진행 선 ─── */}
         <div className="inline-flex items-center justify-start w-64">
           <div
@@ -37,36 +41,31 @@ export default function StatusBar({ currentStep }: StatusBarProps) {
         {/* ─── 2층: 노드 및 텍스트 영역 ─── */}
         <div className="absolute top-0 left-0 inline-flex items-center justify-center w-80 gap-20">
           {steps.map((stepName, index) => {
-            const isPassed = index < currentStep; // 이미 완료된 단계
-            const isCurrent = index === currentStep; // 현재 진행 중인 단계
-            const isFuture = index > currentStep; // 아직 도달하지 않은 단계
+            const isPassed = index < currentStep;
+            const isCurrent = index === currentStep;
+            const isFuture = index > currentStep;
 
             return (
               <div
                 key={index}
                 className="inline-flex flex-col items-center justify-start w-12 gap-3"
               >
-                {/* 🎯 가져오신 3가지 노드 UI의 정확한 분기 처리 */}
+                {/* 노드 UI */}
                 <div className="inline-flex items-center justify-center size-9">
-                  {/* [상태 1] 지나간 단계 */}
                   {isPassed && (
                     <div className="size-4 bg-background-default rounded-full border-4 border-brand-default" />
                   )}
-
-                  {/* [상태 2] 현재 단계 (그라데이션 배경 + 체크 아이콘) */}
                   {isCurrent && (
                     <div className="p-[3.33px] bg-gradient-to-b from-orange-400 to-orange-600 rounded-full inline-flex justify-center items-center">
                       <CheckIcon className="w-5 h-5 text-white" />
                     </div>
                   )}
-
-                  {/* [상태 3] 미래 단계 (회색 테두리의 빈 원) */}
                   {isFuture && (
                     <div className="size-4 bg-background-subtle rounded-full border-4 border-background-subtle" />
                   )}
                 </div>
 
-                {/* 텍스트 폰트 굵기/색상 정확한 분기 처리 */}
+                {/* 텍스트 스타일링 */}
                 <div
                   className={`self-stretch text-center text-xs leading-4 font-pretendard transition-colors duration-300 ${
                     isCurrent

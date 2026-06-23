@@ -82,9 +82,12 @@ export default function OrderCard() {
                     </div>
                     <div className="flex justify-between items-center self-stretch">
                       <p className="text-text-default text-caption1">가격</p>
-                      <p className="text-text-default text-label1 font-semibold">
-                        {item.finalPrice}원
-                      </p>
+                      <div className="flex items-center gap-1">
+                        <p className='text-brand-default text-caption2 font-medium'>5% 할인</p>
+                        <p className="text-text-default text-label1 font-semibold">
+                          {item.finalPrice}원
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>

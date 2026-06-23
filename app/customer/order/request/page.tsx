@@ -1,5 +1,5 @@
 'use client';
-import OrderAmount from '@/app/customer/order/request/_components/OrderAmount';
+import OrderPrice from '@/app/customer/order/request/_components/OrderPrice';
 import OrderCard from '@/app/customer/order/request/_components/OrderCard';
 import OrderForm from '@/app/customer/order/request/_components/OrderForm';
 import OrderInfo from '@/app/customer/order/request/_components/OrderInfo';
@@ -13,7 +13,7 @@ import SectionDivider from '@/components/ui/SectionDivider';
 export default function CustomerOrderRequestPage() {
   const handlePurchase = () => {
     return;
-  }
+  };
   return (
     <main className="w-full min-h-dvh pt-10 pb-52.5">
       <OrderRequestHeader />
@@ -39,10 +39,15 @@ export default function CustomerOrderRequestPage() {
 
       <SectionDivider className="my-6" />
 
-      <OrderAmount />
+      <div className="flex px-4 flex-col items-start gap-2.5 self-stretch">
+        <h1 className='text-text-default text-headline3 font-semibold'>결제 금액</h1>
+        <OrderPrice />
+      </div>
 
       <div className="fixed w-full bottom-6 px-4">
-        <DefaultButton onClick={handlePurchase} disabled={false}>782,040원 결제하기</DefaultButton>
+        <DefaultButton onClick={handlePurchase} disabled={false}>
+          782,040원 결제하기
+        </DefaultButton>
       </div>
     </main>
   );

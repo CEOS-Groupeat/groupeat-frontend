@@ -1,9 +1,6 @@
-export default function OrderAmount() {
+export default function OrderPrice() {
   return (
-    <div className="w-full flex flex-col px-4 items-start gap-4">
-      <h1 className="text-text-default text-headline3 font-semibold">
-        결제 금액
-      </h1>
+    <div className="w-full flex flex-col items-start gap-4">
       <div className="w-full flex flex-col items-start">
         <div className="flex flex-col items-start gap-2 self-stretch">
             <div className="flex justify-between items-center self-stretch">
