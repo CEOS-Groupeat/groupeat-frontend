@@ -130,7 +130,7 @@ export default function StoreDetail() {
               <div className="flex flex-col items-start gap-1.5">
                 <div className="flex items-start gap-1">
                   <div className="flex pt-0.5 items-center gap-2.5">
-                    <Alert className="text-brand-default" />
+                    <Alert className="text-brand-default w-4 h-4" />
                   </div>
                   <p className="text-brand-default text-label2 leading-4.5">
                     최소 {store.minOrderDays}일 전 주문
@@ -169,7 +169,7 @@ export default function StoreDetail() {
               <div className="flex w-full px-3 pt-2 pb-2.5 flex-col items-start gap-3 border border-border-default border-px rounded-lg bg-background-default mt-2">
                 <div className="flex w-full justify-between items-center cursor-pointer">
                   <div className="flex justify-center items-center gap-1.5">
-                    <Notice className="text-icon-default" />
+                    <Notice className="text-icon-subtlest w-4 h-4" />
                     <p className="text-text-default text-label2 font-medium">
                       주문 프로세스 안내
                     </p>

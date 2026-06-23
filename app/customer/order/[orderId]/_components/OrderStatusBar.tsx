@@ -1,0 +1,56 @@
+import StatusBar from '@/app/customer/order/[orderId]/_components/StatusBar';
+import Ellipse from '@/public/icons/icon_ellipse.svg';
+
+interface OrderStatusBarProps {
+  storeName: string;
+  currentStep: number;
+  pickupDate: string;
+  pickupTime: string;
+  paymentMethod: string;
+}
+
+export default function OrderStatusBar({
+  storeName,
+  currentStep,
+  pickupDate,
+  pickupTime,
+  paymentMethod,
+}: OrderStatusBarProps) {
+  const getHeadlineMessage = () => {
+    switch (currentStep) {
+      case 0:
+        return '사장님이 주문을 확인하고 있어요.';
+      case 1:
+        return paymentMethod === '현장 결제'
+          ? '현장 결제를 진행해 주세요.'
+          : '픽업을 진행해 주세요.';
+      case 2:
+        return '음식 픽업이 완료되었습니다.';
+      default:
+        return '';
+    }
+  };
+
+  return (
+    <div className="flex flex-col items-start w-full gap-3">
+      <div className="flex flex-col items-start gap-1">
+        <div className="flex flex-col items-start">
+          <p className="font-semibold text-text-subtle text-body">
+            {storeName}
+          </p>
+          <p className="font-semibold text-headline1 text-text-default">
+            {getHeadlineMessage()}
+          </p>
+        </div>
+
+        <div className="flex items-center gap-1 mt-0.5">
+          <p className="text-text-subtlest text-label1">{pickupDate}</p>
+          <Ellipse className="w-1 h-1 text-text-subtlest" />
+          <p className="text-text-subtlest text-label1">{pickupTime}</p>
+        </div>
+      </div>
+
+      <StatusBar currentStep={currentStep} />
+    </div>
+  );
+}
