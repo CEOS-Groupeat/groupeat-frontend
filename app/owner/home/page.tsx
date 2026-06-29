@@ -1,8 +1,6 @@
 import AlertCard from '@/components/owner/AlertCard';
-import ClosedChip from '@/components/owner/ClosedChip';
 import DashboardCardA from '@/components/owner/DashboardCardA';
 import DashBoardCardB from '@/components/owner/DashboardCardB';
-import OpenChip from '@/components/owner/OpenChip';
 import OrderList from '@/components/owner/OrderList';
 import OwnerHeader from '@/components/owner/OwnerHeader';
 import OwnerNavbar from '@/components/owner/OwnerNavbar';
@@ -43,11 +41,7 @@ const orderMock = [
 }
 export default function OwnerHomePage() {
   return (
-<<<<<<< HEAD
-    <main className="flex flex-col items-center w-full min-h-screen pb-10 bg-static-white">
-=======
     <div className="flex flex-col items-center w-full min-h-screen pb-23 bg-background-default">
->>>>>>> 4eb0c4772c1a31e8f6d114a9e93aa119948d6bcd
       <OwnerHeader />
 
       <section className="flex flex-col items-start w-full gap-2.5 px-4 mt-5">
@@ -60,8 +54,6 @@ export default function OwnerHomePage() {
               오늘의 단체주문 현황을 확인하세요
             </p>
           </div>
-          {/* 3. 단일 Chip 컴포넌트로 분기 처리 */}
-          <OpenChip isOpen={storeInfo.isOpen} />
         </div>
       </section>
 
@@ -71,9 +63,9 @@ export default function OwnerHomePage() {
         </section>
       )}
 
-      <section className="flex w-full gap-2 px-4 mt-6">
+      <section className="flex w-full gap-2 px-4 mt-2">
         <DashboardCardA
-          text="오늘 픽업 건"
+          text="픽업 예정 건"
           icon="box"
           count={storeInfo.todaysOrderCount}
         />
@@ -123,14 +115,8 @@ export default function OwnerHomePage() {
             increasedCount={5}
           />
         </div>
-<<<<<<< HEAD
       </section>
-    </main>
-=======
-      </div>
-
       <OwnerNavbar />
     </div>
->>>>>>> 4eb0c4772c1a31e8f6d114a9e93aa119948d6bcd
   );
 }
