@@ -4,6 +4,98 @@
  */
 
 export interface paths {
+    "/api/owner/store": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 내 가게 조회
+         * @description 로그인한 사업자 회원의 가게 정보를 조회합니다.
+         */
+        get: operations["getMyStore"];
+        /**
+         * 내 가게 수정
+         * @description 로그인한 사업자 회원의 가게 정보를 수정합니다.
+         */
+        put: operations["updateMyStore"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/owner/store/order-schedule": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 내 가게 주문 가능 일정 조회
+         * @description 로그인한 사업자 회원의 가게 주문 가능 일정 설정을 조회합니다.
+         */
+        get: operations["getMyStoreOrderSchedule"];
+        /**
+         * 내 가게 주문 가능 일정 저장
+         * @description 로그인한 사업자 회원의 가게 주문 가능 일정 설정을 저장합니다.
+         */
+        put: operations["saveMyStoreOrderSchedule"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/owner/store/menus/{menuId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * 내 가게 메뉴 수정
+         * @description 로그인한 사업자 회원의 가게 메뉴를 수정합니다.
+         */
+        put: operations["updateMenu"];
+        post?: never;
+        /**
+         * 내 가게 메뉴 삭제
+         * @description 로그인한 사업자 회원의 가게 메뉴를 삭제합니다.
+         */
+        delete: operations["deleteMenu"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/uploads/images/presigned-url": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 이미지 업로드 presigned URL 발급
+         * @description 이미지를 S3에 직접 업로드하기 위한 presigned URL을 발급합니다.
+         */
+        post: operations["createPresignedUrl"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/signup/customer": {
         parameters: {
             query?: never;
@@ -124,6 +216,30 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/owner/store/menus": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 내 가게 메뉴 목록 조회
+         * @description 로그인한 사업자 회원의 가게 메뉴 목록을 조회합니다.
+         */
+        get: operations["getMyStoreMenus"];
+        put?: never;
+        /**
+         * 내 가게 메뉴 등록
+         * @description 로그인한 사업자 회원의 가게에 메뉴를 등록합니다.
+         */
+        post: operations["createMenu"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/orders": {
         parameters: {
             query?: never;
@@ -158,10 +274,10 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * 장바구니 메뉴 담기
-         * @description 장바구니에 새로운 메뉴와 옵션을 추가합니다.
+         * 장바구니 메뉴 여러 개 한 번에 담기
+         * @description 바텀 시트에서 선택한 여러 메뉴와 옵션을 한 번에 장바구니에 추가(또는 병합)합니다.
          */
-        post: operations["addCartItem"];
+        post: operations["addCartItems"];
         delete?: never;
         options?: never;
         head?: never;
@@ -182,6 +298,26 @@ export interface paths {
          * @description 주문할 장바구니 항목들을 선택하여 총 결제 금액을 계산하고 단일 가게 제약을 검증합니다.
          */
         post: operations["calculateCart"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/business/validate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 사업자등록번호 검증
+         * @description 국세청 API를 통해 사업자번호의 정상 영업 여부를 검증하고 토큰을 발급합니다.
+         */
+        post: operations["validateBusinessNumber"];
         delete?: never;
         options?: never;
         head?: never;
@@ -428,6 +564,46 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/owner/orders": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 사장님 주문 목록 조회
+         * @description 탭(상태)별로 사장님의 주문 목록을 조회합니다.
+         */
+        get: operations["getOwnerOrderList"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/owner/orders/{orderId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 사장님 주문 상세 조회
+         * @description 특정 주문의 상세 정보(주문자, 주문상품, 결제 내역)를 조회합니다.
+         */
+        get: operations["getOwnerOrderDetail"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/orders/{orderId}": {
         parameters: {
             query?: never;
@@ -532,6 +708,359 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        DiscountDTO: {
+            /**
+             * Format: int32
+             * @description 할인 조건 수량
+             * @example 50
+             */
+            conditionQuantity?: number;
+            /**
+             * Format: int32
+             * @description 할인율
+             * @example 5
+             */
+            rate?: number;
+        };
+        LocationDTO: {
+            /**
+             * @description 도로명/지번 주소
+             * @example 서울특별시 마포구 00로 00길 12
+             */
+            address: string;
+            /**
+             * @description 구
+             * @example 마포구
+             */
+            district: string;
+            /**
+             * @description 동
+             * @example 서교동
+             */
+            neighborhood?: string;
+            /**
+             * @description 상세주소
+             * @example 3층
+             */
+            detailAddress?: string;
+        };
+        OwnerStoreUpdateRequest: {
+            /**
+             * @description 가게 대표 이미지 URL
+             * @example https://groupeat-bucket.s3.ap-northeast-2.amazonaws.com/stores/1/main.jpg
+             */
+            imageUrl?: string;
+            /**
+             * @description 가게명
+             * @example 데이브런치
+             */
+            storeName: string;
+            /** @description 가게 위치 */
+            location: components["schemas"]["LocationDTO"];
+            /**
+             * @description 가게 카테고리
+             * @example SANDWICH_KIMBAP
+             * @enum {string}
+             */
+            category: "SANDWICH_KIMBAP" | "DESSERT" | "BEVERAGE";
+            /**
+             * @description 전화번호
+             * @example 010-1234-5678
+             */
+            phoneNumber: string;
+            /**
+             * @description 가게 한 줄 소개
+             * @example 신선한 재료로 당일 제조하는 샌드위치 전문점입니다.
+             */
+            description?: string;
+            /** @description 할인 정보 */
+            discount?: components["schemas"]["DiscountDTO"];
+        };
+        ApiResponseOwnerStoreResponse: {
+            isSuccess?: boolean;
+            code?: string;
+            message?: string;
+            data?: components["schemas"]["OwnerStoreResponse"];
+        };
+        OwnerStoreResponse: {
+            /**
+             * Format: int64
+             * @description 가게 ID
+             * @example 1
+             */
+            storeId?: number;
+            /**
+             * @description 가게 대표 이미지
+             * @example https://groupeat-bucket.s3.ap-northeast-2.amazonaws.com/store1.jpg
+             */
+            imageUrl?: string;
+            /**
+             * @description 가게명
+             * @example 데이브런치
+             */
+            storeName?: string;
+            /** @description 가게 위치 */
+            location?: components["schemas"]["LocationDTO"];
+            /**
+             * @description 가게 카테고리
+             * @example SANDWICH_KIMBAP
+             * @enum {string}
+             */
+            category?: "SANDWICH_KIMBAP" | "DESSERT" | "BEVERAGE";
+            /**
+             * @description 가게 카테고리명
+             * @example 샌드위치&김밥
+             */
+            categoryName?: string;
+            /**
+             * @description 전화번호
+             * @example 010-1234-5678
+             */
+            phoneNumber?: string;
+            /**
+             * @description 가게 한 줄 소개
+             * @example 신선한 재료로 당일 제조하는 샌드위치 전문점입니다.
+             */
+            description?: string;
+            /** @description 할인 정보 */
+            discount?: components["schemas"]["DiscountDTO"];
+        };
+        DayScheduleRequest: {
+            /**
+             * @description 요일
+             * @example MONDAY
+             * @enum {string}
+             */
+            dayOfWeek: "MONDAY" | "TUESDAY" | "WEDNESDAY" | "THURSDAY" | "FRIDAY" | "SATURDAY" | "SUNDAY";
+            /**
+             * @description 주문 가능 여부
+             * @example true
+             */
+            available: boolean;
+            /**
+             * Format: int32
+             * @description 최소 주문 수량
+             * @example 10
+             */
+            minOrderQuantity?: number;
+            /**
+             * Format: int32
+             * @description 최대 주문 수량
+             * @example 100
+             */
+            maxOrderQuantity?: number;
+            /**
+             * @description 픽업 시작 시간
+             * @example 10:00
+             */
+            pickupOpenTime?: string;
+            /**
+             * @description 픽업 종료 시간
+             * @example 17:00
+             */
+            pickupCloseTime?: string;
+            /**
+             * Format: int32
+             * @description 픽업 시간 간격(분)
+             * @example 30
+             */
+            intervalMinutes?: number;
+        };
+        OwnerStoreOrderScheduleRequest: {
+            /**
+             * Format: date
+             * @description 일정 적용 시작일
+             * @example 2026-05-20
+             */
+            startDate: string;
+            /**
+             * Format: date
+             * @description 일정 적용 종료일
+             * @example 2027-05-20
+             */
+            endDate: string;
+            /**
+             * Format: int32
+             * @description 최소 주문 가능 기한(픽업 n일 전까지 주문 가능)
+             * @example 3
+             */
+            minOrderDays: number;
+            /** @description 요일별 주문 가능 일정. 포함되지 않은 요일은 휴무 처리됩니다. */
+            days?: components["schemas"]["DayScheduleRequest"][];
+        };
+        ApiResponseOwnerStoreOrderScheduleResponse: {
+            isSuccess?: boolean;
+            code?: string;
+            message?: string;
+            data?: components["schemas"]["OwnerStoreOrderScheduleResponse"];
+        };
+        DayScheduleResponse: {
+            /**
+             * @description 요일
+             * @example MONDAY
+             * @enum {string}
+             */
+            dayOfWeek?: "MONDAY" | "TUESDAY" | "WEDNESDAY" | "THURSDAY" | "FRIDAY" | "SATURDAY" | "SUNDAY";
+            /**
+             * @description 주문 가능 여부
+             * @example true
+             */
+            available?: boolean;
+            /**
+             * Format: int32
+             * @description 최소 주문 수량
+             * @example 10
+             */
+            minOrderQuantity?: number;
+            /**
+             * Format: int32
+             * @description 최대 주문 수량
+             * @example 100
+             */
+            maxOrderQuantity?: number;
+            /**
+             * @description 픽업 시작 시간
+             * @example 10:00
+             */
+            pickupOpenTime?: string;
+            /**
+             * @description 픽업 종료 시간
+             * @example 17:00
+             */
+            pickupCloseTime?: string;
+            /**
+             * Format: int32
+             * @description 픽업 시간 간격(분)
+             * @example 30
+             */
+            intervalMinutes?: number;
+        };
+        OwnerStoreOrderScheduleResponse: {
+            /**
+             * Format: int64
+             * @description 주문 가능 일정 ID
+             * @example 1
+             */
+            scheduleId?: number;
+            /**
+             * Format: int64
+             * @description 가게 ID
+             * @example 1
+             */
+            storeId?: number;
+            /**
+             * Format: date
+             * @description 일정 적용 시작일
+             * @example 2026-05-20
+             */
+            startDate?: string;
+            /**
+             * Format: date
+             * @description 일정 적용 종료일
+             * @example 2027-05-20
+             */
+            endDate?: string;
+            /**
+             * Format: int32
+             * @description 최소 주문 가능 기한(픽업 n일 전까지 주문 가능)
+             * @example 3
+             */
+            minOrderDays?: number;
+            /** @description 요일별 주문 가능 일정 */
+            days?: components["schemas"]["DayScheduleResponse"][];
+        };
+        OwnerMenuRequest: {
+            /**
+             * @description 메뉴명
+             * @example 햄치즈 샌드위치
+             */
+            name: string;
+            /**
+             * Format: int32
+             * @description 기본 가격
+             * @example 7800
+             */
+            basePrice: number;
+            /**
+             * @description 메뉴 설명
+             * @example 햄과 치즈가 들어간 샌드위치입니다.
+             */
+            description?: string;
+            /**
+             * @description 메뉴 이미지 URL
+             * @example https://groupeat-bucket.s3.ap-northeast-2.amazonaws.com/menus/1.jpg
+             */
+            imageUrl?: string;
+        };
+        ApiResponseOwnerMenuResponse: {
+            isSuccess?: boolean;
+            code?: string;
+            message?: string;
+            data?: components["schemas"]["OwnerMenuResponse"];
+        };
+        OwnerMenuResponse: {
+            /**
+             * Format: int64
+             * @description 메뉴 ID
+             * @example 1
+             */
+            menuId?: number;
+            /**
+             * @description 메뉴명
+             * @example 햄치즈 샌드위치
+             */
+            name?: string;
+            /**
+             * Format: int32
+             * @description 기본 가격
+             * @example 7800
+             */
+            basePrice?: number;
+            /**
+             * @description 메뉴 설명
+             * @example 햄과 치즈가 들어간 샌드위치입니다.
+             */
+            description?: string;
+            /**
+             * @description 메뉴 이미지 URL
+             * @example https://groupeat-bucket.s3.ap-northeast-2.amazonaws.com/menus/1.jpg
+             */
+            imageUrl?: string;
+        };
+        /**
+         * @description 이미지 사용 도메인
+         * @enum {string}
+         */
+        ImageUploadDomain: "STORE" | "MENU" | "PROFILE" | "REVIEW" | "BUSINESS_DOCUMENT";
+        ImagePresignedUrlRequest: {
+            /**
+             * @description 원본 파일명
+             * @example sandwich.jpg
+             */
+            fileName: string;
+            /**
+             * @description 이미지 Content-Type
+             * @example image/jpeg
+             */
+            contentType: string;
+        };
+        ApiResponseImagePresignedUrlResponse: {
+            isSuccess?: boolean;
+            code?: string;
+            message?: string;
+            data?: components["schemas"]["ImagePresignedUrlResponse"];
+        };
+        ImagePresignedUrlResponse: {
+            /** @description S3 업로드용 presigned URL */
+            uploadUrl?: string;
+            /** @description DB에 저장할 이미지 접근 URL */
+            imageUrl?: string;
+            /**
+             * @description S3 object key
+             * @example menus/2026/06/uuid.jpg
+             */
+            objectKey?: string;
+        };
         CustomerSignupRequest: {
             /** Format: int64 */
             memberId: number;
@@ -593,11 +1122,11 @@ export interface components {
             businessName: string;
             /** Format: date */
             openedDate: string;
-            businessRegistrationNumber: string;
+            businessValidationToken: string;
             businessRegistrationCertificateUrl: string;
             email: string;
-            /** Format: int32 */
-            age: number;
+            /** Format: date */
+            birthDate: string;
             /** @enum {string} */
             gender: "MALE" | "FEMALE" | "NONE";
         };
@@ -689,10 +1218,16 @@ export interface components {
              */
             status?: "READY" | "IN_PROGRESS" | "DONE" | "FAILED" | "CANCELED" | "PARTIAL_CANCELED";
             /**
-             * Format: date-time
-             * @description 결제 승인 완료 시각
+             * Format: date
+             * @description 결제 승인 완료 날짜
+             * @example 2026-05-28
              */
-            approvedAt?: string;
+            approvedDate?: string;
+            /**
+             * @description 결제 승인 완료 시간
+             * @example 12:34:56
+             */
+            approvedTime?: string;
         };
         OrderCreateRequest: {
             /**
@@ -793,6 +1328,10 @@ export interface components {
              */
             pickupTime: string;
         };
+        CartItemBulkAddRequest: {
+            /** @description 장바구니에 담을 항목 리스트 */
+            cartItems: components["schemas"]["CartItemAddRequest"][];
+        };
         ApiResponseCartListResponse: {
             isSuccess?: boolean;
             code?: string;
@@ -807,10 +1346,18 @@ export interface components {
              */
             cartItemId?: number;
             /**
-             * @description 메뉴명 및 옵션 요약 (UI 노출용)
-             * @example 반반 세트 1 (햄치즈 샌드위치, 참치 김밥)
+             * @description 메뉴명
+             * @example 반반 세트 1
              */
-            menuSummary?: string;
+            menuName?: string;
+            /**
+             * @description 선택한 옵션명 목록
+             * @example [
+             *       "햄치즈 샌드위치",
+             *       "참치 김밥"
+             *     ]
+             */
+            optionNames?: string[];
             /**
              * @description 메뉴 이미지
              * @example https://...
@@ -863,6 +1410,11 @@ export interface components {
              * @example 데이브런치
              */
             storeName?: string;
+            /**
+             * @description 가게 카테고리
+             * @example 샌드위치&김밥
+             */
+            storeCategory?: string;
             /** @description 해당 가게에 담긴 메뉴 목록 */
             cartItems?: components["schemas"]["CartItemDTO"][];
             /**
@@ -948,6 +1500,22 @@ export interface components {
             /** @description 계산에 포함된 메뉴들의 상세 정보 */
             calculatedItems?: components["schemas"]["CalculatedItem"][];
         };
+        BusinessValidateRequest: {
+            /**
+             * @description 검증할 사업자등록번호 (하이픈 제외)
+             * @example 1234567890
+             */
+            businessNumber: string;
+        };
+        ApiResponseBusinessValidateResponse: {
+            isSuccess?: boolean;
+            code?: string;
+            message?: string;
+            data?: components["schemas"]["BusinessValidateResponse"];
+        };
+        BusinessValidateResponse: {
+            validationToken?: string;
+        };
         ApiResponseTokenReissueResponse: {
             isSuccess?: boolean;
             code?: string;
@@ -966,13 +1534,6 @@ export interface components {
         LogoutResponse: {
             message?: string;
         };
-        OrderRejectRequest: {
-            /**
-             * @description 거절 사유
-             * @example 재료 소진
-             */
-            rejectReason: string;
-        };
         ApiResponseOrderStatusChangeResponse: {
             isSuccess?: boolean;
             code?: string;
@@ -984,8 +1545,9 @@ export interface components {
             orderId?: number;
             /** @enum {string} */
             orderStatus?: "PENDING" | "PAID" | "ACCEPTED" | "COMPLETED" | "REJECTED" | "CANCELLED";
-            /** Format: date-time */
-            processedAt?: string;
+            /** Format: date */
+            processedDate?: string;
+            processedTime?: string;
         };
         OrderCancelRequest: {
             /**
@@ -1009,8 +1571,9 @@ export interface components {
             refundRate?: number;
             /** Format: int32 */
             refundAmount?: number;
-            /** Format: date-time */
-            cancelledAt?: string;
+            /** Format: date */
+            cancelledDate?: string;
+            cancelledTime?: string;
         };
         ApiResponseString: {
             isSuccess?: boolean;
@@ -1361,180 +1924,257 @@ export interface components {
             /** @description 가게 카드 리스트 */
             storeList?: components["schemas"]["StoreCardDTO"][];
         };
+        ApiResponseOwnerOrderListDTO: {
+            isSuccess?: boolean;
+            code?: string;
+            message?: string;
+            data?: components["schemas"]["OwnerOrderListDTO"];
+        };
+        OrderCardDTO: {
+            /**
+             * Format: int64
+             * @description 주문 ID (PK)
+             * @example 12
+             */
+            orderId?: number;
+            /**
+             * @description 주문 상태
+             * @example PAID
+             * @enum {string}
+             */
+            orderStatus?: "PENDING" | "PAID" | "ACCEPTED" | "COMPLETED" | "REJECTED" | "CANCELLED";
+            /**
+             * @description 주문자명
+             * @example 김동욱
+             */
+            customerName?: string;
+            /**
+             * @description 주문 단체명
+             * @example CEOS 데모데이
+             */
+            groupName?: string;
+            /**
+             * Format: date
+             * @description 픽업 날짜
+             * @example 2026-06-21
+             */
+            pickupDate?: string;
+            /**
+             * @description 픽업 시간
+             * @example 13:00:00
+             */
+            pickupTime?: string;
+            /**
+             * Format: int32
+             * @description 총 금액 (할인 적용된 최종 금액)
+             * @example 35000
+             */
+            totalAmount?: number;
+            /** @description 주문 상품 리스트 (메뉴명과 수량 분리) */
+            items?: components["schemas"]["OrderCardItemDTO"][];
+            /**
+             * @description 재주문 여부
+             * @example false
+             */
+            isReorder?: boolean;
+            /**
+             * @description 결제 방식 (확정 탭에서만 노출, 그 외엔 null)
+             * @example PREPAID
+             * @enum {string}
+             */
+            paymentMethod?: "PREPAID" | "ON_SITE";
+            /**
+             * Format: int32
+             * @description 승인 마감까지 남은 시간 (대기 중 탭에서만 노출, 그 외엔 null)
+             * @example 18
+             */
+            remainingHours?: number;
+        };
+        OrderCardItemDTO: {
+            /**
+             * @description 주문 메뉴명
+             * @example 반반 세트
+             */
+            menuName?: string;
+            /**
+             * Format: int32
+             * @description 주문 수량
+             * @example 2
+             */
+            quantity?: number;
+        };
+        OwnerOrderListDTO: {
+            /**
+             * Format: int64
+             * @description 조건에 해당하는 주문 개수
+             * @example 5
+             */
+            totalElements?: number;
+            /** @description 주문 카드 리스트 */
+            orderList?: components["schemas"]["OrderCardDTO"][];
+            /**
+             * @description 다음 페이지 존재 여부 (무한 스크롤용)
+             * @example true
+             */
+            hasNext?: boolean;
+            /**
+             * Format: int64
+             * @description 다음 커서 ID (마지막 주문의 PK ID)
+             * @example 42
+             */
+            nextCursor?: number;
+        };
+        ApiResponseOrderDetailDTO: {
+            isSuccess?: boolean;
+            code?: string;
+            message?: string;
+            data?: components["schemas"]["OrderDetailDTO"];
+        };
+        OrderDetailDTO: {
+            /** @description 주문자 정보 */
+            ordererInfo?: components["schemas"]["OrdererInfoDTO"];
+            /** @description 주문 상품 정보 목록 */
+            orderMenus?: components["schemas"]["OrderMenuDTO"][];
+            /** @description 결제 정보 */
+            paymentInfo?: components["schemas"]["PaymentInfoDTO"];
+        };
+        OrderMenuDTO: {
+            /**
+             * @description 주문 메뉴 및 옵션
+             * @example 반반 세트
+             */
+            menuName?: string;
+            /** @description 선택한 옵션 목록 */
+            options?: components["schemas"]["OrderMenuOptionDTO"][];
+            /**
+             * Format: int32
+             * @description 주문 수량
+             * @example 2
+             */
+            quantity?: number;
+            /**
+             * @description 메뉴 이미지 URL
+             * @example https://image.url/menu.png
+             */
+            menuImageUrl?: string;
+            /**
+             * Format: int32
+             * @description 할인율(%)
+             * @example 10
+             */
+            discountRate?: number;
+            /**
+             * Format: int32
+             * @description 해당 메뉴 총 금액
+             * @example 30000
+             */
+            totalAmount?: number;
+        };
+        OrderMenuOptionDTO: {
+            /**
+             * @description 옵션명
+             * @example 햄치즈 샌드위치
+             */
+            optionName?: string;
+        };
+        OrdererInfoDTO: {
+            /**
+             * @description 주문자명
+             * @example 김동욱
+             */
+            customerName?: string;
+            /**
+             * @description 주문 단체명
+             * @example CEOS 데모데이
+             */
+            groupName?: string;
+            /**
+             * @description 연락처
+             * @example 010-1234-5678
+             */
+            phoneNumber?: string;
+            /**
+             * Format: date
+             * @description 주문 일자
+             * @example 2026-06-20
+             */
+            orderDate?: string;
+            /**
+             * @description 요청사항
+             * @example 픽업 시간에 맞춰서 준비해 주세요.
+             */
+            requests?: string;
+        };
+        PaymentInfoDTO: {
+            /**
+             * @description 결제 방식
+             * @example PREPAID
+             * @enum {string}
+             */
+            paymentMethod?: "PREPAID" | "ON_SITE";
+            /**
+             * @description 결제 수단
+             * @example 토스페이
+             * @enum {string}
+             */
+            paymentMeans?: "TOSS";
+            /**
+             * Format: int32
+             * @description 1인당 금액(소수점 삭제)
+             * @example 7000
+             */
+            perPersonAmount?: number;
+            /**
+             * Format: int32
+             * @description 총 할인율(%)
+             * @example 10
+             */
+            discountRate?: number;
+            /**
+             * Format: int32
+             * @description 총 할인 금액
+             * @example 5000
+             */
+            totalDiscountAmount?: number;
+            /**
+             * Format: int32
+             * @description 할인 전 총 금액
+             * @example 35000
+             */
+            originalTotalAmount?: number;
+            /**
+             * Format: int32
+             * @description 최종 결제 금액
+             * @example 30000
+             */
+            finalPaymentAmount?: number;
+        };
         ApiResponseOrderListResponse: {
             isSuccess?: boolean;
             code?: string;
             message?: string;
             data?: components["schemas"]["OrderListResponse"];
         };
-        OrderCardDTO: {
-            /**
-             * Format: int64
-             * @description 주문 고유 ID
-             * @example 1
-             */
-            orderId?: number;
-            /**
-             * Format: int64
-             * @description 가게 ID
-             * @example 1
-             */
-            storeId?: number;
-            /**
-             * @description 가게명
-             * @example 데이브런치
-             */
-            storeName?: string;
-            /**
-             * @description 가게 대표 이미지
-             * @example https://...
-             */
-            storeImageUrl?: string;
-            /**
-             * Format: date
-             * @description 주문 생성 날짜
-             * @example 2026-04-20
-             */
-            orderDate?: string;
-            /**
-             * @description 주문 생성 시간
-             * @example 22:30:00
-             */
-            orderTime?: string;
-            /**
-             * Format: date
-             * @description 픽업 예정 날짜
-             * @example 2026-04-23
-             */
-            pickupDate?: string;
-            /**
-             * @description 픽업 예정 시간
-             * @example 10:00:00
-             */
-            pickupTime?: string;
-            /**
-             * @description 주문 메뉴 요약명
-             * @example 반반 세트 외 1개
-             */
-            menuSummary?: string;
-            /**
-             * Format: int32
-             * @description 할인 전 원가
-             * @example 392000
-             */
-            totalOriginalPrice?: number;
-            /**
-             * Format: int32
-             * @description 최종 결제 금액
-             * @example 372400
-             */
-            paymentAmount?: number;
-            /**
-             * @description 주문 상태
-             * @example PENDING
-             * @enum {string}
-             */
-            orderStatus?: "PENDING" | "PAID" | "ACCEPTED" | "COMPLETED" | "REJECTED" | "CANCELLED";
-            /**
-             * @description 결제 방식 (선결제/현장결제)
-             * @example PREPAID
-             * @enum {string}
-             */
-            paymentMethod?: "PREPAID" | "ON_SITE";
-        };
         OrderListResponse: {
-            /** @description 주문 내역 리스트 */
-            orders?: components["schemas"]["OrderCardDTO"][];
             /**
              * Format: int64
-             * @description 전체 주문 개수
+             * @description 조건에 해당하는 조회 목록 개수
              * @example 5
              */
             totalElements?: number;
+            /** @description 주문 카드 리스트 */
+            orderList?: components["schemas"]["OrderCardDTO"][];
             /**
              * @description 다음 페이지 존재 여부 (무한 스크롤용)
              * @example true
              */
             hasNext?: boolean;
-        };
-        ApiResponseOrderDetailResponse: {
-            isSuccess?: boolean;
-            code?: string;
-            message?: string;
-            data?: components["schemas"]["OrderDetailResponse"];
-        };
-        OrderDetailItemDTO: {
-            /**
-             * @description 메뉴명
-             * @example 반반 세트
-             */
-            menuName?: string;
-            /**
-             * Format: int32
-             * @description 수량
-             * @example 56
-             */
-            quantity?: number;
-        };
-        OrderDetailResponse: {
             /**
              * Format: int64
-             * @description 주문 고유 ID)
-             * @example 1
+             * @description 다음 커서 ID (마지막 주문의 PK ID)
+             * @example 42
              */
-            orderId?: number;
-            /**
-             * @description 주문 상태
-             * @example PENDING
-             * @enum {string}
-             */
-            orderStatus?: "PENDING" | "PAID" | "ACCEPTED" | "COMPLETED" | "REJECTED" | "CANCELLED";
-            /**
-             * @description 주문자
-             * @example 김동욱
-             */
-            customerName?: string;
-            /**
-             * @description 연락처
-             * @example 010-1234-5678
-             */
-            customerPhone?: string;
-            /**
-             * Format: date
-             * @description 픽업 날짜
-             * @example 2026-04-23
-             */
-            pickupDate?: string;
-            /**
-             * @description 픽업 시간
-             * @example 10:00:00
-             */
-            pickupTime?: string;
-            /** @description 주문 메뉴 및 수량 목록 */
-            items?: components["schemas"]["OrderDetailItemDTO"][];
-            /**
-             * Format: int32
-             * @description 총 금액 (할인 적용된 최종 결제액)
-             * @example 372400
-             */
-            paymentAmount?: number;
-            /**
-             * @description 결제 상태
-             * @example ON_SITE
-             * @enum {string}
-             */
-            paymentMethod?: "PREPAID" | "ON_SITE";
-            /**
-             * Format: date
-             * @description 주문 날짜
-             * @example 2026-04-20
-             */
-            orderDate?: string;
-            /**
-             * @description 주문 시간
-             * @example 17:30:00
-             */
-            orderTime?: string;
+            nextCursor?: number;
         };
         ApiResponseAuthenticatedMemberResponse: {
             isSuccess?: boolean;
@@ -1559,6 +2199,169 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    getMyStore: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseOwnerStoreResponse"];
+                };
+            };
+        };
+    };
+    updateMyStore: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OwnerStoreUpdateRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseOwnerStoreResponse"];
+                };
+            };
+        };
+    };
+    getMyStoreOrderSchedule: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseOwnerStoreOrderScheduleResponse"];
+                };
+            };
+        };
+    };
+    saveMyStoreOrderSchedule: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OwnerStoreOrderScheduleRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseOwnerStoreOrderScheduleResponse"];
+                };
+            };
+        };
+    };
+    updateMenu: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                menuId: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OwnerMenuRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseOwnerMenuResponse"];
+                };
+            };
+        };
+    };
+    deleteMenu: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                menuId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseString"];
+                };
+            };
+        };
+    };
+    createPresignedUrl: {
+        parameters: {
+            query: {
+                /** @description 이미지 사용 도메인 */
+                domain: components["schemas"]["ImageUploadDomain"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ImagePresignedUrlRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseImagePresignedUrlResponse"];
+                };
+            };
+        };
+    };
     signupCustomer: {
         parameters: {
             query?: never;
@@ -1703,11 +2506,55 @@ export interface operations {
             };
         };
     };
+    getMyStoreMenus: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseMenuListResponse"];
+                };
+            };
+        };
+    };
+    createMenu: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OwnerMenuRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseOwnerMenuResponse"];
+                };
+            };
+        };
+    };
     getOrderList: {
         parameters: {
             query?: {
                 /** @description 정렬 필터 타입 */
-                filter?: "ALL" | "PAID" | "ACCEPTED" | "COMPLETED" | "REJECTED";
+                filter?: "ALL" | "IN_PROGRESS" | "PAST";
                 /** @description 마지막으로 조회된 주문 ID (최초 조회 시 생략) */
                 lastOrderId?: number;
                 /** @description 한 번에 가져올 데이터 개수 */
@@ -1754,7 +2601,7 @@ export interface operations {
             };
         };
     };
-    addCartItem: {
+    addCartItems: {
         parameters: {
             query?: never;
             header?: never;
@@ -1763,7 +2610,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["CartItemAddRequest"];
+                "application/json": components["schemas"]["CartItemBulkAddRequest"];
             };
         };
         responses: {
@@ -1798,6 +2645,30 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["ApiResponseCartCalculateResponse"];
+                };
+            };
+        };
+    };
+    validateBusinessNumber: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BusinessValidateRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseBusinessValidateResponse"];
                 };
             };
         };
@@ -1852,11 +2723,7 @@ export interface operations {
             };
             cookie?: never;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["OrderRejectRequest"];
-            };
-        };
+        requestBody?: never;
         responses: {
             /** @description OK */
             200: {
@@ -2074,6 +2941,53 @@ export interface operations {
             };
         };
     };
+    getOwnerOrderList: {
+        parameters: {
+            query: {
+                tab: "WAITING" | "CONFIRMED" | "PAST";
+                lastOrderId?: number;
+                size?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseOwnerOrderListDTO"];
+                };
+            };
+        };
+    };
+    getOwnerOrderDetail: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 조회할 주문 ID */
+                orderId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseOrderDetailDTO"];
+                };
+            };
+        };
+    };
     getOrderDetail: {
         parameters: {
             query?: never;
@@ -2092,7 +3006,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ApiResponseOrderDetailResponse"];
+                    "*/*": components["schemas"]["ApiResponseOrderDetailDTO"];
                 };
             };
         };
