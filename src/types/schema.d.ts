@@ -86,10 +86,30 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * 이미지 업로드 presigned URL 발급
-         * @description 이미지를 S3에 직접 업로드하기 위한 presigned URL을 발급합니다.
+         * 공개 이미지 업로드 presigned URL 발급
+         * @description 매장, 메뉴, 프로필, 리뷰 이미지를 S3에 직접 업로드하기 위한 presigned URL을 발급합니다. 사업자등록증은 사업자 회원가입 전용 API를 사용해야 합니다.
          */
         post: operations["createPresignedUrl"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/uploads/business-document/presigned-url": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 사업자등록증 업로드 presigned URL 발급
+         * @description 사업자 회원가입에 사용할 사업자등록증 이미지를 S3에 직접 업로드하기 위한 presigned URL을 발급합니다. 응답의 imageUrl을 사업자 회원가입 요청의 businessRegistrationCertificateUrl에 사용합니다.
+         */
+        post: operations["createPresignedUrl_1"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1028,10 +1048,10 @@ export interface components {
             imageUrl?: string;
         };
         /**
-         * @description 이미지 사용 도메인
+         * @description 공개 이미지 사용 도메인
          * @enum {string}
          */
-        ImageUploadDomain: "STORE" | "MENU" | "PROFILE" | "REVIEW" | "BUSINESS_DOCUMENT";
+        PublicImageUploadDomain: "STORE" | "MENU" | "PROFILE" | "REVIEW";
         ImagePresignedUrlRequest: {
             /**
              * @description 원본 파일명
@@ -2338,8 +2358,8 @@ export interface operations {
     createPresignedUrl: {
         parameters: {
             query: {
-                /** @description 이미지 사용 도메인 */
-                domain: components["schemas"]["ImageUploadDomain"];
+                /** @description 공개 이미지 사용 도메인 */
+                domain: components["schemas"]["PublicImageUploadDomain"];
             };
             header?: never;
             path?: never;
@@ -2347,6 +2367,36 @@ export interface operations {
         };
         requestBody: {
             content: {
+                "application/json": components["schemas"]["ImagePresignedUrlRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseImagePresignedUrlResponse"];
+                };
+            };
+        };
+    };
+    createPresignedUrl_1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                /**
+                 * @example {
+                 *       "fileName": "business-registration-certificate.jpg",
+                 *       "contentType": "image/jpeg"
+                 *     }
+                 */
                 "application/json": components["schemas"]["ImagePresignedUrlRequest"];
             };
         };

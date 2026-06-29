@@ -21,7 +21,7 @@ const initialPayload: BusinessPayload = {
   businessRegistrationCertificateUrl: '',
   businessValidationToken: '',
   email: '',
-  age: null,
+  birthDate: '',
   gender: null,
 };
 
