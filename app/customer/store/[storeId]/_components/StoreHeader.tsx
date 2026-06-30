@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import BackIcon from '@/public/icons/icon_arrow_Left.svg';
-import CartIcon from '@/public/icons/icon_shoppingCart.svg';
+import CartButton from '@/components/ui/CartButton';
 
 export default function StoreHeader() {
   const router = useRouter();
@@ -15,11 +15,12 @@ export default function StoreHeader() {
     }
   };
 
+  const handleGoToCart = () => {
+    router.push('/customer/cart');
+  }
+
   return (
-    // 💡 1. 부모 컨테이너: 전체 영역을 잡고 기준점(relative)이 됩니다.
-    // 기존 h-64.5 등을 제거하고 shrink-0으로 크기 고정
     <div className="relative w-full shrink-0 h-37">
-      
       {/* 💡 2. 이미지 영역: 128px 고정 h를 가집니다. */}
       {/* <Image /> 실제 적용 시 아래 주석 해제 */}
       {/* <Image
@@ -42,9 +43,7 @@ export default function StoreHeader() {
           <BackIcon className="w-6 h-6" />
         </button>
         {/* TODO: 장바구니 페이지로 이동하는 router logic 추가 필요 */}
-        <button className="flex w-8 h-8 items-center justify-center rounded-full active:bg-black/20">
-          <CartIcon className="w-6 h-6" />
-        </button>
+        {/* <CartButton onClick={handleGoToCart} className=""/> */}
       </div>
     </div>
   );

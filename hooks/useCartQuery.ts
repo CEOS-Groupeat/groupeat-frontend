@@ -23,7 +23,7 @@ export function useCartQuery(){
         if(query.data) {
             setStoreCarts(query.data);
         }
-    }, [query.data, setStoreCarts]);
+    }, [query.data]);
 
     return query;
 }

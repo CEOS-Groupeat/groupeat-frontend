@@ -1,7 +1,4 @@
-// app/customer/favorite/page.tsx
-'use client';
-
-import FavoritesRow from '@/app/customer/favorite/_components/FavoritesRow';
+// import FavoritesRow from '@/app/customer/favorite/_components/FavoritesRow';
 import ArrowLeft from '@/public/icons/icon_arrow_Left.svg';
 
 const favoritesMock = [
@@ -31,9 +28,9 @@ const favoritesMock = [
   },
 ];
 export default function CustomerFavoritePage() {
-  const handleDeleteFavorites = () => {
-    //todo: 즐겨찾기 삭제로직 구현
-  };
+  // const handleDeleteFavorites = () => {
+  //   //todo: 즐겨찾기 삭제로직 구현
+  // };
   return (
     <div className="w-full flex pb-1 flex-col items-center">
       <div className="w-full flex flex-col items-start">
@@ -51,17 +48,17 @@ export default function CustomerFavoritePage() {
           <p className="text-text-default text-label2 font-medium">
             즐겨찾기({favoritesMock.length})
           </p>
-          <button onClick={() => handleDeleteFavorites}>
+          {/* <button onClick={() => handleDeleteFavorites}>
             <p className="text-text-subtle text-label2 underline leading-4.5">
               전체 삭제
             </p>
-          </button>
+          </button> */}
         </section>
 
         {favoritesMock.map((item) => {
           return (
             <div key={item.storeName}>
-              <FavoritesRow />
+              {/* <FavoritesRow /> */}
             </div>
           );
         })}
