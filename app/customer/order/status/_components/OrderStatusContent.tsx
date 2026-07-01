@@ -16,7 +16,7 @@ export default function OrderStatusContent() {
   });
   const { data: pastData } = useCustomerOrders({ filter: 'PAST', size: 1 });
 
-  const { data, isLoading } = useCustomerOrders({ filter: activeTab });
+  const { data, isLoading, isError } = useCustomerOrders({ filter: activeTab });
 
   const counts = [
     { value: 'IN_PROGRESS', count: progressData?.totalElements ?? 0 },
@@ -34,8 +34,13 @@ export default function OrderStatusContent() {
         <div className="flex-1 flex items-center justify-center">
           <span className="text-sm text-text-subtle">로딩 중...</span>
         </div>
+      ) : isError ? (
+        <div className="flex-1 flex items-center justify-center">
+          <span className="text-sm text-text-subtle">
+            주문 내역을 불러오지 못했어요.
+          </span>
+        </div>
       ) : !data?.orderList || data.orderList.length === 0 ? (
-        // TODO: 빈 화면 컴포넌트 추가
         <div className="flex-1 flex items-center justify-center">
           <span className="text-sm text-text-subtle">
             주문 내역이 없습니다.
