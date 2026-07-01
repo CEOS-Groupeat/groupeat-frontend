@@ -51,6 +51,7 @@ export default function CustomerOrderCard({
               </span> */}
               <button
                 type="button"
+                disabled
                 onClick={() => {
                   // TODO: storeId 필드 추가 후 라우팅 연결
                   // router.push(`/customer/store/${order.storeId}`)
