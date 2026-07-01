@@ -26,7 +26,7 @@ export default function InputField({
       {/* 입력 영역 */}
       <input
         value={value}
-        className={`w-full h-11 pl-4 pr-3 py-3 rounded-lg font-pretendard font-normal text-body text-text-default placeholder:text-text-placeholder transition-colors focus:outline-none focus:ring-1 focus:ring-brand-default ${
+        className={`w-full h-11 pl-4 pr-3 py-3 rounded-lg font-pretendard font-normal text-body text-text-default placeholder:text-text-placeholder transition-colors  ${
           isFilled
             ? 'bg-background-subtle outline-none border-none'
             : 'bg-white outline-1 outline-offset-1 outline-border-strong'

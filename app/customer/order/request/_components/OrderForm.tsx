@@ -1,25 +1,30 @@
 'use client';
 
 import InputField from '@/components/ui/InputField';
-import { useState } from 'react';
 
-export default function OrderForm() {
-  const [formData, setFormData] = useState({
-    ordererName: '',
-    contact: '',
-    eventName: '',
-    requestStr: '',
-  });
+interface OrderFormProps {
+  customerName: string;
+  setCustomerName: (val: string) => void;
+  customerPhone: string;
+  setCustomerPhone: (val: string) => void;
+  groupName: string;
+  setGroupName: (val: string) => void;
+  requests: string;
+  setRequests: (val: string) => void;
+}
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  // 최신 표준 SubmitEvent 적용 완료
+export default function OrderForm({
+  customerName,
+  setCustomerName,
+  customerPhone,
+  setCustomerPhone,
+  groupName,
+  setGroupName,
+  requests,
+  setRequests,
+}: OrderFormProps) {
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('최종 주문 데이터:', formData);
   };
 
   return (
@@ -29,36 +34,36 @@ export default function OrderForm() {
       <div className="flex flex-col gap-6">
         <InputField
           label="주문자명"
-          name="ordererName"
-          value={formData.ordererName}
-          onChange={handleChange}
+          name="customerName"
+          value={customerName}
+          onChange={(e) => setCustomerName(e.target.value)}
           required
           placeholder="이름 입력"
         />
 
         <InputField
           label="연락처"
-          name="contact"
+          name="customerPhone"
           type="tel"
-          value={formData.contact}
-          onChange={handleChange}
+          value={customerPhone}
+          onChange={(e) => setCustomerPhone(e.target.value)}
           required
           placeholder="010-0000-0000"
         />
 
         <InputField
           label="단체명 / 행사명"
-          name="eventName"
-          value={formData.eventName}
-          onChange={handleChange}
+          name="groupName"
+          value={groupName}
+          onChange={(e) => setGroupName(e.target.value)}
           placeholder="단체명 / 행사명 입력"
         />
 
         <InputField
           label="요청사항"
-          name="requestStr"
-          value={formData.requestStr}
-          onChange={handleChange}
+          name="requests"
+          value={requests}
+          onChange={(e) => setRequests(e.target.value)}
           placeholder="요청사항 입력"
         />
       </div>
