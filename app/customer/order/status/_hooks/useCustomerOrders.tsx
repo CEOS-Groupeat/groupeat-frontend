@@ -12,7 +12,7 @@ interface CustomerOrderParams {
 
 export function useCustomerOrders({ filter, lastOrderId, size = 20 }: CustomerOrderParams) {
   return useQuery({
-    queryKey: ['customerOrders', filter, lastOrderId],
+    queryKey: ['customerOrders', filter, lastOrderId, size],
     queryFn: async () => {
       const params = new URLSearchParams();
       params.append('filter', filter);
