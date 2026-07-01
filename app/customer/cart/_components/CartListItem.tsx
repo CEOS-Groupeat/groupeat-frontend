@@ -4,8 +4,7 @@ import Image from 'next/image';
 import CloseIcon from '@/public/icons/icon_close.svg';
 import CheckboxFalseIcon from '@/public/icons/icon_checkboxFalse.svg';
 import CheckboxTrueIcon from '@/public/icons/icon_checkboxTrue.svg';
-import type { CartItem } from '@/src/types/api';
-// 💡 parseMenuSummary 임포트 삭제 (더 이상 필요 없음)
+import type { CartItem } from '@/src/types/api'
 
 interface CartItemProps {
   item: CartItem;
