@@ -5,7 +5,7 @@ import CloseIcon from '@/public/icons/icon_close.svg';
 import CheckboxFalseIcon from '@/public/icons/icon_checkboxFalse.svg';
 import CheckboxTrueIcon from '@/public/icons/icon_checkboxTrue.svg';
 import type { CartItem } from '@/src/types/api';
-import { parseMenuSummary } from '../_utils/parseMenuSummary';
+// 💡 parseMenuSummary 임포트 삭제 (더 이상 필요 없음)
 
 interface CartItemProps {
   item: CartItem;
@@ -20,7 +20,8 @@ export default function CartListItem({
   onSelect,
   onDelete,
 }: CartItemProps) {
-  const { menuTitle, options } = parseMenuSummary(item.menuSummary ?? '');
+  const menuTitle = item.menuName ?? '메뉴';
+  const options = item.optionNames ?? [];
 
   return (
     <div className="flex flex-col gap-3 py-4">
@@ -33,7 +34,7 @@ export default function CartListItem({
             }
             className="size-6 flex items-center justify-center shrink-0"
             disabled={item.cartItemId === undefined}
-            aria-label={`${item.menuSummary ?? '메뉴'} 선택`}
+            aria-label={`${menuTitle} 선택`}
           >
             {isSelected ? (
               <CheckboxTrueIcon className="text-icon-default" />
@@ -43,7 +44,7 @@ export default function CartListItem({
           </button>
 
           <div className="flex items-start gap-3 font-['Pretendard']">
-            <div className="relative size-[70px] rounded-lg overflow-hidden shrink-0">
+            <div className="relative size-17.5 rounded-lg overflow-hidden shrink-0">
               <Image
                 src={
                   item.imageUrl?.startsWith('/') ||
@@ -52,7 +53,7 @@ export default function CartListItem({
                     ? item.imageUrl
                     : '/images/image_logo.png'
                 }
-                alt={item.menuSummary ?? ''}
+                alt={menuTitle}
                 fill
                 className="object-cover"
               />
@@ -61,6 +62,7 @@ export default function CartListItem({
               <span className="text-body font-medium text-text-default">
                 {menuTitle}
               </span>
+              {/* 💡 수정됨: 백엔드에서 주는 문자열 배열을 그대로 줄바꿈으로 렌더링 */}
               {options.length > 0 && (
                 <span className="text-label1 text-text-subtle font-normal whitespace-pre-line">
                   {options.join('\n')}
@@ -77,7 +79,7 @@ export default function CartListItem({
           }
           className="shrink-0"
           disabled={item.cartItemId === undefined}
-          aria-label={`${item.menuSummary ?? '메뉴'} 삭제`}
+          aria-label={`${menuTitle} 삭제`}
         >
           <CloseIcon className="size-4 text-icon-default" />
         </button>

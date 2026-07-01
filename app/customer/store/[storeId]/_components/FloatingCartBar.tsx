@@ -52,8 +52,9 @@ export default function FloatingCartBar({
     0
   );
 
-  const firstItemName = currentStoreCart.cartItems[0].menuSummary?.split(' ')[0] || '메뉴';
-  const summaryText = currentStoreCart.cartItems.length > 1
+  const firstItemName = currentStoreCart.cartItems[0].menuName || '메뉴';
+  const summaryText =
+    currentStoreCart.cartItems.length > 1
       ? `${firstItemName} 외 ${currentStoreCart.cartItems.length - 1}건`
       : firstItemName;
 
