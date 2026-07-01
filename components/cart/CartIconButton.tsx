@@ -26,12 +26,19 @@ export default function CartIconButton({
     <button
       type="button"
       onClick={() => router.push('/customer/cart')}
-      aria-label="장바구니로 이동"
+      aria-label={
+        totalCount > 0
+          ? `장바구니로 이동, ${totalCount}개 담김`
+          : '장바구니로 이동'
+      }
       className="relative size-6"
     >
       <CartIcon className={`size-6 ${iconColor}`} />
       {totalCount > 0 && (
-        <div className="absolute left-[13px] top-[-6px] min-w-[16px] h-4 px-0.5 bg-brand-default rounded-full flex items-center justify-center">
+        <div
+          aria-hidden="true"
+          className="absolute left-[13px] top-[-6px] min-w-[16px] h-4 px-0.5 bg-brand-default rounded-full flex items-center justify-center"
+        >
           <span className="text-caption2 font-semibold text-text-inverse font-['Pretendard']">
             {totalCount}
           </span>
