@@ -22,12 +22,13 @@ export default function CartSummaryBar({
 
   const firstCalculatedItem: CalculatedCartItem = (summary.calculatedItems ??
     [])[0];
+
   const firstItemName =
     cartData
       ?.find((store) => store.storeId === summary.storeId)
       ?.cartItems?.find(
         (item) => item.cartItemId === firstCalculatedItem.cartItemId
-      )?.menuSummary ?? '';
+      )?.menuName ?? '메뉴';
 
   const summaryText =
     firstItemName +

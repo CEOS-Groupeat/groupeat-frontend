@@ -61,7 +61,7 @@ export default function CustomerFavoritePage() {
         {favoritesMock.map((item) => {
           return (
             <div key={item.storeName}>
-              <FavoritesRow />
+              {/* <FavoritesRow /> */}
             </div>
           );
         })}
