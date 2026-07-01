@@ -8,7 +8,7 @@ import { useRecentSearches } from '@/hooks/useRecentSearches';
 import { useSearchStores } from '@/hooks/useSearchStores';
 import type { StoreSearchParams } from '@/app/customer/search/_types/store.type';
 
-import CartButton from '@/components/ui/CartButton';
+import CartIconButton from '@/components/cart/CartIconButton';
 import SearchField from '@/components/ui/SearchField';
 import StoreCard from '@/components/features/StoreCard';
 import SearchFilterChipBar from './_components/SearchFilterChipBar';
@@ -110,7 +110,7 @@ function SearchContent() {
           </div>
 
           {/* 장바구니 */}
-          <CartButton count={0} onClick={() => router.push('/customer/cart')} />
+          <CartIconButton iconColor="text-icon-subtle" />
         </div>
       </div>
 
@@ -203,9 +203,7 @@ function SearchContent() {
               <StoreCard
                 key={store.storeId}
                 store={store}
-                onClick={() =>
-                  router.push(`/customer/store/${store.storeId}`)
-                }
+                onClick={() => router.push(`/customer/store/${store.storeId}`)}
               />
             ))}
           </div>
