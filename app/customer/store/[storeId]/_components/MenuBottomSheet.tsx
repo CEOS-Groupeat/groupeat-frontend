@@ -132,32 +132,26 @@ export default function MenuBottomSheet({
 
   const addCartMutation = useMutation({
     mutationFn: async (cardsToSubmit: MenuCard[]) => {
-      const promises = cardsToSubmit.map((card) => {
-        const optionIds = Object.values(card.selectedOptions).flat();
+      const cartItemsPayload = cardsToSubmit.map((card) => ({
+        storeId: Number(storeId),
+        menuId: menu.menuId,
+        quantity: card.quantity,
+        optionIds: Object.values(card.selectedOptions).flat(),
+        pickupDate,
+        pickupTime,
+      }));
 
-        const payload = {
-          storeId: Number(storeId),
-          menuId: menu.menuId,
-          quantity: card.quantity,
-          optionIds,
-          pickupDate,
-          pickupTime,
-        };
-
-        return fetchClient('/api/carts/items', {
-          method: 'POST',
-          body: JSON.stringify(payload),
-        });
+      return fetchClient('/api/carts/items', {
+        method: 'POST',
+        body: JSON.stringify({ cartItems: cartItemsPayload }),
       });
-
-      await Promise.all(promises);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['cart'] });
       onClose();
     },
     onError: (error: Error) => {
-      setErrorMessage(`장바구니 담기 실패: ${error.message}`);
+      setErrorMessage(error.message || '장바구니 담기에 실패했습니다.');
       setShowError(true);
       setTimeout(() => setShowError(false), 2000);
     },

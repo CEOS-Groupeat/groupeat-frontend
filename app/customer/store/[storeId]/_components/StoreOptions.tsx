@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useState } from 'react';
@@ -64,6 +65,10 @@ export default function StoreOptions() {
   const handleTimeChange = (times: string[]) => {
     if (times.length > 0) {
       setSelectedTime(times[times.length - 1]);
+
+      setTimeout(() => {
+        setIsDateExpanded(false);
+      }, 700);
     } else {
       setSelectedTime(undefined);
     }
@@ -80,8 +85,8 @@ export default function StoreOptions() {
     if (!currentStoreCart || !currentStoreCart.cartItems) return 0;
 
     return currentStoreCart.cartItems
-      .filter((item) => item.menuSummary?.includes(menuName))
-      .reduce((acc, item) => acc + (item.quantity || 0), 0);
+      .filter((item: any) => item.menuName === menuName)
+      .reduce((acc: any, item: any) => acc + (item.quantity || 0), 0);
   };
 
   return (
@@ -96,18 +101,15 @@ export default function StoreOptions() {
                 isDateExpanded ? '' : 'border-b border-border-subtle pb-3 '
               }`}
             >
-              <div className="flex items-center gap-2">
+              <div className="flex items-start gap-1">
                 <span className="text-base font-semibold text-text-default flex items-center gap-1">
                   픽업 일자
-                  {formattedDate && (
+                </span>
+                <div className='flex pr-1 pt-0.5 items-center gap-2.5'>
+                  {formattedDate && !isDateExpanded && (
                     <div className="w-1 h-1 rounded-full bg-brand-default" />
                   )}
-                </span>
-                {formattedDate && !isDateExpanded && (
-                  <span className="text-xs font-medium text-brand-default">
-                    {formattedDate}
-                  </span>
-                )}
+                </div>
               </div>
               {isDateExpanded ? (
                 <UpArrow className="size-5 text-icon-default" />
@@ -249,10 +251,7 @@ export default function StoreOptions() {
           onClose={() => setSelectedMenu(null)}
         />
       )}
-      <FloatingCartBar 
-        storeId={storeId} 
-        pickupDateTime={formattedDate}
-      />
+      <FloatingCartBar storeId={storeId} pickupDateTime={formattedDate} />
     </>
   );
 }

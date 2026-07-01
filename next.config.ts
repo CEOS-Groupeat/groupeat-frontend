@@ -17,7 +17,7 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'groupeat-bucket.s3.ap-northeast-2.amazonaws.com',
         port: '',
-        pathname: '/**', // This allows all image paths from this specific bucket
+        pathname: '/**', // 해당 버킷의 모든 경로 허용
       },
     ],
   },
