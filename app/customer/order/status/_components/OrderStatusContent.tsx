@@ -48,12 +48,8 @@ export default function OrderStatusContent() {
         </div>
       ) : (
         <div className="flex flex-col gap-2">
-          {data.orderList.map((order) => (
-            <CustomerOrderCard
-              key={order.orderId}
-              order={order}
-              //onReviewClick={(orderId) => console.log('리뷰 작성', orderId)}
-            />
+          {data.orderList.map((order, index) => (
+            <CustomerOrderCard key={order.orderId ?? index} order={order} />
           ))}
         </div>
       )}
