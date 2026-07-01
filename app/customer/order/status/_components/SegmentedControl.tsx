@@ -45,11 +45,9 @@ export default function SegmentedControl({
           <span className="font-['Pretendard'] text-sm font-medium leading-5 text-label-light group-data-[state=on]:text-label-normal">
             {item.label}
           </span>
-          {item.count !== undefined && (
-            <span className="font-['Pretendard'] text-xs font-semibold leading-4 text-label-alternative group-data-[state=on]:text-label-netural">
-              {item.count}
-            </span>
-          )}
+          <span className="font-['Pretendard'] text-xs font-semibold leading-4 text-label-alternative group-data-[state=on]:text-label-netural">
+            {item.count}
+          </span>
         </ToggleGroup.Item>
       ))}
     </ToggleGroup.Root>
