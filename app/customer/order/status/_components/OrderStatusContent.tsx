@@ -10,20 +10,18 @@ export default function OrderStatusContent() {
     'IN_PROGRESS'
   );
 
-  const { data: progressData, isLoading: isProgressLoading } =
-    useCustomerOrders({ filter: 'IN_PROGRESS' });
-  const { data: pastData, isLoading: isPastLoading } = useCustomerOrders({
-    filter: 'PAST',
+  const { data: progressData } = useCustomerOrders({
+    filter: 'IN_PROGRESS',
+    size: 1,
   });
+  const { data: pastData } = useCustomerOrders({ filter: 'PAST', size: 1 });
+
+  const { data, isLoading } = useCustomerOrders({ filter: activeTab });
 
   const counts = [
     { value: 'IN_PROGRESS', count: progressData?.totalElements ?? 0 },
     { value: 'PAST', count: pastData?.totalElements ?? 0 },
   ];
-
-  const data = activeTab === 'IN_PROGRESS' ? progressData : pastData;
-  const isLoading =
-    activeTab === 'IN_PROGRESS' ? isProgressLoading : isPastLoading;
 
   return (
     <>
