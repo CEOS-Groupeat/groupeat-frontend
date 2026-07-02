@@ -1,18 +1,11 @@
 'use client';
 
-import TossSymbol from '@/public/icons/icon_toss_symbol.svg';
-import KakaoSymbol from '@/public/icons/icon_logo_kakao.svg';
-
 interface OrderInfoProps {
-  paymentProvider: 'toss' | 'kakao' | null;
-  setPaymentProvider: (provider: 'toss' | 'kakao') => void;
   paymentMethod: 'PREPAID' | 'ONSITE';
   setPaymentMethod: (method: 'PREPAID' | 'ONSITE') => void;
 }
 
 export default function OrderInfo({
-  paymentProvider,
-  setPaymentProvider,
   paymentMethod,
   setPaymentMethod,
 }: OrderInfoProps) {
@@ -23,41 +16,8 @@ export default function OrderInfo({
       </h1>
 
       <div className="flex flex-col items-start gap-3 self-stretch">
-        {/* 결제 수단 영역 */}
-        <div className="flex flex-col items-start gap-2">
-          <p className="text-label1 text-text-default font-medium">
-            결제 수단 <span className="text-brand-default">*</span>
-          </p>
-          <div className="flex items-center gap-1">
-            <label className="flex items-center gap-2 text-label1 text-text-default cursor-pointer">
-              <input
-                type="radio"
-                name="paymentProvider"
-                checked={paymentProvider === 'toss'}
-                onChange={() => setPaymentProvider('toss')}
-                disabled={paymentMethod === 'ONSITE'} // 현장결제면 비활성화
-              />
-              <TossSymbol />
-              <p className="text-label1">토스페이</p>
-            </label>
-          </div>
-          <div className="flex items-center gap-1">
-            <label className="flex items-center gap-2 text-label1 text-text-default cursor-pointer">
-              <input
-                type="radio"
-                name="paymentProvider"
-                checked={paymentProvider === 'kakao'}
-                onChange={() => setPaymentProvider('kakao')}
-                disabled={paymentMethod === 'ONSITE'}
-              />
-              <KakaoSymbol />
-              <p className="text-label1">카카오페이</p>
-            </label>
-          </div>
-        </div>
-
-        {/* 결제 방식 영역 */}
-        <div className="flex flex-col items-start gap-2 self-stretch mt-2">
+        {/* 결제 방식 영역 (우리가 만든 UI 유지) */}
+        <div className="flex flex-col items-start gap-2 self-stretch">
           <p className="text-label1 text-text-default font-medium">
             결제 방식 <span className="text-brand-default">*</span>
           </p>
@@ -91,6 +51,17 @@ export default function OrderInfo({
               </p>
             </button>
           </div>
+        </div>
+
+        <div
+          className={`w-full flex-col mt-4 gap-2 ${paymentMethod === 'PREPAID' ? 'flex' : 'hidden'}`}
+        >
+          <p className="text-label1 text-text-default font-medium">
+            결제 수단 <span className="text-brand-default">*</span>
+          </p>
+          {/* 토스 위젯 렌더링 타겟 */}
+          <div id="payment-method" className="w-full" />
+          <div id="agreement" className="w-full mt-2" />
         </div>
       </div>
     </div>
