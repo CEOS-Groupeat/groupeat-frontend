@@ -107,10 +107,7 @@ export default function Orders() {
           }}
           onReject={async () => {
             try {
-              await rejectOrder({
-                orderId: rejectOrderId,
-                rejectReason: '재료 소진',
-              });
+              await rejectOrder(rejectOrderId);
               setShowRejectModal(false);
               setRejectOrderId(null);
             } catch (error) {

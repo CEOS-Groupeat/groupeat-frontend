@@ -20,8 +20,3 @@ export interface OrderProcessResponse {
   orderStatus: OrderStatus;
   processedAt: string;
 }
-
-// 주문 거절 요청
-export interface RejectOrderRequest {
-  rejectReason: string;
-}
