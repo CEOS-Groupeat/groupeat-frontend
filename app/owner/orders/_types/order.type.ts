@@ -18,5 +18,6 @@ export type OrderStatus =
 export interface OrderProcessResponse {
   orderId: number;
   orderStatus: OrderStatus;
-  processedAt: string;
+  processedDate: string;
+  processedTime: string;
 }
