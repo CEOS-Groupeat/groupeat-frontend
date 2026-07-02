@@ -171,7 +171,7 @@ export default function MenuBottomSheet({
   const renderOptionForm = () => {
     return (
       <>
-        <div className="flex justify-center items-center py-4.5 border-b border-border-subtle shadow-[0_0_9px_0_rgba(0,0,0,0.04)] relative shrink-0">
+        <div className="flex justify-center items-center py-4.5 border-b border-border-subtle shadow-[0_0_9px_0_rgba(0,0,0,0.04)] relative shrink-0 z-modal">
           <h2 className="text-text-default text-headline3 font-semibold">
             {mode === 'EDIT' ? '옵션 수정' : menu.name}
           </h2>
@@ -369,7 +369,7 @@ export default function MenuBottomSheet({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-background-dim/40">
+    <div className="fixed inset-0 z-modal flex items-end justify-center bg-background-dim/40">
       {showError && <ToastError text={errorMessage} />}
 
       <div className="absolute inset-0" onClick={onClose} />

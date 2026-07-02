@@ -17,10 +17,10 @@ export interface paths {
          */
         get: operations["getMyStore"];
         /**
-         * 내 가게 수정
-         * @description 로그인한 사업자 회원의 가게 정보를 수정합니다.
+         * 내 가게 저장
+         * @description 가게가 없으면 생성하고, 있으면 수정합니다.
          */
-        put: operations["updateMyStore"];
+        put: operations["upsertMyStore"];
         post?: never;
         delete?: never;
         options?: never;
@@ -989,6 +989,38 @@ export interface components {
             /** @description 요일별 주문 가능 일정 */
             days?: components["schemas"]["DayScheduleResponse"][];
         };
+        OptionGroupRequest: {
+            /**
+             * @description 옵션 그룹명
+             * @example 샌드위치 선택
+             */
+            name: string;
+            /**
+             * @description 필수 선택 여부
+             * @example true
+             */
+            isRequired: boolean;
+            /**
+             * @description 다중 선택 가능 여부
+             * @example false
+             */
+            isMultiple: boolean;
+            /** @description 세부 옵션 목록 */
+            options?: components["schemas"]["OptionRequest"][];
+        };
+        OptionRequest: {
+            /**
+             * @description 옵션명
+             * @example 햄치즈
+             */
+            name: string;
+            /**
+             * Format: int32
+             * @description 추가 금액
+             * @example 900
+             */
+            additionalPrice: number;
+        };
         OwnerMenuRequest: {
             /**
              * @description 메뉴명
@@ -1011,12 +1043,29 @@ export interface components {
              * @example https://groupeat-bucket.s3.ap-northeast-2.amazonaws.com/menus/1.jpg
              */
             imageUrl?: string;
+            /** @description 옵션 그룹 목록 */
+            optionGroups?: components["schemas"]["OptionGroupRequest"][];
         };
         ApiResponseOwnerMenuResponse: {
             isSuccess?: boolean;
             code?: string;
             message?: string;
             data?: components["schemas"]["OwnerMenuResponse"];
+        };
+        OptionGroupResponse: {
+            /** Format: int64 */
+            optionGroupId?: number;
+            name?: string;
+            isRequired?: boolean;
+            isMultiple?: boolean;
+            options?: components["schemas"]["OptionResponse"][];
+        };
+        OptionResponse: {
+            /** Format: int64 */
+            optionId?: number;
+            name?: string;
+            /** Format: int32 */
+            additionalPrice?: number;
         };
         OwnerMenuResponse: {
             /**
@@ -1046,6 +1095,8 @@ export interface components {
              * @example https://groupeat-bucket.s3.ap-northeast-2.amazonaws.com/menus/1.jpg
              */
             imageUrl?: string;
+            /** @description 옵션 그룹 목록 */
+            optionGroups?: components["schemas"]["OptionGroupResponse"][];
         };
         /**
          * @description 공개 이미지 사용 도메인
@@ -2239,7 +2290,7 @@ export interface operations {
             };
         };
     };
-    updateMyStore: {
+    upsertMyStore: {
         parameters: {
             query?: never;
             header?: never;
