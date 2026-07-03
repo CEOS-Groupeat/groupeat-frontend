@@ -37,7 +37,7 @@ export default async function CustomerHomePage() {
 
   return (
     <div className="w-full min-h-screen flex flex-col">
-      <div className="w-full flex flex-col bg-background-default overflow-hidden pb-16">
+      <div className="w-full flex flex-col bg-background-default overflow-hidden pb-[78px]">
         <HomeHero />
         <FiltersContainer />
 

@@ -50,7 +50,7 @@ const NavigationMenu = ({
   return (
     <Link
       href={href}
-      className="flex flex-col justify-center items-center gap-2 flex-1 h-16 transition-all bg-background-default"
+      className="flex flex-col justify-center items-center gap-2 flex-1 h-[78px] transition-all bg-background-default"
     >
       <div className="flex items-center justify-center w-6 h-6 shrink-0">
         {active ? (
