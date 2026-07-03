@@ -7,16 +7,27 @@ import Location from '@/public/icons/icon_place.svg';
 
 interface StoreCardProps {
   store: HomeStore;
+  variant?: 'small' | 'large';
 }
 
-export default function StoreCard({ store }: StoreCardProps) {
+export default function StoreCard({
+  store,
+  variant = 'small',
+}: StoreCardProps) {
   return (
-    <div className="w-48 rounded-xl outline outline-1 outline-offset-[-1px] outline-border-subtle overflow-hidden shrink-0 font-['Pretendard']">
-      <div className="relative h-[90px]">
+    <div
+      className={`w-48 rounded-xl outline outline-1 outline-offset-[-1px] outline-border-subtle overflow-hidden shrink-0 font-['Pretendard'] 
+      ${variant === 'large' ? 'w-[343px]' : 'w-48'}`}
+    >
+      <div
+        className={`relative h-[90px] ${variant === 'large' ? 'w-[343px]' : 'w-48'}`}
+      >
         <Image
           src={store.image}
           alt={store.name}
           fill
+          sizes={variant === 'large' ? '343px' : '192px'}
+          loading="eager"
           className="object-cover"
         />
       </div>
@@ -24,7 +35,7 @@ export default function StoreCard({ store }: StoreCardProps) {
       <div className="p-2.5 flex flex-col gap-2.5">
         <div className="flex flex-col gap-1.5">
           <div className="w-fit px-1.5 py-0.5 bg-background-subtlest rounded-[4px]">
-            <div className="text-caption2 font-semibold text-text-subtle">
+            <div className="text-caption2 font-medium text-text-subtle">
               {store.category}
             </div>
           </div>
