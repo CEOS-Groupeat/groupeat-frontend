@@ -104,8 +104,7 @@ function SearchContent() {
               }
               onFocus={() => router.push('/customer/search/recent')}
               placeholder="검색어를 입력하세요"
-              variant={searchInput ? 'filled' : 'outlined'}
-              showIcon={searchInput ? false : true}
+              iconPosition={searchInput ? undefined : 'right'}
             />
           </div>
 
