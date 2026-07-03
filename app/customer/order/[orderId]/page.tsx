@@ -76,7 +76,7 @@ export default function CustomerOrderDetail() {
   // OrderCard 컴포넌트 Props 규격에 맞게 데이터 매핑
   const mappedStoreCart = {
     storeId: 0,
-    storeName: '가게명 (API 추가 필요)', // 🚨 스키마에 가게 정보 없음
+    storeName: '가게명 (API 추가 필요)',
     storeTotalPrice: paymentInfo?.originalTotalAmount,
     cartItems: orderMenus?.map((menu, idx) => ({
       cartItemId: idx,
@@ -199,6 +199,7 @@ export default function CustomerOrderDetail() {
             </div>
 
             <OrderPrice
+              perPersonAmount={paymentInfo?.perPersonAmount ?? 0}
               originalPrice={paymentInfo?.originalTotalAmount ?? 0}
               discountAmount={paymentInfo?.totalDiscountAmount ?? 0}
               finalPrice={paymentInfo?.finalPaymentAmount ?? 0}
