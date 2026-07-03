@@ -17,6 +17,7 @@ import SectionDivider from '@/components/ui/SectionDivider';
 import DialogModal from '@/components/ui/DialogModal';
 import AlertIcon from '@/public/icons/icon_modal_alert.svg';
 import ToastError from '@/components/ui/ToastError';
+import OrderCard from '@/app/customer/order/request/_components/OrderCard';
 
 const formatPhoneNumber = (phone: string) => {
   const cleaned = phone.replace(/[^0-9]/g, '');
@@ -30,13 +31,25 @@ export default function CustomerOrderRequestPage() {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // 💡 토스트 에러 상태 관리
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const storeCarts = useCartStore((state) => state.storeCarts);
+  const currentCart = useCartStore((state) => state.checkoutCart);
   const discountRate = useCartStore((state) => state.discountRate);
-  const currentCart = storeCarts?.[0];
+  const pickupDate = useCartStore((state) => state.pickupDate);
+  const pickupTime = useCartStore((state) => state.pickupTime);
+
+  useEffect(() => {
+    if (
+      !currentCart ||
+      !currentCart.cartItems ||
+      currentCart.cartItems.length === 0
+    ) {
+      alert('결제할 상품 정보가 없습니다. 장바구니로 이동합니다.');
+      router.replace('/customer/cart');
+    }
+  }, [currentCart, router]);
+
   const cartItems = currentCart?.cartItems || [];
 
   const cartItemIds = cartItems
@@ -190,6 +203,9 @@ export default function CustomerOrderRequestPage() {
     createOrderMutation.mutate();
   };
 
+  const perPersonAmount =
+    cartItems.length > 0 ? (cartItems[0].unitPrice ?? 0) : 0;
+
   return (
     <>
       <main className="w-full min-h-dvh pt-10 pb-52.5 relative">
@@ -203,6 +219,11 @@ export default function CustomerOrderRequestPage() {
               주문 정보
             </h2>
           </div>
+          <OrderCard
+            storeCart={currentCart}
+            pickupDate={pickupDate || ''}
+            pickupTime={pickupTime || ''}
+          />
         </section>
 
         <SectionDivider className="my-6" />
@@ -234,10 +255,11 @@ export default function CustomerOrderRequestPage() {
             결제 금액
           </h1>
           <OrderPrice
-            originalPrice={originalTotal}
-            discountAmount={discountTotal}
-            finalPrice={paymentAmount}
-            discountRate={discountRate}
+            perPersonAmount={perPersonAmount} // 추가됨 (1인당 금액 7,000원)
+            originalPrice={originalTotal} // 원가 (392,000원)
+            discountAmount={discountTotal} // 할인 금액 (-37,240원)
+            finalPrice={paymentAmount} // 총 결제 금액 (782,040원)
+            discountRate={discountRate} // 스토어에서 가져온 총 할인율 (5%)
           />
         </div>
 
@@ -246,7 +268,9 @@ export default function CustomerOrderRequestPage() {
             onClick={handlePaymentSubmit}
             disabled={createOrderMutation.isPending}
           >
-            {createOrderMutation.isPending ? '주문 처리 중...' : '결제하기'}
+            {createOrderMutation.isPending
+              ? '주문 처리 중...'
+              : `${paymentAmount.toLocaleString()}원 결제하기`}
           </DefaultButton>
         </div>
       </main>
