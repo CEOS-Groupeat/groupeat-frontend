@@ -1,20 +1,16 @@
-{
-  /* 고객 메인 페이지입니다. */
-}
 import HomeHero from './_components/HomeHero';
+import FiltersContainer from './_components/FiltersContainer';
 import StoreSection from './_components/StoreSection';
-import SectionDivider from '@/components/ui/SectionDivider';
 import {
   popularStores,
   discountStores,
   recommendedStores,
 } from './_mocks/stores.mock';
-import { Fragment } from 'react';
 import CustomerNavbar from '@/components/ui/CustomerNavbar';
 
 export default async function CustomerHomePage() {
   // MVP 구현범위: 고객 메인 페이지-가게 추천 api 대신 mocks 데이터로 구현.
-  const sections = [
+  const section1 = [
     {
       id: 'popular',
       title: '인기 만점 가게',
@@ -28,7 +24,9 @@ export default async function CustomerHomePage() {
       description: '단체 주문 시 할인율이 높은 가게를 추천드려요',
       stores: discountStores,
     },
+  ];
 
+  const section2 = [
     {
       id: 'recommended',
       title: '세빈님을 위한 맞춤 가게',
@@ -39,19 +37,18 @@ export default async function CustomerHomePage() {
 
   return (
     <div className="w-full min-h-screen flex flex-col">
-      <div className="w-full flex flex-col bg-background-default overflow-hidden pb-16">
+      <div className="w-full flex flex-col bg-background-default overflow-hidden pb-[78px]">
         <HomeHero />
+        <FiltersContainer />
 
-        {sections.map((section, index) => (
-          <Fragment key={section.id}>
-            <div className="py-[19px] px-4">
-              <StoreSection {...section} />
-            </div>
-            <SectionDivider
-              className={`mt-1 ${index === sections.length - 1 ? 'bg-transparent' : ''}`}
-            />
-          </Fragment>
+        {section1.map((section) => (
+          <div key={section.id} className="mb-11 px-4">
+            <StoreSection {...section} />
+          </div>
         ))}
+        <div className="mb-11 px-4">
+          <StoreSection {...section2[0]} variant="large" />
+        </div>
 
         <CustomerNavbar />
       </div>

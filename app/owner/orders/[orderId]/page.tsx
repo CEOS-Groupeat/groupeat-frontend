@@ -192,6 +192,8 @@ export default function OwnerOrderDetail() {
               discountAmount={paymentInfo?.totalDiscountAmount ?? 0}
               finalPrice={paymentInfo?.finalPaymentAmount ?? 0}
               discountRate={paymentInfo?.discountRate ?? 0}
+              // TODO: 팀원 확인 필요
+              perPersonAmount={paymentInfo?.perPersonAmount ?? 0}
             />
           </div>
         </div>

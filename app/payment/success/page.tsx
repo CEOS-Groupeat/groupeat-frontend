@@ -1,11 +1,12 @@
 // app/payment/success/page.tsx
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { fetchClient } from '@/lib/fetchClient';
 
-export default function PaymentSuccessPage() {
+// useSearchParams 사용하는 부분을 별도 컴포넌트로 분리
+function PaymentSuccessContent() { // TODO: 팀원 확인
   const router = useRouter();
   const searchParams = useSearchParams();
   const isRequested = useRef(false);
@@ -15,7 +16,7 @@ export default function PaymentSuccessPage() {
     const paymentKey = searchParams.get('paymentKey');
     const orderId = searchParams.get('orderId');
     const amount = searchParams.get('amount');
-    
+
     // 2. 우리가 앞서 심어둔 최종 목적지 추출
     const destination = searchParams.get('destination');
 
@@ -30,7 +31,7 @@ export default function PaymentSuccessPage() {
       isRequested.current = true;
 
       try {
-        // 3. 백엔드로 토스 결제 '최종 승인' 요청 
+        // 3. 백엔드로 토스 결제 '최종 승인' 요청
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const res: any = await fetchClient('/api/payments/confirm', {
           method: 'POST',
@@ -70,5 +71,20 @@ export default function PaymentSuccessPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+// Suspense로 감싸는 페이지 컴포넌트 // TODO: 팀원 확인
+export default function PaymentSuccessPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="w-full min-h-screen flex items-center justify-center">
+          <div className="animate-spin w-8 h-8 border-4 border-brand-default border-t-transparent rounded-full" />
+        </div>
+      }
+    >
+      <PaymentSuccessContent />
+    </Suspense>
   );
 }
