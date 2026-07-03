@@ -11,7 +11,13 @@ const CATEGORIES = [
   { value: 'etc', label: '기타', icon: EtcIcon },
 ] as const;
 
-export default function CategorySection() {
+interface CategorySectionProps {
+  onCategoryClick: () => void;
+}
+
+export default function CategorySection({
+  onCategoryClick,
+}: CategorySectionProps) {
   return (
     <div className="flex gap-2">
       {CATEGORIES.map((category) => (
@@ -19,6 +25,7 @@ export default function CategorySection() {
           key={category.value}
           icon={<category.icon />}
           label={category.label}
+          onClick={onCategoryClick}
         />
       ))}
     </div>
