@@ -15,8 +15,8 @@ import MyPageOff from '@/public/icons/icon_navicon_my_off.svg';
 const navigationItems = [
   { label: '홈', href: '/customer/home', iconOn: HomeOn, iconOff: HomeOff },
   {
-    label: '주문 내역',
-    href: '/customer/orders',
+    label: '주문현황',
+    href: '/customer/order/status',
     iconOn: OrderManageOn,
     iconOff: OrderManageOff,
   },

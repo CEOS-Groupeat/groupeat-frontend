@@ -4,6 +4,9 @@
 import DefaultButton from '@/components/ui/ButtonDefault';
 import { useSignupStore } from '@/store/useSignupStore';
 
+import CustomerIllust from '@/public/illust/illust_Customer.svg';
+import ClientIllust from '@/public/illust/illust_Client.svg';
+
 export default function UserTypeStep() {
   const { memberType, setMemberType, nextStep } = useSignupStore();
 
@@ -22,7 +25,9 @@ export default function UserTypeStep() {
                 : 'border-border-default bg-background-default hover:bg-gray-50'
             }`}
           >
-            <div>{/* 아이콘 자리 */}</div>
+            <div>
+              <CustomerIllust />
+            </div>
             <p
               className={`font-medium ${memberType === 'CUSTOMER' ? 'text-brand-default' : 'text-gray-800'}`}
             >
@@ -39,7 +44,9 @@ export default function UserTypeStep() {
                 : 'border-border-default bg-background-default hover:bg-gray-50'
             }`}
           >
-            <div>{/* 아이콘 자리 */}</div>
+            <div>
+              <ClientIllust />
+            </div>
             <p
               className={`font-medium ${memberType === 'BUSINESS' ? 'text-brand-default' : 'text-gray-800'}`}
             >
