@@ -4,7 +4,7 @@ import Image from 'next/image';
 import CloseIcon from '@/public/icons/icon_close.svg';
 import CheckboxFalseIcon from '@/public/icons/icon_checkboxFalse.svg';
 import CheckboxTrueIcon from '@/public/icons/icon_checkboxTrue.svg';
-import type { CartItem } from '@/src/types/api'
+import type { CartItem } from '@/src/types/api';
 
 interface CartItemProps {
   item: CartItem;
@@ -43,7 +43,7 @@ export default function CartListItem({
           </button>
 
           <div className="flex items-start gap-3 font-['Pretendard']">
-            <div className="relative size-17.5 rounded-lg overflow-hidden shrink-0">
+            <div className="relative size-[70px] rounded-lg overflow-hidden shrink-0">
               <Image
                 src={
                   item.imageUrl?.startsWith('/') ||
