@@ -16,7 +16,7 @@ const navigationItems = [
   { label: '홈', href: '/customer/home', iconOn: HomeOn, iconOff: HomeOff },
   {
     label: '주문 내역',
-    href: '/customer/orders',
+    href: '/customer/order/status',
     iconOn: OrderManageOn,
     iconOff: OrderManageOff,
   },

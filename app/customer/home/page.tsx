@@ -41,7 +41,7 @@ export default async function CustomerHomePage() {
     <div className="w-full min-h-screen flex flex-col">
       <div className="w-full flex flex-col bg-background-default overflow-hidden pb-16">
         <HomeHero />
-
+        
         {sections.map((section, index) => (
           <Fragment key={section.id}>
             <div className="py-[19px] px-4">
