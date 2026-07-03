@@ -464,6 +464,26 @@ export interface paths {
         patch: operations["acceptOrder"];
         trace?: never;
     };
+    "/api/admin/business-verifications/{profileId}/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * 사업자 인증 처리 (승인/반려)
+         * @description 관리자가 사업자 가입 요청을 승인하거나 반려합니다.
+         */
+        patch: operations["processVerification"];
+        trace?: never;
+    };
     "/api/test/health": {
         parameters: {
             query?: never;
@@ -624,6 +644,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/owner/dashboard/summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 홈 화면 요약 정보 조회
+         * @description 대기, 확정, 완료 건수를 한 번에 조회합니다.
+         */
+        get: operations["getSummary"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/orders/{orderId}": {
         parameters: {
             query?: never;
@@ -696,6 +736,46 @@ export interface paths {
          * @description Access token 쿠키 또는 Bearer 토큰으로 현재 로그인한 회원 정보를 조회합니다.
          */
         get: operations["me"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/business-verifications": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 사업자 인증 요청 목록 조회
+         * @description 관리자가 상태별(대기/승인/반려)로 사업자 인증 요청 목록을 조회합니다.
+         */
+        get: operations["getVerificationList"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/business-verifications/{profileId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 사업자 인증 요청 상세 조회
+         * @description 특정 사업자의 회원 정보와 사업자 등록 상세 정보를 조회합니다.
+         */
+        get: operations["getVerificationDetail"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1466,6 +1546,17 @@ export interface components {
             finalPrice?: number;
         };
         CartListResponse: {
+            /**
+             * Format: date
+             * @description 장바구니 픽업 날짜
+             * @example 2026-07-02
+             */
+            pickupDate?: string;
+            /**
+             * @description 장바구니 픽업 시간
+             * @example 14:30:00
+             */
+            pickupTime?: string;
             /** @description 가게별로 그룹화된 장바구니 목록 */
             storeCarts?: components["schemas"]["StoreCartDTO"][];
         };
@@ -1645,6 +1736,46 @@ export interface components {
             /** Format: date */
             cancelledDate?: string;
             cancelledTime?: string;
+        };
+        AdminVerificationProcessRequest: {
+            /**
+             * @description 사업자 처리 여부
+             * @example true
+             */
+            isApprove: boolean;
+            /** @description 반려일 경우 반려 이유 */
+            rejectReason?: string;
+        };
+        AdminVerificationProcessResponse: {
+            /**
+             * Format: int64
+             * @description 처리된 사업자 프로필 ID
+             * @example 15
+             */
+            businessProfileId?: number;
+            /**
+             * @description 처리 후 최종 상태 (APPROVED / REJECTED)
+             * @example APPROVED
+             * @enum {string}
+             */
+            status?: "PENDING" | "APPROVED" | "REJECTED";
+            /**
+             * Format: date
+             * @description 승인/반려 심사 완료 날짜
+             * @example 2026-06-23
+             */
+            reviewedDate?: string;
+            /**
+             * @description 승인/반려 심사 완료 일시
+             * @example 14:30:00
+             */
+            reviewedTime?: string;
+        };
+        ApiResponseAdminVerificationProcessResponse: {
+            isSuccess?: boolean;
+            code?: string;
+            message?: string;
+            data?: components["schemas"]["AdminVerificationProcessResponse"];
         };
         ApiResponseString: {
             isSuccess?: boolean;
@@ -2220,6 +2351,32 @@ export interface components {
              */
             finalPaymentAmount?: number;
         };
+        ApiResponseOwnerDashboardSummaryResponse: {
+            isSuccess?: boolean;
+            code?: string;
+            message?: string;
+            data?: components["schemas"]["OwnerDashboardSummaryResponse"];
+        };
+        OwnerDashboardSummaryResponse: {
+            /**
+             * Format: int64
+             * @description 승인 대기 주문 건수
+             * @example 3
+             */
+            waitingCount?: number;
+            /**
+             * Format: int64
+             * @description 확정 주문 건수
+             * @example 5
+             */
+            confirmedCount?: number;
+            /**
+             * Format: int64
+             * @description 픽업 완료 건수
+             * @example 8
+             */
+            completedCount?: number;
+        };
         ApiResponseOrderListResponse: {
             isSuccess?: boolean;
             code?: string;
@@ -2260,6 +2417,143 @@ export interface components {
             memberType?: "CUSTOMER" | "BUSINESS";
             /** @enum {string} */
             memberStatus?: "SIGNUP_IN_PROGRESS" | "ACTIVE" | "BUSINESS_PENDING" | "BUSINESS_REJECTED" | "WITHDRAWN";
+        };
+        ApiResponseVerificationListDTO: {
+            isSuccess?: boolean;
+            code?: string;
+            message?: string;
+            data?: components["schemas"]["VerificationListDTO"];
+        };
+        VerificationCardDTO: {
+            /**
+             * Format: int64
+             * @description 사업자 프로필 ID (PK)
+             * @example 15
+             */
+            businessProfileId?: number;
+            /**
+             * @description 상호명
+             * @example 사르르 연남
+             */
+            businessName?: string;
+            /**
+             * @description 대표자명
+             * @example 안세빈
+             */
+            representativeName?: string;
+            /**
+             * @description 현재 심사 상태
+             * @example PENDING
+             * @enum {string}
+             */
+            status?: "PENDING" | "APPROVED" | "REJECTED";
+            /**
+             * Format: date
+             * @description 인증 신청 날짜
+             * @example 2026-06-27
+             */
+            requestedDate?: string;
+            /**
+             * @description 인증 신청 시간
+             * @example 16:30:00
+             */
+            requestedTime?: string;
+        };
+        VerificationListDTO: {
+            /**
+             * Format: int64
+             * @description 조건에 해당하는 전체 요청 개수 (옵션)
+             * @example 15
+             */
+            totalElements?: number;
+            /** @description 인증 요청 카드 리스트 */
+            verificationList?: components["schemas"]["VerificationCardDTO"][];
+            /**
+             * @description 다음 페이지 존재 여부 (무한 스크롤용)
+             * @example true
+             */
+            hasNext?: boolean;
+            /**
+             * Format: int64
+             * @description 다음 커서 ID (마지막 프로필의 PK ID)
+             * @example 15
+             */
+            nextCursor?: number;
+        };
+        AdminVerificationDetailResponse: {
+            /**
+             * Format: int64
+             * @description 사업자 프로필 ID
+             * @example 15
+             */
+            businessProfileId?: number;
+            /**
+             * @description 심사 상태
+             * @example PENDING
+             * @enum {string}
+             */
+            status?: "PENDING" | "APPROVED" | "REJECTED";
+            /**
+             * @description 실명
+             * @example 안세빈
+             */
+            memberName?: string;
+            /**
+             * Format: date
+             * @description 생년월일
+             * @example 2003-09-30
+             */
+            birthDate?: string;
+            /**
+             * @description 이메일
+             * @example ansebin0930@gmail.com
+             */
+            email?: string;
+            /**
+             * @description 휴대폰 번호
+             * @example 010-2653-7513
+             */
+            phoneNumber?: string;
+            /**
+             * @description 성별
+             * @example 여성
+             */
+            gender?: string;
+            /**
+             * @description 대표자명
+             * @example 안세빈
+             */
+            representativeName?: string;
+            /**
+             * @description 상호명
+             * @example 사르르 연남
+             */
+            businessName?: string;
+            /**
+             * Format: date
+             * @description 개업연월일
+             * @example 2026-04-01
+             */
+            openedDate?: string;
+            /**
+             * @description 사업자 유형
+             * @example PERSONAL
+             * @enum {string}
+             */
+            businessType?: "INDIVIDUAL" | "CORPORATION";
+            /**
+             * @description 사업자등록번호
+             * @example 000000-000000
+             */
+            businessRegistrationNumber?: string;
+            /** @description 사업자등록증 원본 이미지 URL */
+            businessRegistrationCertificateUrl?: string;
+        };
+        ApiResponseAdminVerificationDetailResponse: {
+            isSuccess?: boolean;
+            code?: string;
+            message?: string;
+            data?: components["schemas"]["AdminVerificationDetailResponse"];
         };
     };
     responses: never;
@@ -2910,6 +3204,32 @@ export interface operations {
             };
         };
     };
+    processVerification: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                profileId: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AdminVerificationProcessRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseAdminVerificationProcessResponse"];
+                };
+            };
+        };
+    };
     healthCheck: {
         parameters: {
             query?: never;
@@ -3046,6 +3366,8 @@ export interface operations {
         parameters: {
             query: {
                 tab: "WAITING" | "CONFIRMED" | "PAST";
+                /** @description 특정 날짜 필터링 (예: 2026-06-30) */
+                filterDate?: string;
                 lastOrderId?: number;
                 size?: number;
             };
@@ -3085,6 +3407,26 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["ApiResponseOrderDetailDTO"];
+                };
+            };
+        };
+    };
+    getSummary: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseOwnerDashboardSummaryResponse"];
                 };
             };
         };
@@ -3168,6 +3510,52 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["ApiResponseAuthenticatedMemberResponse"];
+                };
+            };
+        };
+    };
+    getVerificationList: {
+        parameters: {
+            query?: {
+                filter?: "ALL" | "PENDING" | "APPROVED" | "REJECTED";
+                lastProfileId?: number;
+                size?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseVerificationListDTO"];
+                };
+            };
+        };
+    };
+    getVerificationDetail: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                profileId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseAdminVerificationDetailResponse"];
                 };
             };
         };

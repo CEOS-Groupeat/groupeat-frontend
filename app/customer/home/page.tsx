@@ -10,6 +10,7 @@ import {
   recommendedStores,
 } from './_mocks/stores.mock';
 import { Fragment } from 'react';
+import CustomerNavbar from '@/components/ui/CustomerNavbar';
 
 export default async function CustomerHomePage() {
   // MVP 구현범위: 고객 메인 페이지-가게 추천 api 대신 mocks 데이터로 구현.
@@ -38,7 +39,7 @@ export default async function CustomerHomePage() {
 
   return (
     <div className="w-full min-h-screen flex flex-col">
-      <div className="w-full flex flex-col bg-background-default overflow-hidden">
+      <div className="w-full flex flex-col bg-background-default overflow-hidden pb-16">
         <HomeHero />
 
         {sections.map((section, index) => (
@@ -51,6 +52,8 @@ export default async function CustomerHomePage() {
             />
           </Fragment>
         ))}
+
+        <CustomerNavbar />
       </div>
     </div>
   );
