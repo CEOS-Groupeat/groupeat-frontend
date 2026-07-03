@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 @import 'tailwindcss';
+@plugin "tailwindcss-animate";
 
 @font-face {
   font-family: 'Pretendard';
@@ -89,6 +90,7 @@
   --color-gray-100: #000000;
 
   /* Green */
+  --color-green-5: #ecf8f0;
   --color-green-10: #defbe6;
   --color-green-20: #a7f0ba;
   --color-green-30: #6fdc8c;
@@ -151,7 +153,7 @@
   --color-border-strong: #5b5c633d;
   --color-border-default: #5b5c6329;
   --color-border-subtle: #5b5c6314;
-  --color-border-divider: #F0F0F199;
+  --color-border-divider: #f0f0f199;
 
   /* Text */
   --color-text-default: var(--color-gray-90);
@@ -166,7 +168,7 @@
   --color-status-danger: var(--color-red-50);
   --color-status-danger-bg: var(--color-red-10);
   --color-status-success: var(--color-green-60);
-  --color-status-success-bg: var(--color-green-10);
+  --color-status-success-bg: var(--color-green-5);
   --color-status-info: var(--color-blue-60);
   --color-status-info-bg: var(--color-blue-10);
   --color-status-warning: var(--color-yellow-60);
@@ -182,15 +184,27 @@
   --color-background-subtle: var(--color-gray-13);
   --color-background-subtlest: var(--color-gray-15);
   --color-background-dim: #1717198c;
-  --color-background-toast: #171719D9;
+  --color-background-toast: #171719d9;
+  --color-background-transparent: #f0f0f1cc;
 
+  /* Icon */
   --color-icon-default: var(--color-gray-70);
   --color-icon-active: var(--color-orange-50);
   --color-icon-disable: var(--color-gray-40);
-  --color-icon-inverse: var(--color-gray-60);
+  --color-icon-inverse: var(--color-gray-0);
   --color-icon-subtle: var(--color-gray-60);
   --color-icon-star: var(--color-yellow-25);
   --color-icon-subtlest: var(--color-gray-30);
+
+  /* Fill */
+  --color-fill-netural: var(--color-gray-10);
+  --color-fill-normal: var(--color-gray-0);
+
+  /* Label */
+  --color-label-normal: #17171a;
+  --color-label-light: #5b5c63;
+  --color-label-netural: #484950;
+  --color-label-alternative: #777982;
 
   --color-hover: #00000008;
 
@@ -212,7 +226,7 @@
   --z-index-modal: 800;
 
   /* Toast / Notification (900 이상) */
-  --z-index-toast: 900;
+  --z-index-toast: 1000;
   --z-index-notification: 990;
 
   /* (옵션) 절대적으로 가장 위에 있어야 하는 비상용 토큰 */

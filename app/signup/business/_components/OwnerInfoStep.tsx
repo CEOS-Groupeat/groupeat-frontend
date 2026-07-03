@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import DefaultButton from '@/components/ui/ButtonDefault';
 import { useBusinessSignupStore } from '@/store/useBusinessSignupStore';
@@ -8,33 +6,28 @@ import { useSignupStore } from '@/store/useSignupStore';
 
 export default function OwnerInfoStep() {
   const { nextStep } = useSignupStore();
-  // 설계했던 사업자 전용 스토어에서 상태 업데이트 함수를 꺼냅니다.
   const { updatePayload } = useBusinessSignupStore();
 
-  // 입력 필드가 많으므로 객체 하나로 상태를 관리합니다.
   const [formData, setFormData] = useState({
-    businessType: null as 'INDIVIDUAL' | 'CORPORATE' | null,
+    businessType: null as 'INDIVIDUAL' | 'CORPORATION' | null,
     representativeName: '',
     businessName: '',
     openedDate: '',
-    age: '',
+    birthDate: '', // 변경됨
     email: '',
     gender: null as 'MALE' | 'FEMALE' | null,
   });
 
-  // 공통 Input 변경 핸들러
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // 사업자 유형 및 성별 변경 핸들러
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSelect = (name: 'businessType' | 'gender', value: any) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // 필수값 검증 로직
   const isFormValid =
     formData.businessType !== null &&
     formData.representativeName.trim() !== '' &&
@@ -48,7 +41,7 @@ export default function OwnerInfoStep() {
       businessName: formData.businessName,
       openedDate: formData.openedDate,
       email: formData.email,
-      age: formData.age ? Number(formData.age) : null,
+      birthDate: formData.birthDate,
       gender: formData.gender,
     });
 
@@ -81,9 +74,9 @@ export default function OwnerInfoStep() {
                   개인사업자
                 </button>
                 <button
-                  onClick={() => handleSelect('businessType', 'CORPORATE')}
+                  onClick={() => handleSelect('businessType', 'CORPORATION')}
                   className={`flex-1 h-11 rounded-lg border transition-colors duration-200 ${
-                    formData.businessType === 'CORPORATE'
+                    formData.businessType === 'CORPORATION'
                       ? 'border-transparent bg-brand-background text-brand-default font-semibold'
                       : 'border-border-default bg-white text-text-default'
                   }`}
@@ -132,12 +125,12 @@ export default function OwnerInfoStep() {
                 </span>
               </label>
               <input
-                type="number"
-                name="age"
-                value={formData.age}
+                type="text"
+                name="birthDate"
+                value={formData.birthDate}
                 onChange={handleChange}
                 className="w-full h-11 pl-4 pr-3 py-3 rounded-lg border border-px border-border-default placeholder:text-body placeholder:text-text-placeholder focus:outline-none focus:border-border-active"
-                placeholder="숫자로 입력"
+                placeholder="2000-00-00(하이픈(-) 필수)"
               />
             </div>
 

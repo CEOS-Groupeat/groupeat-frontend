@@ -18,11 +18,9 @@ export default function PhoneVerifyStep() {
     memberType,
     setMemberId,
   } = useSignupStore();
-  
+
   const [code, setCode] = useState('');
   const [isVerified, setIsVerified] = useState(false);
-  
-  //  1. 인증 실패 상태 관리 (에러 메시지 및 붉은 테두리 토글용)
   const [isError, setIsError] = useState(false);
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,10 +30,9 @@ export default function PhoneVerifyStep() {
     }
   };
 
-  // 인증번호 입력 시 동작 (에러 상태 초기화)
   const handleCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCode(e.target.value);
-    if (isError) setIsError(false); //  유저가 다시 타이핑을 시작하면 에러 상태를 풀어줍니다.
+    if (isError) setIsError(false);
   };
 
   // 1. 인증번호 발송 API
@@ -46,15 +43,16 @@ export default function PhoneVerifyStep() {
         body: JSON.stringify({ phoneNumber }),
       }),
     onSuccess: () => {
-      alert('인증번호가 발송되었습니다. ');
-      setIsError(false); // 재발송 시 기존 에러 초기화
+      alert('인증번호가 발송되었습니다.');
+      setIsError(false);
       setCode('');
     },
-    onError: () => alert('인증번호 발송에 실패했습니다.'),
+    onError: (error: any) => {
+      alert(error.message || '인증번호 발송에 실패했습니다.');
+    },
   });
 
-  // 3. 공통 회원가입 API 호출 (인증 성공 시 이어서 실행됨)
-  // 3. 공통 회원가입 API 호출
+  // 2. 공통 회원가입 API 호출
   const commonSignupMutation = useMutation({
     mutationFn: async () =>
       fetchClient('/api/signup/common', {
@@ -84,13 +82,15 @@ export default function PhoneVerifyStep() {
         console.error('회원가입 중 오류가 발생했습니다.', payload.memberType);
       }
     },
-    onError: (error) => {
-      console.error(error);
-      alert('회원가입 처리에 실패했습니다. 잠시 후 다시 시도해주세요.');
-    }
+    onError: (error: any) => {
+      alert(
+        error.message ||
+          '회원가입 처리에 실패했습니다. 잠시 후 다시 시도해주세요.'
+      );
+    },
   });
 
-  // 2. 인증번호 확인 API
+  // 3. 인증번호 확인 API
   const confirmCodeMutation = useMutation({
     mutationFn: async () =>
       fetchClient('/api/phone-verifications/confirm', {
@@ -98,18 +98,15 @@ export default function PhoneVerifyStep() {
         body: JSON.stringify({ phoneNumber, code }),
       }),
     onSuccess: () => {
-      //  인증 성공 시 에러 상태를 풀고(Verified), 즉시 다음 단계(공통 회원가입 API)로 넘어갑니다.
       setIsVerified(true);
       setIsError(false);
       commonSignupMutation.mutate();
     },
-    onError: () => {
-      //  인증 실패 시 에러 상태를 true로 변경하여 UI 경고를 띄웁니다.
+    onError: (error: any) => {
       setIsError(true);
     },
   });
 
-  // '다음' 버튼 클릭 핸들러
   const handleNextStep = () => {
     if (!code) return;
     if (isVerified) {
@@ -126,8 +123,6 @@ export default function PhoneVerifyStep() {
           <h2 className="text-body font-semibold">휴대폰 본인 인증</h2>
 
           <div className="flex flex-col items-start gap-3 self-stretch w-full">
-            
-            {/* 휴대폰 번호 입력 및 전송 영역 */}
             <div className="flex items-start gap-2 w-full">
               <input
                 type="tel"
@@ -137,15 +132,30 @@ export default function PhoneVerifyStep() {
                 className="flex-1 h-11 pl-4 pr-3 py-3 rounded-lg border border-px border-border-default placeholder:text-body placeholder:text-text-placeholder focus:outline-none focus:border-border-active disabled:bg-neutral-5 disabled:text-text-disabled"
                 placeholder="휴대폰 번호 입력"
               />
+
+              {/* 전송 버튼 동적 UI 및 클릭 방어 로직 적용 */}
               <button
                 onClick={() => {
+                  if (isVerified) return; // 이중 방어: 인증 완료 시 클릭 이벤트 즉시 차단
                   if (!phoneNumber) return alert('휴대폰 번호를 입력해주세요.');
                   sendCodeMutation.mutate();
                 }}
-                disabled={isVerified || sendCodeMutation.isPending || !phoneNumber}
-                className="w-31 h-11 px-6 py-3 flex items-center justify-center rounded-lg bg-background-subtlest disabled:opacity-50 transition-opacity"
+                disabled={
+                  isVerified || sendCodeMutation.isPending || !phoneNumber
+                }
+                className={`w-31 h-11 px-6 py-3 flex items-center justify-center rounded-lg transition-all disabled:opacity-50 ${
+                  phoneNumber && !isVerified
+                    ? 'bg-brand-default'
+                    : 'bg-background-subtlest'
+                }`}
               >
-                <p className="text-label1 text-text-subtlest whitespace-nowrap">
+                <p
+                  className={`text-label1 whitespace-nowrap ${
+                    phoneNumber && !isVerified
+                      ? 'text-white font-semibold'
+                      : 'text-text-subtlest'
+                  }`}
+                >
                   {isVerified
                     ? '전송 완료'
                     : sendCodeMutation.isPending
@@ -155,7 +165,6 @@ export default function PhoneVerifyStep() {
               </button>
             </div>
 
-            {/* 인증번호 입력 영역 */}
             <div className="flex flex-col items-start w-full gap-2">
               <input
                 type="text"
@@ -163,14 +172,12 @@ export default function PhoneVerifyStep() {
                 onChange={handleCodeChange}
                 disabled={isVerified || !sendCodeMutation.isSuccess}
                 className={`w-full h-11 p-3 pl-4 rounded-lg border border-px transition-colors ${
-                  //  isError가 true일 경우 붉은색 border 적용
-                  isError 
-                    ? 'border-status-danger bg-status-danger-bg focus:border-status-danger' 
+                  isError
+                    ? 'border-status-danger bg-status-danger-bg focus:border-status-danger'
                     : 'border-border-strong bg-background-default focus:border-border-active'
                 } placeholder:text-body placeholder:text-text-placeholder focus:outline-none disabled:bg-neutral-5 disabled:text-text-disabled`}
                 placeholder="인증번호 6자리 입력"
               />
-              {/*  에러 발생 시 출력되는 메시지 */}
               {isError && (
                 <p className="text-status-danger text-caption1">
                   인증번호가 틀렸습니다
@@ -181,15 +188,17 @@ export default function PhoneVerifyStep() {
         </div>
       </div>
 
-      {/*  하단 '다음' 버튼 */}
       <div className="fixed bottom-6 left-0 w-full flex justify-center px-4">
         <DefaultButton
           onClick={handleNextStep}
-          //  code가 1글자 이상 입력되면 활성화되도록 조건 변경
-          disabled={code.length === 0 || confirmCodeMutation.isPending || commonSignupMutation.isPending}
+          disabled={
+            code.length === 0 ||
+            confirmCodeMutation.isPending ||
+            commonSignupMutation.isPending
+          }
         >
-          {confirmCodeMutation.isPending || commonSignupMutation.isPending 
-            ? '처리 중...' 
+          {confirmCodeMutation.isPending || commonSignupMutation.isPending
+            ? '처리 중...'
             : '다음'}
         </DefaultButton>
       </div>

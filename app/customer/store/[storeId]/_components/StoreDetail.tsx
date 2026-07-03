@@ -17,13 +17,31 @@ import Calendar from '@/public/icons/icon_calendar.svg';
 import Notice from '@/public/icons/icon_notice.svg';
 import ArrowUp from '@/public/icons/icon_arrow_up.svg';
 
+const DAY_MAP: Record<string, string> = {
+  MONDAY: '월',
+  TUESDAY: '화',
+  WEDNESDAY: '수',
+  THURSDAY: '목',
+  FRIDAY: '금',
+  SATURDAY: '토',
+  SUNDAY: '일',
+};
+
+const formatClosedDays = (daysString?: string | null) => {
+  if (!daysString) return '연중무휴';
+  const days = daysString
+    .split(',')
+    .map((d) => DAY_MAP[d.trim()] || d.trim())
+    .join(', ');
+  return `${days} 휴무`;
+};
+
 export default function StoreDetail() {
   const params = useParams();
   const storeId = params.storeId as string;
 
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
 
-  // 가게 상세 정보 패칭 로직 주입
   const {
     data: store,
     isLoading,
@@ -39,7 +57,7 @@ export default function StoreDetail() {
       }
       return result.data;
     },
-    enabled: !!storeId, // storeId가 있을 때만 요청
+    enabled: !!storeId,
   });
 
   // 로딩 및 에러 처리 (스켈레톤 UI를 넣기 좋은 자리입니다)
@@ -130,7 +148,7 @@ export default function StoreDetail() {
               <div className="flex flex-col items-start gap-1.5">
                 <div className="flex items-start gap-1">
                   <div className="flex pt-0.5 items-center gap-2.5">
-                    <Alert className="text-brand-default" />
+                    <Alert className="text-brand-default w-4 h-4" />
                   </div>
                   <p className="text-brand-default text-label2 leading-4.5">
                     최소 {store.minOrderDays}일 전 주문
@@ -160,7 +178,8 @@ export default function StoreDetail() {
                     <Calendar className="text-icon-subtlest" />
                   </div>
                   <p className="text-text-subtle text-label2 leading-4.5">
-                    {store.closedDays ? `${store.closedDays} 휴무` : '연중무휴'}
+                    {/* 💡 변환된 휴무일 함수 적용 영역 */}
+                    {formatClosedDays(store.closedDays)}
                   </p>
                 </div>
               </div>
@@ -169,7 +188,7 @@ export default function StoreDetail() {
               <div className="flex w-full px-3 pt-2 pb-2.5 flex-col items-start gap-3 border border-border-default border-px rounded-lg bg-background-default mt-2">
                 <div className="flex w-full justify-between items-center cursor-pointer">
                   <div className="flex justify-center items-center gap-1.5">
-                    <Notice className="text-icon-default" />
+                    <Notice className="text-icon-subtlest w-4 h-4" />
                     <p className="text-text-default text-label2 font-medium">
                       주문 프로세스 안내
                     </p>
@@ -180,7 +199,6 @@ export default function StoreDetail() {
                     className="text-icon-default"
                   />
                 </div>
-                {/* 아코디언이 열렸을 때 주문 프로세스 텍스트 노출 공간 */}
                 {/* <p className="text-label2 text-text-subtlest">{store.orderProcess}</p> */}
               </div>
             </div>

@@ -1,7 +1,155 @@
+// components/OwnerVerifyStep.tsx
+'use client';
+
+import { useState, useRef } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation'; // 1. useSearchParams 추가
 import DefaultButton from '@/components/ui/ButtonDefault';
+import { useValidateBusiness } from '@/hooks/useValidateBusiness';
+import { useSignupBusiness } from '@/hooks/useValidateBusiness';
+import { useBusinessSignupStore } from '@/store/useBusinessSignupStore';
+import { businessDocumentAPI } from '@/src/api/businessDocument.api';
 
 export default function OwnerVerifyStep() {
-  const handleClick = () => {};
+  const router = useRouter();
+  const searchParams = useSearchParams(); 
+  const queryMemberId = searchParams.get('memberId') ? Number(searchParams.get('memberId')) : null;
+
+  const [inputValue, setInputValue] = useState('');
+  const [isError, setIsError] = useState(false);
+  const [uploadedFile, setUploadedFile] = useState<{ name: string; size: string } | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const validateMutation = useValidateBusiness();
+  const signupBusinessMutation = useSignupBusiness();
+
+  const payload = useBusinessSignupStore((state) => state.payload);
+  const updatePayload = useBusinessSignupStore((state) => state.updatePayload);
+  const resetPayload = useBusinessSignupStore((state) => state.resetPayload);
+
+  const handleBusinessNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const onlyNumbers = e.target.value.replace(/[^0-9]/g, '');
+    if (onlyNumbers.length <= 10) {
+      setInputValue(onlyNumbers);
+    }
+    if (isError) setIsError(false); 
+  };
+
+  const handleValidateClick = () => {
+    if (!inputValue || inputValue.length < 10) {
+      setIsError(true);
+      return;
+    }
+
+    validateMutation.mutate(
+      { businessNumber: inputValue },
+      {
+        onSuccess: (data) => {
+          if (data?.validationToken) {
+            setIsError(false);
+            updatePayload({
+              businessRegistrationNumber: inputValue,
+              businessValidationToken: data.validationToken,
+            });
+            alert('사업자 인증이 완료되었습니다.');
+          } else {
+            setIsError(true);
+          }
+        },
+        onError: () => {
+          setIsError(true);
+        },
+      }
+    );
+  };
+
+  const handleFileAreaClick = () => {
+    if (uploadedFile || isUploading) return;
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    const file = files[0];
+    try {
+      setIsUploading(true);
+      const imageUrl = await businessDocumentAPI.uploadBusinessRegistrationToS3(file);
+      
+      const fileSizeString =
+        file.size < 1024 * 1024
+          ? `${(file.size / 1024).toFixed(1)} KB`
+          : `${(file.size / (1024 * 1024)).toFixed(1)} MB`;
+
+      setUploadedFile({ name: file.name, size: fileSizeString });
+
+      updatePayload({
+        businessRegistrationCertificateUrl: imageUrl,
+      });
+
+      alert('사업자등록증이 정상적으로 업로드되었습니다.');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      alert(error.message || '이미지 업로드 중 오류가 발생했습니다.');
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleRemoveFile = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setUploadedFile(null);
+    updatePayload({ businessRegistrationCertificateUrl: '' });
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  // 최종 회원가입 완료 핸들러
+  const handleNextClick = () => {
+    if (!payload.businessValidationToken) {
+      alert('먼저 사업자 번호 조회를 완료해주세요.');
+      return;
+    }
+    if (!payload.businessRegistrationCertificateUrl) {
+      alert('사업자등록증 서류를 첨부해주세요.');
+      return;
+    }
+
+    const finalSignupBody = {
+      // 🌟 핵심 수정: URL 쿼리 파라미터에서 추출한 memberId를 최우선으로 바인딩합니다.
+      memberId: queryMemberId ?? payload.memberId ?? 0,
+      agreements: payload.agreements.map((agree) => ({
+        termsId: agree.termsId,
+        agreed: agree.agreed,
+      })),
+      businessType: payload.businessType ?? 'INDIVIDUAL',
+      representativeName: payload.representativeName || '',
+      businessName: payload.businessName || '',
+      openedDate: payload.openedDate || '', 
+      businessValidationToken: payload.businessValidationToken,
+      businessRegistrationCertificateUrl: payload.businessRegistrationCertificateUrl,
+      email: payload.email || '',
+      birthDate: payload.birthDate || '', 
+      gender: (payload.gender as "MALE" | "FEMALE" | "NONE") ?? 'NONE',
+    };
+
+    signupBusinessMutation.mutate(finalSignupBody, {
+      onSuccess: (data) => {
+        alert(data?.message || '사업자 등록증 확인까지 1~2일 소요됩니다. 개별 연락을 기다려주세요!');
+        resetPayload();
+        if (data?.businessVerificationStatus === 'PENDING') {
+          router.replace('/signup/complete-pending');
+        }
+      },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      onError: (error: any) => {
+        alert(`회원가입 실패: ${error.message}`);
+      },
+    });
+  };
+
+  const isSubmitPending = signupBusinessMutation.isPending;
+
   return (
     <div className="flex flex-col items-start gap-3 self-stretch mt-3 pb-24">
       <div className="flex flex-col justify-center items-start gap-2 self-stretch">
@@ -9,35 +157,76 @@ export default function OwnerVerifyStep() {
           <h2 className="text-body font-semibold">휴대폰 본인 인증</h2>
 
           <div className="flex flex-col items-start gap-4.5 self-stretch w-full">
-            {/* 휴대폰 번호 입력 및 전송 영역 */}
-            <div className="flex items-start gap-2 w-full">
-              <input
-                type="number"
-                className="flex-1 h-11 pl-4 pr-3 py-3 rounded-lg border border-px border-border-default placeholder:text-body placeholder:text-text-placeholder focus:outline-none focus:border-border-active disabled:bg-neutral-5 disabled:text-text-disabled"
-                placeholder="사업자 번호 입력"
-              />
-              <button className="w-31 h-11 px-6 py-3 flex items-center justify-center rounded-lg bg-background-subtlest disabled:opacity-50 transition-opacity">
-                <p className="text-label1 text-text-subtlest whitespace-nowrap">
-                  사업자 조회
+            <div className="flex flex-col items-start w-full gap-2">
+              <div className="flex items-start gap-2 w-full">
+                <input
+                  type="text"
+                  pattern="\d*"
+                  maxLength={10}
+                  value={inputValue}
+                  onChange={handleBusinessNumberChange}
+                  className={`flex-1 h-11 pl-4 pr-3 py-3 rounded-lg border border-px transition-colors focus:outline-none ${
+                    isError
+                      ? 'border-status-danger bg-status-danger-bg focus:border-status-danger'
+                      : 'border-border-default bg-background-default focus:border-border-active'
+                  }`}
+                  placeholder="사업자 번호 입력"
+                />
+                <button
+                  onClick={handleValidateClick}
+                  disabled={validateMutation.isPending || !inputValue}
+                  className={`w-31 h-11 px-6 py-3 flex items-center justify-center rounded-lg transition-all disabled:opacity-50 ${
+                    inputValue ? 'bg-brand-default' : 'bg-background-subtlest'
+                  }`}
+                >
+                  <p className={`text-label1 whitespace-nowrap ${inputValue ? 'text-white font-semibold' : 'text-text-white'}`}>
+                    {validateMutation.isPending ? '조회 중...' : '사업자 조회'}
+                  </p>
+                </button>
+              </div>
+              {isError && (
+                <p className="text-status-danger text-caption1">
+                  유효하지 않은 사업자등록번호입니다
                 </p>
-              </button>
+              )}
             </div>
+
+            <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/png, image/jpeg, image/jpg" className="hidden" />
 
             <div className="flex flex-col h-29.5 items-start gap-2 self-stretch">
               <p className="text-label1 text-text-default">사업자등록증 첨부</p>
-              <button className="w-full h-22.5 px-6 py-3 flex flex-col justify-center items-start flex-1 self-stretch border border-px border-border-default rounded-lg bg-background-default">
-                <div className="flex flex-col justify-center items-start gap-1">
-                  <p className="text-text-subtle text-label1">파일 선택</p>
-                  <p className="text-text-subtlest ">PNG, JPG, 5MB 이하</p>
-                </div>
-              </button>
+              {uploadedFile ? (
+                <button type="button" className="w-full h-22.5 px-6 py-3 flex flex-col justify-center items-start flex-1 self-stretch border border-px border-border-default rounded-lg bg-background-subtle cursor-default">
+                  <div className="flex justify-between items-center self-stretch w-full">
+                    <div className="flex flex-col justify-center items-start gap-1 text-left">
+                      <p className="text-text-subtle text-label1 font-semibold truncate max-w-56">{uploadedFile.name}</p>
+                      <p className="text-text-subtlest text-[13px]">{uploadedFile.size}</p>
+                    </div>
+                    <button type="button" onClick={handleRemoveFile} className="p-1 -mr-1">
+                      <span className="text-icon-subtle text-xl font-bold">×</span>
+                    </button>
+                  </div>
+                </button>
+              ) : (
+                <button type="button" onClick={handleFileAreaClick} disabled={isUploading} className="w-full h-22.5 px-6 py-3 flex flex-col justify-center items-start flex-1 self-stretch border border-px border-border-default rounded-lg bg-background-default hover:bg-neutral-1 transition-colors">
+                  <div className="flex flex-col justify-center items-start gap-1">
+                    <p className="text-text-subtle text-label1">{isUploading ? '업로드 중...' : '파일 선택'}</p>
+                    <p className="text-text-subtlest">PNG, JPG, 5MB 이하</p>
+                  </div>
+                </button>
+              )}
             </div>
           </div>
         </div>
       </div>
 
       <div className="fixed bottom-6 left-0 w-full flex justify-center px-4">
-        <DefaultButton onClick={handleClick}>다음</DefaultButton>
+        <DefaultButton 
+          onClick={handleNextClick}
+          disabled={validateMutation.isPending || isUploading || isSubmitPending || !payload.businessValidationToken}
+        >
+          {isSubmitPending ? '가입 신청 중...' : '회원가입 완료'}
+        </DefaultButton>
       </div>
     </div>
   );

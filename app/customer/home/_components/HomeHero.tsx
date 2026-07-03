@@ -1,6 +1,8 @@
+'use client';
+
 import Logo from '@/public/icons/icon-logo_customer_home.svg';
 import Bell from '@/public/icons/icon-bell.svg';
-import Cart from '@/public/icons/icon-shopping_cart.svg';
+import CartIconButton from '@/components/cart/CartIconButton';
 import HomeSearchBar from './HomeSearchBar';
 
 export default function HomeHero() {
@@ -15,9 +17,9 @@ export default function HomeHero() {
           </span>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 text-icon-inverse">
           <Bell />
-          <Cart />
+          <CartIconButton />
         </div>
       </div>
 

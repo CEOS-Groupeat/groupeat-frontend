@@ -13,11 +13,12 @@ const nextConfig: NextConfig = {
   },
   images: {
     remotePatterns: [
-      // 백엔드 이미지 도메인 추가하기 !
-      // {
-      //   protocol: 'https',
-      //   hostname: '백엔드 이미지 도메인',
-      // },
+      {
+        protocol: 'https',
+        hostname: 'groupeat-bucket.s3.ap-northeast-2.amazonaws.com',
+        port: '',
+        pathname: '/**', // 해당 버킷의 모든 경로 허용
+      },
     ],
   },
 };

@@ -25,14 +25,14 @@ export function formatPickupTime(time: string): string {
 // ─── Props ───────────────────────────────────────────
 interface DateFilterProps {
   date: string | undefined;
-  time: string | undefined;
+  times: string[];
   onDateChange: (date: string) => void;
-  onTimeChange: (time: string) => void;
+  onTimeChange: (times: string[]) => void;
 }
 
 export default function DateFilter({
   date,
-  time,
+  times,
   onDateChange,
   onTimeChange,
 }: DateFilterProps) {
@@ -89,7 +89,7 @@ export default function DateFilter({
   // ✅ grid grid-cols-4 로 항상 4개 고정
   const renderSlot = (slot: string) => {
     const disabled = isSlotDisabled(slot);
-    const active = time === slot;
+    const active = times.includes(slot);
     const [h, m] = slot.split(':').map(Number);
     const displayH = h > 12 ? h - 12 : h === 0 ? 12 : h;
     const label = `${displayH}:${String(m).padStart(2, '0')}`;
@@ -99,7 +99,12 @@ export default function DateFilter({
         key={slot}
         type="button"
         disabled={disabled || !date}
-        onClick={() => onTimeChange(slot)}
+        onClick={() => {
+          const updatedTimes = active
+            ? times.filter((t) => t !== slot)
+            : [...times, slot];
+          onTimeChange(updatedTimes);
+        }}
         className={`h-10 rounded-lg text-xs transition-colors ${
           active
             ? 'bg-brand-default text-text-inverse font-semibold'
