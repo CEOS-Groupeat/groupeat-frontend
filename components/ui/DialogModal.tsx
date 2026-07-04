@@ -14,6 +14,7 @@ interface DialogModalProps {
     onClick: () => void;
   };
   onClose: () => void;
+  children?: React.ReactNode;
 }
 
 export default function DialogModal({
@@ -23,6 +24,7 @@ export default function DialogModal({
   primaryButton,
   secondaryButton,
   onClose,
+  children,
 }: DialogModalProps) {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -48,11 +50,11 @@ export default function DialogModal({
           onClick={(e) => e.stopPropagation()}
         >
           <div className="px-5 pt-5 flex flex-col items-center gap-4">
-            <div className="flex flex-col items-center gap-[9px]">
+            <div className="flex flex-col items-center gap-2.25">
               <div className="size-11 flex items-center justify-center">
                 {icon}
               </div>
-              <div className="flex flex-col items-center gap-1 text-center">
+              <div className="flex flex-col items-center gap-1 text-center self-stretch">
                 <p
                   id="dialog-title"
                   className="text-headline3 font-semibold text-label-normal whitespace-pre-line"
@@ -70,6 +72,9 @@ export default function DialogModal({
               </div>
             </div>
           </div>
+
+          {children && <div className="w-full px-5">{children}</div>}
+
           <div className="px-5 pt-4 pb-5 flex justify-center items-center gap-3">
             <button
               type="button"

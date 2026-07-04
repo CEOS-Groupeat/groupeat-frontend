@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+import { useCartStore } from '@/store/useCartStore';
 import { useCart } from './_hooks/useCart';
 import { useDeleteCartItem } from './_hooks/useDeleteCartItem';
 import { useCalculateCart } from './_hooks/useCalculateCart';
@@ -15,6 +16,7 @@ import ToastError from '@/components/ui/ToastError';
 
 export default function CartPage() {
   const router = useRouter();
+  const setCheckoutCart = useCartStore((state) => state.setCheckoutCart);
 
   const { data: cartData, isLoading } = useCart();
   const { mutateAsync: deleteItem } = useDeleteCartItem();
@@ -114,7 +116,22 @@ export default function CartPage() {
           <CartSummaryBar
             summary={selectedIds.length === 0 ? null : (summary ?? null)}
             cartData={cartData}
-            onOrder={() => router.push('/customer/order/request')}
+            onOrder={() => {
+              const checkoutCart = (() => {
+                for (const store of cartData ?? []) {
+                  const selectedItems = (store.cartItems ?? []).filter((item) =>
+                    selectedIds.includes(item.cartItemId ?? 0)
+                  );
+                  if (selectedItems.length > 0) {
+                    return { ...store, cartItems: selectedItems };
+                  }
+                }
+                return null;
+              })();
+
+              setCheckoutCart(checkoutCart);
+              router.push('/customer/order/request');
+            }}
           />
         </>
       )}

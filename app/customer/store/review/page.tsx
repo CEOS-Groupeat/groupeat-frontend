@@ -25,7 +25,7 @@ export default function CustomerStoreReviewPage() {
         averageRating={mockReviewSummary.averageRating}
         distribution={mockReviewSummary.distribution}
       />
-      <SectionDivider className="mb-2.5" />
+      <SectionDivider className="mb-2.5 h-2.25" />
       <ReviewSortDropdown
         value={sort}
         onChange={(v) => {

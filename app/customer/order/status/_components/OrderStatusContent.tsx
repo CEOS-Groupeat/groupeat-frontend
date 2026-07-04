@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useCustomerOrders } from '../_hooks/useCustomerOrders';
 import SegmentedControl from './SegmentedControl';
-import CustomerOrderCard from './CustomerOrderCard';
+// import CustomerOrderCard from './CustomerOrderCard';
 
 export default function OrderStatusContent() {
   const [activeTab, setActiveTab] = useState<'IN_PROGRESS' | 'PAST'>(
@@ -48,9 +48,9 @@ export default function OrderStatusContent() {
         </div>
       ) : (
         <div className="flex flex-col gap-2">
-          {data.orderList.map((order, index) => (
+          {/* {data.orderList.map((order, index) => (
             <CustomerOrderCard key={order.orderId ?? index} order={order} />
-          ))}
+          ))} */}
         </div>
       )}
     </>
