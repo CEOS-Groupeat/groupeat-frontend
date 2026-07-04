@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 
 export default function ShopHeader() {
@@ -13,7 +14,7 @@ export default function ShopHeader() {
   ];
 
   return (
-    <header className="flex flex-col items-start w-full gap-2 px-4 mb-5">
+    <header className="flex flex-col items-start w-full gap-2 px-4">
       <div className="flex items-center justify-between w-full">
         <div className="flex flex-col items-start gap-1">
           <h2 className="font-bold text-headline1 text-text-default">
@@ -53,6 +54,21 @@ export default function ShopHeader() {
             })}
           </div>
         </div>
+      </div>
+
+      <div className="flex justify-between items-start self-stretch mt-3">
+        <h1 className="text-text-default text-headline3 font-semibold">
+          메뉴 관리
+        </h1>
+
+        <Link
+          href="/owner/shop/menus/add"
+          className="flex justify-center items-center w-16.5 h-8 rounded-lg border border-border-default bg-background-default transition-colors hover:bg-background-subtle"
+        >
+          <p className="text-text-default text-caption1 font-semibold">
+            추가하기
+          </p>
+        </Link>
       </div>
     </header>
   );
