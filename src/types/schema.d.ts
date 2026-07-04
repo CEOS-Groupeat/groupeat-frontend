@@ -1481,7 +1481,7 @@ export interface components {
         };
         CartItemBulkAddRequest: {
             /** @description 장바구니에 담을 항목 리스트 */
-            cartItems: components["schemas"]["CartItemAddRequest"][];
+            cartItems?: components["schemas"]["CartItemAddRequest"][];
         };
         ApiResponseCartListResponse: {
             isSuccess?: boolean;
@@ -2302,6 +2302,11 @@ export interface components {
              */
             orderDate?: string;
             /**
+             * @description 주문 시간
+             * @example 18:30
+             */
+            orderTime?: string;
+            /**
              * @description 요청사항
              * @example 픽업 시간에 맞춰서 준비해 주세요.
              */
@@ -2383,6 +2388,53 @@ export interface components {
             message?: string;
             data?: components["schemas"]["OrderListResponse"];
         };
+        /** @description 고객용 주문 카드 응답 */
+        CustomerOrderCardDTO: {
+            /**
+             * Format: int64
+             * @description 주문 고유 ID
+             * @example 1
+             */
+            orderId?: number;
+            /**
+             * Format: int64
+             * @description 가게 ID
+             * @example 1
+             */
+            storeId?: number;
+            /**
+             * @description 가게명
+             * @example 데이브런치
+             */
+            storeName?: string;
+            /**
+             * @description 가게 대표 이미지
+             * @example https://...
+             */
+            storeImageUrl?: string;
+            /**
+             * Format: date
+             * @description 픽업 예정 날짜
+             * @example 2026-04-23
+             */
+            pickupDate?: string;
+            /**
+             * @description 픽업 예정 시간
+             * @example 10:00:00
+             */
+            pickupTime?: string;
+            /**
+             * @description 주문 메뉴 요약명
+             * @example 반반 세트 외 1개
+             */
+            menuSummary?: string;
+            /**
+             * @description 주문 상태
+             * @example PENDING
+             * @enum {string}
+             */
+            orderStatus?: "PENDING" | "PAID" | "ACCEPTED" | "COMPLETED" | "REJECTED" | "CANCELLED";
+        };
         OrderListResponse: {
             /**
              * Format: int64
@@ -2391,7 +2443,7 @@ export interface components {
              */
             totalElements?: number;
             /** @description 주문 카드 리스트 */
-            orderList?: components["schemas"]["OrderCardDTO"][];
+            orderList?: components["schemas"]["CustomerOrderCardDTO"][];
             /**
              * @description 다음 페이지 존재 여부 (무한 스크롤용)
              * @example true

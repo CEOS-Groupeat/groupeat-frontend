@@ -27,7 +27,7 @@ export default function OrderPrice({
           </div>
 
           {/* 할인 금액 및 원가 취소선 */}
-          <div className="flex flex-col items-end self-stretch gap-0.5">
+          <div className="flex flex-col items-end self-stretch gap-2">
             <div className="flex justify-between items-center self-stretch">
               <div className="flex items-center gap-1">
                 <p className="text-text-default text-label2">그루핏 제휴</p>
@@ -52,7 +52,7 @@ export default function OrderPrice({
         </div>
       </div>
 
-      <div className="flex flex-col items-start gap-1 self-stretch border-t border-border-default pt-4">
+      <div className="flex flex-col items-start gap-1 self-stretch  pt-4">
         <div className="flex py-1 justify-between items-center self-stretch">
           <p className="text-text-default text-label1 font-semibold">
             총 결제 금액

@@ -101,7 +101,12 @@ export default function CustomerOrderRequestPage() {
 
   const handleCancelOrder = () => {
     setIsModalOpen(false);
-    router.push('/customer/cart');
+    
+    if (currentCart?.storeId) {
+      router.push(`/customer/store/${currentCart.storeId}`);
+    } else {
+      router.push('/customer/cart');
+    }
   };
 
   useEffect(() => {
@@ -226,7 +231,7 @@ export default function CustomerOrderRequestPage() {
           />
         </section>
 
-        <SectionDivider className="my-6" />
+        <SectionDivider className="my-6 h-2" />
 
         <section className="w-full flex flex-col items-start gap-3 mt-4 px-4">
           <OrderForm
@@ -241,25 +246,25 @@ export default function CustomerOrderRequestPage() {
           />
         </section>
 
-        <SectionDivider className="my-6" />
+        <SectionDivider className="my-6 h-2" />
 
         <OrderInfo
           paymentMethod={paymentMethod}
           setPaymentMethod={setPaymentMethod}
         />
 
-        <SectionDivider className="my-6" />
+        <SectionDivider className="my-6 h-2" />
 
         <div className="flex px-4 flex-col items-start gap-2.5 self-stretch">
           <h1 className="text-text-default text-headline3 font-semibold">
             결제 금액
           </h1>
           <OrderPrice
-            perPersonAmount={perPersonAmount} // 추가됨 (1인당 금액 7,000원)
-            originalPrice={originalTotal} // 원가 (392,000원)
-            discountAmount={discountTotal} // 할인 금액 (-37,240원)
-            finalPrice={paymentAmount} // 총 결제 금액 (782,040원)
-            discountRate={discountRate} // 스토어에서 가져온 총 할인율 (5%)
+            perPersonAmount={perPersonAmount}
+            originalPrice={originalTotal}
+            discountAmount={discountTotal}
+            finalPrice={paymentAmount}
+            discountRate={discountRate}
           />
         </div>
 

@@ -140,7 +140,7 @@ export default function OwnerOrderDetail() {
         </div>
       </section>
 
-      <SectionDivider />
+      <SectionDivider className='h-2'/>
 
       <section className="flex flex-col pb-1 items-start self-stretch px-4">
         <div className="flex flex-col items-start gap-3 self-stretch">
@@ -156,7 +156,7 @@ export default function OwnerOrderDetail() {
         </div>
       </section>
 
-      <SectionDivider className="w-full my-5" />
+      <SectionDivider className="w-full my-5 h-2" />
 
       <section className="flex flex-col pb-1 items-start self-stretch px-4">
         <div className="flex flex-col items-start gap-3 self-stretch">
