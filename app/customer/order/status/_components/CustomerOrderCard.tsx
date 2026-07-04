@@ -57,7 +57,7 @@ export default function CustomerOrderCard({
             <div className="flex items-center gap-1 text-caption1 font-normal text-text-subtlest">
               <span>{order.pickupDate}</span>
               <div className="size-0.5 bg-text-subtlest rounded-full" />
-              <span>{formatPickupTime(order.pickupTime ?? '')}</span>
+              <span>{order.pickupTime ? formatPickupTime(order.pickupTime) : ''}</span>
             </div>
           </div>
           <span className="text-label2 font-medium text-text-default">
