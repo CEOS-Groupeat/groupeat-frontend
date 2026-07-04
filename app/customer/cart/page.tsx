@@ -17,6 +17,7 @@ import ToastError from '@/components/ui/ToastError';
 export default function CartPage() {
   const router = useRouter();
   const setCheckoutCart = useCartStore((state) => state.setCheckoutCart);
+  const setDiscountRate = useCartStore((state) => state.setDiscountRate);
 
   const { data: cartData, isLoading } = useCart();
   const { mutateAsync: deleteItem } = useDeleteCartItem();
@@ -130,6 +131,16 @@ export default function CartPage() {
               })();
 
               setCheckoutCart(checkoutCart);
+
+              // discountRate 계산해서 저장
+              const discountRate = summary?.totalOriginalPrice
+                ? Math.round(
+                    ((summary.totalDiscountAmount ?? 0) /
+                      summary.totalOriginalPrice) *
+                      100
+                  )
+                : 0;
+              setDiscountRate(discountRate);
               router.push('/customer/order/request');
             }}
           />
