@@ -31,13 +31,14 @@ export default function FiltersContainer() {
       <h1 className="text-text-subtlest text-body font-medium mb-0.5">
         단체 주문 어디서부터 시작할까요?
       </h1>
-      <div
-        className="flex gap-2 mb-2.5 cursor-pointer"
+      <button
+        type="button"
         onClick={() => handleOpenFilter('region')}
+        className="flex gap-2 mb-2.5"
       >
         <span className="text-headline1 font-bold text-text-default">지역</span>
         <IconDownArrow className="size-5 text-icon-subtle my-2" />
-      </div>
+      </button>
       <HomeSearchBar />
 
       <div className="flex flex-col gap-2 mt-5">
