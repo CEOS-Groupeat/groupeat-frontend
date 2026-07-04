@@ -57,7 +57,7 @@ export default function PickerSection({
                   picker.value as keyof StoreSearchParams,
                   appliedFilters[picker.value as keyof StoreSearchParams]
                 )
-              : picker.label
+              : picker.defaultValue
           }
           onClick={() => onPickerClick(picker.value as keyof StoreSearchParams)}
         />
