@@ -125,7 +125,7 @@ export default function CustomerOrderDetail() {
 
   const mappedStoreCart = {
     storeId: 0,
-    storeName: storeName || '',
+    storeName: '가게명 (API 추가 필요)',
     storeTotalPrice: paymentInfo?.originalTotalAmount,
     cartItems: orderMenus?.map((menu, idx) => ({
       cartItemId: idx,

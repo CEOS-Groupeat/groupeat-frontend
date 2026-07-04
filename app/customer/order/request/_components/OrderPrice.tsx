@@ -1,7 +1,7 @@
 'use client';
 
 interface OrderPriceProps {
-  perPersonAmount: number;
+  perPersonAmount: number; // 💡 1인당 금액 prop 추가
   originalPrice: number;
   discountAmount: number;
   finalPrice: number;
