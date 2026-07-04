@@ -28,7 +28,7 @@ export default function SearchSortDropdown({
         <span className="text-label2 text-text-default font-normal">
           {selected.label}
         </span>
-        <DownArrow className="size-4" />
+        <DownArrow className="size-4 text-icon-subtle" />
       </button>
 
       {/* 드롭다운 */}
