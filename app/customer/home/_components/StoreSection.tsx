@@ -28,7 +28,7 @@ export default function StoreSection({
 
           {/*추후 버튼 기능 추가 예정 */}
           <button type="button" className="flex items-center justify-center">
-            <RightChevron className="text-text-subtlest ml-2.5" />
+            <RightChevron className="size-5 text-text-subtlest pl-2.5" />
           </button>
         </div>
 
