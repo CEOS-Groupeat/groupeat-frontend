@@ -196,15 +196,9 @@
   --color-icon-star: var(--color-yellow-25);
   --color-icon-subtlest: var(--color-gray-30);
 
-  /* Fill */
-  --color-fill-netural: var(--color-gray-10);
-  --color-fill-normal: var(--color-gray-0);
-
   /* Label */
   --color-label-normal: #17171a;
   --color-label-light: #5b5c63;
-  --color-label-netural: #484950;
-  --color-label-alternative: #777982;
 
   --color-hover: #00000008;
 
