@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { OwnerMenu } from '@/types/Menu';
+import { OwnerMenu } from '@/types/menu';
 import { ReactNode } from 'react';
 
 interface MenuItemProps {

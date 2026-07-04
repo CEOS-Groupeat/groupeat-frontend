@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchClient } from '@/lib/fetchClient';
 import MenuItem from '@/components/ui/MenuItem';
-import { OwnerMenu, ApiResponseOwnerMenuList } from '@/types/Menu';
+import { OwnerMenu, ApiResponseOwnerMenuList } from '@/types/menu';
 import Link from 'next/link';
 import PencilIcon from '@/public/icons/icon_pencil.svg';
 
