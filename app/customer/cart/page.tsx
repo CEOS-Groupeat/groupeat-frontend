@@ -17,6 +17,7 @@ import ToastError from '@/components/ui/ToastError';
 export default function CartPage() {
   const router = useRouter();
   const setCheckoutCart = useCartStore((state) => state.setCheckoutCart);
+  const setDiscountRate = useCartStore((state) => state.setDiscountRate);
 
   const { data: cartData, isLoading } = useCart();
   const { mutateAsync: deleteItem } = useDeleteCartItem();
@@ -32,7 +33,7 @@ export default function CartPage() {
 
   const handleSelect = (cartItemId: number) => {
     const targetStoreItems =
-      cartData
+      cartData?.storeCarts
         ?.find((store) =>
           (store.cartItems ?? []).some((item) => item.cartItemId === cartItemId)
         )
@@ -71,7 +72,7 @@ export default function CartPage() {
 
   const handleDeleteAll = async () => {
     const allItemIds =
-      cartData
+      cartData?.storeCarts
         ?.flatMap((store) => store.cartItems ?? [])
         .filter((item) => item.cartItemId !== undefined)
         .map((item) => item.cartItemId!) ?? [];
@@ -84,7 +85,7 @@ export default function CartPage() {
     }
   };
 
-  const totalStoreCount = cartData?.length ?? 0;
+  const totalStoreCount = cartData?.storeCarts?.length ?? 0;
 
   return (
     <div className="w-full min-h-screen bg-background-default flex flex-col pb-44">
@@ -98,11 +99,11 @@ export default function CartPage() {
         <div className="flex-1 flex items-center justify-center">
           <span className="text-sm text-text-subtle">로딩 중...</span>
         </div>
-      ) : !cartData || cartData?.length === 0 ? (
+      ) : !cartData || cartData?.storeCarts?.length === 0 ? (
         <CartEmptyState />
       ) : (
         <>
-          {cartData?.map((storeCart) => (
+          {cartData?.storeCarts?.map((storeCart) => (
             <CartStoreSection
               key={storeCart.storeId ?? 0}
               storeCart={storeCart}
@@ -115,10 +116,10 @@ export default function CartPage() {
 
           <CartSummaryBar
             summary={selectedIds.length === 0 ? null : (summary ?? null)}
-            cartData={cartData}
+            cartData={cartData?.storeCarts ?? null}
             onOrder={() => {
               const checkoutCart = (() => {
-                for (const store of cartData ?? []) {
+                for (const store of cartData?.storeCarts ?? []) {
                   const selectedItems = (store.cartItems ?? []).filter((item) =>
                     selectedIds.includes(item.cartItemId ?? 0)
                   );
@@ -130,6 +131,16 @@ export default function CartPage() {
               })();
 
               setCheckoutCart(checkoutCart);
+
+              // discountRate 계산해서 저장
+              const discountRate = summary?.totalOriginalPrice
+                ? Math.round(
+                    ((summary.totalDiscountAmount ?? 0) /
+                      summary.totalOriginalPrice) *
+                      100
+                  )
+                : 0;
+              setDiscountRate(discountRate);
               router.push('/customer/order/request');
             }}
           />
