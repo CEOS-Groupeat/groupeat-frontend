@@ -2,8 +2,6 @@
 
 import AlertComponent from '@/components/ui/Alert';
 import BackButton from '@/components/ui/BackButton';
-import DefaultButton from '@/components/ui/ButtonDefault';
-import ArrowLeft from '@/public/icons/icon_arrow_Left.svg';
 import { useRouter } from 'next/navigation';
 
 const alerts_mock = [

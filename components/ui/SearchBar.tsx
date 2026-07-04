@@ -40,8 +40,6 @@ export default function SearchBar({ onFocus, onChange }: SearchBarProps) {
         onSearch={handleSearch}
         onFocus={onFocus}
         placeholder="가게나 메뉴를 검색해 보세요"
-        variant="outlined"
-        showIcon={!keyword}
       >
         {keyword ? (
           <button

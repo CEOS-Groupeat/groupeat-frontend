@@ -15,7 +15,7 @@ import MyPageOff from '@/public/icons/icon_navicon_my_off.svg';
 const navigationItems = [
   { label: '홈', href: '/customer/home', iconOn: HomeOn, iconOff: HomeOff },
   {
-    label: '주문 내역',
+    label: '주문현황',
     href: '/customer/order/status',
     iconOn: OrderManageOn,
     iconOff: OrderManageOff,
@@ -50,7 +50,7 @@ const NavigationMenu = ({
   return (
     <Link
       href={href}
-      className="flex flex-col justify-center items-center gap-2 flex-1 h-16 transition-all bg-background-default"
+      className="flex flex-col justify-center items-center gap-2 flex-1 h-[78px] transition-all bg-background-default"
     >
       <div className="flex items-center justify-center w-6 h-6 shrink-0">
         {active ? (
