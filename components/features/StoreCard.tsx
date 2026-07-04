@@ -14,7 +14,7 @@ export default function StoreCard({ store, onClick }: StoreCardProps) {
     <button
       type="button"
       onClick={onClick}
-      className="w-full h-[132px] flex inline-flex self-stretch px-4 py-2.5 border-b border-border-subtle overflow-hidden text-left font-['Pretendard']"
+      className="w-full h-[132px] flex self-stretch px-4 py-2.5 border-b border-border-subtle overflow-hidden text-left font-['Pretendard']"
     >
       <div className="relative min-w-[112px] h-[94px] my-[9px]">
         <Image
