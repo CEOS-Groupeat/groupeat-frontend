@@ -84,7 +84,7 @@ export default function OwnerNavbar() {
   const pathname = usePathname();
 
   return (
-    <div className="fixed bottom-0 left-0 z-50 w-full flex pb-1 justify-between items-start bg-background-default shadow-[0px_-3px_12px_0px_rgba(165,179,198,0.10)]">
+    <div className="fixed bottom-0 left-0 z-50 w-full flex pb-1 h-18.5 justify-between items-start bg-background-default shadow-[0px_-3px_12px_0px_rgba(165,179,198,0.10)]">
       <div className="flex items-start justify-between flex-1 w-full">
         {navigationItems.map((item) => {
           const isActive =

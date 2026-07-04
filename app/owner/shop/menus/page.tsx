@@ -1,5 +1,12 @@
-export default function StoreMenuPage(){
-    return (
-        <div></div>
-    )
+import ShopHeader from '@/app/owner/shop/_components/ShopHeader';
+import OwnerNavbar from '@/components/owner/OwnerNavbar';
+
+export default function StoreMenusPage() {
+  return (
+    <div className="w-full min-dvh flex flex-col items-start pt-16 pb-24.5">
+      <ShopHeader />
+
+      <OwnerNavbar />
+    </div>
+  );
 }
