@@ -16,7 +16,7 @@ export default function StoreCard({
 }: StoreCardProps) {
   return (
     <div
-      className={`w-48 rounded-xl outline outline-1 outline-offset-[-1px] outline-border-subtle overflow-hidden shrink-0 font-['Pretendard'] 
+      className={`rounded-xl outline outline-1 outline-offset-[-1px] outline-border-subtle overflow-hidden shrink-0 font-['Pretendard'] 
       ${variant === 'large' ? 'w-[343px]' : 'w-48'}`}
     >
       <div
@@ -27,7 +27,6 @@ export default function StoreCard({
           alt={store.name}
           fill
           sizes={variant === 'large' ? '343px' : '192px'}
-          loading="eager"
           className="object-cover"
         />
       </div>

@@ -1,7 +1,7 @@
 import PickerButton from './PickerButton';
-import CalendarIcon from '@/public/illusts/illust-calendar.svg';
-import BudgetIcon from '@/public/illusts/illust-budget.svg';
-import PersonIcon from '@/public/illusts/illust-people.svg';
+import CalendarIcon from '@/public/illust/illust_Calendar.svg';
+import BudgetIcon from '@/public/illust/illust_Budget.svg';
+import PersonIcon from '@/public/illust/illust_People.svg';
 import { StoreSearchParams } from '@/app/customer/search/_types/store.type';
 import { formatChipLabel } from '@/app/customer/search/_utils/formatChipLabel';
 
@@ -57,7 +57,7 @@ export default function PickerSection({
                   picker.value as keyof StoreSearchParams,
                   appliedFilters[picker.value as keyof StoreSearchParams]
                 )
-              : picker.label
+              : picker.defaultValue
           }
           onClick={() => onPickerClick(picker.value as keyof StoreSearchParams)}
         />

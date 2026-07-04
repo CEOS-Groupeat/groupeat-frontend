@@ -1,8 +1,8 @@
 import CategoryButton from './CategoryButton';
-import SandwichIcon from '@/public/illusts/illust-sandwich.svg';
-import DrinkIcon from '@/public/illusts/illust-drink.svg';
-import DessertIcon from '@/public/illusts/illust-dessert.svg';
-import EtcIcon from '@/public/illusts/illust-etc.svg';
+import SandwichIcon from '@/public/illust/illust_Sandwich.svg';
+import DrinkIcon from '@/public/illust/illust_Drinks.svg';
+import DessertIcon from '@/public/illust/illust_Dessert.svg';
+import EtcIcon from '@/public/illust/illust_Others.svg';
 
 const CATEGORIES = [
   { value: 'sandwich', label: '샌드위치', icon: SandwichIcon },
