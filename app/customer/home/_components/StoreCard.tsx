@@ -27,7 +27,6 @@ export default function StoreCard({
           alt={store.name}
           fill
           sizes={variant === 'large' ? '343px' : '192px'}
-          loading="eager"
           className="object-cover"
         />
       </div>
