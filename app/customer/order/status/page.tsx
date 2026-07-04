@@ -7,7 +7,7 @@ import OrderStatusList from './_components/OrderStatusContent';
 
 export default function CustomerOrderStatusPage() {
   return (
-    <div className="w-full min-h-screen flex flex-col font-['Pretendard']">
+    <div className="w-full min-h-screen flex flex-col px-4 pb-27 font-['Pretendard']">
       <CustomerOrderStatusHeader />
       <OrderStatusList />
       <CustomerNavbar />

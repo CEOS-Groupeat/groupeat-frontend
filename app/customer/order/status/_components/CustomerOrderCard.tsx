@@ -51,7 +51,7 @@ export default function CustomerOrderCard({
                 }}
                 aria-label="주문 상세 보기"
               >
-                <ChevronIcon className="size-4 text-icon-disable rotate-180" />
+                <ChevronIcon className="size-4 text-icon-disable pl-2" />
               </button>
             </div>
             <div className="flex items-center gap-1 text-caption1 font-normal text-text-subtlest">
@@ -66,7 +66,7 @@ export default function CustomerOrderCard({
         </div>
 
         {/* 이미지 */}
-        <div className="relative size-16 rounded-lg overflow-hidden shrink-0">
+        <div className="relative w-[66px] h-[66px] rounded-lg overflow-hidden shrink-0">
           <Image
             src={order.storeImageUrl ?? '/images/image_logo.png'}
             alt="메뉴 이미지"

@@ -33,7 +33,7 @@ export default function SegmentedControl({
       type="single"
       value={value}
       onValueChange={(val) => val && onChange(val)}
-      className="h-10 p-1 bg-border-divider rounded-xl flex gap-1 mb-4 mx-4"
+      className="h-10 p-1 bg-border-divider rounded-xl flex gap-1 mb-3"
     >
       {items.map((item) => (
         <ToggleGroup.Item
