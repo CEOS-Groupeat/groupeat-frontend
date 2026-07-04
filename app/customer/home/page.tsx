@@ -37,20 +37,6 @@ export default async function CustomerHomePage() {
 
   return (
     <div className="w-full min-h-screen flex flex-col">
-<<<<<<< Updated upstream
-      <div className="w-full flex flex-col bg-background-default overflow-hidden">
-        <HomeHero />
-
-        {sections.map((section, index) => (
-          <Fragment key={section.id}>
-            <div className="py-[19px] px-4">
-              <StoreSection {...section} />
-            </div>
-            <SectionDivider
-              className={`mt-1 ${index === sections.length - 1 ? 'bg-transparent' : ''}`}
-            />
-          </Fragment>
-=======
       <div className="w-full flex flex-col bg-background-default overflow-hidden pb-[78px]">
         <HomeHero />
         <FiltersContainer />
@@ -59,7 +45,6 @@ export default async function CustomerHomePage() {
           <div key={section.id} className="mb-11 px-4">
             <StoreSection {...section} />
           </div>
->>>>>>> Stashed changes
         ))}
         <div className="mb-11 px-4">
           <StoreSection {...section2[0]} variant="large" />
