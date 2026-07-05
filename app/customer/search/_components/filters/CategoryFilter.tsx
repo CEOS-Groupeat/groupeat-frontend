@@ -4,7 +4,7 @@ import { CATEGORIES } from '@/app/customer/search/_constants/category';
 
 interface CategoryFilterProps {
   value: string | undefined;
-  onChange: (value: string) => void;
+  onChange: (value: string | undefined) => void;
 }
 
 export default function CategoryFilter({
@@ -12,7 +12,7 @@ export default function CategoryFilter({
   onChange,
 }: CategoryFilterProps) {
   const handleToggle = (id: string) => {
-    onChange(value === id ? '' : id);
+    onChange(value === id ? undefined : id);
   };
 
   return (
