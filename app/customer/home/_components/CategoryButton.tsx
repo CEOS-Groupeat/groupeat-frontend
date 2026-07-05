@@ -15,6 +15,7 @@ export default function CategoryButton({
     <button
       type="button"
       onClick={onClick}
+      aria-pressed={isActive}
       className={`w-[79.25px] h-[66px] px-3 py-1.5 rounded-lg outline outline-1 outline-offset-[-1px] outline-border-subtle flex flex-col justify-center items-center gap-1 
         ${isActive ? 'bg-background-subtle' : 'bg-static-white'}`}
     >
