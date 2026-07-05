@@ -55,7 +55,10 @@ export default function FiltersContainer() {
         <span className="text-label2 font-semibold text-text-subtlest">
           카테고리별 탐색
         </span>
-        <CategorySection onCategoryClick={() => handleOpenFilter('category')} />
+        <CategorySection
+          onCategoryClick={() => handleOpenFilter('category')}
+          appliedFilters={appliedFilters}
+        />
       </div>
 
       <FilterBottomSheet
