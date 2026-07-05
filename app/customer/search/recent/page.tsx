@@ -96,9 +96,7 @@ function RecentSearchContent() {
             <CategorySection
               onCategoryClick={(category) => {
                 const label =
-                  CATEGORIES.find((c) => c.id === category)?.label ??
-                  category ??
-                  '';
+                  CATEGORIES.find((c) => c.id === category)?.label ?? category;
                 router.push(
                   `/customer/search?keyword=${encodeURIComponent(label)}`
                 );

@@ -3,7 +3,7 @@ import { StoreSearchParams } from '../../search/_types/store.type';
 import { CATEGORIES } from '@/app/customer/search/_constants/category';
 
 interface CategorySectionProps {
-  onCategoryClick: (category?: string) => void;
+  onCategoryClick: (category: string) => void;
   appliedFilters: StoreSearchParams;
 }
 
