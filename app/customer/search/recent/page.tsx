@@ -1,17 +1,20 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { Suspense, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useRecentSearches } from '@/hooks/useRecentSearches';
 
 import SearchBar from '@/components/ui/SearchBar';
 import CloseIcon from '@/public/icons/icon_close.svg';
 import BackIcon from '@/public/icons/icon_arrow_Left.svg';
 
-export default function RecentSearchPage() {
+function RecentSearchContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { searches, remove } = useRecentSearches();
-  const [searchInput, setSearchInput] = useState('');
+  const [searchInput, setSearchInput] = useState(
+    searchParams.get('keyword') ?? ''
+  );
 
   const filtered = searchInput
     ? searches.filter((s) => s.includes(searchInput))
@@ -20,7 +23,7 @@ export default function RecentSearchPage() {
   return (
     <div className="w-full min-h-screen bg-background-default flex flex-col">
       {/* 상단 검색창 */}
-      <div className="px-4 pt-16 flex items-center gap-1">
+      <div className="pl-3 pr-4 pt-16 flex items-center gap-2">
         {/* 뒤로가기 */}
         <button
           type="button"
@@ -29,7 +32,11 @@ export default function RecentSearchPage() {
         >
           <BackIcon className="size-6 text-icon-subtle" />
         </button>
-        <SearchBar onChange={setSearchInput} />
+        <SearchBar
+          onChange={setSearchInput}
+          initialKeyword={searchParams.get('keyword') ?? ''}
+          autoFocus
+        />
       </div>
 
       {/* 최근 검색어 목록 */}
@@ -54,5 +61,19 @@ export default function RecentSearchPage() {
         ))}
       </div>
     </div>
+  );
+}
+
+export default function RecentSearchPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex justify-center items-center min-h-screen">
+          <div className="text-sm text-text-subtle">로딩 중...</div>
+        </div>
+      }
+    >
+      <RecentSearchContent />
+    </Suspense>
   );
 }
