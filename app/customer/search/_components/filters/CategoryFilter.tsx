@@ -1,7 +1,6 @@
 'use client';
 
 import { CATEGORIES } from '@/app/customer/search/_constants/category';
-import CategoryImage from '@/public/icons/category_placeholder.svg';
 
 interface CategoryFilterProps {
   value: string | undefined;
@@ -17,7 +16,7 @@ export default function CategoryFilter({
   };
 
   return (
-    <div className="flex gap-2.5 flex-wrap">
+    <div className="flex gap-1.5 flex-wrap">
       {CATEGORIES.map((category) => {
         const isSelected = value === category.id;
 
@@ -27,20 +26,12 @@ export default function CategoryFilter({
             type="button"
             onClick={() => handleToggle(category.id)}
             aria-pressed={isSelected}
-            className={`w-[107px] h-[74px] px-3 py-2 rounded-lg flex flex-col items-center gap-0.5 shrink-0 transition-colors ${
-              isSelected
-                ? 'bg-brand-background'
-                : 'bg-background-default outline outline-1 outline-offset-[-1px] outline-border-default'
+            className={`w-[81px] h-[66px] px-3 py-1.5 outline outline-1 outline-offset-[-1px] outline-border-subtle rounded-lg flex flex-col items-center gap-1 shrink-0 transition-colors ${
+              isSelected ? 'bg-background-subtle' : 'bg-static-white'
             }`}
           >
-            <CategoryImage className="w-9 h-9" aria-hidden="true" />
-            <span
-              className={`text-label1 font-['Pretendard'] shrink ${
-                isSelected
-                  ? 'text-brand-default font-semibold'
-                  : 'text-text-default font-medium'
-              }`}
-            >
+            <category.icon className="w-8 h-8" aria-hidden="true" />
+            <span className="text-caption1 font-semibold text-text-subtle font-['Pretendard'] shrink-0">
               {category.label}
             </span>
           </button>
