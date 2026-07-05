@@ -5,8 +5,13 @@ import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { fetchClient } from '@/lib/fetchClient';
 import { useCartStore } from '@/store/useCartStore';
-import { CartListResponse, StoreCart, CartItem } from '@/src/types/api';
 import OrderSummaryBar from '@/components/cart/OrderSummaryBar';
+import { components } from '@/src/types/schema';
+
+type ApiCartListResponse = components['schemas']['ApiResponseCartListResponse'];
+type CartListResponse = components['schemas']['CartListResponse'];
+type StoreCart = components['schemas']['StoreCartDTO'];
+type CartItem = components['schemas']['CartItemDTO'];
 
 export default function FloatingCartBar({
   storeId,
@@ -19,23 +24,35 @@ export default function FloatingCartBar({
 
   const storeCarts = useCartStore((state) => state.storeCarts);
   const setStoreCarts = useCartStore((state) => state.setStoreCarts);
+  const setPickupInfo = useCartStore((state) => state.setPickupInfo);
 
-  const { data: fetchedCarts } = useQuery<StoreCart[]>({
+  const { data: fetchedData } = useQuery<CartListResponse | undefined>({
     queryKey: ['cart'],
     queryFn: async () => {
-      const response = await fetchClient<CartListResponse>('/api/carts');
-      if (!response.isSuccess) throw new Error(response.message);
-      return response.data?.storeCarts || [];
+      const response = await fetchClient<ApiCartListResponse>('/api/carts');
+      
+      if (!response.isSuccess) {
+        throw new Error(response.message || '장바구니 조회 실패');
+      }
+      
+      // 알맹이만 반환
+      return response.data;
     },
   });
 
   useEffect(() => {
-    if (fetchedCarts) {
-      setStoreCarts(fetchedCarts);
-    }
-  }, [fetchedCarts, setStoreCarts]);
+    if (fetchedData) {
+      setStoreCarts(fetchedData.storeCarts || []);
 
-  const currentStoreCart = storeCarts?.find(
+      if (fetchedData.pickupDate && fetchedData.pickupTime) {
+        setPickupInfo(fetchedData.pickupDate, fetchedData.pickupTime);
+      }
+    }
+  }, [fetchedData, setStoreCarts, setPickupInfo]);
+
+  const safeStoreCarts = Array.isArray(storeCarts) ? storeCarts : [];
+
+  const currentStoreCart = safeStoreCarts.find(
     (cart: StoreCart) => cart.storeId?.toString() === storeId
   );
 
@@ -48,7 +65,7 @@ export default function FloatingCartBar({
   }
 
   const totalQuantity = currentStoreCart.cartItems.reduce(
-    (acc, item: CartItem) => acc + (item.quantity || 0),
+    (acc: number, item: CartItem) => acc + (item.quantity || 0),
     0
   );
 
@@ -59,7 +76,7 @@ export default function FloatingCartBar({
       : firstItemName;
 
   const originalTotal = currentStoreCart.cartItems.reduce(
-    (acc, item: CartItem) => acc + (item.unitPrice || 0) * (item.quantity || 0),
+    (acc: number, item: CartItem) => acc + (item.unitPrice || 0) * (item.quantity || 0),
     0
   );
   const finalTotal = currentStoreCart.storeTotalPrice || 0;
