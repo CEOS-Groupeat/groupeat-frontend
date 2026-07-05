@@ -83,6 +83,8 @@ export default function CustomerOrderRequestPage() {
   const [groupName, setGroupName] = useState('');
   const [requests, setRequests] = useState('');
 
+  const isFormValid = customerName.trim() !== '' && customerPhone.trim() !== '';
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [widgets, setWidgets] = useState<any>(null);
   const isWidgetRendered = useRef(false);
@@ -101,7 +103,7 @@ export default function CustomerOrderRequestPage() {
 
   const handleCancelOrder = () => {
     setIsModalOpen(false);
-    
+
     if (currentCart?.storeId) {
       router.push(`/customer/store/${currentCart.storeId}`);
     } else {
@@ -202,8 +204,7 @@ export default function CustomerOrderRequestPage() {
 
   const handlePaymentSubmit = () => {
     if (cartItemIds.length === 0) return alert('장바구니가 비어 있습니다.');
-    if (!customerName.trim() || !customerPhone.trim())
-      return alert('주문자 이름과 연락처를 입력해주세요.');
+    if (!isFormValid) return alert('주문자 이름과 연락처를 입력해주세요.');
 
     createOrderMutation.mutate();
   };
@@ -271,7 +272,7 @@ export default function CustomerOrderRequestPage() {
         <div className="fixed w-full bottom-6 px-4 z-dropdown">
           <DefaultButton
             onClick={handlePaymentSubmit}
-            disabled={createOrderMutation.isPending}
+            disabled={createOrderMutation.isPending || !isFormValid}
           >
             {createOrderMutation.isPending
               ? '주문 처리 중...'

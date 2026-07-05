@@ -698,7 +698,11 @@ export interface paths {
         get: operations["getCartList"];
         put?: never;
         post?: never;
-        delete?: never;
+        /**
+         * 장바구니 전체 비우기
+         * @description 현재 유저의 장바구니에 담긴 모든 메뉴를 한 번에 삭제합니다.
+         */
+        delete: operations["clearCart"];
         options?: never;
         head?: never;
         patch?: never;
@@ -2456,6 +2460,163 @@ export interface components {
              */
             nextCursor?: number;
         };
+        ApiResponseOrderDetailResponse_OrderDetailDTO: {
+            isSuccess?: boolean;
+            code?: string;
+            message?: string;
+            data?: components["schemas"]["OrderDetailResponse_OrderDetailDTO"];
+        };
+        /** @description 주문 상세 응답 DTO */
+        OrderDetailResponse_OrderDetailDTO: {
+            /**
+             * @description 가게 이름
+             * @example 데이브런치
+             */
+            storeName?: string;
+            /**
+             * Format: date
+             * @description 픽업 날짜
+             * @example 2026-06-25
+             */
+            pickupDate?: string;
+            /**
+             * @description 픽업 시간
+             * @example 14:30
+             */
+            pickupTime?: string;
+            /** @description 주문자 정보 */
+            ordererInfo?: components["schemas"]["OrderDetailResponse_OrdererInfoDTO"];
+            /** @description 주문 상품 정보 목록 */
+            orderMenus?: components["schemas"]["OrderDetailResponse_OrderMenuDTO"][];
+            /** @description 결제 정보 */
+            paymentInfo?: components["schemas"]["OrderDetailResponse_PaymentInfoDTO"];
+            /**
+             * @description 주문 상태
+             * @example PENDING
+             * @enum {string}
+             */
+            orderStatus?: "PENDING" | "PAID" | "ACCEPTED" | "COMPLETED" | "REJECTED" | "CANCELLED";
+        };
+        /** @description 주문 상세 내 메뉴 정보 */
+        OrderDetailResponse_OrderMenuDTO: {
+            /**
+             * @description 주문 메뉴 및 옵션
+             * @example 반반 세트
+             */
+            menuName?: string;
+            /** @description 선택한 옵션 목록 */
+            options?: components["schemas"]["OrderDetailResponse_OrderMenuOptionDTO"][];
+            /**
+             * Format: int32
+             * @description 주문 수량
+             * @example 2
+             */
+            quantity?: number;
+            /**
+             * @description 메뉴 이미지 URL
+             * @example https://image.url/menu.png
+             */
+            menuImageUrl?: string;
+            /**
+             * Format: int32
+             * @description 할인율(%)
+             * @example 10
+             */
+            discountRate?: number;
+            /**
+             * Format: int32
+             * @description 해당 메뉴 총 금액
+             * @example 30000
+             */
+            totalAmount?: number;
+        };
+        /** @description 주문 상세 내 메뉴 옵션 정보 */
+        OrderDetailResponse_OrderMenuOptionDTO: {
+            /**
+             * @description 옵션명
+             * @example 햄치즈 샌드위치
+             */
+            optionName?: string;
+        };
+        /** @description 주문 상세 내 주문자 정보 */
+        OrderDetailResponse_OrdererInfoDTO: {
+            /**
+             * @description 주문자명
+             * @example 김동욱
+             */
+            customerName?: string;
+            /**
+             * @description 주문 단체명
+             * @example CEOS 데모데이
+             */
+            groupName?: string;
+            /**
+             * @description 연락처
+             * @example 010-1234-5678
+             */
+            phoneNumber?: string;
+            /**
+             * Format: date
+             * @description 주문 일자
+             * @example 2026-06-20
+             */
+            orderDate?: string;
+            /**
+             * @description 주문 시간
+             * @example 18:30
+             */
+            orderTime?: string;
+            /**
+             * @description 요청사항
+             * @example 픽업 시간에 맞춰서 준비해 주세요.
+             */
+            requests?: string;
+        };
+        /** @description 주문 상세 내 결제 정보 */
+        OrderDetailResponse_PaymentInfoDTO: {
+            /**
+             * @description 결제 방식
+             * @example PREPAID
+             * @enum {string}
+             */
+            paymentMethod?: "PREPAID" | "ON_SITE";
+            /**
+             * @description 결제 수단
+             * @example 토스페이
+             * @enum {string}
+             */
+            paymentMeans?: "TOSS";
+            /**
+             * Format: int32
+             * @description 1인당 금액(소수점 삭제)
+             * @example 7000
+             */
+            perPersonAmount?: number;
+            /**
+             * Format: int32
+             * @description 총 할인율(%)
+             * @example 10
+             */
+            discountRate?: number;
+            /**
+             * Format: int32
+             * @description 총 할인 금액
+             * @example 5000
+             */
+            totalDiscountAmount?: number;
+            /**
+             * Format: int32
+             * @description 할인 전 총 금액
+             * @example 35000
+             */
+            originalTotalAmount?: number;
+            /**
+             * Format: int32
+             * @description 최종 결제 금액
+             * @example 30000
+             */
+            finalPaymentAmount?: number;
+        };
         ApiResponseAuthenticatedMemberResponse: {
             isSuccess?: boolean;
             code?: string;
@@ -3501,7 +3662,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ApiResponseOrderDetailDTO"];
+                    "*/*": components["schemas"]["ApiResponseOrderDetailResponse_OrderDetailDTO"];
                 };
             };
         };
@@ -3522,6 +3683,26 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["ApiResponseCartListResponse"];
+                };
+            };
+        };
+    };
+    clearCart: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseString"];
                 };
             };
         };
