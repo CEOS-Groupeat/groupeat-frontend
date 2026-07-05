@@ -23,7 +23,7 @@ function RecentSearchContent() {
   return (
     <div className="w-full min-h-screen bg-background-default flex flex-col">
       {/* 상단 검색창 */}
-      <div className="pl-3 pr-4 pt-16 flex items-center gap-2">
+      <div className="pl-3 pr-4 pt-16 mb-3 flex items-center gap-2">
         {/* 뒤로가기 */}
         <button
           type="button"
@@ -40,9 +40,12 @@ function RecentSearchContent() {
       </div>
 
       {/* 최근 검색어 목록 */}
-      <div className="px-4 py-7 flex flex-col gap-6">
+      <div className="flex flex-col gap-1">
         {filtered.map((keyword) => (
-          <div key={keyword} className="flex items-center justify-between">
+          <div
+            key={keyword}
+            className="flex items-center justify-between h-[52px] pl-4 pr-6 py-3"
+          >
             <button
               type="button"
               onClick={() =>
@@ -50,7 +53,7 @@ function RecentSearchContent() {
                   `/customer/search?keyword=${encodeURIComponent(keyword)}`
                 )
               }
-              className="text-base font-medium font-['Pretendard'] text-text-default"
+              className="text-body font-normal font-['Pretendard'] text-text-default"
             >
               {keyword}
             </button>
