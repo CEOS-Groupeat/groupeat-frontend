@@ -1,31 +1,25 @@
 import CategoryButton from './CategoryButton';
-import SandwichIcon from '@/public/illust/illust_Sandwich.svg';
-import DrinkIcon from '@/public/illust/illust_Drinks.svg';
-import DessertIcon from '@/public/illust/illust_Dessert.svg';
-import EtcIcon from '@/public/illust/illust_Others.svg';
-
-const CATEGORIES = [
-  { value: 'sandwich', label: '샌드위치', icon: SandwichIcon },
-  { value: 'drink', label: '음료', icon: DrinkIcon },
-  { value: 'dessert', label: '디저트', icon: DessertIcon },
-  { value: 'etc', label: '기타', icon: EtcIcon },
-] as const;
+import { StoreSearchParams } from '../../search/_types/store.type';
+import { CATEGORIES } from '@/app/customer/search/_constants/category';
 
 interface CategorySectionProps {
   onCategoryClick: () => void;
+  appliedFilters: StoreSearchParams;
 }
 
 export default function CategorySection({
   onCategoryClick,
+  appliedFilters
 }: CategorySectionProps) {
   return (
     <div className="flex gap-2">
       {CATEGORIES.map((category) => (
         <CategoryButton
-          key={category.value}
+          key={category.id}
           icon={<category.icon />}
           label={category.label}
           onClick={onCategoryClick}
+          isActive={appliedFilters.category === category.id}
         />
       ))}
     </div>
