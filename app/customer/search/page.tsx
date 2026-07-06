@@ -187,7 +187,7 @@ function SearchContent() {
       </div>
 
       {/* ── 필터 칩 가로 스크롤 ── */}
-      <div className="pb-1.5">
+      <div className="pb-2.5">
         <SearchFilterChipBar
           filters={appliedFilters}
           onChipClick={handleChipClick}
