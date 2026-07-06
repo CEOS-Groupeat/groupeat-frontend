@@ -3,13 +3,13 @@ import { StoreSearchParams } from '../../search/_types/store.type';
 import { CATEGORIES } from '@/app/customer/search/_constants/category';
 
 interface CategorySectionProps {
-  onCategoryClick: () => void;
+  onCategoryClick: (category: string) => void;
   appliedFilters: StoreSearchParams;
 }
 
 export default function CategorySection({
   onCategoryClick,
-  appliedFilters
+  appliedFilters,
 }: CategorySectionProps) {
   return (
     <div className="flex gap-2">
@@ -18,7 +18,7 @@ export default function CategorySection({
           key={category.id}
           icon={<category.icon />}
           label={category.label}
-          onClick={onCategoryClick}
+          onClick={() => onCategoryClick(category.id)}
           isActive={appliedFilters.category === category.id}
         />
       ))}

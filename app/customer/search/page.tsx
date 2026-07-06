@@ -19,6 +19,7 @@ import FilterBottomSheet from './_components/FilterBottomSheet';
 import BackIcon from '@/public/icons/icon_arrow_Left.svg';
 import FilterIcon from '@/public/icons/icon_filter.svg';
 import ResetIcon from '@/public/icons/icon_reset.svg';
+import CloseIcon from '@/public/icons/icon_close.svg';
 
 function SearchContent() {
   const router = useRouter();
@@ -81,7 +82,7 @@ function SearchContent() {
   return (
     <div className="w-full min-h-screen bg-background-default flex flex-col font-['Pretendard']">
       {/* ── 헤더 ── */}
-      <div className="h-24 px-4 pt-16 pb-1 flex flex-col justify-end">
+      <div className="h-24 pl-3 pr-4 pt-16 pb-1 flex flex-col justify-end">
         <div className="flex items-center gap-3">
           <div className="flex-1 flex items-center gap-2">
             {/* 뒤로가기 */}
@@ -102,10 +103,25 @@ function SearchContent() {
                   `/customer/search?keyword=${encodeURIComponent(keyword)}`
                 )
               }
-              onFocus={() => router.push('/customer/search/recent')}
-              placeholder="검색어를 입력하세요"
+              onFocus={() =>
+                router.push(
+                  `/customer/search/recent?keyword=${encodeURIComponent(searchInput)}`
+                )
+              }
               iconPosition={searchInput ? undefined : 'right'}
-            />
+            >
+              {searchInput && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchInput('');
+                  }}
+                  aria-label="검색어 지우기"
+                >
+                  <CloseIcon className="size-5 text-icon-subtlest" />
+                </button>
+              )}
+            </SearchField>
           </div>
 
           {/* 장바구니 */}
