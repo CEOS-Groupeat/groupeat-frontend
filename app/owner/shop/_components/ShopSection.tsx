@@ -6,6 +6,7 @@ import PencilIcon from '@/public/icons/icon_pencil.svg';
 import AlertIcon from '@/public/icons/icon_alert.svg';
 import { useState } from 'react';
 import DefaultButton from '@/components/ui/ButtonDefault';
+import { useSearchStore } from '@/store/useSearchStore';
 
 export default function ShopSection() {
   const [storeName, setStoreName] = useState('');
@@ -14,6 +15,8 @@ export default function ShopSection() {
   const [storeIntroduction, setStoreIntroduction] = useState('');
   const [storeDiscountAmount, setStoreDiscountAmount] = useState('');
   const [storeDiscountRate, setStoreDiscountRate] = useState('');
+
+  const { appliedFilters } = useSearchStore();
 
   const handleSelectCategory = () => {
     return;
@@ -80,7 +83,8 @@ export default function ShopSection() {
             >
               카테고리
             </label>
-            <CategorySection onCategoryClick={handleSelectCategory} />
+            {/* todo: 여기는 사용 목적이 다른 ui이기 때문에 props를 달리해서 사용해야 할 것 같음 */}
+            <CategorySection onCategoryClick={handleSelectCategory} appliedFilters={appliedFilters}/>
           </div>
 
           <div className="flex flex-col items-start gap-2 self-stretch">
