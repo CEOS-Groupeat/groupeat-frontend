@@ -19,7 +19,7 @@ export default function InputField({
   const isFilled = typeof value === 'string' && value.trim().length > 0;
 
   return (
-    <div className={`flex flex-col gap-2 ${className || 'w-full'}`}>
+    <div className={`${className || 'w-full'} flex flex-col gap-2`}>
       {/* 라벨 영역 */}
       <label
         className={`text-label1 font-medium ${labelClassName ?? 'text-text-default'}`}
