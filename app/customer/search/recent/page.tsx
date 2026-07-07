@@ -3,17 +3,20 @@
 import { Suspense, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useRecentSearches } from '@/hooks/useRecentSearches';
-import { CATEGORIES } from '@/app/customer/search/_constants/category';
+import { useSearchStores } from '@/hooks/useSearchStores';
 
 import CategorySection from '@/app/customer/home/_components/CategorySection';
 import RecentKeywordChip from './_components/RecentKeywordChip';
 
 import SearchBar from '@/components/ui/SearchBar';
 import BackIcon from '@/public/icons/icon_arrow_Left.svg';
+import { useSearchStore } from '@/store/useSearchStore';
 
 function RecentSearchContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { search } = useSearchStores();
+  const setResults = useSearchStore((state) => state.setResults);
   const { searches, remove } = useRecentSearches();
   const [searchInput, setSearchInput] = useState(
     searchParams.get('keyword') ?? ''
@@ -88,18 +91,19 @@ function RecentSearchContent() {
             </div>
           </div>
 
-          {/* 추천 검색어 - 카테고리 */}
           <div className="flex flex-col gap-2.5">
             <h2 className="text-body font-semibold text-text-default">
-              추천 검색어
+              카테고리 추천
             </h2>
             <CategorySection
-              onCategoryClick={(category) => {
-                const label =
-                  CATEGORIES.find((c) => c.id === category)?.label ?? category;
-                router.push(
-                  `/customer/search?keyword=${encodeURIComponent(label)}`
+              onCategoryClick={async (category) => {
+                const filters = { category };
+                const result = await search(filters);
+                setResults(
+                  result ?? { storeList: [], totalElements: 0 },
+                  filters
                 );
+                router.push(`/customer/search`);
               }}
               appliedFilters={{}}
             />
