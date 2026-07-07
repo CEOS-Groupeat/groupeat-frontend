@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import type { MouseEvent } from 'react';
 import Image from 'next/image';
 import ChevronIcon from '@/public/icons/icon-right_chevron.svg';
 import type { CustomerOrder } from '@/src/types/api';
@@ -29,11 +30,31 @@ export default function CustomerOrderCard({
   const router = useRouter();
 
   const badgeText = STATUS_MAP[order.orderStatus ?? ''] ?? '';
-
   const menuSummary = order.menuSummary ?? '';
 
+  const handleCardClick = () => {
+    router.push(`/customer/order/${order.orderId}`);
+  };
+
+  const handleStoreClick = (e: MouseEvent) => {
+    e.stopPropagation();
+    router.push(`/customer/store/${order.storeId}`);
+  };
+
   return (
-    <div className="w-full p-4 bg-background-default rounded-xl shadow-[6px_6px_54px_0px_rgba(0,0,0,0.05)] outline outline-1 outline-offset-[-1px] outline-border-subtle flex flex-col gap-1.5">
+    <div
+      onClick={handleCardClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleCardClick();
+        }
+      }}
+      aria-label={`${order.storeName} 주문 상세 보기`}
+      className="w-full p-4 bg-background-default rounded-xl shadow-[6px_6px_54px_0px_rgba(0,0,0,0.05)] outline outline-1 outline-offset-[-1px] outline-border-subtle flex flex-col gap-1.5"
+    >
       <OrderStatusBadge badgeText={badgeText} />
 
       {/* 주문 정보 */}
@@ -46,10 +67,8 @@ export default function CustomerOrderCard({
               </span>
               <button
                 type="button"
-                onClick={() => {
-                  router.push(`/customer/store/${order.storeId}`);
-                }}
-                aria-label="가게 상세로 이동하기"
+                onClick={handleStoreClick}
+                aria-label="가게 상세 보기"
               >
                 <ChevronIcon className="size-4 text-icon-disable pl-2" />
               </button>
