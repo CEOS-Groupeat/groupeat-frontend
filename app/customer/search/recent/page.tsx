@@ -75,7 +75,7 @@ function RecentSearchContent() {
             <h2 className="text-body font-semibold text-text-default">
               최근 검색어
             </h2>
-            <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+            <div className="flex gap-2 flex-wrap">
               {searches.map((keyword) => (
                 <RecentKeywordChip
                   key={keyword}
