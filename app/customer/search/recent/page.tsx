@@ -3,21 +3,26 @@
 import { Suspense, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useRecentSearches } from '@/hooks/useRecentSearches';
-import { CATEGORIES } from '@/app/customer/search/_constants/category';
+import { useSearchStores } from '@/hooks/useSearchStores';
 
 import CategorySection from '@/app/customer/home/_components/CategorySection';
 import RecentKeywordChip from './_components/RecentKeywordChip';
+import ToastError from '@/components/ui/ToastError';
 
 import SearchBar from '@/components/ui/SearchBar';
 import BackIcon from '@/public/icons/icon_arrow_Left.svg';
+import { useSearchStore } from '@/store/useSearchStore';
 
 function RecentSearchContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { search } = useSearchStores();
+  const setResults = useSearchStore((state) => state.setResults);
   const { searches, remove } = useRecentSearches();
   const [searchInput, setSearchInput] = useState(
     searchParams.get('keyword') ?? ''
   );
+  const [showError, setShowError] = useState(false);
 
   const filtered = searchInput
     ? searches.filter((s) => s.includes(searchInput))
@@ -25,9 +30,9 @@ function RecentSearchContent() {
 
   return (
     <div className="w-full min-h-screen bg-background-default flex flex-col">
+      {showError && <ToastError text="검색에 실패했어요" />}
       {/* 상단 검색창 */}
       <div className="pl-3 pr-4 pt-16 flex items-center gap-2">
-        {/* 뒤로가기 */}
         <button
           type="button"
           onClick={() => router.back()}
@@ -72,7 +77,7 @@ function RecentSearchContent() {
             <h2 className="text-body font-semibold text-text-default">
               최근 검색어
             </h2>
-            <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+            <div className="flex gap-2 flex-wrap">
               {searches.map((keyword) => (
                 <RecentKeywordChip
                   key={keyword}
@@ -88,18 +93,23 @@ function RecentSearchContent() {
             </div>
           </div>
 
-          {/* 추천 검색어 - 카테고리 */}
           <div className="flex flex-col gap-2.5">
             <h2 className="text-body font-semibold text-text-default">
-              추천 검색어
+              카테고리 추천
             </h2>
             <CategorySection
-              onCategoryClick={(category) => {
-                const label =
-                  CATEGORIES.find((c) => c.id === category)?.label ?? category;
-                router.push(
-                  `/customer/search?keyword=${encodeURIComponent(label)}`
-                );
+              onCategoryClick={async (category) => {
+                const filters = { category };
+                const result = await search(filters);
+
+                if (!result) {
+                  setShowError(true);
+                  setTimeout(() => setShowError(false), 2000);
+                  return;
+                }
+
+                setResults(result, filters);
+                router.push(`/customer/search`);
               }}
               appliedFilters={{}}
             />
