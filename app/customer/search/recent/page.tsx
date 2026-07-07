@@ -7,6 +7,7 @@ import { useSearchStores } from '@/hooks/useSearchStores';
 
 import CategorySection from '@/app/customer/home/_components/CategorySection';
 import RecentKeywordChip from './_components/RecentKeywordChip';
+import ToastError from '@/components/ui/ToastError';
 
 import SearchBar from '@/components/ui/SearchBar';
 import BackIcon from '@/public/icons/icon_arrow_Left.svg';
@@ -21,6 +22,7 @@ function RecentSearchContent() {
   const [searchInput, setSearchInput] = useState(
     searchParams.get('keyword') ?? ''
   );
+  const [showError, setShowError] = useState(false);
 
   const filtered = searchInput
     ? searches.filter((s) => s.includes(searchInput))
@@ -28,9 +30,9 @@ function RecentSearchContent() {
 
   return (
     <div className="w-full min-h-screen bg-background-default flex flex-col">
+      {showError && <ToastError text="검색에 실패했어요" />}
       {/* 상단 검색창 */}
       <div className="pl-3 pr-4 pt-16 flex items-center gap-2">
-        {/* 뒤로가기 */}
         <button
           type="button"
           onClick={() => router.back()}
@@ -99,10 +101,14 @@ function RecentSearchContent() {
               onCategoryClick={async (category) => {
                 const filters = { category };
                 const result = await search(filters);
-                setResults(
-                  result ?? { storeList: [], totalElements: 0 },
-                  filters
-                );
+
+                if (!result) {
+                  setShowError(true);
+                  setTimeout(() => setShowError(false), 2000);
+                  return;
+                }
+
+                setResults(result, filters);
                 router.push(`/customer/search`);
               }}
               appliedFilters={{}}
