@@ -66,7 +66,6 @@ export default function Orders() {
               onApprove={async (orderId) => {
                 try {
                   await approveOrder(orderId);
-                  setActiveTab('confirmed');
                 } catch (error) {
                   console.error('승인 실패:', error);
                 }
@@ -81,7 +80,6 @@ export default function Orders() {
               onPickupComplete={async (orderId) => {
                 try {
                   await pickupComplete(orderId);
-                  setActiveTab('past');
                 } catch (error) {
                   console.error('픽업 완료 처리 실패:', error);
                 }
@@ -109,13 +107,9 @@ export default function Orders() {
           }}
           onReject={async () => {
             try {
-              await rejectOrder({
-                orderId: rejectOrderId,
-                rejectReason: '재료 소진',
-              });
+              await rejectOrder(rejectOrderId);
               setShowRejectModal(false);
               setRejectOrderId(null);
-              setActiveTab('past');
             } catch (error) {
               console.error('거절 실패:', error);
             }
