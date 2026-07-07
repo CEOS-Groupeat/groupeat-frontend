@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useState } from 'react';
@@ -18,6 +19,8 @@ export default function StoreOptions() {
   const storeId = params.storeId as string;
 
   const storeCarts = useCartStore((state) => state.storeCarts);
+  const globalPickupDate = useCartStore((state) => state.pickupDate);
+  const globalPickupTime = useCartStore((state) => state.pickupTime);
 
   const [isDateExpanded, setIsDateExpanded] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string | undefined>();
@@ -25,10 +28,13 @@ export default function StoreOptions() {
   const [isMenuExpanded, setIsMenuExpanded] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState<Menu | null>(null);
 
+  const activeDate = selectedDate || globalPickupDate || undefined;
+  const activeTime = selectedTime || globalPickupTime || undefined;
+
+  const displayTime = activeTime ? activeTime.slice(0, 5) : undefined;
+
   const formattedDate =
-    selectedDate && selectedTime
-      ? `${selectedDate} ${selectedTime}`
-      : undefined;
+    activeDate && displayTime ? `${activeDate} ${displayTime}` : undefined;
 
   const { data: menuData, isLoading: isMenuLoading } = useQuery<Menu[]>({
     queryKey: ['menus', storeId],
@@ -44,16 +50,16 @@ export default function StoreOptions() {
 
   const { data: pickupData, isLoading: isPickupLoading } =
     useQuery<PickupTimeInfo>({
-      queryKey: ['pickupTimes', storeId, selectedDate],
+      queryKey: ['pickupTimes', storeId, activeDate],
       queryFn: async () => {
         const response = await fetchClient(
-          `/api/stores/${storeId}/pickup-times?date=${selectedDate}`
+          `/api/stores/${storeId}/pickup-times?date=${activeDate}`
         );
         const result = response as unknown as ApiResponse<PickupTimeInfo>;
         if (!result.isSuccess) throw new Error(result.message);
         return result.data;
       },
-      enabled: !!storeId && !!selectedDate,
+      enabled: !!storeId && !!activeDate,
     });
 
   const handleDateChange = (date: string) => {
@@ -64,6 +70,10 @@ export default function StoreOptions() {
   const handleTimeChange = (times: string[]) => {
     if (times.length > 0) {
       setSelectedTime(times[times.length - 1]);
+
+      setTimeout(() => {
+        setIsDateExpanded(false);
+      }, 700);
     } else {
       setSelectedTime(undefined);
     }
@@ -74,14 +84,15 @@ export default function StoreOptions() {
   };
 
   const getMenuCartQuantity = (menuName: string) => {
-    const currentStoreCart = storeCarts.find(
+    const safeStoreCarts = Array.isArray(storeCarts) ? storeCarts : [];
+    const currentStoreCart = safeStoreCarts.find(
       (cart) => cart.storeId?.toString() === storeId
     );
     if (!currentStoreCart || !currentStoreCart.cartItems) return 0;
 
     return currentStoreCart.cartItems
-      .filter((item) => item.menuSummary?.includes(menuName))
-      .reduce((acc, item) => acc + (item.quantity || 0), 0);
+      .filter((item: any) => item.menuName === menuName)
+      .reduce((acc: any, item: any) => acc + (item.quantity || 0), 0);
   };
 
   return (
@@ -96,18 +107,15 @@ export default function StoreOptions() {
                 isDateExpanded ? '' : 'border-b border-border-subtle pb-3 '
               }`}
             >
-              <div className="flex items-center gap-2">
+              <div className="flex items-start gap-1">
                 <span className="text-base font-semibold text-text-default flex items-center gap-1">
                   픽업 일자
-                  {formattedDate && (
+                </span>
+                <div className="flex pr-1 pt-0.5 items-center gap-2.5">
+                  {formattedDate && !isDateExpanded && (
                     <div className="w-1 h-1 rounded-full bg-brand-default" />
                   )}
-                </span>
-                {formattedDate && !isDateExpanded && (
-                  <span className="text-xs font-medium text-brand-default">
-                    {formattedDate}
-                  </span>
-                )}
+                </div>
               </div>
               {isDateExpanded ? (
                 <UpArrow className="size-5 text-icon-default" />
@@ -120,8 +128,8 @@ export default function StoreOptions() {
               <div className="w-full flex flex-col animate-in fade-in slide-in-from-top-2 duration-200 pb-5">
                 <div className="pb-5">
                   <DateFilter
-                    date={selectedDate}
-                    times={selectedTime ? [selectedTime] : []}
+                    date={activeDate}
+                    times={displayTime ? [displayTime] : []}
                     onDateChange={handleDateChange}
                     onTimeChange={handleTimeChange}
                   />
@@ -244,15 +252,12 @@ export default function StoreOptions() {
         <MenuBottomSheet
           storeId={storeId}
           menu={selectedMenu}
-          pickupDate={selectedDate}
-          pickupTime={selectedTime}
+          pickupDate={activeDate}
+          pickupTime={activeTime}
           onClose={() => setSelectedMenu(null)}
         />
       )}
-      <FloatingCartBar 
-        storeId={storeId} 
-        pickupDateTime={formattedDate}
-      />
+      <FloatingCartBar storeId={storeId} pickupDateTime={formattedDate} />
     </>
   );
 }

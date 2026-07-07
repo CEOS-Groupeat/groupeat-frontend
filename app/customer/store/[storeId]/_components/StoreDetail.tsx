@@ -16,14 +16,34 @@ import Phone from '@/public/icons/icon_phone.svg';
 import Calendar from '@/public/icons/icon_calendar.svg';
 import Notice from '@/public/icons/icon_notice.svg';
 import ArrowUp from '@/public/icons/icon_arrow_up.svg';
+import ArrowDown from '@/public/icons/icon_arrow_down.svg';
+
+const DAY_MAP: Record<string, string> = {
+  MONDAY: '월',
+  TUESDAY: '화',
+  WEDNESDAY: '수',
+  THURSDAY: '목',
+  FRIDAY: '금',
+  SATURDAY: '토',
+  SUNDAY: '일',
+};
+
+const formatClosedDays = (daysString?: string | null) => {
+  if (!daysString) return '연중무휴';
+  const days = daysString
+    .split(',')
+    .map((d) => DAY_MAP[d.trim()] || d.trim())
+    .join(', ');
+  return `${days} 휴무`;
+};
 
 export default function StoreDetail() {
   const params = useParams();
   const storeId = params.storeId as string;
 
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
+  const [isProcessExpanded, setIsProcessExpanded] = useState<boolean>(false);
 
-  // 가게 상세 정보 패칭 로직 주입
   const {
     data: store,
     isLoading,
@@ -39,10 +59,9 @@ export default function StoreDetail() {
       }
       return result.data;
     },
-    enabled: !!storeId, // storeId가 있을 때만 요청
+    enabled: !!storeId,
   });
 
-  // 로딩 및 에러 처리 (스켈레톤 UI를 넣기 좋은 자리입니다)
   if (isLoading)
     return (
       <div className="p-8 text-center text-text-subtlest">
@@ -63,7 +82,6 @@ export default function StoreDetail() {
           <div className="flex p-4 flex-col items-center gap-1 self-stretch">
             <div className="flex flex-col items-start gap-3 self-stretch">
               <div className="flex flex-col items-start gap-1 self-stretch">
-                {/* 조건부 렌더링: 할인 정보가 있을 때만 뱃지 표시 */}
                 {store.discountRate > 0 && (
                   <div className="flex pl-2 pr-2.5 py-1 flex-col justify-center items-start gap-2 rounded-full bg-status-info-bg">
                     <div className="flex items-center gap-4.5 self-stretch">
@@ -86,7 +104,6 @@ export default function StoreDetail() {
                           {store.storeName}
                         </h1>
                         <p className="text-label2 text-text-subtlest">
-                          {/* 백엔드 스펙에 카테고리가 없다면 고정 텍스트를 쓰거나 백엔드에 추가 요청 필요 */}
                           샌드위치·김밥
                         </p>
                       </div>
@@ -118,14 +135,12 @@ export default function StoreDetail() {
                 </div>
 
                 <h3 className="text-label1 self-stretch mt-2 text-text-default whitespace-pre-line">
-                  {/* 설명에 \n 이 있을 경우 줄바꿈이 적용되도록 whitespace-pre-line 추가 */}
                   {store.description}
                 </h3>
               </div>
               <div className="w-full h-[0.75px] bg-border-default my-1" />
             </div>
 
-            {/* 하단 상세 정보 리스트 */}
             <div className="flex flex-col items-start gap-3 self-stretch">
               <div className="flex flex-col items-start gap-1.5">
                 <div className="flex items-start gap-1">
@@ -160,28 +175,44 @@ export default function StoreDetail() {
                     <Calendar className="text-icon-subtlest" />
                   </div>
                   <p className="text-text-subtle text-label2 leading-4.5">
-                    {store.closedDays ? `${store.closedDays} 휴무` : '연중무휴'}
+                    {formatClosedDays(store.closedDays)}
                   </p>
                 </div>
               </div>
 
-              {/* 주문 프로세스 아코디언 (퍼블리싱 영역) */}
-              <div className="flex w-full px-3 pt-2 pb-2.5 flex-col items-start gap-3 border border-border-default border-px rounded-lg bg-background-default mt-2">
-                <div className="flex w-full justify-between items-center cursor-pointer">
+              <div className="flex w-full px-3 py-2.5 flex-col items-start gap-3 border border-border-default border-px rounded-lg bg-background-default mt-2">
+                <div
+                  className="flex w-full justify-between items-center cursor-pointer"
+                  onClick={() => setIsProcessExpanded((prev) => !prev)}
+                >
                   <div className="flex justify-center items-center gap-1.5">
                     <Notice className="text-icon-subtlest w-4 h-4" />
                     <p className="text-text-default text-label2 font-medium">
                       주문 프로세스 안내
                     </p>
                   </div>
-                  <ArrowUp
-                    width={16}
-                    height={16}
-                    className="text-icon-default"
-                  />
+                  {isProcessExpanded ? (
+                    <ArrowUp
+                      width={16}
+                      height={16}
+                      className="text-icon-default"
+                    />
+                  ) : (
+                    <ArrowDown
+                      width={16}
+                      height={16}
+                      className="text-icon-default"
+                    />
+                  )}
                 </div>
-                {/* 아코디언이 열렸을 때 주문 프로세스 텍스트 노출 공간 */}
-                {/* <p className="text-label2 text-text-subtlest">{store.orderProcess}</p> */}
+
+                {isProcessExpanded && (
+                  <div className="w-full flex p-2.5 flex-col items-start gap-2.5 self-stretch animate-in fade-in slide-in-from-top-1 duration-200 rounded-lg bg-hover">
+                    <p className="text-label2 text-text-default whitespace-pre-line">
+                      {store.orderProcess || '안내된 주문 프로세스가 없습니다.'}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>

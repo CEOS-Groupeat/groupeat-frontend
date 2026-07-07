@@ -132,32 +132,26 @@ export default function MenuBottomSheet({
 
   const addCartMutation = useMutation({
     mutationFn: async (cardsToSubmit: MenuCard[]) => {
-      const promises = cardsToSubmit.map((card) => {
-        const optionIds = Object.values(card.selectedOptions).flat();
+      const cartItemsPayload = cardsToSubmit.map((card) => ({
+        storeId: Number(storeId),
+        menuId: menu.menuId,
+        quantity: card.quantity,
+        optionIds: Object.values(card.selectedOptions).flat(),
+        pickupDate,
+        pickupTime,
+      }));
 
-        const payload = {
-          storeId: Number(storeId),
-          menuId: menu.menuId,
-          quantity: card.quantity,
-          optionIds,
-          pickupDate,
-          pickupTime,
-        };
-
-        return fetchClient('/api/carts/items', {
-          method: 'POST',
-          body: JSON.stringify(payload),
-        });
+      return fetchClient('/api/carts/items', {
+        method: 'POST',
+        body: JSON.stringify({ cartItems: cartItemsPayload }),
       });
-
-      await Promise.all(promises);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['cart'] });
       onClose();
     },
     onError: (error: Error) => {
-      setErrorMessage(`장바구니 담기 실패: ${error.message}`);
+      setErrorMessage(error.message || '장바구니 담기에 실패했습니다.');
       setShowError(true);
       setTimeout(() => setShowError(false), 2000);
     },
@@ -177,7 +171,7 @@ export default function MenuBottomSheet({
   const renderOptionForm = () => {
     return (
       <>
-        <div className="flex justify-center items-center py-4.5 border-b border-border-subtle shadow-[0_0_9px_0_rgba(0,0,0,0.04)] relative shrink-0">
+        <div className="flex justify-center items-center py-4.5 border-b border-border-subtle shadow-[0_0_9px_0_rgba(0,0,0,0.04)] relative shrink-0 z-modal">
           <h2 className="text-text-default text-headline3 font-semibold">
             {mode === 'EDIT' ? '옵션 수정' : menu.name}
           </h2>
@@ -375,7 +369,7 @@ export default function MenuBottomSheet({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-background-dim/40">
+    <div className="fixed inset-0 z-modal flex items-end justify-center bg-background-dim/40">
       {showError && <ToastError text={errorMessage} />}
 
       <div className="absolute inset-0" onClick={onClose} />

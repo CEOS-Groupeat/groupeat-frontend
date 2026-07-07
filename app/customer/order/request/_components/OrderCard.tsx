@@ -1,79 +1,107 @@
+'use client';
+
 import Ellipse from '@/public/icons/icon_ellipse.svg';
 import Image from 'next/image';
+import { StoreCart } from '@/src/types/api';
 
-const mockOrderCard = {
-  storeId: 1,
-  storeName: '데이브런치',
-  storeCategory: '샌드위치&김밥',
-  cartItems: [
-    {
-      cartItemId: 100,
-      menuSummary: '1번 세트',
-      imageUrl: '',
-      quantity: 56,
-      unitPrice: 7000,
-      discountAmount: 19600,
-      discountRate: 5,
-      finalPrice: 372400,
-    },
-    {
-      cartItemId: 200,
-      menuSummary: '반반 세트 2 (햄치즈 샌드위치, 참치 김밥)',
-      imageUrl: '',
-      quantity: 30,
-      unitPrice: 7200,
-      discountAmount: 13000,
-      discountRate: 5,
-      finalPrice: 500000,
-    },
-  ],
-  storeTotalPrice: 872400,
+interface OrderCardProps {
+  storeCart: StoreCart | null | undefined;
+  pickupDate?: string;
+  pickupTime?: string;
+  hidePickupInfo?: boolean;
+  noBorder?: boolean;
+}
+
+const formatPickupDate = (dateStr?: string) => {
+  if (!dateStr) return '날짜 미지정';
+  const parts = dateStr.split('-');
+  if (parts.length < 3) return dateStr;
+  return `${parseInt(parts[1], 10)}월 ${parseInt(parts[2], 10)}일`;
 };
 
-export default function OrderCard() {
-  return (
-    <div className="w-full flex flex-col p-4 items-start gap-3 border border-px rounded-xl border-border-default bg-background-default">
-      <div className="flex pb-3 flex-col items-start gap-0.5 self-stretch">
-        <p className="text-text-default text-body font-semibold">
-          {mockOrderCard.storeName}
-        </p>
-        <div className="flex items-center gap-1">
-          <p className="text-text-subtlest text-label1">5월 12일</p>
-          <Ellipse />
-          <p className="text-text-subtlest text-label1">오후 5시</p>
-        </div>
-      </div>
+const formatPickupTime = (timeStr?: string) => {
+  if (!timeStr) return '시간 미지정';
+  const parts = timeStr.split(':');
+  if (parts.length < 2) return timeStr;
 
-      <div className="flex flex-col px-4 items-start gap-6 self-stretch">
-        {mockOrderCard.cartItems.map((item) => {
+  let hour = parseInt(parts[0], 10);
+  const min = parseInt(parts[1], 10);
+  const ampm = hour >= 12 ? '오후' : '오전';
+
+  if (hour > 12) hour -= 12;
+  if (hour === 0) hour = 12;
+
+  return `${ampm} ${hour}시 ${min > 0 ? `${min}분` : ''}`.trim();
+};
+
+export default function OrderCard({
+  storeCart,
+  pickupDate,
+  pickupTime,
+  hidePickupInfo = false, // 기본값 false
+  noBorder = false, // 기본값 false
+}: OrderCardProps) {
+  if (!storeCart || !storeCart.cartItems) return null;
+
+  return (
+    <div
+      className={`w-full flex flex-col items-start gap-3 bg-background-default ${
+        noBorder ? '' : 'p-4 border border-px rounded-xl border-border-default'
+      }`}
+    >
+      {!hidePickupInfo && (
+        <div className="flex pb-3 flex-col items-start gap-0.5 self-stretch border-b border-border-default">
+          <p className="text-text-default text-body font-semibold">
+            {storeCart.storeName}
+          </p>
+          <div className="flex items-center gap-1">
+            <p className="text-text-subtlest text-label1">
+              {formatPickupDate(pickupDate)}
+            </p>
+            <Ellipse />
+            <p className="text-text-subtlest text-label1">
+              {formatPickupTime(pickupTime)}
+            </p>
+          </div>
+        </div>
+      )}
+
+      <div
+        className={`flex flex-col items-start gap-6 self-stretch ${hidePickupInfo ? '' : 'pt-2'}`}
+      >
+        {storeCart.cartItems.map((item) => {
           return (
             <div
               key={item.cartItemId}
               className="w-full flex items-start gap-3"
             >
-              <div className="w-14 h-14 shrink-0 aspect-square rounded-[7px] bg-brand-background">
+              <div className="relative w-14 h-14 shrink-0 aspect-square rounded-[7px] bg-brand-background overflow-hidden">
                 <Image
                   src={
                     item.imageUrl?.startsWith('/') ||
-                    item.imageUrl?.startsWith('https://')
+                    item.imageUrl?.startsWith('http')
                       ? item.imageUrl
                       : '/images/image_logo.png'
                   }
-                  alt={item.menuSummary ?? ''}
+                  alt={item.menuName ?? '메뉴 이미지'}
                   className="object-cover"
-                  width={56}
-                  height={56}
+                  fill
+                  sizes="56px"
                 />
               </div>
               <div className="min-w-0 flex flex-col items-start gap-2 flex-1">
                 <div className="flex flex-col items-start gap-0.5 self-stretch">
                   <p className="text-text-default text-label1 font-semibold truncate">
-                    {item.menuSummary}
+                    {item.menuName}
                   </p>
-                  <p className="h-9 self-stretch text-text-subtle text-caption1 line-clamp-2">
-                    루꼴라 샌드위치 아메리카노
-                  </p>
-                  <div className="flex flex-col items-start self-stretch">
+
+                  {item.optionNames && item.optionNames.length > 0 && (
+                    <p className="self-stretch text-text-subtle text-caption1 line-clamp-2">
+                      {item.optionNames.join(', ')}
+                    </p>
+                  )}
+
+                  <div className="flex flex-col items-start self-stretch mt-1.5 gap-1">
                     <div className="flex justify-between items-center self-stretch">
                       <p className="text-text-default text-caption1">수량</p>
                       <p className="text-text-default text-label1 font-semibold">
@@ -83,9 +111,14 @@ export default function OrderCard() {
                     <div className="flex justify-between items-center self-stretch">
                       <p className="text-text-default text-caption1">가격</p>
                       <div className="flex items-center gap-1">
-                        <p className='text-brand-default text-caption2 font-medium'>5% 할인</p>
+                        {item.discountRate !== undefined &&
+                          item.discountRate > 0 && (
+                            <p className="text-brand-default text-caption2 font-medium">
+                              {item.discountRate}% 할인
+                            </p>
+                          )}
                         <p className="text-text-default text-label1 font-semibold">
-                          {item.finalPrice}원
+                          {(item.finalPrice ?? 0).toLocaleString()}원
                         </p>
                       </div>
                     </div>

@@ -1,9 +1,14 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import SearchBar from '@/components/ui/SearchBar';
+import SearchField from '@/components/ui/SearchField';
 
 export default function HomeSearchBar() {
   const router = useRouter();
-  return <SearchBar onFocus={() => router.push('/customer/search/recent')} />;
+  return (
+    <SearchField
+      iconPosition="left"
+      onFocus={() => router.push('/customer/search/recent')}
+    />
+  );
 }

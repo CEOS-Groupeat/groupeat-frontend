@@ -1,31 +1,63 @@
-// app/owner/orders/[orderId]/page.tsx (예시 경로)
 'use client';
 
 import { useParams } from 'next/navigation';
-import { useGetOwnerOrderDetail } from '@/hooks/useGetOwnerOrderDetail';
+import { useQuery } from '@tanstack/react-query';
+import { fetchClient } from '@/lib/fetchClient';
+
 import OrderCard from '@/app/customer/order/request/_components/OrderCard';
 import OrderPrice from '@/app/customer/order/request/_components/OrderPrice';
 import BackButton from '@/components/ui/BackButton';
 import SectionDivider from '@/components/ui/SectionDivider';
 import Ellipse from '@/public/icons/icon_ellipse.svg';
 
+import { components } from '@/src/types/schema';
+
+type ApiResponseOrderDetailResponse =
+  components['schemas']['ApiResponseOrderDetailResponse_OrderDetailDTO'];
+type OrderDetailData =
+  components['schemas']['OrderDetailResponse_OrderDetailDTO'];
+
+const formatOrderDate = (dateStr?: string) => {
+  if (!dateStr) return '';
+  const parts = dateStr.split('-');
+  if (parts.length < 3) return dateStr;
+  return `${parseInt(parts[1], 10)}월 ${parseInt(parts[2], 10)}일`;
+};
+
+const formatOrderTime = (timeStr?: string) => {
+  if (!timeStr) return '';
+  const parts = timeStr.split(':');
+  if (parts.length < 2) return timeStr;
+
+  const hour = parseInt(parts[0], 10);
+  const minute = parts[1];
+  const ampm = hour >= 12 ? '오후' : '오전';
+  const displayHour = hour > 12 ? hour - 12 : hour === 0 ? 12 : hour;
+
+  return `${ampm} ${displayHour}시 ${minute}분`;
+};
+
 export default function OwnerOrderDetail() {
   const params = useParams();
-  const orderId = Number(params.orderId);
+  const orderId = params.orderId as string;
 
   const {
     data: orderDetail,
     isLoading,
     isError,
-    error,
-  } = useGetOwnerOrderDetail(orderId);
+  } = useQuery<OrderDetailData | undefined>({
+    queryKey: ['ownerOrderDetail', orderId],
+    queryFn: async () => {
+      const res = await fetchClient<ApiResponseOrderDetailResponse>(
+        `/api/owner/orders/${orderId}`
+      );
+      if (!res.isSuccess) throw new Error(res.message);
 
-  const cancelOrder = () => {
-    // todo: 주문취소 로직 추가 예정
-    return;
-  };
+      return res.data;
+    },
+    enabled: !!orderId,
+  });
 
-  // 로딩 상태 처리
   if (isLoading) {
     return (
       <div className="w-full h-screen flex items-center justify-center bg-white text-body text-text-subtle">
@@ -34,30 +66,42 @@ export default function OwnerOrderDetail() {
     );
   }
 
-  // 에러 상태 처리
   if (isError || !orderDetail) {
     return (
       <div className="w-full h-screen flex flex-col items-center justify-center bg-white gap-4 px-4">
         <p className="text-status-danger text-body font-semibold">
-          {error?.message || '주문 정보를 찾을 수 없습니다.'}
+          주문 정보를 찾을 수 없거나 에러가 발생했습니다.
         </p>
         <BackButton />
       </div>
     );
   }
 
-  // 데이터 구조 분해 할당 (openAPI TS 타입 추론 적용)
-  const { ordererInfo, orderMenus, paymentInfo } = orderDetail;
+  const {
+    storeName,
+    ordererInfo,
+    orderMenus,
+    paymentInfo,
+  } = orderDetail;
 
-  // 날짜 포맷 변환 유틸 (예: "2026-06-20" -> "6월 20일")
-  const formatOrderDate = (dateStr?: string) => {
-    if (!dateStr) return '';
-    const [_, month, day] = dateStr.split('-');
-    return `${parseInt(month, 10)}월 ${parseInt(day, 10)}일`;
+  const mappedStoreCart = {
+    storeId: 0,
+    storeName: storeName || '',
+    storeTotalPrice: paymentInfo?.originalTotalAmount,
+    cartItems: orderMenus?.map((menu, idx) => ({
+      cartItemId: idx,
+      menuName: menu.menuName,
+      imageUrl: menu.menuImageUrl,
+      quantity: menu.quantity,
+      optionNames: menu.options?.map((opt) => opt.optionName ?? '') ?? [],
+      unitPrice: (menu.totalAmount ?? 0) / (menu.quantity ?? 1),
+      discountRate: menu.discountRate,
+      finalPrice: menu.totalAmount,
+    })),
   };
 
   return (
-    <div className="w-full flex pb-16 flex-col items-center gap-6 bg-white">
+    <div className="w-full flex pb-9 flex-col items-center gap-6 bg-background-default">
       <header className="w-full flex pt-10 items-start gap-2.5 self-stretch">
         <div className="w-full flex p-4 items-center justify-between self-stretch">
           <BackButton />
@@ -68,7 +112,6 @@ export default function OwnerOrderDetail() {
         </div>
       </header>
 
-      {/* 1. 주문자 정보 섹션 데이터 바인딩 */}
       <section className="w-full flex flex-col pb-1 items-start self-stretch px-4">
         <h1 className="text-text-default text-headline3 font-semibold pb-2">
           주문자 정보
@@ -100,9 +143,10 @@ export default function OwnerOrderDetail() {
               <p className="text-text-default text-body">
                 {formatOrderDate(ordererInfo?.orderDate)}
               </p>
-              {/* 타임스탬프 파싱이 추가로 필요할 경우 파싱 로직 확장 가능 */}
               <Ellipse />
-              <p className="text-text-default text-body">오후 12시 00일</p>
+              <p className="text-text-default text-body">
+                {formatOrderTime(ordererInfo?.orderTime)}
+              </p>
             </div>
           </div>
 
@@ -126,32 +170,23 @@ export default function OwnerOrderDetail() {
         </div>
       </section>
 
-      <SectionDivider />
+      <SectionDivider className="h-1.5" />
 
-      {/* 2. 주문 정보 섹션 - 복수 메뉴 렌더링 대응 */}
       <section className="w-full flex flex-col pb-1 items-start self-stretch px-4">
         <div className="flex flex-col items-start gap-3 self-stretch w-full">
           <h1 className="text-text-default text-headline3 font-semibold">
             주문 정보
           </h1>
-          {orderMenus?.map((menu, index) => (
-            <OrderCard
-              key={index}
-              menuName={menu.menuName}
-              quantity={menu.quantity}
-              menuImageUrl={menu.menuImageUrl}
-              discountRate={menu.discountRate}
-              totalAmount={menu.totalAmount}
-              // 명세상 options 배열 구조 전달 필요 시 주입 처리
-              options={menu.options?.map((o) => o.optionName)}
-            />
-          ))}
+          <OrderCard
+            storeCart={mappedStoreCart}
+            hidePickupInfo={true}
+            noBorder={true}
+          />
         </div>
       </section>
 
-      <SectionDivider className="w-full my-5" />
+      <SectionDivider className="w-full h-1.5" />
 
-      {/* 3. 결제 정보 섹션 데이터 바인딩 */}
       <section className="w-full flex flex-col pb-1 items-start self-stretch px-4">
         <div className="flex flex-col items-start gap-3 self-stretch w-full">
           <h1 className="text-text-default text-headline3 font-semibold">
@@ -169,17 +204,25 @@ export default function OwnerOrderDetail() {
             <div className="flex justify-between items-center self-stretch">
               <p className="text-text-subtlest text-label1">결제 수단</p>
               <p className="text-text-default text-label1">
-                {paymentInfo?.paymentMeans || '카드결제'}
+                {paymentInfo?.paymentMeans === 'TOSS'
+                  ? '토스페이'
+                  : '카카오페이'}
               </p>
             </div>
             <div className="flex justify-between items-center self-stretch">
               <p className="text-text-subtlest text-label1">총 금액</p>
               <p className="text-text-default text-label1 font-semibold">
-                {paymentInfo?.finalPaymentAmount?.toLocaleString()}원
+                {paymentInfo?.finalPaymentAmount?.toLocaleString() ?? 0}원
               </p>
             </div>
-            {/* 하위 컴포넌트에도 정합성을 맞추기 위해 결제 데이터 전달 */}
-            <OrderPrice/>
+
+            <OrderPrice
+              perPersonAmount={paymentInfo?.perPersonAmount ?? 0}
+              originalPrice={paymentInfo?.originalTotalAmount ?? 0}
+              discountAmount={paymentInfo?.totalDiscountAmount ?? 0}
+              finalPrice={paymentInfo?.finalPaymentAmount ?? 0}
+              discountRate={paymentInfo?.discountRate ?? 0}
+            />
           </div>
         </div>
       </section>

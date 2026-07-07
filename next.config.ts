@@ -13,11 +13,22 @@ const nextConfig: NextConfig = {
   },
   images: {
     remotePatterns: [
-      // 백엔드 이미지 도메인 추가하기 !
-      // {
-      //   protocol: 'https',
-      //   hostname: '백엔드 이미지 도메인',
-      // },
+      {
+        protocol: 'https',
+        hostname: 'd2f1i7fluhpn2d.cloudfront.net',
+        pathname: '/**', 
+      },
+      {
+        protocol: 'https',
+        hostname: 'groupeat-bucket.s3.ap-northeast-2.amazonaws.com',
+        pathname: '/**',
+      },
+      {
+        // 로컬 테스트용이나 임시 이미지 도메인이 있다면 추가
+        protocol: 'https',
+        hostname: 'groupeat-prod-uploads-025042199776-ap-northeast-2-an.s3.ap-northeast-2.amazonaws.com',
+        pathname: '/**',
+      }
     ],
   },
 };
