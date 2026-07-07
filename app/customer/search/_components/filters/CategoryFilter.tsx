@@ -26,7 +26,7 @@ export default function CategoryFilter({
             type="button"
             onClick={() => handleToggle(category.id)}
             aria-pressed={isSelected}
-            className={`w-[81px] h-[66px] px-3 py-1.5 outline outline-1 outline-offset-[-1px] outline-border-subtle rounded-lg flex flex-col items-center gap-1 shrink-0 transition-colors ${
+            className={`w-[81px] h-[66px] py-1.5 outline outline-1 outline-offset-[-1px] outline-border-subtle rounded-lg flex flex-col items-center gap-1 shrink-0 transition-colors ${
               isSelected ? 'bg-background-subtle' : 'bg-static-white'
             }`}
           >
