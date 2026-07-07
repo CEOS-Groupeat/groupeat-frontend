@@ -2,10 +2,8 @@
 
 import { useState } from 'react';
 import SearchIcon from '@/public/icons/icon_search.svg';
-import {
-  LOCATION_OPTIONS,
-  LocationOption,
-} from '@/app/customer/search/_constants/location';
+import { LOCATION_OPTIONS } from '@/app/customer/search/_constants/location';
+import type { LocationOption } from '@/app/customer/search/_constants/location';
 
 interface LocationFilterProps {
   value: string | undefined;
