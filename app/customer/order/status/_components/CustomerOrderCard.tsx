@@ -49,7 +49,7 @@ export default function CustomerOrderCard({
                 onClick={() => {
                   router.push(`/customer/store/${order.storeId}`);
                 }}
-                aria-label="주문 상세 보기"
+                aria-label="가게 상세로 이동하기"
               >
                 <ChevronIcon className="size-4 text-icon-disable pl-2" />
               </button>
@@ -57,7 +57,9 @@ export default function CustomerOrderCard({
             <div className="flex items-center gap-1 text-caption1 font-normal text-text-subtlest">
               <span>{order.pickupDate}</span>
               <div className="size-0.5 bg-text-subtlest rounded-full" />
-              <span>{order.pickupTime ? formatPickupTime(order.pickupTime) : ''}</span>
+              <span>
+                {order.pickupTime ? formatPickupTime(order.pickupTime) : ''}
+              </span>
             </div>
           </div>
           <span className="text-label2 font-medium text-text-default">
