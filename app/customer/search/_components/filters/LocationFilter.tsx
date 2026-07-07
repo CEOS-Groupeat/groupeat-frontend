@@ -2,7 +2,10 @@
 
 import { useState } from 'react';
 import SearchIcon from '@/public/icons/icon_search.svg';
-import { LOCATION_OPTIONS } from '@/app/customer/search/_constants/location';
+import {
+  LOCATION_OPTIONS,
+  LocationOption,
+} from '@/app/customer/search/_constants/location';
 
 interface LocationFilterProps {
   value: string | undefined;
@@ -19,11 +22,11 @@ export default function LocationFilter({
   const [isFocused, setIsFocused] = useState(false);
 
   const filtered = LOCATION_OPTIONS.filter(
-    (loc) => search === '' || loc.includes(search)
+    (loc: LocationOption) => search === '' || loc.label.includes(search)
   );
 
-  const handleSelect = (loc: string) => {
-    onChange(loc);
+  const handleSelect = (loc: LocationOption) => {
+    onChange(loc.value);
     setSearch('');
     setIsFocused(false);
     onConfirm(); // 선택 즉시 토글 닫힘
@@ -31,9 +34,12 @@ export default function LocationFilter({
 
   // 선택 완료 상태 → bg-background-subtle 박스
   if (value) {
+    const selectedLabel = LOCATION_OPTIONS.find(
+      (loc) => loc.value === value
+    )?.label;
     return (
       <div className="h-11 pl-4 pr-3 py-2 bg-background-subtle rounded-lg flex items-center mt-3">
-        <span className="text-base text-text-default">{value}</span>
+        <span className="text-base text-text-default">{selectedLabel}</span>
       </div>
     );
   }
@@ -58,7 +64,7 @@ export default function LocationFilter({
         <div className="rounded-lg outline outline-1 outline-border-default overflow-hidden shadow-[0px_0px_15px_0px_rgba(0,0,0,0.05)]">
           {filtered.slice(0, 5).map((loc, idx, arr) => (
             <button
-              key={loc}
+              key={loc.value}
               type="button"
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => handleSelect(loc)}
@@ -66,7 +72,7 @@ export default function LocationFilter({
                 bg-background-default hover:bg-interaction-hover transition-colors
                 ${idx < arr.length - 1 ? 'border-b border-border-subtle' : ''}`}
             >
-              {loc}
+              {loc.label}
             </button>
           ))}
         </div>
