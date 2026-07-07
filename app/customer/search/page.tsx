@@ -142,7 +142,6 @@ function SearchContent() {
           <SearchSortDropdown
             value={sort}
             onChange={async (v) => {
-              setSort(v);
               const params = {
                 ...(keyword ? { keyword } : {}),
                 ...appliedFilters,
@@ -151,7 +150,7 @@ function SearchContent() {
 
               const result = await search(params);
               if (result) {
-                console.log('appliedFilters:', appliedFilters);
+                setSort(v);
                 setResults(result, { ...appliedFilters, sortType: v });
               }
             }}
