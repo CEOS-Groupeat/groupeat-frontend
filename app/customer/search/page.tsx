@@ -35,7 +35,7 @@ function SearchContent() {
   } = useSearchStore();
   const { search, data: keywordData, isLoading } = useSearchStores();
 
-  const [sort, setSort] = useState('NONE');
+  const [sort, setSort] = useState('DISCOUNT_DESC');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filterKey, setFilterKey] = useState(0);
   const [searchInput, setSearchInput] = useState(keyword);
@@ -50,11 +50,13 @@ function SearchContent() {
       clearResultsOnly();
       search({ keyword, sortType: sort });
     }
-  }, [keyword, add, sort, search, clearResultsOnly]);
+  }, [keyword, add, search, clearResultsOnly]);
 
   // ── 활성 필터 수 ──
   const activeFilterCount = Object.keys(appliedFilters).filter(
-    (k) => appliedFilters[k as keyof StoreSearchParams] !== undefined
+    (k) =>
+      k !== 'sortType' &&
+      appliedFilters[k as keyof StoreSearchParams] !== undefined
   ).length;
 
   // ── 표시할 가게 목록 ──
@@ -139,9 +141,19 @@ function SearchContent() {
           {/* 정렬 드롭다운 */}
           <SearchSortDropdown
             value={sort}
-            onChange={(v) => {
+            onChange={async (v) => {
               setSort(v);
-              if (keyword) search({ keyword, sortType: v, ...appliedFilters });
+              const params = {
+                ...(keyword ? { keyword } : {}),
+                ...appliedFilters,
+                sortType: v,
+              };
+
+              const result = await search(params);
+              if (result) {
+                console.log('appliedFilters:', appliedFilters);
+                setResults(result, { ...appliedFilters, sortType: v });
+              }
             }}
           />
 
