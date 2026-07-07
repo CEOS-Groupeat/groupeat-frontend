@@ -18,21 +18,23 @@ import { usePickupComplete } from './_hooks/usePickupComplete';
 
 const INITIAL_COUNTS = [
   {
-    value: 'pending',
+    value: 'WAITING' as const,
     count: MOCK_ORDERS.filter((o) => o.status === 'pending').length,
   },
   {
-    value: 'confirmed',
+    value: 'CONFIRMED' as const,
     count: MOCK_ORDERS.filter((o) => o.status === 'confirmed').length,
   },
   {
-    value: 'past',
+    value: 'PAST' as const,
     count: MOCK_ORDERS.filter((o) => o.status === 'past').length,
   },
 ];
 
 export default function Orders() {
-  const [activeTab, setActiveTab] = useState('pending');
+  const [activeTab, setActiveTab] = useState<'WAITING' | 'CONFIRMED' | 'PAST'>(
+    'WAITING'
+  );
   // 사업자 대시보드 api 연동 후 실제 카운트로 교체할 예정
   const [counts] = useState(INITIAL_COUNTS);
   const [showProcessModal, setShowProcessModal] = useState(false);
@@ -56,7 +58,7 @@ export default function Orders() {
         <OrderEmptyState />
       ) : (
         <>
-          {activeTab === 'pending' && (
+          {activeTab === 'WAITING' && (
             <OrderList
               orders={MOCK_ORDERS.filter((order) => order.status === 'pending')}
               onReject={(orderId) => {
@@ -72,7 +74,7 @@ export default function Orders() {
               }}
             />
           )}
-          {activeTab === 'confirmed' && (
+          {activeTab === 'CONFIRMED' && (
             <OrderList
               orders={MOCK_ORDERS.filter(
                 (order) => order.status === 'confirmed'
@@ -86,14 +88,14 @@ export default function Orders() {
               }}
             />
           )}
-          {activeTab === 'past' && (
+          {activeTab === 'PAST' && (
             <OrderList
               orders={MOCK_ORDERS.filter((order) => order.status === 'past')}
             />
           )}
         </>
       )}
-      {activeTab === 'pending' && (
+      {activeTab === 'WAITING' && (
         <InfoToast onInfoClick={() => setShowProcessModal(true)} />
       )}
       {showProcessModal && (
