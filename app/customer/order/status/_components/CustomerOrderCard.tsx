@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import type { MouseEvent } from 'react';
+import type { MouseEvent, KeyboardEvent } from 'react';
 import Image from 'next/image';
 import ChevronIcon from '@/public/icons/icon-right_chevron.svg';
 import type { CustomerOrder } from '@/src/types/api';
@@ -36,9 +36,17 @@ export default function CustomerOrderCard({
     router.push(`/customer/order/${order.orderId}`);
   };
 
-  const handleStoreClick = (e: MouseEvent) => {
+  const handleStoreClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     router.push(`/customer/store/${order.storeId}`);
+  };
+
+  const handleCardKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.target !== e.currentTarget) return;
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleCardClick();
+    }
   };
 
   return (
@@ -46,12 +54,7 @@ export default function CustomerOrderCard({
       onClick={handleCardClick}
       role="button"
       tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          handleCardClick();
-        }
-      }}
+      onKeyDown={handleCardKeyDown}
       aria-label={`${order.storeName} 주문 상세 보기`}
       className="w-full p-4 bg-background-default rounded-xl shadow-[6px_6px_54px_0px_rgba(0,0,0,0.05)] outline outline-1 outline-offset-[-1px] outline-border-subtle flex flex-col gap-1.5"
     >
