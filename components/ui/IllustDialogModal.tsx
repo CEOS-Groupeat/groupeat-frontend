@@ -3,7 +3,7 @@
 // iconClassName, secondaryButton.variant prop을 추가하는 방식으로
 // 이 컴포넌트(IllustDialogModal)와 통합 리팩토링 예정
 import { FocusTrap } from 'focus-trap-react';
-import { useEffect } from 'react';
+import { useEffect, useId } from 'react';
 
 interface IllustDialogModalProps {
   icon: React.ReactNode;
@@ -30,6 +30,9 @@ export default function IllustDialogModal({
   onClose,
   children,
 }: IllustDialogModalProps) {
+  const titleId = useId();
+  const descriptionId = useId();
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -56,8 +59,8 @@ export default function IllustDialogModal({
         <div
           role="dialog"
           aria-modal="true"
-          aria-labelledby="dialog-title"
-          aria-describedby={description ? 'dialog-description' : undefined}
+          aria-labelledby={titleId}
+          aria-describedby={description ? descriptionId : undefined}
           className="w-80 rounded-2xl bg-background-default shadow-[0px_24px_38px_-10px_rgba(23,23,23,0.12),0px_10px_15px_-5px_rgba(23,23,23,0.10)] overflow-hidden"
           onClick={(e) => e.stopPropagation()}
         >
@@ -66,14 +69,14 @@ export default function IllustDialogModal({
               <div className="flex items-center justify-center">{icon}</div>
               <div className="flex flex-col items-center gap-1 text-center self-stretch">
                 <p
-                  id="dialog-title"
+                  id={titleId}
                   className="text-headline3 font-semibold text-label-normal whitespace-pre-line"
                 >
                   {title}
                 </p>
                 {description && (
                   <p
-                    id="dialog-description"
+                    id={descriptionId}
                     className="text-label1 font-normal text-label-light whitespace-nowrap"
                   >
                     {description}
