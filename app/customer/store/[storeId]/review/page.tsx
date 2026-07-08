@@ -5,6 +5,7 @@
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useStoreReviews } from './_hooks/useStoreReviews';
+import { useStoreDetail } from './_hooks/useStoreDetail';
 import ReviewHeader from './_components/ReviewHeader';
 import SectionDivider from '@/components/ui/SectionDivider';
 import ReviewSortDropdown from './_components/ReviewSortDropdown';
@@ -15,17 +16,19 @@ export default function CustomerStoreReviewPage() {
   const { storeId } = useParams<{ storeId: string }>();
   const [sort, setSort] = useState('LATEST');
 
-  const { data, isLoading, isError } = useStoreReviews({
-    storeId,
-  });
+  const { data: storeDetail } = useStoreDetail(storeId);
+  const { data, isLoading, isError } = useStoreReviews({ storeId });
+
+  const reviews = data?.reviewList ?? [];
   // const sortedReviews = [...mockReviews].sort((a, b) => {
   //   if (sort === 'RATING_HIGH') return b.rating - a.rating;
   //   if (sort === 'RATING_LOW') return a.rating - b.rating;
   //   return 0;
   // });
+
   return (
     <div className="w-full min-h-screen bg-background-default flex flex-col mb-10">
-      <ReviewHeader storeName={'데이브런치'} />
+      <ReviewHeader storeName={storeDetail?.storeName ?? ''} />
       {/* TODO: 리뷰 요약 API 연동 후 활성화 */}
       {/* <ReviewSummary
         averageRating={mockReviewSummary.averageRating}
@@ -37,7 +40,7 @@ export default function CustomerStoreReviewPage() {
         onChange={(v) => {
           setSort(v);
         }}
-        totalCount={data?.reviewList.length ?? 0}
+        totalCount={storeDetail?.reviewCount ?? reviews.length}
       />
       {isLoading ? (
         <div className="flex-1 flex items-center justify-center">
