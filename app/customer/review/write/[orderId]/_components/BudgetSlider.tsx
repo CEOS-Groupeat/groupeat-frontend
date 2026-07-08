@@ -28,7 +28,7 @@ export default function BudgetSlider({ value, onChange }: BudgetSliderProps) {
         className="relative flex items-center w-full h-5"
         min={MIN}
         max={MAX}
-        step={1000}
+        step={STEP}
         value={[value]}
         onValueChange={([v]) => onChange(v)}
       >
