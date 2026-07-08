@@ -7,6 +7,7 @@ import OrderEmptyState from '@/app/owner/orders/_components/OrderEmptyState';
 import InfoToast from '@/app/owner/orders/_components/InfoToast';
 import OrderProcessModal from '@/app/owner/orders/_components/OrderProcessModal';
 import OrderRejectModal from '@/app/owner/orders/_components/OrderRejectModal';
+import OrderApproveModal from './_components/OrderApproveModal';
 import OrderList from './_components/OrderList';
 import OwnerNavbar from '@/components/owner/OwnerNavbar';
 
@@ -40,6 +41,8 @@ export default function Orders() {
   const [showProcessModal, setShowProcessModal] = useState(false);
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [rejectOrderId, setRejectOrderId] = useState<number | null>(null);
+  const [showApproveModal, setShowApproveModal] = useState(false);
+  const [approveOrderId, setApproveOrderId] = useState<number | null>(null);
   const { mutateAsync: approveOrder } = useApproveOrder();
   const { mutateAsync: rejectOrder } = useRejectOrder();
   const { mutateAsync: pickupComplete } = usePickupComplete();
@@ -65,12 +68,9 @@ export default function Orders() {
                 setRejectOrderId(orderId);
                 setShowRejectModal(true);
               }}
-              onApprove={async (orderId) => {
-                try {
-                  await approveOrder(orderId);
-                } catch (error) {
-                  console.error('승인 실패:', error);
-                }
+              onApprove={(orderId) => {
+                setApproveOrderId(orderId);
+                setShowApproveModal(true);
               }}
             />
           )}
@@ -114,6 +114,23 @@ export default function Orders() {
               setRejectOrderId(null);
             } catch (error) {
               console.error('거절 실패:', error);
+            }
+          }}
+        />
+      )}
+      {showApproveModal && approveOrderId !== null && (
+        <OrderApproveModal
+          onClose={() => {
+            setShowApproveModal(false);
+            setApproveOrderId(null);
+          }}
+          onApprove={async () => {
+            try {
+              await approveOrder(approveOrderId);
+              setShowApproveModal(false);
+              setApproveOrderId(null);
+            } catch (error) {
+              console.error('승인 실패:', error);
             }
           }}
         />
