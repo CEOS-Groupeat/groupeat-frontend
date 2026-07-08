@@ -208,9 +208,17 @@ export default function StoreDetail() {
 
                 {isProcessExpanded && (
                   <div className="w-full flex p-2.5 flex-col items-start gap-2.5 self-stretch animate-in fade-in slide-in-from-top-1 duration-200 rounded-lg bg-hover">
-                    <p className="text-label2 text-text-default whitespace-pre-line">
-                      {store.orderProcess || '안내된 주문 프로세스가 없습니다.'}
-                    </p>
+                    <div className="flex flex-col items-start gap-0.5 self-stretch">
+                      <p className="text-label2 text-text-default whitespace-pre-line">
+                        1. 주문 요청서 제출 및 결제 (선결제 / 현장결제 예약금)
+                      </p>
+                      <p className="text-label2 text-text-default whitespace-pre-line">
+                        2. 담당자 확인 후 주문 승인 (24시간 이내)
+                      </p>
+                      <p className="text-label2 text-text-default whitespace-pre-line">
+                        3. 픽업
+                      </p>
+                    </div>
                   </div>
                 )}
               </div>
