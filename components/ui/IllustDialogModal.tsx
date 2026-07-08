@@ -38,6 +38,14 @@ export default function IllustDialogModal({
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
 
+  useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, []);
+
   return (
     <div
       className="fixed inset-0 bg-background-dim z-modal flex items-center justify-center font-['Pretendard']"
