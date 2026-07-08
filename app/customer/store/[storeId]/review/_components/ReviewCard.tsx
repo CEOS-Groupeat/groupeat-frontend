@@ -11,10 +11,10 @@ interface ReviewCardProps {
 export default function ReviewCard({ review }: ReviewCardProps) {
   const eventInfo = [
     { label: '행사 유형', value: review.eventType },
-    { label: '행사 인원', value: `${review.headCount}명` },
+    { label: '행사 인원', value: `${review.headcount}명` },
     {
       label: '1인당 예산',
-      value: `${review.budgetPerPerson.toLocaleString()}원`,
+      value: `${review.perPersonBudget.toLocaleString()}원`,
     },
   ];
 
@@ -26,7 +26,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
           <div className="flex items-center gap-1.5">
             <div className="size-[26px] rounded-full bg-background-subtle" />
             <span className="text-body font-semibold text-text-default">
-              {review.userName}
+              {review.authorNickname}
             </span>
           </div>
           <span className="text-xs text-text-subtlest">{review.createdAt}</span>
@@ -72,9 +72,9 @@ export default function ReviewCard({ review }: ReviewCardProps) {
         {review.content}
       </p>
 
-      {review.images.length > 0 && (
+      {review.imageUrls.length > 0 && (
         <div className="flex flex-wrap items-center gap-3">
-          {review.images.map((src, i) => (
+          {review.imageUrls.map((src, i) => (
             <div
               key={i}
               className="relative size-[125px] rounded-lg overflow-hidden shrink-0"
@@ -91,7 +91,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
       )}
 
       <div className="flex flex-wrap gap-1.5">
-        {review.menuTags.map((tag, i) => (
+        {review.orderedMenuNames.map((tag, i) => (
           <span
             key={i}
             className="px-2 py-1 rounded-full outline outline-1 outline-border-default text-caption1 text-text-default font-normal"
@@ -108,11 +108,11 @@ export default function ReviewCard({ review }: ReviewCardProps) {
               {review.ownerReply.storeName}
             </span>
             <span className="text-caption2 text-text-subtlest font-normal">
-              {review.ownerReply.createdAt}
+              {review.ownerReply.repliedAt}
             </span>
           </div>
           <p className="text-label2 text-text-strong font-normal whitespace-pre-line">
-            {review.ownerReply.content}
+            {review.ownerReply.replyContent}
           </p>
         </div>
       )}
