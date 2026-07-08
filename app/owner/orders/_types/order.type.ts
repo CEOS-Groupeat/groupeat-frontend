@@ -18,10 +18,6 @@ export type OrderStatus =
 export interface OrderProcessResponse {
   orderId: number;
   orderStatus: OrderStatus;
-  processedAt: string;
-}
-
-// 주문 거절 요청
-export interface RejectOrderRequest {
-  rejectReason: string;
+  processedDate: string;
+  processedTime: string;
 }

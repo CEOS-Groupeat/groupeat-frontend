@@ -50,11 +50,13 @@ function SearchContent() {
       clearResultsOnly();
       search({ keyword, sortType: sort });
     }
-  }, [keyword, add, sort, search, clearResultsOnly]);
+  }, [keyword, sort, add, search, clearResultsOnly]);
 
   // ── 활성 필터 수 ──
   const activeFilterCount = Object.keys(appliedFilters).filter(
-    (k) => appliedFilters[k as keyof StoreSearchParams] !== undefined
+    (k) =>
+      k !== 'sortType' &&
+      appliedFilters[k as keyof StoreSearchParams] !== undefined
   ).length;
 
   // ── 표시할 가게 목록 ──
@@ -139,9 +141,18 @@ function SearchContent() {
           {/* 정렬 드롭다운 */}
           <SearchSortDropdown
             value={sort}
-            onChange={(v) => {
-              setSort(v);
-              if (keyword) search({ keyword, sortType: v, ...appliedFilters });
+            onChange={async (v) => {
+              const params = {
+                ...(keyword ? { keyword } : {}),
+                ...appliedFilters,
+                sortType: v,
+              };
+
+              const result = await search(params);
+              if (result) {
+                setSort(v);
+                setResults(result, { ...appliedFilters, sortType: v });
+              }
             }}
           />
 
