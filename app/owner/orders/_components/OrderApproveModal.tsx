@@ -22,6 +22,7 @@ export default function OrderApproveModal({
       primaryButton={{ label: '돌아가기', onClick: onClose, disabled: isLoading}}
       secondaryButton={{ label: '승인하기', onClick: onApprove, disabled: isLoading }}
       onClose={onClose}
+      isLoading={isLoading}
     />
   );
 }

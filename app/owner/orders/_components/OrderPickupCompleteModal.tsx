@@ -30,6 +30,7 @@ export default function OrderPickupCompleteModal({
         disabled: isLoading,
       }}
       onClose={onClose}
+      isLoading={isLoading}
     />
   );
 }
