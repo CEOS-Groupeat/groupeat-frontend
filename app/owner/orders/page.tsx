@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import OwnerOrderHeader from '@/app/owner/orders/_components/OwnerOrderHeader';
 import SegmentedControl from '@/app/owner/orders/_components/SegmentedControl';
 import OrderEmptyState from '@/app/owner/orders/_components/OrderEmptyState';
@@ -50,12 +50,23 @@ export default function Orders() {
     number | null
   >(null);
   const [showPickupToast, setShowPickupToast] = useState(false);
+  const pickupToastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  );
 
   const { mutateAsync: approveOrder } = useApproveOrder();
   const { mutateAsync: rejectOrder } = useRejectOrder();
   const { mutateAsync: pickupComplete } = usePickupComplete();
 
   const activeCount = counts.find((c) => c.value === activeTab)?.count ?? 0;
+
+  useEffect(() => {
+    return () => {
+      if (pickupToastTimerRef.current) {
+        clearTimeout(pickupToastTimerRef.current);
+      }
+    };
+  }, []);
 
   return (
     <div className="w-full min-h-screen flex flex-col bg-background-default font-['Pretendard']">
@@ -151,8 +162,16 @@ export default function Orders() {
               await pickupComplete(pickupCompleteOrderId);
               setShowPickupCompleteModal(false);
               setPickupCompleteOrderId(null);
+
+              if (pickupToastTimerRef.current) {
+                clearTimeout(pickupToastTimerRef.current);
+              }
+
               setShowPickupToast(true);
-              setTimeout(() => setShowPickupToast(false), 2000);
+              pickupToastTimerRef.current = setTimeout(() => {
+                setShowPickupToast(false);
+                pickupToastTimerRef.current = null;
+              }, 2000);
             } catch (error) {
               console.error('픽업 완료 처리 실패:', error);
             }
