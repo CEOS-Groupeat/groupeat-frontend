@@ -1,3 +1,4 @@
+'use client';
 // TODO: 팀원의 DialogModal 작업 완료 후, 기존 DialogModal에
 // iconClassName, secondaryButton.variant prop을 추가하는 방식으로
 // 이 컴포넌트(IllustDialogModal)와 통합 리팩토링 예정

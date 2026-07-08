@@ -1,3 +1,5 @@
+'use client';
+
 import IllustDialogModal from '@/components/ui/IllustDialogModal';
 import OrderAcceptIllustIcon from '@/public/illust/illust_OrderAccept.svg';
 

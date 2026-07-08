@@ -1,5 +1,8 @@
+'use client'
+
 import IllustDialogModal from '@/components/ui/IllustDialogModal';
 import OrderPickupCompleteIllustIcon from '@/public/illust/illust_PickupDone.svg';
+
 interface OrderPickupCompleteModalProps {
   onClose: () => void;
   onPickupComplete: () => void;
