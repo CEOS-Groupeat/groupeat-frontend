@@ -9,6 +9,8 @@ export default function PickupCompleteToast({
 }: PickupCompleteToastProps) {
   return (
     <div
+      role="status"
+      aria-live="polite"
       className="flex w-fit px-4 py-1.5 justify-center items-center gap-1 rounded-full bg-background-toast/85 backdrop-blur-[32px]
       fixed bottom-[90px] left-1/2 -translate-x-1/2 z-toast animate-in fade-in slide-in-from-bottom-5 duration-300"
     >
