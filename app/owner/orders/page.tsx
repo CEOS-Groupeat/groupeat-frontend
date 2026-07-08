@@ -9,6 +9,7 @@ import OrderProcessModal from '@/app/owner/orders/_components/OrderProcessModal'
 import OrderRejectModal from '@/app/owner/orders/_components/OrderRejectModal';
 import OrderApproveModal from './_components/OrderApproveModal';
 import OrderPickupCompleteModal from './_components/OrderPickupCompleteModal';
+import PickupCompleteToast from './_components/PickupCompleteToast';
 import OrderList from './_components/OrderList';
 import OwnerNavbar from '@/components/owner/OwnerNavbar';
 
@@ -48,6 +49,8 @@ export default function Orders() {
   const [pickupCompleteOrderId, setPickupCompleteOrderId] = useState<
     number | null
   >(null);
+  const [showPickupToast, setShowPickupToast] = useState(false);
+
   const { mutateAsync: approveOrder } = useApproveOrder();
   const { mutateAsync: rejectOrder } = useRejectOrder();
   const { mutateAsync: pickupComplete } = usePickupComplete();
@@ -148,11 +151,16 @@ export default function Orders() {
               await pickupComplete(pickupCompleteOrderId);
               setShowPickupCompleteModal(false);
               setPickupCompleteOrderId(null);
+              setShowPickupToast(true);
+              setTimeout(() => setShowPickupToast(false), 2000);
             } catch (error) {
               console.error('픽업 완료 처리 실패:', error);
             }
           }}
         />
+      )}
+      {showPickupToast && (
+        <PickupCompleteToast text="픽업 완료 처리되었습니다." />
       )}
       <OwnerNavbar />
     </div>
