@@ -54,9 +54,11 @@ export default function Orders() {
     null
   );
 
-  const { mutateAsync: approveOrder } = useApproveOrder();
+  const { mutateAsync: approveOrder, isPending: isApproving } =
+    useApproveOrder();
   const { mutateAsync: rejectOrder } = useRejectOrder();
-  const { mutateAsync: pickupComplete } = usePickupComplete();
+  const { mutateAsync: pickupComplete, isPending: isPickupCompleting } =
+    usePickupComplete();
 
   const activeCount = counts.find((c) => c.value === activeTab)?.count ?? 0;
 
@@ -149,6 +151,7 @@ export default function Orders() {
               console.error('승인 실패:', error);
             }
           }}
+          isLoading={isApproving}
         />
       )}
       {showPickupCompleteModal && pickupCompleteOrderId !== null && (
@@ -176,6 +179,7 @@ export default function Orders() {
               console.error('픽업 완료 처리 실패:', error);
             }
           }}
+          isLoading={isPickupCompleting}
         />
       )}
       {showPickupToast && (
