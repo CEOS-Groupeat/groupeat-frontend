@@ -3,8 +3,8 @@ import TerminatedIcon from '@/public/icons/icon_terminated.svg';
 
 interface DashboardCardAProps {
   text: string;
-  icon: string;
-  count: number;
+  icon?: string;
+  count?: number;
 }
 
 export default function DashboardCardA({ text, icon, count }: DashboardCardAProps) {
