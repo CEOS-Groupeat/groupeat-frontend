@@ -12,7 +12,7 @@ export default function OrderInfo({
   setPaymentMethod,
 }: OrderInfoProps) {
   return (
-    <div className="w-full flex flex-col px-4 items-start gap-4">
+    <div className="w-full flex flex-col px-4 items-start gap-1">
       <h1 className="text-text-default text-headline3 font-semibold">
         결제 정보
       </h1>
