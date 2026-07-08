@@ -12,10 +12,12 @@ interface IllustDialogModalProps {
   primaryButton: {
     label: string;
     onClick: () => void;
+    disabled?: boolean;
   };
   secondaryButton?: {
     label: string;
     onClick: () => void;
+    disabled?: boolean;
   };
   onClose: () => void;
   children?: React.ReactNode;
@@ -92,7 +94,8 @@ export default function IllustDialogModal({
             <button
               type="button"
               onClick={primaryButton.onClick}
-              className="flex-1 h-11 px-6 py-3 bg-background-default rounded-lg outline outline-1 outline-offset-[-1px] outline-border-default text-label1 font-semibold text-text-default"
+              disabled={primaryButton.disabled}
+              className="flex-1 h-11 px-6 py-3 bg-background-default rounded-lg outline outline-1 outline-offset-[-1px] outline-border-default text-label1 font-semibold text-text-default disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {primaryButton.label}
             </button>
@@ -100,7 +103,8 @@ export default function IllustDialogModal({
               <button
                 type="button"
                 onClick={secondaryButton.onClick}
-                className="flex-1 h-11 px-6 py-3 bg-brand-default rounded-lg text-label1 font-semibold text-text-inverse"
+                disabled={secondaryButton.disabled}
+                className="flex-1 h-11 px-6 py-3 bg-brand-default rounded-lg text-label1 font-semibold text-text-inverse disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {secondaryButton.label}
               </button>
