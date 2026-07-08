@@ -8,6 +8,7 @@ import InfoToast from '@/app/owner/orders/_components/InfoToast';
 import OrderProcessModal from '@/app/owner/orders/_components/OrderProcessModal';
 import OrderRejectModal from '@/app/owner/orders/_components/OrderRejectModal';
 import OrderApproveModal from './_components/OrderApproveModal';
+import OrderPickupCompleteModal from './_components/OrderPickupCompleteModal';
 import OrderList from './_components/OrderList';
 import OwnerNavbar from '@/components/owner/OwnerNavbar';
 
@@ -43,6 +44,10 @@ export default function Orders() {
   const [rejectOrderId, setRejectOrderId] = useState<number | null>(null);
   const [showApproveModal, setShowApproveModal] = useState(false);
   const [approveOrderId, setApproveOrderId] = useState<number | null>(null);
+  const [showPickupCompleteModal, setShowPickupCompleteModal] = useState(false);
+  const [pickupCompleteOrderId, setPickupCompleteOrderId] = useState<
+    number | null
+  >(null);
   const { mutateAsync: approveOrder } = useApproveOrder();
   const { mutateAsync: rejectOrder } = useRejectOrder();
   const { mutateAsync: pickupComplete } = usePickupComplete();
@@ -79,12 +84,9 @@ export default function Orders() {
               orders={MOCK_ORDERS.filter(
                 (order) => order.status === 'confirmed'
               )}
-              onPickupComplete={async (orderId) => {
-                try {
-                  await pickupComplete(orderId);
-                } catch (error) {
-                  console.error('픽업 완료 처리 실패:', error);
-                }
+              onPickupComplete={(orderId) => {
+                setPickupCompleteOrderId(orderId);
+                setShowPickupCompleteModal(true);
               }}
             />
           )}
@@ -131,6 +133,23 @@ export default function Orders() {
               setApproveOrderId(null);
             } catch (error) {
               console.error('승인 실패:', error);
+            }
+          }}
+        />
+      )}
+      {showPickupCompleteModal && pickupCompleteOrderId !== null && (
+        <OrderPickupCompleteModal
+          onClose={() => {
+            setShowPickupCompleteModal(false);
+            setPickupCompleteOrderId(null);
+          }}
+          onPickupComplete={async () => {
+            try {
+              await pickupComplete(pickupCompleteOrderId);
+              setShowPickupCompleteModal(false);
+              setPickupCompleteOrderId(null);
+            } catch (error) {
+              console.error('픽업 완료 처리 실패:', error);
             }
           }}
         />
