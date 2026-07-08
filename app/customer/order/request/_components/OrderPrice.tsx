@@ -16,7 +16,7 @@ export default function OrderPrice({
   discountRate,
 }: OrderPriceProps) {
   return (
-    <div className="w-full flex flex-col items-start gap-4">
+    <div className="w-full flex flex-col items-start">
       <div className="w-full flex flex-col items-start">
         <div className="flex flex-col items-start gap-2 self-stretch">
           <div className="flex justify-between items-center self-stretch">
@@ -52,7 +52,7 @@ export default function OrderPrice({
         </div>
       </div>
 
-      <div className="flex flex-col items-start gap-1 self-stretch  pt-4">
+      <div className="flex flex-col items-start gap-1 self-stretch">
         <div className="flex py-1 justify-between items-center self-stretch">
           <p className="text-text-default text-label1 font-semibold">
             총 결제 금액

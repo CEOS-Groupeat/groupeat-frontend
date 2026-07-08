@@ -4,13 +4,13 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import SettingOption from '@/app/owner/settings/_components/SettingOption';
-import OwnerNavbar from '@/components/owner/OwnerNavbar';
 import ProfileIcon from '@/public/icons/icon_profile.svg';
-import IllustClient from '@/public/illust/illust_Client.svg';
+import IllustCustomer from '@/public/illust/illust_Customer.svg';
 import DialogModal from '@/components/ui/DialogModal';
 import { fetchClient } from '@/lib/fetchClient';
+import CustomerNavbar from '@/components/ui/CustomerNavbar';
 
-export default function OwnerMyPage() {
+export default function CustomerSettingsPage() {
   const router = useRouter();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
@@ -85,14 +85,14 @@ export default function OwnerMyPage() {
               <Link href="/profile" className="w-full">
                 <SettingOption text="프로필" icon="profile" />
               </Link>
-              <Link href="/owner/info" className="w-full">
-                <SettingOption text="사업자 정보" icon="bag" />
+              <Link href="/customer/review" className="w-full">
+                <SettingOption text="내 리뷰" icon="review" />
+              </Link>
+              <Link href="/customer/terms?targetType=CUSTOMER" className="w-full">
+                <SettingOption text="약관" icon="terms" />
               </Link>
               <Link href="/alert" className="w-full">
                 <SettingOption text="알림 설정" icon="alarm" />
-              </Link>
-              <Link href="/owner/terms?targetType=BUSINESS" className="w-full">
-                <SettingOption text="약관" icon="terms" />
               </Link>
             </section>
           </main>
@@ -108,13 +108,13 @@ export default function OwnerMyPage() {
           >
             로그아웃
           </button>
-          <OwnerNavbar />
+          <CustomerNavbar />
         </div>
       </div>
 
       {isLogoutModalOpen && (
         <DialogModal
-          icon={<IllustClient className="w-11 h-11" />}
+          icon={<IllustCustomer className="w-11 h-11" />}
           title="로그아웃 하시겠습니까?"
           onClose={() => setIsLogoutModalOpen(false)}
           primaryButton={{

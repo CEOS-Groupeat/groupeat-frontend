@@ -1,46 +1,97 @@
+'use client';
+
+import { useQuery } from '@tanstack/react-query';
+import { fetchClient } from '@/lib/fetchClient';
+import Link from 'next/link';
+
 import AlertCard from '@/components/owner/AlertCard';
 import DashboardCardA from '@/components/owner/DashboardCardA';
 import DashBoardCardB from '@/components/owner/DashboardCardB';
-import OpenChip from '@/components/owner/OpenChip';
 import OrderList from '@/components/owner/OrderList';
 import OwnerHeader from '@/components/owner/OwnerHeader';
 import OwnerNavbar from '@/components/owner/OwnerNavbar';
 import ArrowRight from '@/public/icons/icon_arrow_right.svg';
-import Link from 'next/link';
+import NoOrderIllust from '@/public/illust/illust_NoOrder.svg';
 
-const storeInfo = {
-  storeName: '데이브런치',
-  isOpen: true,
-  pendingOrderCount: 3,
-  todaysOrderCount: 4,
-  expiredOrderCount: 7,
+// 아래 타입들은 임시로 작성한 것입니다.
+// 실제 schema.d.ts에 있는 타입 이름으로 교체해야 합니다.
+type DashboardSummaryDTO = {
+  storeName: string;
+  pendingOrderCount: number;
+  todaysOrderCount: number;
+  expiredOrderCount: number;
+  weeklyOrderCount: number;
+  weeklySalesAmount: number;
+  increasedOrderCount: number;
+  increasedSalesAmount: number;
 };
 
-const orderMock = [
-  {
-    orderId: 12321, //임시
-    isReorder: true,
-    eventName: 'CEOS 데모데이',
-    customerName: '안세빈',
-    pickupTime: '오전 10:00',
-    menu: '반반 세트',
-    quantity: '55',
-  },
-  {
-    orderId: 12124321,
-    isReorder: false,
-    eventName: '학생회 간식 사업',
-    customerName: '안서연',
-    pickupTime: '오전 10:00',
-    menu: '모닝 세트',
-    quantity: '100',
-  },
-];
+type OrderSummaryDTO = {
+  orderId: number;
+  isReorder: boolean;
+  eventName: string; // groupName
+  customerName: string;
+  pickupTime: string;
+  menu: string; // 대표 메뉴명
+  quantity: string; // 총 수량
+};
 
-{
-  /* 사업자 메인 페이지입니다. */
-}
+type ApiResponseDashboard = {
+  isSuccess: boolean;
+  message: string;
+  data: DashboardSummaryDTO;
+};
+type ApiResponseOrderList = {
+  isSuccess: boolean;
+  message: string;
+  data: { orders: OrderSummaryDTO[] };
+};
+
 export default function OwnerHomePage() {
+  const { data: dashboardData, isLoading: isDashboardLoading } = useQuery({
+    queryKey: ['ownerDashboard'],
+    queryFn: async () => {
+      // API 엔드포인트 수정 필요
+      const res = await fetchClient<ApiResponseDashboard>(
+        '/api/owner/store/dashboard'
+      );
+      if (!res.isSuccess) throw new Error(res.message);
+      return res.data;
+    },
+  });
+
+  const { data: todaysOrders, isLoading: isOrdersLoading } = useQuery({
+    queryKey: ['ownerOrders', 'today'],
+    queryFn: async () => {
+      const res = await fetchClient<ApiResponseOrderList>(
+        '/api/owner/orders?filter=today'
+      );
+      if (!res.isSuccess) throw new Error(res.message);
+      return res.data.orders || [];
+    },
+  });
+
+  if (isDashboardLoading || isOrdersLoading) {
+    return (
+      <div className="w-full min-h-screen flex items-center justify-center bg-background-default">
+        데이터를 불러오는 중입니다...
+      </div>
+    );
+  }
+
+  const storeInfo = dashboardData || {
+    storeName: '가게',
+    pendingOrderCount: 0,
+    todaysOrderCount: 0,
+    expiredOrderCount: 0,
+    weeklyOrderCount: 0,
+    weeklySalesAmount: 0,
+    increasedOrderCount: 0,
+    increasedSalesAmount: 0,
+  };
+
+  const orderList = todaysOrders || [];
+
   return (
     <div className="flex flex-col items-center w-full min-h-screen pb-23 bg-background-default">
       <OwnerHeader />
@@ -55,8 +106,6 @@ export default function OwnerHomePage() {
               오늘의 단체주문 현황을 확인하세요
             </p>
           </div>
-          {/* 3. 단일 Chip 컴포넌트로 분기 처리 */}
-          <OpenChip isOpen={storeInfo.isOpen} />
         </div>
       </section>
 
@@ -66,9 +115,9 @@ export default function OwnerHomePage() {
         </section>
       )}
 
-      <section className="flex w-full gap-2 px-4 mt-6">
+      <section className="flex w-full gap-2 px-4 mt-2">
         <DashboardCardA
-          text="오늘 픽업 건"
+          text="픽업 예정 건"
           icon="box"
           count={storeInfo.todaysOrderCount}
         />
@@ -79,7 +128,7 @@ export default function OwnerHomePage() {
         />
       </section>
 
-      <section className="flex flex-col w-full px-4 mt-8">
+      <section className="flex flex-col w-full px-4 mt-7">
         <div className="flex items-center justify-between w-full px-1">
           <h2 className="font-semibold text-headline3 text-text-default">
             오늘 픽업 건
@@ -88,14 +137,23 @@ export default function OwnerHomePage() {
             <ArrowRight className="w-5 h-5 text-icon-subtlest" />
           </Link>
         </div>
-        <div className="flex flex-col w-full gap-2 mt-4">
-          {orderMock.map((order) => (
-            <OrderList key={order.orderId} {...order} />
-          ))}
+        <div className="flex flex-col w-full gap-2 mt-2">
+          {orderList.length > 0 ? (
+            orderList.map((order) => (
+              <OrderList key={order.orderId} {...order} />
+            ))
+          ) : (
+            <div className="w-full h-32 flex p-3 flex-col justify-center items-center gap-5 rounded-lg border border-border-subtle bg-static-white shadow-[6px_6px_54px_0_rgba(0,0,0,0.05)]">
+              <div className='flex pb-2 flex-col items-center gap-0.5'>
+                <NoOrderIllust className="w-15 h-15"/>
+                <p className='text-text-placeholder text-caption2 font-medium'>대기 중인 픽업 주문이 없습니다</p>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
-      <section className="flex flex-col w-full px-4 mt-8">
+      <section className="flex flex-col w-full px-4 mt-7">
         <div className="flex items-center justify-between w-full px-1">
           <h2 className="font-semibold text-headline3 text-text-default">
             매출 요약
@@ -108,14 +166,14 @@ export default function OwnerHomePage() {
           <DashBoardCardB
             text="이번 주 주문 수"
             icon="people"
-            count={22}
-            increasedCount={3}
+            count={storeInfo.weeklyOrderCount}
+            increasedCount={storeInfo.increasedOrderCount}
           />
           <DashBoardCardB
             text="이번 주 매출"
             icon="statistics"
-            count={18}
-            increasedCount={5}
+            count={storeInfo.weeklySalesAmount}
+            increasedCount={storeInfo.increasedSalesAmount}
           />
         </div>
 
