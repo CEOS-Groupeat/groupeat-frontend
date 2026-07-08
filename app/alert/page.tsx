@@ -28,7 +28,6 @@ export default function CommonAlertPage() {
                     주문 현황 알림
                   </p>
                   
-                  {/* 토글 스위치 버튼 */}
                   <button
                     type="button"
                     role="switch"
@@ -71,7 +70,6 @@ export default function CommonAlertPage() {
                       }`}
                     />
                   </button>
-                  
                 </div>
               </div>
             </div>

@@ -1,22 +1,27 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import SettingOption from '@/app/owner/settings/_components/SettingOption';
 import OwnerNavbar from '@/components/owner/OwnerNavbar';
 import ProfileIcon from '@/public/icons/icon_profile.svg';
+import IllustClient from '@/public/illust/illust_Client.svg';
+import DialogModal from '@/components/ui/DialogModal';
 import { fetchClient } from '@/lib/fetchClient';
 
 export default function OwnerMyPage() {
   const router = useRouter();
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
-  const handleLogout = async () => {
+  const executeLogout = async () => {
     try {
       const response = (await fetchClient('/api/auth/logout', {
         method: 'POST',
       })) as { isSuccess?: boolean; message?: string };
 
       if (response?.isSuccess) {
+        setIsLogoutModalOpen(false);
         alert('로그아웃되었습니다. 로그인 페이지로 이동합니다.');
         router.push('/login');
       } else {
@@ -86,7 +91,7 @@ export default function OwnerMyPage() {
               <Link href="/alert" className="w-full">
                 <SettingOption text="알림 설정" icon="alarm" />
               </Link>
-              <Link href="/terms?targetType=BUSINESS" className="w-full">
+              <Link href="/owner/terms?targetType=BUSINESS" className="w-full">
                 <SettingOption text="약관" icon="terms" />
               </Link>
             </section>
@@ -98,7 +103,7 @@ export default function OwnerMyPage() {
         <div className="w-full flex flex-col justify-center items-center relative">
           <button
             type="button"
-            onClick={handleLogout}
+            onClick={() => setIsLogoutModalOpen(true)}
             className="w-full text-text-subtlest text-label2 underline absolute bottom-24.5 left-1/2 -translate-x-1/2"
           >
             로그아웃
@@ -106,6 +111,22 @@ export default function OwnerMyPage() {
           <OwnerNavbar />
         </div>
       </div>
+
+      {isLogoutModalOpen && (
+        <DialogModal
+          icon={<IllustClient className="w-11 h-11" />}
+          title="로그아웃 하시겠습니까?"
+          onClose={() => setIsLogoutModalOpen(false)}
+          primaryButton={{
+            label: '돌아가기',
+            onClick: () => setIsLogoutModalOpen(false),
+          }}
+          secondaryButton={{
+            label: '로그아웃',
+            onClick: executeLogout,
+          }}
+        />
+      )}
     </div>
   );
 }
