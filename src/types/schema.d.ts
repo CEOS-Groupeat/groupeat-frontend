@@ -176,6 +176,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/reviews": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 리뷰 작성 API
+         * @description 고객이 완료된 주문에 대해 리뷰를 작성합니다.
+         */
+        post: operations["createReview"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/phone-verifications/send": {
         parameters: {
             query?: never;
@@ -544,6 +564,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/stores/{storeId}/reviews": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 가게 리뷰 목록 조회
+         * @description 특정 가게에 작성된 리뷰 목록을 최신순으로 조회합니다.
+         */
+        get: operations["getStoreReviews"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/stores/{storeId}/pickup-times": {
         parameters: {
             query?: never;
@@ -596,6 +636,26 @@ export interface paths {
          * @description 위치, 카테고리, 예산, 픽업 시간 등 다양한 조건으로 가게를 검색합니다.
          */
         get: operations["searchStores"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/reviews/my": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 내 리뷰 목록 조회
+         * @description 내가 작성한 리뷰 목록을 최신순으로 조회합니다.
+         */
+        get: operations["getMyReviews"];
         put?: never;
         post?: never;
         delete?: never;
@@ -783,6 +843,26 @@ export interface paths {
         put?: never;
         post?: never;
         delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/reviews/{reviewId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * 리뷰 삭제 API
+         * @description 작성한 리뷰를 소프트 딜리트 방식으로 삭제하며, 가게의 별점 통계가 자동으로 롤백됩니다.
+         */
+        delete: operations["deleteReview"];
         options?: never;
         head?: never;
         patch?: never;
@@ -1301,6 +1381,70 @@ export interface components {
             /** @enum {string} */
             businessVerificationStatus?: "PENDING" | "APPROVED" | "REJECTED";
             message?: string;
+        };
+        ReviewCreateRequest: {
+            /**
+             * Format: int64
+             * @description 주문 ID
+             * @example 10
+             */
+            orderId: number;
+            /**
+             * Format: int32
+             * @description 리뷰 별점 (1~5)
+             * @example 5
+             */
+            rating: number;
+            /**
+             * @description 행사 유형
+             * @example SEMINAR
+             * @enum {string}
+             */
+            eventType: "강연" | "세미나" | "워크숍" | "소모임" | "기타";
+            /**
+             * Format: int32
+             * @description 참여 인원
+             * @example 56
+             */
+            headcount: number;
+            /**
+             * Format: int32
+             * @description 1인당 예산
+             * @example 3000
+             */
+            perPersonBudget: number;
+            /**
+             * @description 리뷰 내용
+             * @example 여기 샌드위치 진짜 뚱뚱하네요!
+             */
+            content?: string;
+            /** @description 리뷰 이미지 URL 목록 */
+            imageUrls?: string[];
+        };
+        ApiResponseReviewCreateResponse: {
+            isSuccess?: boolean;
+            code?: string;
+            message?: string;
+            data?: components["schemas"]["ReviewCreateResponse"];
+        };
+        ReviewCreateResponse: {
+            /**
+             * Format: int64
+             * @description 생성된 리뷰 ID
+             * @example 1
+             */
+            reviewId?: number;
+            /**
+             * Format: date
+             * @description 리뷰 작성 날짜
+             * @example 2026-07-03
+             */
+            createdAtDate?: string;
+            /**
+             * @description 리뷰 작성 시간
+             * @example 14:00:00
+             */
+            createdAtTime?: string;
         };
         PhoneVerificationSendRequest: {
             phoneNumber: string;
@@ -1891,6 +2035,108 @@ export interface components {
              */
             orderProcess?: string;
         };
+        ApiResponseReviewListResponse: {
+            isSuccess?: boolean;
+            code?: string;
+            message?: string;
+            data?: components["schemas"]["ReviewListResponse"];
+        };
+        /** @description 사장님 답글 정보 */
+        OwnerReplyDTO: {
+            /**
+             * @description 가게 이름
+             * @example 데이브런치
+             */
+            storeName?: string;
+            /**
+             * @description 답글 내용
+             * @example 세빙빙님, 맛있게 드셔주셔서 감사합니다!
+             */
+            replyContent?: string;
+            /**
+             * Format: date
+             * @description 답글 작성 일자
+             * @example 2026-07-05
+             */
+            repliedAt?: string;
+        };
+        /** @description 단일 리뷰 상세 정보 */
+        ReviewDetailDTO: {
+            /**
+             * Format: int64
+             * @description 리뷰 ID
+             * @example 1
+             */
+            reviewId?: number;
+            /**
+             * @description 작성자 닉네임
+             * @example 세빙빙
+             */
+            authorNickname?: string;
+            /**
+             * Format: int32
+             * @description 리뷰 별점 (1~5)
+             * @example 5
+             */
+            rating?: number;
+            /**
+             * @description 행사 유형
+             * @example 강연
+             * @enum {string}
+             */
+            eventType?: "강연" | "세미나" | "워크숍" | "소모임" | "기타";
+            /**
+             * Format: int32
+             * @description 행사 인원
+             * @example 56
+             */
+            headcount?: number;
+            /**
+             * Format: int32
+             * @description 1인당 예산
+             * @example 8000
+             */
+            perPersonBudget?: number;
+            /**
+             * @description 리뷰 내용
+             * @example 와, 여기 샌드위치 진짜 뚱뚱하네요!
+             */
+            content?: string;
+            /**
+             * Format: date
+             * @description 리뷰 작성 일자
+             * @example 2026-07-02
+             */
+            createdAt?: string;
+            /** @description 첨부된 리뷰 이미지 URL 목록 */
+            imageUrls?: string[];
+            /**
+             * @description 주문한 메뉴 이름 목록
+             * @example [
+             *       "반반 세트",
+             *       "참치 김밥 + 에그마요 샌드위치 세트"
+             *     ]
+             */
+            orderedMenuNames?: string[];
+            /** @description 사장님 답글 정보 (답글이 없을 경우 null) */
+            ownerReply?: components["schemas"]["OwnerReplyDTO"];
+        };
+        /** @description 리뷰 목록 조회 응답 */
+        ReviewListResponse: {
+            /** @description 리뷰 목록 */
+            reviewList?: components["schemas"]["ReviewDetailDTO"][];
+            /**
+             * @description 다음 페이지 존재 여부 (무한 스크롤용)
+             * @example true
+             */
+            hasNext?: boolean;
+            /**
+             * Format: int64
+             * @description 다음 커서 ID (마지막 리뷰의 PK ID)
+             * @example 42
+             */
+            nextCursor?: number;
+        };
         ApiResponsePickupTimeResponse: {
             isSuccess?: boolean;
             code?: string;
@@ -2438,6 +2684,11 @@ export interface components {
              * @enum {string}
              */
             orderStatus?: "PENDING" | "PAID" | "ACCEPTED" | "COMPLETED" | "REJECTED" | "CANCELLED";
+            /**
+             * @description 리뷰 작성 여부
+             * @example false
+             */
+            hasReview?: boolean;
         };
         OrderListResponse: {
             /**
@@ -3042,6 +3293,30 @@ export interface operations {
             };
         };
     };
+    createReview: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReviewCreateRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseReviewCreateResponse"];
+                };
+            };
+        };
+    };
     sendCode: {
         parameters: {
             query?: never;
@@ -3507,6 +3782,33 @@ export interface operations {
             };
         };
     };
+    getStoreReviews: {
+        parameters: {
+            query?: {
+                /** @description 마지막으로 조회된 리뷰 ID (첫 페이지는 null) */
+                lastReviewId?: number;
+                /** @description 조회할 개수 */
+                size?: number;
+            };
+            header?: never;
+            path: {
+                storeId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseReviewListResponse"];
+                };
+            };
+        };
+    };
     getPickupTimes: {
         parameters: {
             query: {
@@ -3571,6 +3873,31 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["ApiResponseStoreListDTO"];
+                };
+            };
+        };
+    };
+    getMyReviews: {
+        parameters: {
+            query?: {
+                /** @description 마지막으로 조회된 리뷰 ID */
+                lastReviewId?: number;
+                /** @description 조회할 개수 */
+                size?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseReviewListResponse"];
                 };
             };
         };
@@ -3789,6 +4116,28 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["ApiResponseAdminVerificationDetailResponse"];
+                };
+            };
+        };
+    };
+    deleteReview: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                reviewId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseString"];
                 };
             };
         };
