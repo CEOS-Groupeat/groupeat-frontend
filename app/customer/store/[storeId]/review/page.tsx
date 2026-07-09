@@ -5,42 +5,50 @@
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useStoreReviews } from './_hooks/useStoreReviews';
-import { useStoreDetail } from './_hooks/useStoreDetail';
+import { useReviewSummary } from './_hooks/useReviewSummary';
 import ReviewHeader from './_components/ReviewHeader';
+import ReviewSummary from './_components/ReviewSummary';
 import SectionDivider from '@/components/ui/SectionDivider';
 import ReviewSortDropdown from './_components/ReviewSortDropdown';
 import ReviewCard from './_components/ReviewCard';
-//import ReviewSummary from './_components/ReviewSummary';
+import { SORT_OPTIONS } from './_constants/sortOptions';
+
+type SortValue = (typeof SORT_OPTIONS)[number]['value'];
 
 export default function CustomerStoreReviewPage() {
   const { storeId } = useParams<{ storeId: string }>();
-  const [sort, setSort] = useState('LATEST');
+  const [sort, setSort] = useState<SortValue>('LATEST');
 
-  const { data: storeDetail } = useStoreDetail(storeId);
-  const { data, isLoading, isError } = useStoreReviews({ storeId });
+  const { data: summary } = useReviewSummary(storeId);
+  const { data, isLoading, isError } = useStoreReviews({
+    storeId,
+    sortType: sort,
+  });
 
   const reviews = data?.reviewList ?? [];
-  // const sortedReviews = [...mockReviews].sort((a, b) => {
-  //   if (sort === 'RATING_HIGH') return b.rating - a.rating;
-  //   if (sort === 'RATING_LOW') return a.rating - b.rating;
-  //   return 0;
-  // });
+
+  const distribution = summary
+    ? [
+        { score: 5, count: summary.rating5Count ?? 0 },
+        { score: 4, count: summary.rating4Count ?? 0 },
+        { score: 3, count: summary.rating3Count ?? 0 },
+        { score: 2, count: summary.rating2Count ?? 0 },
+        { score: 1, count: summary.rating1Count ?? 0 },
+      ]
+    : [];
 
   return (
     <div className="w-full min-h-screen bg-background-default flex flex-col mb-10">
-      <ReviewHeader storeName={storeDetail?.storeName ?? ''} />
-      {/* TODO: 리뷰 요약 API 연동 후 활성화 */}
-      {/* <ReviewSummary
-        averageRating={mockReviewSummary.averageRating}
-        distribution={mockReviewSummary.distribution}
-      /> */}
+      <ReviewHeader storeName={summary?.storeName ?? ''} />
+      <ReviewSummary
+        averageRating={summary?.averageRating ?? 0}
+        distribution={distribution}
+      />
       <SectionDivider className="mb-2.5 h-2.25" />
       <ReviewSortDropdown
         value={sort}
-        onChange={(v) => {
-          setSort(v);
-        }}
-        totalCount={storeDetail?.reviewCount ?? reviews.length}
+        onChange={setSort}
+        totalCount={summary?.totalReviewCount ?? reviews.length}
       />
       {isLoading ? (
         <div className="flex-1 flex items-center justify-center">
@@ -53,7 +61,7 @@ export default function CustomerStoreReviewPage() {
           </span>
         </div>
       ) : (
-        data?.reviewList.map((review) => (
+        reviews.map((review) => (
           <ReviewCard key={review.reviewId} review={review} />
         ))
       )}
