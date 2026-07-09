@@ -1,11 +1,14 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useCustomerOrders } from '../_hooks/useCustomerOrders';
 import SegmentedControl from './SegmentedControl';
- import CustomerOrderCard from './CustomerOrderCard';
+import CustomerOrderCard from './CustomerOrderCard';
 
 export default function OrderStatusContent() {
+  const router = useRouter();
+
   const [activeTab, setActiveTab] = useState<'IN_PROGRESS' | 'PAST'>(
     'IN_PROGRESS'
   );
@@ -19,15 +22,15 @@ export default function OrderStatusContent() {
   const { data, isLoading, isError } = useCustomerOrders({ filter: activeTab });
 
   const counts = [
-    { value: 'IN_PROGRESS', count: progressData?.totalElements ?? 0 },
-    { value: 'PAST', count: pastData?.totalElements ?? 0 },
+    { value: 'IN_PROGRESS' as const, count: progressData?.totalElements ?? 0 },
+    { value: 'PAST' as const, count: pastData?.totalElements ?? 0 },
   ];
 
   return (
     <>
       <SegmentedControl
         value={activeTab}
-        onChange={(val) => setActiveTab(val as 'IN_PROGRESS' | 'PAST')}
+        onChange={setActiveTab}
         counts={counts}
       />
       {isLoading ? (
@@ -49,7 +52,13 @@ export default function OrderStatusContent() {
       ) : (
         <div className="flex flex-col gap-2">
           {data.orderList.map((order, index) => (
-            <CustomerOrderCard key={order.orderId ?? index} order={order} />
+            <CustomerOrderCard
+              key={order.orderId ?? index}
+              order={order}
+              onReviewClick={(orderId) =>
+                router.push(`/customer/review/write/${orderId}`)
+              }
+            />
           ))}
         </div>
       )}
