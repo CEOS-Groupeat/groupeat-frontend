@@ -12,7 +12,7 @@ export default function OrderInfo({
   setPaymentMethod,
 }: OrderInfoProps) {
   return (
-    <div className="w-full flex flex-col px-4 items-start gap-4">
+    <div className="w-full flex flex-col px-4 items-start gap-1">
       <h1 className="text-text-default text-headline3 font-semibold">
         결제 정보
       </h1>
@@ -36,7 +36,7 @@ export default function OrderInfo({
               onClick={() => setPaymentMethod('PREPAID')}
               className={`flex px-2.5 py-3 justify-center items-center flex-1 rounded-lg border transition-colors ${
                 paymentMethod === 'PREPAID'
-                  ? 'border-brand-default bg-brand-background'
+                  ? 'border-transparent bg-brand-background'
                   : 'border-border-default'
               }`}
             >
@@ -50,7 +50,7 @@ export default function OrderInfo({
               onClick={() => setPaymentMethod('ON_SITE')}
               className={`flex px-2.5 py-3 justify-center items-center flex-1 rounded-lg border transition-colors ${
                 paymentMethod === 'ON_SITE'
-                  ? 'border-brand-default bg-brand-background'
+                  ? 'border-transparent bg-brand-background'
                   : 'border-border-default'
               }`}
             >
