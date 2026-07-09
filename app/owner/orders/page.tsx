@@ -73,8 +73,6 @@ export default function Orders() {
   const { mutateAsync: pickupComplete, isPending: isPickupCompleting } =
     usePickupComplete();
 
-  const activeCount = counts.find((c) => c.value === activeTab)?.count ?? 0;
-
   useEffect(() => {
     return () => {
       if (pickupToastTimerRef.current) {
@@ -104,7 +102,7 @@ export default function Orders() {
             주문 목록을 불러오지 못했어요.
           </span>
         </div>
-      ) : activeCount === 0 ? (
+      ) : !orderData?.orderList || orderData.orderList.length === 0 ? (
         <OrderEmptyState />
       ) : (
         <OrderList
