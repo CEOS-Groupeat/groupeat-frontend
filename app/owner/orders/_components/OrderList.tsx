@@ -1,8 +1,8 @@
 import OrderCard from '@/app/owner/orders/_components/OrderDetailCard';
-import { MOCK_ORDERS } from '@/app/owner/orders/_constants/orders.mock';
+import type { OwnerOrder } from '@/src/types/api';
 
 interface OrderListProps {
-  orders: typeof MOCK_ORDERS; // api 타입으로 교체 예정 (임시 타입)
+  orders: OwnerOrder[];
   onReject?: (orderId: number) => void;
   onApprove?: (orderId: number) => void;
   onPickupComplete?: (orderId: number) => void;
@@ -19,20 +19,26 @@ export default function OrderList({
       {orders.map((order) => (
         <OrderCard
           key={order.orderId}
-          orderId={order.orderId}
-          status={order.status}
-          isReorder={order.isReorder}
-          groupName={order.groupName}
-          customerName={order.customerName}
-          pickupDate={order.pickupDate}
-          paymentAmount={order.paymentAmount}
-          paymentMethod={order.paymentMethod}
-          items={order.items}
-          pastStatus={order.pastStatus}
-          onReject={onReject ? () => onReject(order.orderId) : undefined}
-          onApprove={onApprove ? () => onApprove(order.orderId) : undefined}
+          orderId={order.orderId!}
+          orderStatus={order.orderStatus!}
+          isReorder={order.isReorder ?? false}
+          groupName={order.groupName ?? ''}
+          customerName={order.customerName ?? ''}
+          pickupDate={order.pickupDate ?? ''}
+          pickupTime={order.pickupTime ?? ''}
+          totalAmount={order.totalAmount ?? 0}
+          paymentMethod={order.paymentMethod ?? null}
+          remainingHours={order.remainingHours ?? null}
+          items={(order.items ?? []).map((item) => ({
+            menuName: item.menuName ?? '',
+            quantity: item.quantity ?? 0,
+          }))}
+          onReject={onReject ? () => onReject(order.orderId!) : undefined}
+          onApprove={onApprove ? () => onApprove(order.orderId!) : undefined}
           onPickupComplete={
-            onPickupComplete ? () => onPickupComplete(order.orderId) : undefined
+            onPickupComplete
+              ? () => onPickupComplete(order.orderId!)
+              : undefined
           }
         />
       ))}
