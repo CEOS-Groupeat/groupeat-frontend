@@ -3,6 +3,7 @@
 import { useRef } from 'react';
 import Image from 'next/image';
 import IconAddPhoto from '@/public/icons/icon_add-photo.svg';
+import IconDelete from '@/public/icons/icon_close.svg';
 
 const MAX_IMAGES = 3;
 
@@ -36,7 +37,7 @@ export default function ReviewImageUploader({
       {imageUrls.map((url, index) => (
         <div
           key={index}
-          className="relative size-24 rounded-lg overflow-hidden"
+          className="relative size-[90px] rounded-lg overflow-hidden"
         >
           <Image
             src={url}
@@ -44,14 +45,13 @@ export default function ReviewImageUploader({
             fill
             className="object-cover"
           />
-          {/* 임시 삭제 버튼 (피그마 대기중) */}
           <button
             type="button"
             onClick={() => onRemove(index)}
             aria-label="이미지 삭제"
-            className="absolute top-1 right-1 size-5 flex items-center justify-center bg-black/50 rounded-full text-white text-xs"
+            className="absolute top-2 right-2 size-5 flex items-center justify-center bg-background-transparent rounded-full shadow-[0px_0px_10px_0px_rgba(0,0,0,0.20)]"
           >
-            ×
+            <IconDelete className="size-3.5 text-icon-subtle" />
           </button>
         </div>
       ))}
@@ -61,14 +61,12 @@ export default function ReviewImageUploader({
           type="button"
           onClick={() => inputRef.current?.click()}
           disabled={isUploading}
-          className="size-[90px] bg-background-default rounded-lg outline outline-1 outline-offset-[-1px] outline-border-strong flex items-center justify-center disabled:opacity-50"
+          className="size-[90px] bg-background-default rounded-lg outline outline-1 outline-offset-[-1px] outline-border-strong flex items-center justify-center disabled:opacity-80"
         >
           {isUploading ? (
-            <span className="text-body text-text-subtlest">업로드 중</span>
+            <span className="text-body text-text-subtlest">업로드 중...</span>
           ) : (
-            <span className="text-2xl text-icon-subtlest">
-              <IconAddPhoto />
-            </span>
+            <IconAddPhoto />
           )}
         </button>
       )}
