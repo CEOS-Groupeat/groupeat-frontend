@@ -13,82 +13,78 @@ import OwnerNavbar from '@/components/owner/OwnerNavbar';
 import ArrowRight from '@/public/icons/icon_arrow_right.svg';
 import NoOrderIllust from '@/public/illust/illust_NoOrder.svg';
 
-// 아래 타입들은 임시로 작성한 것입니다.
-// 실제 schema.d.ts에 있는 타입 이름으로 교체해야 합니다.
-type DashboardSummaryDTO = {
-  storeName: string;
-  pendingOrderCount: number;
-  todaysOrderCount: number;
-  expiredOrderCount: number;
-  weeklyOrderCount: number;
-  weeklySalesAmount: number;
-  increasedOrderCount: number;
-  increasedSalesAmount: number;
-};
+interface DashboardSummaryData {
+  waitingCount: number;
+  confirmedCount: number;
+  completedCount: number;
+}
 
-type OrderSummaryDTO = {
+interface ApiResponseDashboard {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  data: DashboardSummaryData;
+}
+
+interface OrderSummaryDTO {
   orderId: number;
   isReorder: boolean;
-  eventName: string; // groupName
+  eventName: string;
   customerName: string;
   pickupTime: string;
-  menu: string; // 대표 메뉴명
-  quantity: string; // 총 수량
-};
+  menu: string;
+  quantity: string;
+}
 
-type ApiResponseDashboard = {
+interface ApiResponseOrderList {
   isSuccess: boolean;
+  code: string;
   message: string;
-  data: DashboardSummaryDTO;
-};
-type ApiResponseOrderList = {
-  isSuccess: boolean;
-  message: string;
-  data: { orders: OrderSummaryDTO[] };
-};
+  data: {
+    orders: OrderSummaryDTO[];
+  };
+}
 
 export default function OwnerHomePage() {
-  const { data: dashboardData, isLoading: isDashboardLoading } = useQuery({
-    queryKey: ['ownerDashboard'],
+  const { data: dashboardData, isLoading: isDashboardLoading } = useQuery<DashboardSummaryData>({
+    queryKey: ['ownerDashboardSummary'],
     queryFn: async () => {
-      // API 엔드포인트 수정 필요
       const res = await fetchClient<ApiResponseDashboard>(
-        '/api/owner/store/dashboard'
+        '/api/owner/dashboard/summary'
       );
-      if (!res.isSuccess) throw new Error(res.message);
+      if (!res.isSuccess) throw new Error(res.message || '대시보드 요약을 불러오지 못했습니다.');
       return res.data;
     },
   });
 
-  const { data: todaysOrders, isLoading: isOrdersLoading } = useQuery({
+  const { data: todaysOrders, isLoading: isOrdersLoading } = useQuery<OrderSummaryDTO[]>({
     queryKey: ['ownerOrders', 'today'],
     queryFn: async () => {
       const res = await fetchClient<ApiResponseOrderList>(
         '/api/owner/orders?filter=today'
       );
-      if (!res.isSuccess) throw new Error(res.message);
-      return res.data.orders || [];
+      if (!res.isSuccess) throw new Error(res.message || '주문 목록을 불러오지 못했습니다.');
+      return res.data?.orders || [];
     },
   });
 
   if (isDashboardLoading || isOrdersLoading) {
     return (
-      <div className="w-full min-h-screen flex items-center justify-center bg-background-default">
+      <div className="w-full min-h-screen flex items-center justify-center bg-background-default text-text-subtlest">
         데이터를 불러오는 중입니다...
       </div>
     );
   }
 
-  const storeInfo = dashboardData || {
-    storeName: '가게',
-    pendingOrderCount: 0,
-    todaysOrderCount: 0,
-    expiredOrderCount: 0,
-    weeklyOrderCount: 0,
-    weeklySalesAmount: 0,
-    increasedOrderCount: 0,
-    increasedSalesAmount: 0,
-  };
+  const waitingCount = dashboardData?.waitingCount ?? 0;
+  const confirmedCount = dashboardData?.confirmedCount ?? 0;
+  const completedCount = dashboardData?.completedCount ?? 0;
+
+  const storeName = '데이브런치';
+  const weeklyOrderCount = 22;
+  const weeklySalesAmount = 18;
+  const increasedOrderCount = 3;
+  const increasedSalesAmount = 5;
 
   const orderList = todaysOrders || [];
 
@@ -100,7 +96,7 @@ export default function OwnerHomePage() {
         <div className="flex items-center justify-between w-full">
           <div className="flex flex-col items-start gap-1">
             <h2 className="text-[20px] font-bold text-headline2 text-text-default">
-              {storeInfo.storeName} 사장님
+              {storeName} 사장님
             </h2>
             <p className="text-label2 text-text-subtlest">
               오늘의 단체주문 현황을 확인하세요
@@ -109,22 +105,24 @@ export default function OwnerHomePage() {
         </div>
       </section>
 
-      {storeInfo.pendingOrderCount > 0 && (
+      {/* 💡 waitingCount(대기 건수)가 0보다 클 때 팝업 알림 활성화 */}
+      {waitingCount > 0 && (
         <section className="w-full px-4 mt-4">
-          <AlertCard pendingCount={storeInfo.pendingOrderCount} />
+          <AlertCard pendingCount={waitingCount} />
         </section>
       )}
 
+      {/* 💡 confirmedCount(확정) 및 completedCount(완료) 데이터 바인딩 */}
       <section className="flex w-full gap-2 px-4 mt-2">
         <DashboardCardA
           text="픽업 예정 건"
           icon="box"
-          count={storeInfo.todaysOrderCount}
+          count={confirmedCount}
         />
         <DashboardCardA
           text="픽업 완료"
           icon="terminated"
-          count={storeInfo.expiredOrderCount}
+          count={completedCount}
         />
       </section>
 
@@ -133,7 +131,7 @@ export default function OwnerHomePage() {
           <h2 className="font-semibold text-headline3 text-text-default">
             오늘 픽업 건
           </h2>
-          <Link href="/owner/order">
+          <Link href="/owner/orders">
             <ArrowRight className="w-5 h-5 text-icon-subtlest" />
           </Link>
         </div>
@@ -144,9 +142,11 @@ export default function OwnerHomePage() {
             ))
           ) : (
             <div className="w-full h-32 flex p-3 flex-col justify-center items-center gap-5 rounded-lg border border-border-subtle bg-static-white shadow-[6px_6px_54px_0_rgba(0,0,0,0.05)]">
-              <div className='flex pb-2 flex-col items-center gap-0.5'>
-                <NoOrderIllust className="w-15 h-15"/>
-                <p className='text-text-placeholder text-caption2 font-medium'>대기 중인 픽업 주문이 없습니다</p>
+              <div className="flex pb-2 flex-col items-center gap-0.5">
+                <NoOrderIllust className="w-15 h-15" />
+                <p className="text-text-placeholder text-caption2 font-medium">
+                  대기 중인 픽업 주문이 없습니다
+                </p>
               </div>
             </div>
           )}
@@ -166,14 +166,14 @@ export default function OwnerHomePage() {
           <DashBoardCardB
             text="이번 주 주문 수"
             icon="people"
-            count={storeInfo.weeklyOrderCount}
-            increasedCount={storeInfo.increasedOrderCount}
+            count={weeklyOrderCount}
+            increasedCount={increasedOrderCount}
           />
           <DashBoardCardB
             text="이번 주 매출"
             icon="statistics"
-            count={storeInfo.weeklySalesAmount}
-            increasedCount={storeInfo.increasedSalesAmount}
+            count={weeklySalesAmount}
+            increasedCount={increasedSalesAmount}
           />
         </div>
 

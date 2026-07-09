@@ -7,6 +7,7 @@ import { useCartStore } from '@/store/useCartStore';
 import { useCart } from './_hooks/useCart';
 import { useDeleteCartItem } from './_hooks/useDeleteCartItem';
 import { useCalculateCart } from './_hooks/useCalculateCart';
+import { useClearCart } from './_hooks/useClearCart';
 
 import CartHeader from './_components/CartHeader';
 import CartStoreSection from './_components/CartStoreSection';
@@ -22,6 +23,7 @@ export default function CartPage() {
   const { data: cartData, isLoading } = useCart();
   const { mutateAsync: deleteItem } = useDeleteCartItem();
   const { mutate: calculateCart, data: summary } = useCalculateCart();
+  const { mutateAsync: clearCart } = useClearCart();
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [showError, setShowError] = useState(false);
 
@@ -71,13 +73,8 @@ export default function CartPage() {
   };
 
   const handleDeleteAll = async () => {
-    const allItemIds =
-      cartData?.storeCarts
-        ?.flatMap((store) => store.cartItems ?? [])
-        .filter((item) => item.cartItemId !== undefined)
-        .map((item) => item.cartItemId!) ?? [];
     try {
-      await Promise.all(allItemIds.map((id) => deleteItem(id)));
+      await clearCart();
       setSelectedIds([]);
     } catch {
       setShowError(true);

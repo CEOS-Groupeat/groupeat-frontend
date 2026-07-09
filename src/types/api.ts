@@ -50,6 +50,8 @@ export type CalculatedCartItem = NonNullable<
 >[number];
 export type CalculateCartRequest = PostRequest<'/api/carts/calculate'>;
 export type DeleteCartItem = DeleteResponse<'/api/carts/items/{cartItemId}'>;
+// 장바구니 전체 비우기
+export type ClearCartResponse = DeleteResponse<'/api/carts'>;
 
 // Menu APIs
 export type MenuListApiResponse = GetResponse<'/api/stores/{storeId}/menus'>;
@@ -57,5 +59,9 @@ export type Menu = components['schemas']['MenuDetailDTO'];
 
 // Order APIs (Customer-Order-Status)
 export type CustomerOrderListResponse = GetResponse<'/api/orders'>;
-export type CustomerOrderListData = NonNullable<CustomerOrderListResponse['data']>;
-export type CustomerOrder = NonNullable<CustomerOrderListData['orderList']>[number];
+export type CustomerOrderListData = NonNullable<
+  CustomerOrderListResponse['data']
+>;
+export type CustomerOrder = NonNullable<
+  CustomerOrderListData['orderList']
+>[number];

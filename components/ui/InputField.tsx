@@ -31,7 +31,7 @@ export default function InputField({
       <input
         value={value}
         disabled={disabled}
-        className={`w-full h-11 pl-4 pr-3 py-3 rounded-lg font-pretendard font-normal text-body placeholder:text-text-placeholder transition-colors border ${
+        className={`w-full h-11 pl-4 pr-3 py-3 rounded-lg font-pretendard font-normal text-body placeholder:text-text-placeholder transition-colors border outline-none ${
           disabled ? 'text-text-placeholder' : 'text-text-default'
         } ${
           isFilled
