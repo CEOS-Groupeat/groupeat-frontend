@@ -2,6 +2,7 @@
 
 import type { Review } from '@/src/types/api';
 import Image from 'next/image';
+import { formatReviewDate } from '../_utils/formatReviewDate';
 import StarIcon from '@/public/icons/icon_star.svg';
 
 interface ReviewCardProps {
@@ -29,7 +30,9 @@ export default function ReviewCard({ review }: ReviewCardProps) {
               {review.authorNickname}
             </span>
           </div>
-          <span className="text-xs text-text-subtlest">{review.createdAt}</span>
+          <span className="text-caption2 font-normal text-text-subtlest">
+            {formatReviewDate(review.createdAt ?? '')}
+          </span>
         </div>
 
         {/* 별점 + 행사 정보 */}
