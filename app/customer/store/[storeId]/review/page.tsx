@@ -60,6 +60,12 @@ export default function CustomerStoreReviewPage() {
             리뷰를 불러오지 못했어요.
           </span>
         </div>
+      ) : reviews.length === 0 ? (
+        <div className="flex-1 flex items-center justify-center py-10">
+          <span className="text-sm text-text-subtle">
+            아직 작성된 리뷰가 없어요.
+          </span>
+        </div>
       ) : (
         reviews.map((review) => (
           <ReviewCard key={review.reviewId} review={review} />
