@@ -70,10 +70,13 @@ export type CustomerOrder = NonNullable<
 export type OwnerOrderListResponse = GetResponse<'/api/owner/orders'>;
 export type OwnerOrderListData = NonNullable<OwnerOrderListResponse['data']>;
 export type OwnerOrder = NonNullable<OwnerOrderListData['orderList']>[number];
+export type OwnerOrderStatus = OwnerOrder['orderStatus'];
 
-export type OwnerDashboardResponse = GetResponse<'/api/owner/dashboard/summary'>;
+export type OwnerDashboardResponse =
+  GetResponse<'/api/owner/dashboard/summary'>;
 export type OwnerDashboardSummary = NonNullable<OwnerDashboardResponse['data']>;
 
 // Order Process APIs (Owner - 승인/거절/픽업완료, 응답 구조 동일)
-export type OrderProcessResponse = PatchResponse<'/api/orders/{orderId}/accept'>;
+export type OrderProcessResponse =
+  PatchResponse<'/api/orders/{orderId}/accept'>;
 export type OrderProcessData = NonNullable<OrderProcessResponse['data']>;
