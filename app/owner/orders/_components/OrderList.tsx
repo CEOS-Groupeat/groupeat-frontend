@@ -15,8 +15,12 @@ export default function OrderList({
   onPickupComplete,
 }: OrderListProps) {
   const validOrders = orders.filter(
-    (order): order is OwnerOrder & { orderId: number; orderStatus: NonNullable<OwnerOrder['orderStatus']> } =>
-      order.orderId !== undefined && order.orderStatus !== undefined
+    (
+      order
+    ): order is OwnerOrder & {
+      orderId: number;
+      orderStatus: NonNullable<OwnerOrder['orderStatus']>;
+    } => order.orderId !== undefined && order.orderStatus !== undefined
   );
 
   return (
@@ -38,12 +42,10 @@ export default function OrderList({
             menuName: item.menuName ?? '',
             quantity: item.quantity ?? 0,
           }))}
-          onReject={onReject ? () => onReject(order.orderId!) : undefined}
-          onApprove={onApprove ? () => onApprove(order.orderId!) : undefined}
+          onReject={onReject ? () => onReject(order.orderId) : undefined}
+          onApprove={onApprove ? () => onApprove(order.orderId) : undefined}
           onPickupComplete={
-            onPickupComplete
-              ? () => onPickupComplete(order.orderId!)
-              : undefined
+            onPickupComplete ? () => onPickupComplete(order.orderId) : undefined
           }
         />
       ))}
