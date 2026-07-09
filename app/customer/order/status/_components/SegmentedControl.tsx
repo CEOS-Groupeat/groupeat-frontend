@@ -34,7 +34,12 @@ export default function SegmentedControl({
     <ToggleGroup.Root
       type="single"
       value={value}
-      onValueChange={(val) => val && onChange(val as TabValue)}
+      onValueChange={(val) => {
+        const matched = TAB_ITEMS.find((tab) => tab.value === val);
+        if (matched) {
+          onChange(matched.value);
+        }
+      }}
       className="h-10 p-1 bg-border-divider rounded-xl flex gap-1 mb-3"
     >
       {items.map((item) => (
