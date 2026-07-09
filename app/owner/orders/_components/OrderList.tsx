@@ -14,13 +14,18 @@ export default function OrderList({
   onApprove,
   onPickupComplete,
 }: OrderListProps) {
+  const validOrders = orders.filter(
+    (order): order is OwnerOrder & { orderId: number; orderStatus: NonNullable<OwnerOrder['orderStatus']> } =>
+      order.orderId !== undefined && order.orderStatus !== undefined
+  );
+
   return (
     <div className="px-4 flex flex-col gap-3 pb-[92px]">
-      {orders.map((order) => (
+      {validOrders.map((order) => (
         <OrderCard
           key={order.orderId}
-          orderId={order.orderId!}
-          orderStatus={order.orderStatus!}
+          orderId={order.orderId}
+          orderStatus={order.orderStatus}
           isReorder={order.isReorder ?? false}
           groupName={order.groupName ?? ''}
           customerName={order.customerName ?? ''}
