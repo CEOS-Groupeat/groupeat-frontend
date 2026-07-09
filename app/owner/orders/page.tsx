@@ -24,7 +24,7 @@ export default function Orders() {
   const [activeTab, setActiveTab] = useState<'WAITING' | 'CONFIRMED' | 'PAST'>(
     'WAITING'
   );
-  // 사업자 대시보드 api 연동 후 실제 카운트로 교체할 예정
+
   const { data: dashboard } = useOwnerDashboard();
   const {
     data: orderData,
