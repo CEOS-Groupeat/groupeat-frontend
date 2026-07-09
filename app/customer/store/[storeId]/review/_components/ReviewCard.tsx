@@ -1,6 +1,6 @@
 'use client';
 
-import type { Review } from '../_types/review.type';
+import type { Review } from '@/src/types/api';
 import Image from 'next/image';
 import StarIcon from '@/public/icons/icon_star.svg';
 
@@ -14,7 +14,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
     { label: '행사 인원', value: `${review.headcount}명` },
     {
       label: '1인당 예산',
-      value: `${review.perPersonBudget.toLocaleString()}원`,
+      value: `${review.perPersonBudget?.toLocaleString() ?? 0}원`,
     },
   ];
 
@@ -39,7 +39,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
               {[...Array(5)].map((_, i) => (
                 <StarIcon
                   key={i}
-                  className={`size-4 ${i < review.rating ? 'text-icon-star' : 'text-icon-disable'}`}
+                  className={`size-4 ${i < (review.rating ?? 0) ? 'text-icon-star' : 'text-icon-disable'}`}
                 />
               ))}
             </div>
@@ -72,7 +72,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
         {review.content}
       </p>
 
-      {review.imageUrls.length > 0 && (
+      {review.imageUrls && review.imageUrls.length > 0 && (
         <div className="flex flex-wrap items-center gap-3">
           {review.imageUrls.map((src, i) => (
             <div
@@ -91,7 +91,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
       )}
 
       <div className="flex flex-wrap gap-1.5">
-        {review.orderedMenuNames.map((tag, i) => (
+        {review.orderedMenuNames?.map((tag, i) => (
           <span
             key={i}
             className="px-2 py-1 rounded-full outline outline-1 outline-border-default text-caption1 text-text-default font-normal"
