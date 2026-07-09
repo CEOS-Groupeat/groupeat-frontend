@@ -147,8 +147,8 @@ export default function CustomerOrderDetail() {
   };
 
   return (
-    <div className="w-full flex pb-16 flex-col items-center gap-6 bg-white">
-      <header className="w-full flex pt-10 items-start gap-2.5 self-stretch">
+    <div className="w-full flex pb-16 flex-col items-center gap-5 bg-white">
+      <header className="w-full flex pt-10 items-start gap-2.5 self-stretch pb-1">
         <div className="w-full flex p-4 items-center justify-between self-stretch">
           <Link href="/customer/order/status">
             <ArrowLeft className="w-5 h-5 cursor-pointer" />
@@ -212,7 +212,7 @@ export default function CustomerOrderDetail() {
 
       <SectionDivider className="w-full h-1.5" />
 
-      <section className="flex flex-col pb-1 items-start self-stretch px-4">
+      <section className="flex flex-col items-start self-stretch px-4">
         <div className="flex flex-col items-start gap-3 self-stretch">
           <h1 className="text-text-default text-headline3 font-semibold">
             주문 정보
@@ -228,7 +228,7 @@ export default function CustomerOrderDetail() {
 
       <SectionDivider className="w-full h-1.5" />
 
-      <section className="flex flex-col pb-1 items-start self-stretch px-4">
+      <section className="flex flex-col items-start self-stretch px-4">
         <div className="flex flex-col items-start gap-3 self-stretch">
           <h1 className="text-text-default text-headline3 font-semibold">
             결제 정보
@@ -270,7 +270,7 @@ export default function CustomerOrderDetail() {
 
       <SectionDivider className="w-full h-1.5" />
 
-      <section className="flex flex-col pb-1 items-start self-stretch px-4">
+      <section className="flex flex-col items-start self-stretch px-4">
         <h1 className="text-text-default text-headline3 font-semibold pb-2">
           주문자 정보
         </h1>
@@ -331,8 +331,8 @@ export default function CustomerOrderDetail() {
       {orderStatus !== 'REJECTED' &&
         orderStatus !== 'CANCELLED' &&
         orderStatus !== 'COMPLETED' && (
-          <div className="w-full flex flex-col items-start justify-center gap-2.5">
-            <SectionDivider className="w-full h-1.5" />
+          <div className="w-full flex flex-col items-start justify-center">
+            <SectionDivider className="w-full h-1.5 mb-5" />
             <div className="w-full flex flex-col gap-2.5 px-4">
               <button
                 onClick={cancelOrder}

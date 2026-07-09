@@ -131,7 +131,7 @@ export default function OwnerHomePage() {
           <h2 className="font-semibold text-headline3 text-text-default">
             오늘 픽업 건
           </h2>
-          <Link href="/owner/order">
+          <Link href="/owner/orders">
             <ArrowRight className="w-5 h-5 text-icon-subtlest" />
           </Link>
         </div>
