@@ -4,9 +4,11 @@ import { useState } from 'react';
 import DownArrow from '@/public/icons/icon_arrow_down.svg';
 import { SORT_OPTIONS } from '../_constants/sortOptions';
 
+type SortValue = (typeof SORT_OPTIONS)[number]['value'];
+
 interface ReviewSortDropdownProps {
-  value: string;
-  onChange: (value: string) => void;
+  value: SortValue;
+  onChange: (value: SortValue) => void;
   totalCount: number;
 }
 
