@@ -3,7 +3,7 @@
 // iconClassName, secondaryButton.variant prop을 추가하는 방식으로
 // 이 컴포넌트(IllustDialogModal)와 통합 리팩토링 예정
 import { FocusTrap } from 'focus-trap-react';
-import { useEffect, useId } from 'react';
+import { useEffect, useId, useCallback, use } from 'react';
 
 interface IllustDialogModalProps {
   icon: React.ReactNode;
@@ -12,13 +12,16 @@ interface IllustDialogModalProps {
   primaryButton: {
     label: string;
     onClick: () => void;
+    disabled?: boolean;
   };
   secondaryButton?: {
     label: string;
     onClick: () => void;
+    disabled?: boolean;
   };
   onClose: () => void;
   children?: React.ReactNode;
+  isLoading?: boolean;
 }
 
 export default function IllustDialogModal({
@@ -29,17 +32,23 @@ export default function IllustDialogModal({
   secondaryButton,
   onClose,
   children,
+  isLoading,
 }: IllustDialogModalProps) {
   const titleId = useId();
   const descriptionId = useId();
 
+  const handleClose = useCallback(() => {
+    if (isLoading) return; // 로딩 중엔 닫기 무시
+    onClose();
+  }, [isLoading, onClose]);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') handleClose();
     };
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [onClose]);
+  }, [handleClose]);
 
   useEffect(() => {
     const originalOverflow = document.body.style.overflow;
@@ -52,7 +61,7 @@ export default function IllustDialogModal({
   return (
     <div
       className="fixed inset-0 bg-background-dim z-modal flex items-center justify-center font-['Pretendard']"
-      onClick={onClose}
+      onClick={handleClose}
       role="presentation"
     >
       <FocusTrap>
@@ -92,7 +101,8 @@ export default function IllustDialogModal({
             <button
               type="button"
               onClick={primaryButton.onClick}
-              className="flex-1 h-11 px-6 py-3 bg-background-default rounded-lg outline outline-1 outline-offset-[-1px] outline-border-default text-label1 font-semibold text-text-default"
+              disabled={primaryButton.disabled}
+              className="flex-1 h-11 px-6 py-3 bg-background-default rounded-lg outline outline-1 outline-offset-[-1px] outline-border-default text-label1 font-semibold text-text-default disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {primaryButton.label}
             </button>
@@ -100,7 +110,8 @@ export default function IllustDialogModal({
               <button
                 type="button"
                 onClick={secondaryButton.onClick}
-                className="flex-1 h-11 px-6 py-3 bg-brand-default rounded-lg text-label1 font-semibold text-text-inverse"
+                disabled={secondaryButton.disabled}
+                className="flex-1 h-11 px-6 py-3 bg-brand-default rounded-lg text-label1 font-semibold text-text-inverse disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {secondaryButton.label}
               </button>

@@ -19,13 +19,12 @@ const STATUS_MAP: Record<string, string> = {
 
 interface CustomerOrderCardProps {
   order: CustomerOrder;
-  // TODO: 리뷰 버튼 구현 시 추가
   onReviewClick?: (orderId: number) => void;
 }
 
 export default function CustomerOrderCard({
   order,
-  //onReviewClick,
+  onReviewClick,
 }: CustomerOrderCardProps) {
   const router = useRouter();
 
@@ -101,13 +100,16 @@ export default function CustomerOrderCard({
       </div>
 
       {/* 리뷰 버튼 (픽업 완료일 때만) */}
-      {/* {order.orderStatus === 'COMPLETED' && (
+      {order.orderStatus === 'COMPLETED' && (
         <div className="pt-1.5">
           <button
             type="button"
-            onClick={() =>
-              !order.hasReview && onReviewClick?.(order.orderId ?? 0)
-            }
+            onClick={(e) => {
+              e.stopPropagation();
+              if (!order.hasReview) {
+                onReviewClick?.(order.orderId ?? 0);
+              }
+            }}
             disabled={order.hasReview}
             className={`w-full h-[38px] p-3 rounded-lg text-label2 font-semibold
               ${
@@ -119,7 +121,7 @@ export default function CustomerOrderCard({
             {order.hasReview ? '리뷰 작성 완료' : '리뷰 작성'}
           </button>
         </div>
-      )} */}
+      )}
     </div>
   );
 }

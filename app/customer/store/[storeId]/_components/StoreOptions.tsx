@@ -13,7 +13,16 @@ import { ApiResponse, PickupTimeInfo } from '@/types/store';
 import MenuBottomSheet from '@/app/customer/store/[storeId]/_components/MenuBottomSheet';
 import { useCartStore } from '@/store/useCartStore';
 import FloatingCartBar from '@/app/customer/store/[storeId]/_components/FloatingCartBar';
+import Image from 'next/image';
 
+{
+  /* Todo: 픽업 시간이 오픈타임 ~ 클로즈타임(즉 영업시간) 사이로 둘 뿐만 아니라, 
+  휴게 시간을 고려하여 설계가 되면 그 때 완전히 가능한 시간을 캘린더에 필터링하여 클릭 가능여부 설정하기 
+
+  현재 이미지 최적화를 위해 Image(next/Image) 사용 중인데, 메뉴 이미지가 없거나 가게 이미지가 없다면 렌더링이 터져버립니다.
+  방어하려면 Image를 img로 대체하고 className에 w-22.5 h-22.5 옵션 넣어주면 됩니다
+  */
+}
 export default function StoreOptions() {
   const params = useParams();
   const storeId = params.storeId as string;
@@ -207,10 +216,12 @@ export default function StoreOptions() {
 
                         <div className="w-22.5 h-22.5 bg-neutral-10 rounded-xl shrink-0 flex items-end justify-end p-1.5 relative overflow-hidden bg-black">
                           {menu.imageUrl ? (
-                            <img
+                            <Image
                               src={menu.imageUrl}
-                              alt={menu.name}
-                              className="absolute inset-0 w-full h-full object-cover"
+                              alt={menu.name || '메뉴 이미지'}
+                              fill
+                              className="object-cover"
+                              priority={false}
                             />
                           ) : (
                             <div className="absolute inset-0 bg-neutral-20" />
