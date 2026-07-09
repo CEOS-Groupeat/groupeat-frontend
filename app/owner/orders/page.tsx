@@ -14,33 +14,30 @@ import PickupCompleteToast from './_components/PickupCompleteToast';
 import OrderList from './_components/OrderList';
 import OwnerNavbar from '@/components/owner/OwnerNavbar';
 
-import { MOCK_ORDERS } from '@/app/owner/orders/_constants/orders.mock';
-
+import { useOwnerOrders } from './_hooks/useOwnerOrders';
+import { useOwnerDashboard } from './_hooks/useOwnerDashboard';
 import { useApproveOrder } from './_hooks/useApproveOrder';
 import { useRejectOrder } from './_hooks/useRejectOrder';
 import { usePickupComplete } from './_hooks/usePickupComplete';
-
-const INITIAL_COUNTS = [
-  {
-    value: 'WAITING' as const,
-    count: MOCK_ORDERS.filter((o) => o.status === 'pending').length,
-  },
-  {
-    value: 'CONFIRMED' as const,
-    count: MOCK_ORDERS.filter((o) => o.status === 'confirmed').length,
-  },
-  {
-    value: 'PAST' as const,
-    count: MOCK_ORDERS.filter((o) => o.status === 'past').length,
-  },
-];
 
 export default function Orders() {
   const [activeTab, setActiveTab] = useState<'WAITING' | 'CONFIRMED' | 'PAST'>(
     'WAITING'
   );
-  // 사업자 대시보드 api 연동 후 실제 카운트로 교체할 예정
-  const [counts] = useState(INITIAL_COUNTS);
+
+  const { data: dashboard } = useOwnerDashboard();
+  const {
+    data: orderData,
+    isLoading,
+    isError,
+  } = useOwnerOrders({ tab: activeTab });
+
+  const counts = [
+    { value: 'WAITING' as const, count: dashboard?.waitingCount ?? 0 },
+    { value: 'CONFIRMED' as const, count: dashboard?.confirmedCount ?? 0 },
+    { value: 'PAST' as const, count: dashboard?.completedCount ?? 0 },
+  ];
+
   const [showProcessModal, setShowProcessModal] = useState(false);
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [rejectOrderId, setRejectOrderId] = useState<number | null>(null);
@@ -76,8 +73,6 @@ export default function Orders() {
   const { mutateAsync: pickupComplete, isPending: isPickupCompleting } =
     usePickupComplete();
 
-  const activeCount = counts.find((c) => c.value === activeTab)?.count ?? 0;
-
   useEffect(() => {
     return () => {
       if (pickupToastTimerRef.current) {
@@ -97,40 +92,34 @@ export default function Orders() {
         onChange={setActiveTab}
         counts={counts}
       />
-      {activeCount === 0 ? (
+      {isLoading ? (
+        <div className="flex-1 flex items-center justify-center">
+          <span className="text-sm text-text-subtle">로딩 중...</span>
+        </div>
+      ) : isError ? (
+        <div className="flex-1 flex items-center justify-center">
+          <span className="text-sm text-text-subtle">
+            주문 목록을 불러오지 못했어요.
+          </span>
+        </div>
+      ) : !orderData?.orderList || orderData.orderList.length === 0 ? (
         <OrderEmptyState />
       ) : (
-        <>
-          {activeTab === 'WAITING' && (
-            <OrderList
-              orders={MOCK_ORDERS.filter((order) => order.status === 'pending')}
-              onReject={(orderId) => {
-                setRejectOrderId(orderId);
-                setShowRejectModal(true);
-              }}
-              onApprove={(orderId) => {
-                setApproveOrderId(orderId);
-                setShowApproveModal(true);
-              }}
-            />
-          )}
-          {activeTab === 'CONFIRMED' && (
-            <OrderList
-              orders={MOCK_ORDERS.filter(
-                (order) => order.status === 'confirmed'
-              )}
-              onPickupComplete={(orderId) => {
-                setPickupCompleteOrderId(orderId);
-                setShowPickupCompleteModal(true);
-              }}
-            />
-          )}
-          {activeTab === 'PAST' && (
-            <OrderList
-              orders={MOCK_ORDERS.filter((order) => order.status === 'past')}
-            />
-          )}
-        </>
+        <OrderList
+          orders={orderData?.orderList ?? []}
+          onReject={(orderId) => {
+            setRejectOrderId(orderId);
+            setShowRejectModal(true);
+          }}
+          onApprove={(orderId) => {
+            setApproveOrderId(orderId);
+            setShowApproveModal(true);
+          }}
+          onPickupComplete={(orderId) => {
+            setPickupCompleteOrderId(orderId);
+            setShowPickupCompleteModal(true);
+          }}
+        />
       )}
       {activeTab === 'WAITING' && (
         <InfoToast onInfoClick={() => setShowProcessModal(true)} />
