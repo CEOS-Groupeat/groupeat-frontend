@@ -36,7 +36,7 @@ export default function OrderInfo({
               onClick={() => setPaymentMethod('PREPAID')}
               className={`flex px-2.5 py-3 justify-center items-center flex-1 rounded-lg border transition-colors ${
                 paymentMethod === 'PREPAID'
-                  ? 'border-brand-default bg-brand-background'
+                  ? 'border-transparent bg-brand-background'
                   : 'border-border-default'
               }`}
             >
@@ -50,7 +50,7 @@ export default function OrderInfo({
               onClick={() => setPaymentMethod('ON_SITE')}
               className={`flex px-2.5 py-3 justify-center items-center flex-1 rounded-lg border transition-colors ${
                 paymentMethod === 'ON_SITE'
-                  ? 'border-brand-default bg-brand-background'
+                  ? 'border-transparent bg-brand-background'
                   : 'border-border-default'
               }`}
             >

@@ -1,7 +1,8 @@
 'use client';
 
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { ApiResponse, StoreDetail as StoreDetailType } from '@/types/store';
 import { useState } from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchClient } from '@/lib/fetchClient';
 import { Menu } from '@/src/types/api';
 import ToastError from '@/components/ui/ToastError';
@@ -33,6 +34,20 @@ export default function MenuBottomSheet({
   onClose,
 }: MenuBottomSheetProps) {
   const queryClient = useQueryClient();
+
+  const { data: storeDetail } = useQuery<StoreDetailType>({
+    queryKey: ['storeDetail', storeId],
+    queryFn: async () => {
+      const response = await fetchClient(`/api/stores/${storeId}`);
+      const result = response as unknown as ApiResponse<StoreDetailType>;
+      if (!result.isSuccess) throw new Error(result.message);
+      return result.data;
+    },
+    enabled: !!storeId,
+  });
+
+  const discountRate = storeDetail?.discountRate || 0;
+  const discountCondition = storeDetail?.discountConditionQuantity || 0;
 
   const [cards, setCards] = useState<MenuCard[]>([]);
   const [mode, setMode] = useState<'CREATE' | 'LIST' | 'EDIT'>('CREATE');
@@ -248,7 +263,7 @@ export default function MenuBottomSheet({
           })}
         </div>
 
-        <div className="flex flex-col gap-2 px-4 mt-3 shrink-0 pb-24">
+        <div className="flex flex-col items-start w-full gap-2 px-4 mt-3 shrink-0 pb-24">
           <input
             type="number"
             min="1"
@@ -257,8 +272,13 @@ export default function MenuBottomSheet({
             onChange={(e) =>
               setQuantity(e.target.value === '' ? '' : Number(e.target.value))
             }
-            className="w-full h-11 px-4 py-3 rounded-lg border border-border-default text-body placeholder:text-text-placeholder focus:outline-none focus:border-brand-default"
+            className="w-full h-11 pl-4 pr-3 py-3 rounded-lg border border-border-default bg-background-default text-body placeholder:text-text-placeholder transition-colors focus:outline-none focus:border-brand-default"
           />
+          {discountRate > 0 && discountCondition > 0 && (
+            <p className="text-brand-default text-caption2 font-medium animate-in fade-in">
+              {discountCondition}개 이상 주문 시 {discountRate}% 할인
+            </p>
+          )}
         </div>
 
         <div className="flex items-center justify-center px-4 pb-6 mt-6 shrink-0">

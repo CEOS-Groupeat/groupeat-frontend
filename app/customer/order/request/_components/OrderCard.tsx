@@ -50,7 +50,7 @@ export default function OrderCard({
       }`}
     >
       {!hidePickupInfo && (
-        <div className="flex pb-3 flex-col items-start gap-0.5 self-stretch border-b border-border-default">
+        <div className="flex pb-3 flex-col items-start gap-0.5 self-stretch">
           <p className="text-text-default text-body font-semibold">
             {storeCart.storeName}
           </p>
