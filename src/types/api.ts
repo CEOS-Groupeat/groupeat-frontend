@@ -80,3 +80,13 @@ export type OwnerDashboardSummary = NonNullable<OwnerDashboardResponse['data']>;
 export type OrderProcessResponse =
   PatchResponse<'/api/orders/{orderId}/accept'>;
 export type OrderProcessData = NonNullable<OrderProcessResponse['data']>;
+
+// Review APIs (Customer-Store-Review)
+export type ReviewListResponse = GetResponse<'/api/stores/{storeId}/reviews'>;
+export type ReviewListData = NonNullable<ReviewListResponse['data']>;
+export type Review = NonNullable<ReviewListData['reviewList']>[number];
+export type OwnerReply = NonNullable<Review['ownerReply']>;
+
+export type ReviewSummaryResponse =
+  GetResponse<'/api/stores/{storeId}/reviews/summary'>;
+export type ReviewSummaryData = NonNullable<ReviewSummaryResponse['data']>;
