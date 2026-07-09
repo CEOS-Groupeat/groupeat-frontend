@@ -5,6 +5,7 @@ import OwnerOrderHeader from '@/app/owner/orders/_components/OwnerOrderHeader';
 import SegmentedControl from '@/app/owner/orders/_components/SegmentedControl';
 import OrderEmptyState from '@/app/owner/orders/_components/OrderEmptyState';
 import InfoToast from '@/app/owner/orders/_components/InfoToast';
+import ToastError from '@/components/ui/ToastError';
 import OrderProcessModal from '@/app/owner/orders/_components/OrderProcessModal';
 import OrderRejectModal from '@/app/owner/orders/_components/OrderRejectModal';
 import OrderApproveModal from './_components/OrderApproveModal';
@@ -53,10 +54,27 @@ export default function Orders() {
   const pickupToastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
     null
   );
+  const [showErrorToast, setShowErrorToast] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const errorToastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const { mutateAsync: approveOrder } = useApproveOrder();
+  const showError = (message: string) => {
+    if (errorToastTimerRef.current) {
+      clearTimeout(errorToastTimerRef.current);
+    }
+    setErrorMessage(message);
+    setShowErrorToast(true);
+    errorToastTimerRef.current = setTimeout(() => {
+      setShowErrorToast(false);
+      errorToastTimerRef.current = null;
+    }, 2000);
+  };
+
+  const { mutateAsync: approveOrder, isPending: isApproving } =
+    useApproveOrder();
   const { mutateAsync: rejectOrder } = useRejectOrder();
-  const { mutateAsync: pickupComplete } = usePickupComplete();
+  const { mutateAsync: pickupComplete, isPending: isPickupCompleting } =
+    usePickupComplete();
 
   const activeCount = counts.find((c) => c.value === activeTab)?.count ?? 0;
 
@@ -64,6 +82,9 @@ export default function Orders() {
     return () => {
       if (pickupToastTimerRef.current) {
         clearTimeout(pickupToastTimerRef.current);
+      }
+      if (errorToastTimerRef.current) {
+        clearTimeout(errorToastTimerRef.current);
       }
     };
   }, []);
@@ -130,6 +151,7 @@ export default function Orders() {
               setRejectOrderId(null);
             } catch (error) {
               console.error('거절 실패:', error);
+              showError('거절 처리에 실패했어요. 다시 시도해주세요.');
             }
           }}
         />
@@ -147,8 +169,10 @@ export default function Orders() {
               setApproveOrderId(null);
             } catch (error) {
               console.error('승인 실패:', error);
+              showError('승인 처리에 실패했어요. 다시 시도해주세요.');
             }
           }}
+          isLoading={isApproving}
         />
       )}
       {showPickupCompleteModal && pickupCompleteOrderId !== null && (
@@ -174,13 +198,17 @@ export default function Orders() {
               }, 2000);
             } catch (error) {
               console.error('픽업 완료 처리 실패:', error);
+              showError('픽업 완료 처리에 실패했어요. 다시 시도해주세요.');
             }
           }}
+          isLoading={isPickupCompleting}
         />
       )}
       {showPickupToast && (
         <PickupCompleteToast text="픽업 완료 처리되었습니다." />
       )}
+      {showErrorToast && <ToastError text={errorMessage} />}
+
       <OwnerNavbar />
     </div>
   );
