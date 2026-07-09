@@ -11,7 +11,8 @@ export function usePickupComplete() {
         `/api/orders/${orderId}/complete-pickup`,
         { method: 'PATCH' }
       );
-      if (!res.isSuccess) throw new Error(res.message);
+      if (!res.isSuccess)
+        throw new Error(res.message ?? '픽업 완료 처리에 실패했어요.');
       return res.data;
     },
     onSuccess: () => {

@@ -11,7 +11,7 @@ export function useRejectOrder() {
         `/api/orders/${orderId}/reject`,
         { method: 'PATCH' }
       );
-      if (!res.isSuccess) throw new Error(res.message);
+      if (!res.isSuccess) throw new Error(res.message ?? '거절 처리에 실패했어요.');
       return res.data;
     },
     onSuccess: () => {

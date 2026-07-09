@@ -11,7 +11,7 @@ export function useApproveOrder() {
         `/api/orders/${orderId}/accept`,
         { method: 'PATCH' }
       );
-      if (!res.isSuccess) throw new Error(res.message);
+      if (!res.isSuccess) throw new Error(res.message ?? '승인 처리에 실패했어요.');
       return res.data;
     },
     onSuccess: () => {

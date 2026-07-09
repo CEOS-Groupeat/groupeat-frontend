@@ -9,7 +9,7 @@ export function useOwnerDashboard() {
       const res = await fetchClient<OwnerDashboardResponse>(
         '/api/owner/dashboard/summary'
       );
-      if (!res.isSuccess) throw new Error(res.message);
+      if (!res.isSuccess) throw new Error(res.message ?? '대시보드 정보를 불러오지 못했어요.');
       return res.data;
     },
   });

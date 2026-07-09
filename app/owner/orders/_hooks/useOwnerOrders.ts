@@ -29,7 +29,7 @@ export function useOwnerOrders({
       const res = await fetchClient<OwnerOrderListResponse>(
         `/api/owner/orders?${params.toString()}`
       );
-      if (!res.isSuccess) throw new Error(res.message);
+      if (!res.isSuccess) throw new Error(res.message ?? '주문 목록을 불러오지 못했어요.');
       return res.data;
     },
   });
