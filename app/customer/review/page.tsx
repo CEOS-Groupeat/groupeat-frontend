@@ -1,24 +1,47 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import BackIcon from '@/public/icons/icon_arrow_Left.svg';
 import MyReviewCard from './_components/MyReviewCard';
 import ReviewDeleteConfirmModal from './_components/ReviewDeleteConfirmModal';
 import MyReviewEmptyState from './_components/MyReviewEmptyState';
+import ToastError from '@/components/ui/ToastError';
 import { useMyReviews } from './_hooks/useMyReviews';
 import { useDeleteMyReview } from './_hooks/useDeleteMyReview';
 
 export default function MyReviewPage() {
   const router = useRouter();
-
-  const { data, isLoading, isError } = useMyReviews(); // 잠시 주석
+  const { data, isLoading, isError } = useMyReviews();
   const { mutateAsync: deleteReview } = useDeleteMyReview();
 
   const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
+  const [showErrorToast, setShowErrorToast] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const errorToastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const reviews = data?.reviewList ?? [];
   const totalCount = reviews.length;
+
+  const showError = (message: string) => {
+    if (errorToastTimerRef.current) {
+      clearTimeout(errorToastTimerRef.current);
+    }
+    setErrorMessage(message);
+    setShowErrorToast(true);
+    errorToastTimerRef.current = setTimeout(() => {
+      setShowErrorToast(false);
+      errorToastTimerRef.current = null;
+    }, 2000);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (errorToastTimerRef.current) {
+        clearTimeout(errorToastTimerRef.current);
+      }
+    };
+  }, []);
 
   const handleDeleteConfirm = async () => {
     if (deleteTargetId === null) return;
@@ -27,7 +50,7 @@ export default function MyReviewPage() {
       setDeleteTargetId(null);
     } catch (error) {
       console.error('리뷰 삭제 실패:', error);
-      // TODO: 에러 토스트
+      showError('리뷰 삭제에 실패했어요. 다시 시도해주세요.');
     }
   };
 
@@ -88,6 +111,8 @@ export default function MyReviewPage() {
           onConfirm={handleDeleteConfirm}
         />
       )}
+
+      {showErrorToast && <ToastError text={errorMessage} />}
     </div>
   );
 }
