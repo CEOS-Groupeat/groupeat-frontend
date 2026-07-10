@@ -1,10 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import type { OwnerReview } from '../_types/ownerReview.type';
 import { formatReviewDate } from '@/app/customer/store/[storeId]/review/_utils/formatReviewDate';
 import StarIcon from '@/public/icons/icon_star.svg';
+import PickupCompleteToast from '@/app/owner/orders/_components/PickupCompleteToast';
+import ToastError from '@/components/ui/ToastError';
 
 interface OwnerReviewCardProps {
   review: OwnerReview;
@@ -19,6 +21,10 @@ export default function OwnerReviewCard({
 }: OwnerReviewCardProps) {
   const [replyContent, setReplyContent] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [showErrorToast, setShowErrorToast] = useState(false);
+  const successTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const errorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const hasReply = Boolean(review.ownerReplyContent);
   const isReplyValid = replyContent.trim().length > 0;
@@ -32,14 +38,35 @@ export default function OwnerReviewCard({
     },
   ];
 
+  useEffect(() => {
+    return () => {
+      if (successTimerRef.current) clearTimeout(successTimerRef.current);
+      if (errorTimerRef.current) clearTimeout(errorTimerRef.current);
+    };
+  }, []);
+
   const handleSubmit = async () => {
     if (!isReplyValid) return;
     setIsSubmitting(true);
     try {
       await onSubmitReply(replyContent);
       setReplyContent('');
+
+      if (successTimerRef.current) clearTimeout(successTimerRef.current);
+      setShowSuccessToast(true);
+      successTimerRef.current = setTimeout(() => {
+        setShowSuccessToast(false);
+        successTimerRef.current = null;
+      }, 2000);
     } catch (error) {
       console.error('답글 작성 실패:', error);
+
+      if (errorTimerRef.current) clearTimeout(errorTimerRef.current);
+      setShowErrorToast(true);
+      errorTimerRef.current = setTimeout(() => {
+        setShowErrorToast(false);
+        errorTimerRef.current = null;
+      }, 2000);
     } finally {
       setIsSubmitting(false);
     }
@@ -173,6 +200,11 @@ export default function OwnerReviewCard({
             </span>
           </button>
         </div>
+      )}
+
+      {showSuccessToast && <PickupCompleteToast text="답글이 등록되었어요." />}
+      {showErrorToast && (
+        <ToastError text="답글 등록에 실패했어요. 다시 시도해주세요." />
       )}
     </div>
   );
