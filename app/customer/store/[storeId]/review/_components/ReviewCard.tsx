@@ -111,7 +111,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
               {review.ownerReply.storeName}
             </span>
             <span className="text-caption2 text-text-subtlest font-normal">
-              {review.ownerReply.repliedAt}
+              {formatReviewDate(review.ownerReply.repliedAt ?? '')}
             </span>
           </div>
           <p className="text-label2 text-text-strong font-normal whitespace-pre-line">
