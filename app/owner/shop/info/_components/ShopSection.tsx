@@ -31,6 +31,12 @@ function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
     discountRate: String(shopInfo.discount?.rate ?? ''),
   });
 
+  const isFormValid =
+    values.storeName.trim().length > 0 &&
+    values.address.trim().length > 0 &&
+    values.phoneNumber.trim().length > 0 &&
+    values.category !== null;
+
   const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -46,6 +52,12 @@ function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
   };
 
   const handleSubmit = async () => {
+    if (!isFormValid) return;
+
+    const hasDiscount =
+      values.discountConditionQuantity.trim().length > 0 &&
+      values.discountRate.trim().length > 0;
+
     try {
       await saveShopInfo({
         imageUrl: shopInfo.imageUrl ?? '',
@@ -59,10 +71,12 @@ function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
         category: values.category!,
         phoneNumber: values.phoneNumber,
         description: values.description,
-        discount: {
-          conditionQuantity: Number(values.discountConditionQuantity),
-          rate: Number(values.discountRate),
-        },
+        discount: hasDiscount
+          ? {
+              conditionQuantity: Number(values.discountConditionQuantity),
+              rate: Number(values.discountRate),
+            }
+          : undefined,
       });
       // TODO: 성공 토스트
     } catch (error) {
@@ -72,22 +86,18 @@ function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
   };
 
   return (
-    <main className="w-full flex flex-col px-4 items-start gap-4.5 ">
-      <div className="flex flex-col items-start gap-3 self-stretch ">
-        <h1 className="text-text-default text-headline3 font-semibold">
-          가게 정보
-        </h1>
-
+    <main className="w-full flex flex-col px-4 items-start gap-4.5 font-['Pretendard']">
+      <div className="flex flex-col items-start gap-[18px] self-stretch">
         <div className="flex flex-col items-start gap-5 self-stretch">
-          <div className="flex flex-col items-start gap-2 self-stretch ">
-            <label className="text-text-subtlest text-label1 font-medium">
+          <div className="flex flex-col items-start gap-2 self-stretch">
+            <label className="mt-3 text-text-subtlest text-label1 font-medium">
               대표 이미지
             </label>
             <div
-              className="w-full h-37 bg-black pr-3 pb-2.5 rounded-xl"
+              className="w-full h-37 bg-black pr-3 pb-2.5 rounded-xl bg-cover bg-center bg-no-repeat"
               style={{
                 backgroundImage: values.imageUrl
-                  ? `url(${shopInfo.imageUrl})`
+                  ? `url(${values.imageUrl})`
                   : undefined,
               }}
             >
@@ -153,11 +163,10 @@ function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
           </div>
 
           <div className="flex flex-col items-start gap-2 self-stretch">
-            <p className="text-icon-subtlest text-label1 font-medium">할인율</p>
+            <p className="text-text-subtlest text-label1 font-medium">할인율</p>
             <div className="flex justify-between items-start self-stretch">
               <div className="flex items-center gap-2">
-                <InputField
-                  label=""
+                <input
                   value={values.discountConditionQuantity}
                   onChange={(e) =>
                     setValues({
@@ -165,26 +174,35 @@ function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
                       discountConditionQuantity: e.target.value,
                     })
                   }
-                  className="w-25"
+                  className={`w-25 h-11 pl-4 pr-3 py-3 rounded-lg font-pretendard font-normal text-body text-text-default outline-none transition-colors border ${
+                    values.discountConditionQuantity.trim().length > 0
+                      ? 'bg-background-subtle border-transparent'
+                      : 'bg-white border-border-strong'
+                  }`}
                 />
                 <p className="text-text-default text-body">개 이상</p>
               </div>
               <div className="flex items-center gap-2">
-                <InputField
-                  label=""
+                <input
                   value={values.discountRate}
                   onChange={(e) =>
                     setValues({ ...values, discountRate: e.target.value })
                   }
-                  className="w-25"
+                  className={`w-25 h-11 pl-4 pr-3 py-3 rounded-lg font-pretendard font-normal text-body text-text-default outline-none transition-colors border ${
+                    values.discountRate.trim().length > 0
+                      ? 'bg-background-subtle border-transparent'
+                      : 'bg-white border-border-strong'
+                  }`}
                 />
-                <p className="text-text-default text-body">% 할인</p>
+                <p className="text-text-default font-normal text-body">
+                  % 할인
+                </p>
               </div>
             </div>
 
             <div className="w-full flex items-start gap-1">
               <AlertIcon className="text-icon-subtlest w-3.75 h-3.75" />
-              <p className="text-icon-subtle text-label2">
+              <p className="text-text-subtle font-normal text-label2">
                 할인이 시작되는 주문 수량과 할인율을 설정해 주세요
               </p>
             </div>
@@ -192,8 +210,8 @@ function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
         </div>
       </div>
 
-      <DefaultButton onClick={handleSubmit} disabled={isSaving}>
-        저장하기
+      <DefaultButton onClick={handleSubmit} disabled={!isFormValid || isSaving}>
+        {isSaving ? '저장 중...' : '저장하기'}
       </DefaultButton>
     </main>
   );
