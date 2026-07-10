@@ -12,6 +12,7 @@ import { SORT_OPTIONS } from '@/app/customer/store/[storeId]/review/_constants/s
 import { useOwnerReviewSummary } from './_hooks/useOwnerReviewSummary';
 import { useOwnerReviews } from './_hooks/useOwnerReviews';
 import { useCreateReply } from './_hooks/useCreateReply';
+import NewReviewToast from './_components/NewReviewToast';
 import OwnerNavbar from '@/components/owner/OwnerNavbar';
 
 type SortValue = (typeof SORT_OPTIONS)[number]['value'];
@@ -66,6 +67,8 @@ export default function OwnerReviewPage() {
         { score: 1, count: summary.rating1Count ?? 0 },
       ]
     : [];
+
+  const unrepliedCount = reviews.filter((r) => !r.ownerReplyContent).length;
 
   return (
     <div className="w-full min-h-screen bg-background-default flex flex-col pb-[74px]">
@@ -128,7 +131,7 @@ export default function OwnerReviewPage() {
           onPrevious={handlePrevious}
         />
       )}
-
+      <NewReviewToast count={unrepliedCount} />
       <OwnerNavbar />
     </div>
   );
