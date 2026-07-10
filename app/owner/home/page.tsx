@@ -14,6 +14,7 @@ import ArrowRight from '@/public/icons/icon_arrow_right.svg';
 import NoOrderIllust from '@/public/illust/illust_NoOrder.svg';
 
 interface DashboardSummaryData {
+  storeName: string;
   waitingCount: number;
   confirmedCount: number;
   completedCount: number;
@@ -76,11 +77,11 @@ export default function OwnerHomePage() {
     );
   }
 
+  const storeName = dashboardData?.storeName ?? '';
   const waitingCount = dashboardData?.waitingCount ?? 0;
   const confirmedCount = dashboardData?.confirmedCount ?? 0;
   const completedCount = dashboardData?.completedCount ?? 0;
 
-  const storeName = '데이브런치';
   const weeklyOrderCount = 22;
   const weeklySalesAmount = 18;
   const increasedOrderCount = 3;
@@ -105,14 +106,12 @@ export default function OwnerHomePage() {
         </div>
       </section>
 
-      {/* 💡 waitingCount(대기 건수)가 0보다 클 때 팝업 알림 활성화 */}
       {waitingCount > 0 && (
         <section className="w-full px-4 mt-4">
           <AlertCard pendingCount={waitingCount} />
         </section>
       )}
 
-      {/* 💡 confirmedCount(확정) 및 completedCount(완료) 데이터 바인딩 */}
       <section className="flex w-full gap-2 px-4 mt-2">
         <DashboardCardA
           text="픽업 예정 건"
