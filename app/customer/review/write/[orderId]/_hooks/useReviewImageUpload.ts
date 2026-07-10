@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { usePresignedUrl } from './usePresignedUrl';
+import { usePresignedUrl } from '@/hooks/usePresignedUrl';
 
 export function useReviewImageUpload() {
   const { mutateAsync: getPresignedUrl } = usePresignedUrl();
@@ -10,6 +10,7 @@ export function useReviewImageUpload() {
       const { uploadUrl, imageUrl } = await getPresignedUrl({
         fileName: file.name,
         contentType: file.type,
+        domain: 'REVIEW',
       });
 
       // 2. 발급받은 URL로 S3에 직접 업로드
