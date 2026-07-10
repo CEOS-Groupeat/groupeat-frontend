@@ -4,12 +4,21 @@ import type { Review } from '@/src/types/api';
 import Image from 'next/image';
 import { formatReviewDate } from '../_utils/formatReviewDate';
 import StarIcon from '@/public/icons/icon_star.svg';
+import ChevronIcon from '@/public/icons/icon-right_chevron.svg';
 
 interface ReviewCardProps {
   review: Review;
+  storeName?: string;
+  onStoreClick?: () => void;
+  onDeleteClick?: () => void;
 }
 
-export default function ReviewCard({ review }: ReviewCardProps) {
+export default function ReviewCard({
+  review,
+  storeName,
+  onStoreClick,
+  onDeleteClick,
+}: ReviewCardProps) {
   const eventInfo = [
     { label: '행사 유형', value: review.eventType },
     { label: '행사 인원', value: `${review.headcount}명` },
@@ -21,6 +30,20 @@ export default function ReviewCard({ review }: ReviewCardProps) {
 
   return (
     <div className="mx-4 py-5 border-b border-border-default flex flex-col gap-3 font-['Pretendard']">
+      {/* 가게명 (내 리뷰 화면에서만 표시) */}
+      {storeName && (
+        <button
+          type="button"
+          onClick={onStoreClick}
+          className="flex items-center gap-1 self-start mb-1.5"
+        >
+          <span className="text-body font-semibold text-text-default">
+            {storeName}
+          </span>
+          <ChevronIcon className="size-4 text-icon-subtle" />
+        </button>
+      )}
+
       {/* 유저 정보 + 날짜 */}
       <div className="flex flex-col gap-1.5">
         <div className="flex justify-between items-center">
@@ -35,20 +58,34 @@ export default function ReviewCard({ review }: ReviewCardProps) {
           </span>
         </div>
 
-        {/* 별점 + 행사 정보 */}
+        {/* 별점 + 행사 정보  + 삭제 버튼 유무 */}
         <div className="flex flex-col gap-1">
-          <div className="flex items-center gap-1">
-            <div className="flex items-center">
-              {[...Array(5)].map((_, i) => (
-                <StarIcon
-                  key={i}
-                  className={`size-4 ${i < (review.rating ?? 0) ? 'text-icon-star' : 'text-icon-disable'}`}
-                />
-              ))}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1">
+              <div className="flex items-center">
+                {[...Array(5)].map((_, i) => (
+                  <StarIcon
+                    key={i}
+                    className={`size-4 ${i < (review.rating ?? 0) ? 'text-icon-star' : 'text-icon-disable'}`}
+                  />
+                ))}
+              </div>
+              <span className="text-caption1 font-semibold text-text-default">
+                {review.rating}
+              </span>
             </div>
-            <span className="text-caption1 font-semibold text-text-default">
-              {review.rating}
-            </span>
+
+            {onDeleteClick && (
+              <button
+                type="button"
+                onClick={onDeleteClick}
+                className="px-1.5 py-0.5 flex items-center justify-center bg-background-subtlest rounded-sm shrink-0"
+              >
+                <span className="text-caption2 font-medium text-text-subtle whitespace-nowrap">
+                  삭제
+                </span>
+              </button>
+            )}
           </div>
 
           <div className="flex items-center gap-1.5 text-caption1">
