@@ -55,30 +55,6 @@ export default function OwnerMyPage() {
                   안세빈
                 </p>
               </div>
-
-              <div className="w-full flex justify-center items-start gap-3">
-                <div className="flex p-3 items-end gap-2.5 flex-1 rounded-lg border border-border-subtle bg-static-white">
-                  <div className="flex flex-col justify-center items-center gap-1 flex-1 self-stretch">
-                    <p className="text-text-default text-headline2 font-semibold">
-                      4
-                    </p>
-                    <p className="text-text-subtlest text-label2 font-medium">
-                      주문
-                    </p>
-                  </div>
-
-                  <div className="h-12.5 border-[0.5px] border-border-subtle mx-2.5" />
-
-                  <div className="flex flex-col justify-center items-center gap-1 flex-1 self-stretch">
-                    <p className="text-text-default text-headline2 font-semibold">
-                      3
-                    </p>
-                    <p className="text-text-subtlest text-label2 font-medium">
-                      리뷰
-                    </p>
-                  </div>
-                </div>
-              </div>
             </section>
 
             <section className="flex pb-8 flex-col items-start gap-3 self-stretch w-full">
