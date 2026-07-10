@@ -82,13 +82,16 @@ export default function CustomerSettingsPage() {
             </section>
 
             <section className="flex pb-8 flex-col items-start gap-3 self-stretch w-full">
-              <Link href="/profile" className="w-full">
+              <Link href="/customer/profile" className="w-full">
                 <SettingOption text="프로필" icon="profile" />
               </Link>
               <Link href="/customer/review" className="w-full">
                 <SettingOption text="내 리뷰" icon="review" />
               </Link>
-              <Link href="/customer/terms?targetType=CUSTOMER" className="w-full">
+              <Link
+                href="/customer/terms?targetType=CUSTOMER"
+                className="w-full"
+              >
                 <SettingOption text="약관" icon="terms" />
               </Link>
               <Link href="/alert" className="w-full">
