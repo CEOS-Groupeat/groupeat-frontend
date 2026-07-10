@@ -12,7 +12,7 @@ const tabs = [
 const SECTION_TITLE: Record<string, string> = {
   '/owner/shop/info': '가게 정보',
   '/owner/shop/menus': '메뉴 관리',
-  '/owner/shop/operations': '영업 설정',
+  '/owner/shop/operations': '1. 영업 설정',
 };
 
 export default function ShopHeader() {
@@ -26,7 +26,7 @@ export default function ShopHeader() {
   const isMenuTab = pathname?.startsWith('/owner/shop/menus');
 
   return (
-    <header className="flex flex-col items-start w-full gap-2 px-4">
+    <header className="flex flex-col items-start w-full gap-2 px-4 font-['Pretendard']">
       <div className="flex items-center justify-between w-full">
         <div className="flex flex-col items-start gap-1">
           <h2 className="font-bold text-headline1 text-text-default">
