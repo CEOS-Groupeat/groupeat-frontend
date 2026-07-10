@@ -5,6 +5,7 @@ interface ProfileFieldProps {
   value: string;
   placeholder: string;
   onChange: (value: string) => void;
+  type?: 'text' | 'date' | 'email';
 }
 
 export default function ProfileField({
@@ -12,11 +13,13 @@ export default function ProfileField({
   value,
   placeholder,
   onChange,
+  type = 'text',
 }: ProfileFieldProps) {
   return (
     <div className="flex flex-col gap-2 font-['Pretendard']">
       <span className="text-label1 font-normal text-text-default">{label}</span>
       <input
+        type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
