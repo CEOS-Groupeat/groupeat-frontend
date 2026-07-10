@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import InputField from '@/components/ui/InputField';
 import TextAreaField from '@/components/ui/TextAreaField';
 import DefaultButton from '@/components/ui/ButtonDefault';
@@ -9,12 +9,17 @@ import AlertIcon from '@/public/icons/icon_alert.svg';
 import ShopCategorySelector from './ShopCategorySelector';
 import { useShopInfo } from '../_hooks/useShopInfo';
 import { useSaveShopInfo } from '../_hooks/useSaveShopInfo';
+import { useShopImageUpload } from '../_hooks/useShopImageUpload';
 import type { ShopInfoData } from '../_types/shop.type';
 
 function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
   const { mutateAsync: saveShopInfo, isPending: isSaving } = useSaveShopInfo();
+  const { mutateAsync: uploadImage, isPending: isUploading } =
+    useShopImageUpload();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [values, setValues] = useState({
+    imageUrl: shopInfo.imageUrl ?? '',
     storeName: shopInfo.storeName ?? '',
     address: shopInfo.location?.address ?? '',
     phoneNumber: shopInfo.phoneNumber ?? '',
@@ -25,6 +30,20 @@ function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
     ),
     discountRate: String(shopInfo.discount?.rate ?? ''),
   });
+
+  const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const imageUrl = await uploadImage(file);
+      setValues((prev) => ({ ...prev, imageUrl }));
+    } catch (error) {
+      console.error('이미지 업로드 실패:', error);
+      // TODO: 에러 토스트
+    }
+    e.target.value = '';
+  };
 
   const handleSubmit = async () => {
     try {
@@ -61,25 +80,35 @@ function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
 
         <div className="flex flex-col items-start gap-5 self-stretch">
           <div className="flex flex-col items-start gap-2 self-stretch ">
-            <label
-              htmlFor="text"
-              className="text-text-subtlest text-label1 font-medium"
-            >
+            <label className="text-text-subtlest text-label1 font-medium">
               대표 이미지
             </label>
             <div
               className="w-full h-37 bg-black pr-3 pb-2.5 rounded-xl"
-              style={{ backgroundImage: `url(${shopInfo.imageUrl})` }}
+              style={{
+                backgroundImage: values.imageUrl
+                  ? `url(${shopInfo.imageUrl})`
+                  : undefined,
+              }}
             >
               <div className="w-full flex h-full justify-end items-end">
                 <button
                   type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={isUploading}
                   className="flex w-8 h-8 justify-center items-center aspect-square rounded-full bg-static-white shadow-[0_0_16px_0_rgba(0, 0, 0, 0.20);]"
                 >
                   <PencilIcon className="w-[19.7px] h-[19.7px] text-text-subtle" />
                 </button>
               </div>
             </div>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleImageSelect}
+              className="hidden"
+            />
           </div>
 
           <InputField
