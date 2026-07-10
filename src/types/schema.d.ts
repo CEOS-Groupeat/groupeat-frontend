@@ -41,8 +41,8 @@ export interface paths {
          */
         get: operations["getMyStoreOrderSchedule"];
         /**
-         * 내 가게 주문 가능 일정 저장
-         * @description 로그인한 사업자 회원의 가게 주문 가능 일정 설정을 저장합니다.
+         * 내 가게 주문 가능 일정 전체 저장
+         * @description 운영정보의 최종 상태를 전체 저장합니다. 공통 설정과 MONDAY~SUNDAY 7개 요일 설정을 모두 보내야 하며, 누락/중복 요일이 있으면 실패합니다.
          */
         put: operations["saveMyStoreOrderSchedule"];
         post?: never;
@@ -59,7 +59,11 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        /**
+         * 내 가게 메뉴 상세 조회
+         * @description 로그인한 사업자 회원의 가게 메뉴 상세 정보를 조회합니다.
+         */
+        get: operations["getMyStoreMenu"];
         /**
          * 내 가게 메뉴 수정
          * @description 로그인한 사업자 회원의 가게 메뉴를 수정합니다.
@@ -1201,7 +1205,7 @@ export interface components {
             /** @description 할인 정보 */
             discount?: components["schemas"]["DiscountDTO"];
         };
-        DayScheduleRequest: {
+        DailyScheduleRequest: {
             /**
              * @description 요일
              * @example MONDAY
@@ -1209,60 +1213,60 @@ export interface components {
              */
             dayOfWeek: "MONDAY" | "TUESDAY" | "WEDNESDAY" | "THURSDAY" | "FRIDAY" | "SATURDAY" | "SUNDAY";
             /**
-             * @description 주문 가능 여부
+             * @description 주문 가능 여부. false이면 해당 요일을 휴무 처리합니다.
              * @example true
              */
             available: boolean;
             /**
              * Format: int32
-             * @description 최소 주문 수량
+             * @description 최소 주문 수량. available=true일 때 필수입니다.
              * @example 10
              */
             minOrderQuantity?: number;
             /**
              * Format: int32
-             * @description 최대 주문 수량
+             * @description 최대 주문 수량. available=true일 때 필수입니다.
              * @example 100
              */
             maxOrderQuantity?: number;
-            /**
-             * @description 픽업 시작 시간
-             * @example 10:00
-             */
-            pickupOpenTime?: string;
-            /**
-             * @description 픽업 종료 시간
-             * @example 17:00
-             */
-            pickupCloseTime?: string;
-            /**
-             * Format: int32
-             * @description 픽업 시간 간격(분)
-             * @example 30
-             */
-            intervalMinutes?: number;
+            /** @description 영업/픽업 가능 시간. available=true일 때 필수입니다. */
+            pickupTimeRange?: components["schemas"]["TimeRangeRequest"];
+            /** @description 휴게 시간. 비어 있거나 null이면 휴게시간 없음으로 처리합니다. */
+            breakTimeRange?: components["schemas"]["TimeRangeRequest"];
         };
         OwnerStoreOrderScheduleRequest: {
             /**
              * Format: date
-             * @description 일정 적용 시작일
+             * @description 운영정보 적용 시작일
              * @example 2026-05-20
              */
             startDate: string;
             /**
              * Format: date
-             * @description 일정 적용 종료일
+             * @description 운영정보 적용 종료일
              * @example 2027-05-20
              */
             endDate: string;
             /**
              * Format: int32
-             * @description 최소 주문 가능 기한(픽업 n일 전까지 주문 가능)
+             * @description 최소 주문 가능 기한(픽업 n일 전까지 주문 가능). 가게 공통 설정값입니다.
              * @example 3
              */
-            minOrderDays: number;
-            /** @description 요일별 주문 가능 일정. 포함되지 않은 요일은 휴무 처리됩니다. */
-            days?: components["schemas"]["DayScheduleRequest"][];
+            minimumOrderDeadlineDays: number;
+            /** @description 요일별 운영정보 최종 상태. MONDAY~SUNDAY가 중복 없이 모두 포함되어야 합니다. */
+            dailySchedules?: components["schemas"]["DailyScheduleRequest"][];
+        };
+        TimeRangeRequest: {
+            /**
+             * @description 시작 시간
+             * @example 10:00
+             */
+            startTime: string;
+            /**
+             * @description 종료 시간
+             * @example 17:00
+             */
+            endTime: string;
         };
         ApiResponseOwnerStoreOrderScheduleResponse: {
             isSuccess?: boolean;
@@ -1270,7 +1274,7 @@ export interface components {
             message?: string;
             data?: components["schemas"]["OwnerStoreOrderScheduleResponse"];
         };
-        DayScheduleResponse: {
+        DailyScheduleResponse: {
             /**
              * @description 요일
              * @example MONDAY
@@ -1295,21 +1299,15 @@ export interface components {
              */
             maxOrderQuantity?: number;
             /**
-             * @description 픽업 시작 시간
-             * @example 10:00
-             */
-            pickupOpenTime?: string;
-            /**
-             * @description 픽업 종료 시간
-             * @example 17:00
-             */
-            pickupCloseTime?: string;
-            /**
              * Format: int32
              * @description 픽업 시간 간격(분)
              * @example 30
              */
             intervalMinutes?: number;
+            /** @description 영업/픽업 가능 시간 */
+            pickupTimeRange?: components["schemas"]["TimeRangeResponse"];
+            /** @description 휴게 시간. 휴게시간이 없으면 null */
+            breakTimeRange?: components["schemas"]["TimeRangeResponse"];
         };
         OwnerStoreOrderScheduleResponse: {
             /**
@@ -1338,12 +1336,24 @@ export interface components {
             endDate?: string;
             /**
              * Format: int32
-             * @description 최소 주문 가능 기한(픽업 n일 전까지 주문 가능)
+             * @description 최소 주문 가능 기한(픽업 n일 전까지 주문 가능). 가게 공통 설정값입니다.
              * @example 3
              */
-            minOrderDays?: number;
-            /** @description 요일별 주문 가능 일정 */
-            days?: components["schemas"]["DayScheduleResponse"][];
+            minimumOrderDeadlineDays?: number;
+            /** @description 요일별 운영정보 */
+            dailySchedules?: components["schemas"]["DailyScheduleResponse"][];
+        };
+        TimeRangeResponse: {
+            /**
+             * @description 시작 시간
+             * @example 10:00
+             */
+            startTime?: string;
+            /**
+             * @description 종료 시간
+             * @example 17:00
+             */
+            endTime?: string;
         };
         OptionGroupRequest: {
             /**
@@ -2552,21 +2562,15 @@ export interface components {
              */
             dailyAvailableQuantity?: number;
             /**
-             * @description 픽업 시작 시간
-             * @example 10:00
-             */
-            openTime?: string;
-            /**
-             * @description 픽업 종료 시간
-             * @example 17:00
-             */
-            closeTime?: string;
-            /**
              * Format: int32
              * @description 시간 간격(분)
              * @example 30
              */
             intervalMinutes?: number;
+            /** @description 픽업 가능 시간 구간 목록 */
+            pickupTimeRanges?: components["schemas"]["TimeRangeResponse"][];
+            /** @description 휴게 시간 구간 목록 */
+            breakTimeRanges?: components["schemas"]["TimeRangeResponse"][];
         };
         ApiResponseMenuListResponse: {
             isSuccess?: boolean;
@@ -3730,6 +3734,28 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["ApiResponseOwnerStoreOrderScheduleResponse"];
+                };
+            };
+        };
+    };
+    getMyStoreMenu: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                menuId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseOwnerMenuResponse"];
                 };
             };
         };
