@@ -42,12 +42,14 @@ export default function ProfileContent({
           value={values.birthDate}
           placeholder="생년월일 입력"
           onChange={(birthDate) => onChange({ ...values, birthDate })}
+          type="date"
         />
         <ProfileField
           label="이메일"
           value={values.email}
           placeholder="이메일 입력"
           onChange={(email) => onChange({ ...values, email })}
+          type="email"
         />
         <GenderSelector
           value={values.gender}
