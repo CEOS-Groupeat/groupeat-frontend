@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { fetchClient } from '@/lib/fetchClient';
-import type { ApiResponse } from '@/app/customer/search/_types/store.type';
+import type { ApiResponse } from '@/types/api';
 import type {
   CreateReviewRequest,
   CreateReviewResponse,

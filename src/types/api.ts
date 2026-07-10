@@ -30,6 +30,24 @@ export type PostRequest<T extends keyof paths> = paths[T] extends {
   ? R
   : never;
 
+export type PatchRequest<T extends keyof paths> = paths[T] extends {
+  patch: { requestBody: { content: { 'application/json': infer R } } };
+}
+  ? R
+  : never;
+
+export type PutRequest<T extends keyof paths> = paths[T] extends {
+  put: { requestBody: { content: { 'application/json': infer R } } };
+}
+  ? R
+  : never;
+
+export type PutResponse<T extends keyof paths> = paths[T] extends {
+  put: { responses: { 200: { content: { '*/*': infer R } } } };
+}
+  ? R
+  : never;
+
 // -------------------------------------------------------------------------------------------------
 
 // Cart APIs
