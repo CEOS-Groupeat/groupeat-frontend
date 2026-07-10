@@ -9,7 +9,7 @@ interface MyReviewsParams {
 
 export function useMyReviews({
   lastReviewId,
-  size = 10,
+  size = 50,
 }: MyReviewsParams = {}) {
   return useQuery({
     queryKey: ['myReviews', lastReviewId, size],
