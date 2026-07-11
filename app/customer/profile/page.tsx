@@ -11,6 +11,7 @@ import ProfileContent, {
 } from '@/components/features/profile/ProfileContent';
 import SubmitButton from '@/components/features/profile/SubmitButton';
 import ToastError from '@/components/ui/ToastError';
+import WithdrawConfirmModal from '@/components/features/profile/WithdrawConfirmModal';
 import type { CustomerAccountData } from './_types/profile.type';
 import { isValidEmail } from './_utils/validateEmail';
 import { isValidBirthDate } from './_utils/validateBirthDate';
@@ -39,6 +40,7 @@ function ProfileForm({ account }: ProfileFormProps) {
   const [showErrorToast, setShowErrorToast] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const errorToastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [showWithdrawModal, setShowWithdrawModal] = useState(false);
 
   const showError = (message: string) => {
     if (errorToastTimerRef.current) {
@@ -59,6 +61,18 @@ function ProfileForm({ account }: ProfileFormProps) {
       }
     };
   }, []);
+
+  const handleWithdrawConfirm = async () => {
+    try {
+      await withdraw();
+      setShowWithdrawModal(false);
+      // TODO: 탈퇴 성공 후 이동 처리 (로그인 페이지 등)
+    } catch (error) {
+      console.error('회원 탈퇴 실패:', error);
+      setShowWithdrawModal(false);
+      showError('회원 탈퇴에 실패했어요. 다시 시도해주세요.');
+    }
+  };
 
   const isFormValid =
     values.birthDate.trim().length > 0 &&
@@ -91,15 +105,6 @@ function ProfileForm({ account }: ProfileFormProps) {
     }
   };
 
-  const handleWithdraw = async () => {
-    try {
-      await withdraw();
-    } catch (error) {
-      console.error('회원 탈퇴 실패:', error);
-      showError('회원 탈퇴에 실패했어요. 다시 시도해주세요.');
-    }
-  };
-
   return (
     <>
       <ProfileContent
@@ -107,7 +112,7 @@ function ProfileForm({ account }: ProfileFormProps) {
         onChange={setValues}
         socialProvider={account.socialAccount?.provider ?? ''}
         socialEmail={account.socialAccount?.email ?? ''}
-        onWithdraw={handleWithdraw}
+        onWithdraw={() => setShowWithdrawModal(true)}
       />
       <SubmitButton
         disabled={!isFormValid}
@@ -115,6 +120,12 @@ function ProfileForm({ account }: ProfileFormProps) {
         onClick={handleSubmit}
       />
       {showErrorToast && <ToastError text={errorMessage} />}
+      {showWithdrawModal && (
+        <WithdrawConfirmModal
+          onClose={() => setShowWithdrawModal(false)}
+          onConfirm={handleWithdrawConfirm}
+        />
+      )}
     </>
   );
 }

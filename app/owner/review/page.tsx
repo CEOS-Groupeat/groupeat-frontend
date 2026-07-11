@@ -1,7 +1,5 @@
 'use client';
-{
-  /* 리뷰 페이지입니다. */
-}
+
 import { useState } from 'react';
 import OwnerReviewHeader from './_components/OwnerReviewHeader';
 import OwnerReviewSummary from './_components/OwnerReviewSummary';
