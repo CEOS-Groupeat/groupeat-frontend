@@ -13,6 +13,7 @@ import SubmitButton from '@/components/features/profile/SubmitButton';
 import ToastError from '@/components/ui/ToastError';
 import type { CustomerAccountData } from './_types/profile.type';
 import { isValidEmail } from './_utils/validateEmail';
+import { isValidBirthDate } from './_utils/validateBirthDate';
 
 interface ProfileFormProps {
   account: CustomerAccountData;
@@ -66,6 +67,11 @@ function ProfileForm({ account }: ProfileFormProps) {
 
   const handleSubmit = async () => {
     if (!isFormValid) return;
+
+    if (!isValidBirthDate(values.birthDate)) {
+      showError('생년월일은 YYYY-MM-DD 형식으로 입력해주세요.');
+      return;
+    }
 
     if (!isValidEmail(values.email)) {
       showError('올바른 이메일 형식으로 입력해주세요.');
