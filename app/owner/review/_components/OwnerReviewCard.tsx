@@ -5,7 +5,7 @@ import Image from 'next/image';
 import type { OwnerReview } from '../_types/ownerReview.type';
 import { formatReviewDate } from '@/app/customer/store/[storeId]/review/_utils/formatReviewDate';
 import StarIcon from '@/public/icons/icon_star.svg';
-import PickupCompleteToast from '@/app/owner/orders/_components/PickupCompleteToast';
+import SuccessToast from '@/components/ui/SuccessToast';
 import ToastError from '@/components/ui/ToastError';
 
 interface OwnerReviewCardProps {
@@ -202,7 +202,7 @@ export default function OwnerReviewCard({
         </div>
       )}
 
-      {showSuccessToast && <PickupCompleteToast text="답글이 등록되었어요." />}
+      {showSuccessToast && <SuccessToast text="리뷰 작성이 완료되었습니다." />}
       {showErrorToast && (
         <ToastError text="답글 등록에 실패했어요. 다시 시도해주세요." />
       )}
