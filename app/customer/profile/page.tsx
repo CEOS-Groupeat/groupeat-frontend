@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useCustomerAccount } from './_hooks/useCustomerAccount';
 import { useUpdateCustomerAccount } from './_hooks/useUpdateCustomerAccount';
 import { useWithdrawCustomer } from './_hooks/useWithdrawCustomer';
+import { ApiError } from './_hooks/useWithdrawCustomer';
 import ProfileHeader from '@/components/features/profile/ProfileHeader';
 import ProfileContent, {
   type ProfileFormValues,
@@ -12,6 +13,7 @@ import ProfileContent, {
 import SubmitButton from '@/components/features/profile/SubmitButton';
 import ToastError from '@/components/ui/ToastError';
 import WithdrawConfirmModal from '@/components/features/profile/WithdrawConfirmModal';
+import ActiveOrderExistsModal from '@/components/features/profile/ActiveOrderExistModal';
 import type { CustomerAccountData } from './_types/profile.type';
 import { isValidEmail } from './_utils/validateEmail';
 import { isValidBirthDate } from './_utils/validateBirthDate';
@@ -41,6 +43,7 @@ function ProfileForm({ account }: ProfileFormProps) {
   const [errorMessage, setErrorMessage] = useState('');
   const errorToastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
+  const [showActiveOrderModal, setShowActiveOrderModal] = useState(false);
 
   const showError = (message: string) => {
     if (errorToastTimerRef.current) {
@@ -65,12 +68,16 @@ function ProfileForm({ account }: ProfileFormProps) {
   const handleWithdrawConfirm = async () => {
     try {
       await withdraw();
-      setShowWithdrawModal(false);
-      // TODO: 탈퇴 성공 후 이동 처리 (로그인 페이지 등)
+      router.push('/login');
     } catch (error) {
       console.error('회원 탈퇴 실패:', error);
       setShowWithdrawModal(false);
-      showError('회원 탈퇴에 실패했어요. 다시 시도해주세요.');
+
+      if (error instanceof ApiError && error.code === 'MEMBER4092') {
+        setShowActiveOrderModal(true);
+      } else {
+        showError('회원 탈퇴에 실패했어요. 다시 시도해주세요.');
+      }
     }
   };
 
@@ -124,6 +131,11 @@ function ProfileForm({ account }: ProfileFormProps) {
         <WithdrawConfirmModal
           onClose={() => setShowWithdrawModal(false)}
           onConfirm={handleWithdrawConfirm}
+        />
+      )}
+      {showActiveOrderModal && (
+        <ActiveOrderExistsModal
+          onClose={() => setShowActiveOrderModal(false)}
         />
       )}
     </>
