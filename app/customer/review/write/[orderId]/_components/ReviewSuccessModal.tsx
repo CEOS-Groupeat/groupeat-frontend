@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { FocusTrap } from 'focus-trap-react';
-import IconCheckSuccess from '@/public/icons/icon_reviewSuccess.svg';
+import IconCheckSuccess from '@/public/icons/icon_check_success.svg';
 
 interface ReviewSuccessModalProps {
   onComplete: () => void;

@@ -40,9 +40,9 @@ export default function ProfileContent({
         <ProfileField
           label="생년월일"
           value={values.birthDate}
-          placeholder="생년월일 입력"
+          placeholder="YYYY-MM-DD"
           onChange={(birthDate) => onChange({ ...values, birthDate })}
-          type="date"
+          type="text"
         />
         <ProfileField
           label="이메일"
