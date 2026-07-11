@@ -1,14 +1,35 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import SettingOption from '@/app/owner/settings/_components/SettingOption';
 import ProfileIcon from '@/public/icons/icon_profile.svg';
 import IllustCustomer from '@/public/illust/illust_Customer.svg';
 import DialogModal from '@/components/ui/DialogModal';
 import { fetchClient } from '@/lib/fetchClient';
 import CustomerNavbar from '@/components/ui/CustomerNavbar';
+import PickupCompleteToast from '@/app/owner/orders/_components/PickupCompleteToast';
+
+// 승연: useSearchParams를 쓰는 부분만 별도 컴포넌트로 분리하여 Suspense로 감쌈.
+function ProfileUpdateToast() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [showToast, setShowToast] = useState(
+    () => searchParams.get('toast') === 'profile-updated'
+  );
+
+  useEffect(() => {
+    if (showToast) {
+      router.replace('/customer/settings');
+      const timer = setTimeout(() => setShowToast(false), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [showToast, router]);
+
+  if (!showToast) return null;
+  return <PickupCompleteToast text="수정이 완료되었습니다." />;
+}
 
 export default function CustomerSettingsPage() {
   const router = useRouter();
@@ -130,6 +151,11 @@ export default function CustomerSettingsPage() {
           }}
         />
       )}
+
+      {/* 승연: my-프로필 페이지 토스트 코드입니다. */}
+      <Suspense fallback={null}>
+        <ProfileUpdateToast />
+      </Suspense>
     </div>
   );
 }
