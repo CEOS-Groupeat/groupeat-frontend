@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useCustomerAccount } from './_hooks/useCustomerAccount';
 import { useUpdateCustomerAccount } from './_hooks/useUpdateCustomerAccount';
 import { useWithdrawCustomer } from './_hooks/useWithdrawCustomer';
@@ -9,13 +10,16 @@ import ProfileContent, {
   type ProfileFormValues,
 } from '@/components/features/profile/ProfileContent';
 import SubmitButton from '@/components/features/profile/SubmitButton';
+import ToastError from '@/components/ui/ToastError';
 import type { CustomerAccountData } from './_types/profile.type';
+import { isValidEmail } from './_utils/validateEmail';
 
 interface ProfileFormProps {
   account: CustomerAccountData;
 }
 
 function ProfileForm({ account }: ProfileFormProps) {
+  const router = useRouter();
   const { mutateAsync: updateAccount, isPending: isUpdating } =
     useUpdateCustomerAccount();
   const { mutateAsync: withdraw } = useWithdrawCustomer();
@@ -31,6 +35,30 @@ function ProfileForm({ account }: ProfileFormProps) {
         : null,
   });
 
+  const [showErrorToast, setShowErrorToast] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const errorToastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const showError = (message: string) => {
+    if (errorToastTimerRef.current) {
+      clearTimeout(errorToastTimerRef.current);
+    }
+    setErrorMessage(message);
+    setShowErrorToast(true);
+    errorToastTimerRef.current = setTimeout(() => {
+      setShowErrorToast(false);
+      errorToastTimerRef.current = null;
+    }, 2000);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (errorToastTimerRef.current) {
+        clearTimeout(errorToastTimerRef.current);
+      }
+    };
+  }, []);
+
   const isFormValid =
     values.birthDate.trim().length > 0 &&
     values.email.trim().length > 0 &&
@@ -38,25 +66,31 @@ function ProfileForm({ account }: ProfileFormProps) {
 
   const handleSubmit = async () => {
     if (!isFormValid) return;
+
+    if (!isValidEmail(values.email)) {
+      showError('올바른 이메일 형식으로 입력해주세요.');
+      return;
+    }
+
     try {
       await updateAccount({
         email: values.email,
         birthDate: values.birthDate,
         gender: values.gender!,
       });
-      // TODO: 수정 완료 토스트
+      router.push('/customer/settings?toast=profile-updated');
     } catch (error) {
       console.error('계정 정보 수정 실패:', error);
-      // TODO: 에러 토스트
+      showError('계정 정보 수정에 실패했어요. 다시 시도해주세요.');
     }
   };
 
   const handleWithdraw = async () => {
-    // TODO: 확인 모달
     try {
       await withdraw();
     } catch (error) {
       console.error('회원 탈퇴 실패:', error);
+      showError('회원 탈퇴에 실패했어요. 다시 시도해주세요.');
     }
   };
 
@@ -74,11 +108,13 @@ function ProfileForm({ account }: ProfileFormProps) {
         isLoading={isUpdating}
         onClick={handleSubmit}
       />
+      {showErrorToast && <ToastError text={errorMessage} />}
     </>
   );
 }
 
 export default function CustomerProfilePage() {
+  const router = useRouter();
   const { data: account, isLoading, isError } = useCustomerAccount();
 
   if (isLoading) {
@@ -91,10 +127,15 @@ export default function CustomerProfilePage() {
 
   if (isError || !account) {
     return (
-      <div className="flex-1 flex items-center justify-center min-h-screen">
-        <span className="text-sm text-text-subtle">
-          계정 정보를 불러오지 못했어요.
-        </span>
+      <div className="flex-1 flex flex-col gap-3 items-center justify-center min-h-screen">
+        <span className="text-sm text-text-subtle">계정 정보가 없어요.</span>
+        <button
+          type="button"
+          onClick={() => router.push('/login')}
+          className="text-sm text-brand-default underline"
+        >
+          로그인 페이지로 이동하기
+        </button>
       </div>
     );
   }
