@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useSearchStores } from '@/hooks/useSearchStores';
 import type {
-  SearchStoresResponse,
+  StoreListData,
   StoreSearchParams,
 } from '@/app/customer/search/_types/store.type';
 import { FILTER_ITEMS } from '../_constants/filterItems';
@@ -28,7 +28,7 @@ interface FilterBottomSheetProps {
   isOpen: boolean;
   onClose: () => void;
   onSearchResult: (
-    data: SearchStoresResponse,
+    data: StoreListData,
     filters?: StoreSearchParams
   ) => void;
   initialFilters?: StoreSearchParams;
