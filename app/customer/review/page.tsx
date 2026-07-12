@@ -69,18 +69,10 @@ export default function MyReviewPage() {
         </span>
       </div>
 
-      <div className="px-4 py-1.5 flex justify-between items-center">
+      <div className="px-4 py-1.5 flex items-center">
         <span className="text-text-default text-label2 font-medium font-['Pretendard']">
           리뷰({totalCount})
         </span>
-        {/* 전체 삭제버튼 잠시 비활성화- api대기중 */}
-        <button
-          type="button"
-          disabled
-          className="text-text-subtle text-xs font-normal font-['Pretendard'] underline leading-4 opacity-50 cursor-not-allowed"
-        >
-          전체 삭제
-        </button>
       </div>
 
       {isLoading ? (
