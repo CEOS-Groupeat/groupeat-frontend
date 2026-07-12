@@ -6,7 +6,7 @@ import type { OwnerOrderStatus } from '@/src/types/api';
 
 interface OrderCardProps {
   orderId: number;
-  orderStatus: OwnerOrderStatus; 
+  orderStatus: OwnerOrderStatus;
   isReorder: boolean;
   groupName: string;
   customerName: string;
@@ -147,7 +147,7 @@ export default function OrderCard({
           <button
             type="button"
             onClick={onPickupComplete}
-            className="flex-1 h-[38px] rounded-lg bg-brand-background text-label2 font-semibold text-brand-default"
+            className="flex-1 h-[38px] rounded-lg bg-brand-default text-label2 font-semibold text-text-inverse"
           >
             픽업 완료
           </button>
