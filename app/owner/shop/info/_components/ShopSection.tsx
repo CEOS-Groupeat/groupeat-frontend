@@ -60,7 +60,7 @@ function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
 
     try {
       await saveShopInfo({
-        imageUrl: shopInfo.imageUrl ?? '',
+        imageUrl: values.imageUrl ?? '',
         storeName: values.storeName,
         location: {
           address: values.address,
