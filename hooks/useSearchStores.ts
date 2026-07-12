@@ -1,13 +1,13 @@
 import { useState, useCallback } from 'react';
 import { fetchClient } from '@/lib/fetchClient';
 import type {
-  ApiResponse,
-  SearchStoresResponse,
+  StoreListData,
   StoreSearchParams,
 } from '@/app/customer/search/_types/store.type';
+import type { ApiResponse } from '@/types/api';
 
 export function useSearchStores() {
-  const [data, setData] = useState<SearchStoresResponse | null>(null);
+  const [data, setData] = useState<StoreListData | null>(null);
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -32,7 +32,7 @@ export function useSearchStores() {
     const query = queryParams.toString();
 
     try {
-      const res = await fetchClient<ApiResponse<SearchStoresResponse>>(
+      const res = await fetchClient<ApiResponse<StoreListData>>(
         `/api/search/stores${query ? `?${query}` : ''}`
       );
 
