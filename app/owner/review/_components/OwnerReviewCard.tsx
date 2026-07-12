@@ -172,7 +172,7 @@ export default function OwnerReviewCard({
         <div className="pl-4 pr-3 py-3 bg-border-divider rounded-tl-lg rounded-tr-2xl rounded-bl-2xl rounded-br-2xl outline outline-1 outline-offset-[-1px] outline-border-subtle flex flex-col gap-1">
           <div className="flex flex-col gap-1">
             <span className="text-caption2 font-semibold text-text-subtlest">
-              리뷰 작성
+              답글 작성
             </span>
             <textarea
               value={replyContent}
@@ -202,7 +202,7 @@ export default function OwnerReviewCard({
         </div>
       )}
 
-      {showSuccessToast && <SuccessToast text="리뷰 작성이 완료되었습니다." />}
+      {showSuccessToast && <SuccessToast text="답글 작성이 완료되었습니다." />}
       {showErrorToast && (
         <ToastError text="답글 등록에 실패했어요. 다시 시도해주세요." />
       )}
