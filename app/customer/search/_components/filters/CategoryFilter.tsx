@@ -2,16 +2,20 @@
 
 import { CATEGORIES } from '@/app/customer/search/_constants/category';
 
+import type { StoreSearchParams } from '@/app/customer/search/_types/store.type';
+
+type CategoryValue = StoreSearchParams['category'];
+
 interface CategoryFilterProps {
-  value: string | undefined;
-  onChange: (value: string | undefined) => void;
+  value: CategoryValue;
+  onChange: (value: CategoryValue) => void;
 }
 
 export default function CategoryFilter({
   value,
   onChange,
 }: CategoryFilterProps) {
-  const handleToggle = (id: string) => {
+  const handleToggle = (id: CategoryValue) => {
     onChange(value === id ? undefined : id);
   };
 

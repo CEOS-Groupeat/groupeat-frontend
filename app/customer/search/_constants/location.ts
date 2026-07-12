@@ -1,5 +1,9 @@
+import type { StoreSearchParams } from '@/app/customer/search/_types/store.type';
+
+export type RegionValue = NonNullable<StoreSearchParams['region']>;
+
 export type LocationOption = {
-  value: string;
+  value: RegionValue;
   label: string;
 };
 

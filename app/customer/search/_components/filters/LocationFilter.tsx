@@ -4,10 +4,13 @@ import { useState } from 'react';
 import SearchIcon from '@/public/icons/icon_search.svg';
 import { LOCATION_OPTIONS } from '@/app/customer/search/_constants/location';
 import type { LocationOption } from '@/app/customer/search/_constants/location';
+import type { StoreSearchParams } from '@/app/customer/search/_types/store.type';
+
+type RegionValue = StoreSearchParams['region'];
 
 interface LocationFilterProps {
-  value: string | undefined;
-  onChange: (value: string) => void;
+  value: RegionValue;
+  onChange: (value: RegionValue) => void;
   onConfirm: () => void;
 }
 

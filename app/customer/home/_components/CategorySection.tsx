@@ -1,9 +1,11 @@
 import CategoryButton from './CategoryButton';
-import { StoreSearchParams } from '../../search/_types/store.type';
 import { CATEGORIES } from '@/app/customer/search/_constants/category';
+import type { StoreSearchParams } from '@/app/customer/search/_types/store.type';
+
+type CategoryValue = NonNullable<StoreSearchParams['category']>;
 
 interface CategorySectionProps {
-  onCategoryClick: (category: string) => void;
+  onCategoryClick: (category: CategoryValue) => void;
   appliedFilters: StoreSearchParams;
 }
 

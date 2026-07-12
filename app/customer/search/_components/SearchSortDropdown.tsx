@@ -3,10 +3,11 @@
 import { useState } from 'react';
 import DownArrow from '@/public/icons/icon_arrow_down.svg';
 import { SORT_OPTIONS } from '../_constants/sortOptions';
+import type { SortValue } from '@/app/customer/search/_constants/sortOptions';
 
 interface SearchSortDropdownProps {
-  value: string;
-  onChange: (value: string) => void;
+  value: SortValue;
+  onChange: (value: SortValue) => void;
 }
 
 export default function SearchSortDropdown({
