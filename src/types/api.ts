@@ -30,6 +30,24 @@ export type PostRequest<T extends keyof paths> = paths[T] extends {
   ? R
   : never;
 
+export type PatchRequest<T extends keyof paths> = paths[T] extends {
+  patch: { requestBody: { content: { 'application/json': infer R } } };
+}
+  ? R
+  : never;
+
+export type PutRequest<T extends keyof paths> = paths[T] extends {
+  put: { requestBody: { content: { 'application/json': infer R } } };
+}
+  ? R
+  : never;
+
+export type PutResponse<T extends keyof paths> = paths[T] extends {
+  put: { responses: { 200: { content: { '*/*': infer R } } } };
+}
+  ? R
+  : never;
+
 // -------------------------------------------------------------------------------------------------
 
 // Cart APIs
@@ -50,6 +68,8 @@ export type CalculatedCartItem = NonNullable<
 >[number];
 export type CalculateCartRequest = PostRequest<'/api/carts/calculate'>;
 export type DeleteCartItem = DeleteResponse<'/api/carts/items/{cartItemId}'>;
+// 장바구니 전체 비우기
+export type ClearCartResponse = DeleteResponse<'/api/carts'>;
 
 // Menu APIs
 export type MenuListApiResponse = GetResponse<'/api/stores/{storeId}/menus'>;
@@ -57,5 +77,34 @@ export type Menu = components['schemas']['MenuDetailDTO'];
 
 // Order APIs (Customer-Order-Status)
 export type CustomerOrderListResponse = GetResponse<'/api/orders'>;
-export type CustomerOrderListData = NonNullable<CustomerOrderListResponse['data']>;
-export type CustomerOrder = NonNullable<CustomerOrderListData['orderList']>[number];
+export type CustomerOrderListData = NonNullable<
+  CustomerOrderListResponse['data']
+>;
+export type CustomerOrder = NonNullable<
+  CustomerOrderListData['orderList']
+>[number];
+
+// Order APIs (Owner-Order-Status)
+export type OwnerOrderListResponse = GetResponse<'/api/owner/orders'>;
+export type OwnerOrderListData = NonNullable<OwnerOrderListResponse['data']>;
+export type OwnerOrder = NonNullable<OwnerOrderListData['orderList']>[number];
+export type OwnerOrderStatus = OwnerOrder['orderStatus'];
+
+export type OwnerDashboardResponse =
+  GetResponse<'/api/owner/dashboard/summary'>;
+export type OwnerDashboardSummary = NonNullable<OwnerDashboardResponse['data']>;
+
+// Order Process APIs (Owner - 승인/거절/픽업완료, 응답 구조 동일)
+export type OrderProcessResponse =
+  PatchResponse<'/api/orders/{orderId}/accept'>;
+export type OrderProcessData = NonNullable<OrderProcessResponse['data']>;
+
+// Review APIs (Customer-Store-Review)
+export type ReviewListResponse = GetResponse<'/api/stores/{storeId}/reviews'>;
+export type ReviewListData = NonNullable<ReviewListResponse['data']>;
+export type Review = NonNullable<ReviewListData['reviewList']>[number];
+export type OwnerReply = NonNullable<Review['ownerReply']>;
+
+export type ReviewSummaryResponse =
+  GetResponse<'/api/stores/{storeId}/reviews/summary'>;
+export type ReviewSummaryData = NonNullable<ReviewSummaryResponse['data']>;

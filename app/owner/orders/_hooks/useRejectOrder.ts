@@ -1,31 +1,22 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchClient } from '@/lib/fetchClient';
-import type {
-  ApiResponse,
-  OrderProcessResponse,
-  RejectOrderRequest,
-} from '../_types/order.type';
+import type { OrderProcessResponse } from '@/src/types/api';
 
 export function useRejectOrder() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({
-      orderId,
-      rejectReason,
-    }: { orderId: number } & RejectOrderRequest) => {
-      const res = await fetchClient<ApiResponse<OrderProcessResponse>>(
+    mutationFn: async (orderId: number) => {
+      const res = await fetchClient<OrderProcessResponse>(
         `/api/orders/${orderId}/reject`,
-        {
-          method: 'PATCH',
-          body: JSON.stringify({ rejectReason }),
-        }
+        { method: 'PATCH' }
       );
-      if (!res.isSuccess) throw new Error(res.message);
+      if (!res.isSuccess) throw new Error(res.message ?? '거절 처리에 실패했어요.');
       return res.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['orders'] });
+      queryClient.invalidateQueries({ queryKey: ['ownerOrders'] });
+      queryClient.invalidateQueries({ queryKey: ['ownerDashboard'] });
     },
   });
 }

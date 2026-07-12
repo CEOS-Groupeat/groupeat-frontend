@@ -7,8 +7,6 @@ import { fetchClient } from '@/lib/fetchClient';
 import { ApiResponse, StoreDetail as StoreDetailType } from '@/types/store';
 
 import Ticket from '@/public/icons/icon_ticket.svg';
-import HeartOff from '@/public/icons/icon_heartOff.svg';
-import HeartOn from '@/public/icons/icon_heartOn.svg';
 import Star from '@/public/icons/icon_star.svg';
 import Alert from '@/public/icons/icon_alert.svg';
 import Place from '@/public/icons/icon_place.svg';
@@ -40,8 +38,6 @@ const formatClosedDays = (daysString?: string | null) => {
 export default function StoreDetail() {
   const params = useParams();
   const storeId = params.storeId as string;
-
-  const [isFavorite, setIsFavorite] = useState<boolean>(false);
   const [isProcessExpanded, setIsProcessExpanded] = useState<boolean>(false);
 
   const {
@@ -107,18 +103,6 @@ export default function StoreDetail() {
                           샌드위치·김밥
                         </p>
                       </div>
-                      <button
-                        type="button"
-                        aria-pressed={isFavorite}
-                        onClick={() => setIsFavorite((v) => !v)}
-                        className="rounded"
-                      >
-                        {isFavorite ? (
-                          <HeartOn className="w-6 h-6" />
-                        ) : (
-                          <HeartOff className="w-6 h-6" />
-                        )}
-                      </button>
                     </div>
                   </div>
                 </div>
@@ -208,9 +192,17 @@ export default function StoreDetail() {
 
                 {isProcessExpanded && (
                   <div className="w-full flex p-2.5 flex-col items-start gap-2.5 self-stretch animate-in fade-in slide-in-from-top-1 duration-200 rounded-lg bg-hover">
-                    <p className="text-label2 text-text-default whitespace-pre-line">
-                      {store.orderProcess || '안내된 주문 프로세스가 없습니다.'}
-                    </p>
+                    <div className="flex flex-col items-start gap-0.5 self-stretch">
+                      <p className="text-label2 text-text-default whitespace-pre-line">
+                        1. 주문 요청서 제출 및 결제 (선결제 / 현장결제 예약금)
+                      </p>
+                      <p className="text-label2 text-text-default whitespace-pre-line">
+                        2. 담당자 확인 후 주문 승인 (24시간 이내)
+                      </p>
+                      <p className="text-label2 text-text-default whitespace-pre-line">
+                        3. 픽업
+                      </p>
+                    </div>
                   </div>
                 )}
               </div>
