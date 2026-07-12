@@ -13,9 +13,7 @@ import OrderPickupCompleteModal from './_components/OrderPickupCompleteModal';
 import PickupCompleteToast from './_components/PickupCompleteToast';
 import OrderList from './_components/OrderList';
 import OwnerNavbar from '@/components/owner/OwnerNavbar';
-
 import { useOwnerOrders } from './_hooks/useOwnerOrders';
-import { useOwnerDashboard } from './_hooks/useOwnerDashboard';
 import { useApproveOrder } from './_hooks/useApproveOrder';
 import { useRejectOrder } from './_hooks/useRejectOrder';
 import { usePickupComplete } from './_hooks/usePickupComplete';
@@ -25,7 +23,10 @@ export default function Orders() {
     'WAITING'
   );
 
-  const { data: dashboard } = useOwnerDashboard();
+  const { data: waitingData } = useOwnerOrders({ tab: 'WAITING', size: 1 });
+  const { data: confirmedData } = useOwnerOrders({ tab: 'CONFIRMED', size: 1 });
+  const { data: pastData } = useOwnerOrders({ tab: 'PAST', size: 1 });
+
   const {
     data: orderData,
     isLoading,
@@ -33,9 +34,9 @@ export default function Orders() {
   } = useOwnerOrders({ tab: activeTab });
 
   const counts = [
-    { value: 'WAITING' as const, count: dashboard?.waitingCount ?? 0 },
-    { value: 'CONFIRMED' as const, count: dashboard?.confirmedCount ?? 0 },
-    { value: 'PAST' as const, count: dashboard?.completedCount ?? 0 },
+    { value: 'WAITING' as const, count: waitingData?.totalElements ?? 0 },
+    { value: 'CONFIRMED' as const, count: confirmedData?.totalElements ?? 0 },
+    { value: 'PAST' as const, count: pastData?.totalElements ?? 0 },
   ];
 
   const [showProcessModal, setShowProcessModal] = useState(false);
