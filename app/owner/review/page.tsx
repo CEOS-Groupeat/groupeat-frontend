@@ -15,32 +15,48 @@ import OwnerNavbar from '@/components/owner/OwnerNavbar';
 
 type SortValue = (typeof SORT_OPTIONS)[number]['value'];
 
+interface CursorState {
+  lastReviewId?: number;
+  lastRating?: number;
+}
+
 export default function OwnerReviewPage() {
   const { data: summary } = useOwnerReviewSummary();
   const { mutateAsync: createReply } = useCreateReply();
-  const [sort, setSort] = useState<SortValue>('LATEST');
 
-  const [cursorStack, setCursorStack] = useState<(number | undefined)[]>([
-    undefined,
-  ]);
+  const [sort, setSort] = useState<SortValue>('LATEST');
+  const [cursorStack, setCursorStack] = useState<CursorState[]>([{}]);
   const [currentPage, setCurrentPage] = useState(0);
   const [maxVisitedPage, setMaxVisitedPage] = useState(0);
 
+  const currentCursor = cursorStack[currentPage];
+
   const { data, isLoading, isError } = useOwnerReviews({
-    lastReviewId: cursorStack[currentPage],
+    sortType: sort,
+    lastReviewId: currentCursor.lastReviewId,
+    lastRating: currentCursor.lastRating,
+    size: 10,
   });
 
   const reviews = data?.reviewList ?? [];
-
   const totalPages = Math.ceil((summary?.totalReviewCount ?? 0) / 10);
 
+  const handleSortChange = (newSort: SortValue) => {
+    setSort(newSort);
+    setCursorStack([{}]);
+    setCurrentPage(0);
+    setMaxVisitedPage(0);
+  };
+
   const handleNext = () => {
-    if (data?.hasNext && data?.nextCursor !== undefined) {
+    const lastReview = reviews[reviews.length - 1];
+    if (data?.hasNext && lastReview) {
+      const nextCursor: CursorState = {
+        lastReviewId: lastReview.reviewId,
+        lastRating: sort !== 'LATEST' ? lastReview.rating : undefined,
+      };
       const nextPage = currentPage + 1;
-      setCursorStack((prev) => [
-        ...prev.slice(0, currentPage + 1),
-        data.nextCursor,
-      ]);
+      setCursorStack((prev) => [...prev.slice(0, currentPage + 1), nextCursor]);
       setCurrentPage(nextPage);
       setMaxVisitedPage((prev) => Math.max(prev, nextPage));
     }
@@ -77,11 +93,11 @@ export default function OwnerReviewPage() {
         averageRating={summary?.averageRating ?? 0}
         distribution={distribution}
       />
-      {/* TODO: 백엔드에 sortType 파라미터 추가 요청함. API 반영되면 useOwnerReviews에 sortType 연결 필요 */}
+
       <OwnerReviewSortDropDown
-        totalCount={reviews.length}
+        totalCount={summary?.totalReviewCount ?? 0}
         value={sort}
-        onChange={setSort}
+        onChange={handleSortChange}
       />
 
       <div className="px-4 gap-5 flex flex-col">
@@ -103,7 +119,6 @@ export default function OwnerReviewPage() {
           </div>
         ) : (
           reviews.map((review) => (
-            // TODO: OwnerReviewCard 컴포넌트로 교체 예정
             <OwnerReviewCard
               key={review.reviewId}
               review={review}
