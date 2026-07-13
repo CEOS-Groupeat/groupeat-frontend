@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import ReviewCard from '@/app/customer/store/[storeId]/review/_components/ReviewCard';
 import type { MyReview } from '../_types/myReview.type';
 
@@ -12,11 +13,14 @@ export default function MyReviewCard({
   review,
   onDeleteClick,
 }: MyReviewCardProps) {
+  const router = useRouter();
+
   return (
     <ReviewCard
       review={review}
+      storeName={review.storeName}
+      onStoreClick={() => router.push(`/customer/store/${review.storeId}`)}
       onDeleteClick={onDeleteClick}
-      // TODO: storeId/storeName 필드 추가되면 storeName, onStoreClick 연결
     />
   );
 }
