@@ -12,6 +12,7 @@ import ToastError from '@/components/ui/ToastError';
 import { useShopInfo } from '../_hooks/useShopInfo';
 import { useSaveShopInfo } from '../_hooks/useSaveShopInfo';
 import { useShopImageUpload } from '../_hooks/useShopImageUpload';
+import { isValidPhoneNumber } from '../_utils/validatePhoneNumber';
 import type { ShopInfoData } from '../_types/shop.type';
 
 function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
@@ -37,6 +38,8 @@ function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
   const [showErrorToast, setShowErrorToast] = useState(false);
   const successTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const errorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const [phoneError, setPhoneError] = useState(false);
 
   useEffect(() => {
     return () => {
@@ -67,6 +70,12 @@ function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
 
   const handleSubmit = async () => {
     if (!isFormValid) return;
+
+    if (!isValidPhoneNumber(values.phoneNumber)) {
+      setPhoneError(true);
+      return;
+    }
+    setPhoneError(false);
 
     const hasDiscount =
       values.discountConditionQuantity.trim().length > 0 &&
@@ -166,14 +175,25 @@ function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
             onChange={(e) => setValues({ ...values, address: e.target.value })}
             labelClassName="text-text-subtlest"
           />
-          <InputField
-            label="연락처"
-            value={values.phoneNumber}
-            onChange={(e) =>
-              setValues({ ...values, phoneNumber: e.target.value })
-            }
-            labelClassName="text-text-subtlest"
-          />
+          <div className="flex flex-col gap-2 self-stretch">
+            <InputField
+              label="연락처"
+              value={values.phoneNumber}
+              onChange={(e) => {
+                setValues({ ...values, phoneNumber: e.target.value });
+                if (phoneError) setPhoneError(false);
+              }}
+              labelClassName="text-text-subtlest"
+              inputClassName={phoneError ? '!outline-status-danger' : ''}
+            />
+            {phoneError && (
+              <div className="flex items-center gap-1">
+                <span className="text-status-danger text-xs font-medium font-['Pretendard'] leading-4">
+                  올바른 형식을 입력해주세요
+                </span>
+              </div>
+            )}
+          </div>
           <TextAreaField
             label="한 줄 소개"
             value={values.description}
