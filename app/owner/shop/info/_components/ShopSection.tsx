@@ -1,12 +1,14 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import InputField from '@/components/ui/InputField';
 import TextAreaField from '@/components/ui/TextAreaField';
 import DefaultButton from '@/components/ui/ButtonDefault';
 import PencilIcon from '@/public/icons/icon_pencil.svg';
 import AlertIcon from '@/public/icons/icon_alert.svg';
 import ShopCategorySelector from './ShopCategorySelector';
+import SuccessToast from '@/components/ui/SuccessToast';
+import ToastError from '@/components/ui/ToastError';
 import { useShopInfo } from '../_hooks/useShopInfo';
 import { useSaveShopInfo } from '../_hooks/useSaveShopInfo';
 import { useShopImageUpload } from '../_hooks/useShopImageUpload';
@@ -30,6 +32,18 @@ function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
     ),
     discountRate: String(shopInfo.discount?.rate ?? ''),
   });
+
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [showErrorToast, setShowErrorToast] = useState(false);
+  const successTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const errorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (successTimerRef.current) clearTimeout(successTimerRef.current);
+      if (errorTimerRef.current) clearTimeout(errorTimerRef.current);
+    };
+  }, []);
 
   const isFormValid =
     values.storeName.trim().length > 0 &&
@@ -78,10 +92,20 @@ function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
             }
           : undefined,
       });
-      // TODO: 성공 토스트
+
+      if (successTimerRef.current) clearTimeout(successTimerRef.current);
+      setShowSuccessToast(true);
+      successTimerRef.current = setTimeout(() => {
+        setShowSuccessToast(false);
+      }, 2000);
     } catch (error) {
       console.error('가게 정보 저장 실패:', error);
-      // TODO: 에러 토스트
+
+      if (errorTimerRef.current) clearTimeout(errorTimerRef.current);
+      setShowErrorToast(true);
+      errorTimerRef.current = setTimeout(() => {
+        setShowErrorToast(false);
+      }, 2000);
     }
   };
 
@@ -220,6 +244,11 @@ function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
       <DefaultButton onClick={handleSubmit} disabled={!isFormValid || isSaving}>
         {isSaving ? '저장 중...' : '저장하기'}
       </DefaultButton>
+
+      {showSuccessToast && <SuccessToast text="저장이 완료되었습니다" />}
+      {showErrorToast && (
+        <ToastError text="저장에 실패했어요. 다시 시도해주세요." />
+      )}
     </main>
   );
 }
