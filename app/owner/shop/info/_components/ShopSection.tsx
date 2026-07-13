@@ -36,6 +36,7 @@ function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
 
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const successTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const errorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -47,6 +48,15 @@ function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
       if (errorTimerRef.current) clearTimeout(errorTimerRef.current);
     };
   }, []);
+
+  const showError = (message: string) => {
+    if (errorTimerRef.current) clearTimeout(errorTimerRef.current);
+    setErrorMessage(message);
+    setShowErrorToast(true);
+    errorTimerRef.current = setTimeout(() => {
+      setShowErrorToast(false);
+    }, 2000);
+  };
 
   const isFormValid =
     values.storeName.trim().length > 0 &&
@@ -63,7 +73,7 @@ function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
       setValues((prev) => ({ ...prev, imageUrl }));
     } catch (error) {
       console.error('이미지 업로드 실패:', error);
-      // TODO: 에러 토스트
+      showError('이미지 업로드에 실패했어요. 다시 시도해주세요.');
     }
     e.target.value = '';
   };
@@ -109,12 +119,7 @@ function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
       }, 2000);
     } catch (error) {
       console.error('가게 정보 저장 실패:', error);
-
-      if (errorTimerRef.current) clearTimeout(errorTimerRef.current);
-      setShowErrorToast(true);
-      errorTimerRef.current = setTimeout(() => {
-        setShowErrorToast(false);
-      }, 2000);
+      showError('저장에 실패했어요. 다시 시도해주세요.');
     }
   };
 
@@ -266,9 +271,7 @@ function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
       </DefaultButton>
 
       {showSuccessToast && <SuccessToast text="저장이 완료되었습니다" />}
-      {showErrorToast && (
-        <ToastError text="저장에 실패했어요. 다시 시도해주세요." />
-      )}
+      {showErrorToast && <ToastError text={errorMessage} />}
     </main>
   );
 }
