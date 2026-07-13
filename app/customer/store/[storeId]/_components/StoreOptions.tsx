@@ -13,12 +13,23 @@ import { ApiResponse, PickupTimeInfo } from '@/types/store';
 import MenuBottomSheet from '@/app/customer/store/[storeId]/_components/MenuBottomSheet';
 import { useCartStore } from '@/store/useCartStore';
 import FloatingCartBar from '@/app/customer/store/[storeId]/_components/FloatingCartBar';
+import Image from 'next/image';
 
+{
+  /* Todo: 픽업 시간이 오픈타임 ~ 클로즈타임(즉 영업시간) 사이로 둘 뿐만 아니라, 
+  휴게 시간을 고려하여 설계가 되면 그 때 완전히 가능한 시간을 캘린더에 필터링하여 클릭 가능여부 설정하기 
+
+  현재 이미지 최적화를 위해 Image(next/Image) 사용 중인데, 메뉴 이미지가 없거나 가게 이미지가 없다면 렌더링이 터져버립니다.
+  방어하려면 Image를 img로 대체하고 className에 w-22.5 h-22.5 옵션 넣어주면 됩니다
+  */
+}
 export default function StoreOptions() {
   const params = useParams();
   const storeId = params.storeId as string;
 
   const storeCarts = useCartStore((state) => state.storeCarts);
+  const globalPickupDate = useCartStore((state) => state.pickupDate);
+  const globalPickupTime = useCartStore((state) => state.pickupTime);
 
   const [isDateExpanded, setIsDateExpanded] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string | undefined>();
@@ -26,10 +37,13 @@ export default function StoreOptions() {
   const [isMenuExpanded, setIsMenuExpanded] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState<Menu | null>(null);
 
+  const activeDate = selectedDate || globalPickupDate || undefined;
+  const activeTime = selectedTime || globalPickupTime || undefined;
+
+  const displayTime = activeTime ? activeTime.slice(0, 5) : undefined;
+
   const formattedDate =
-    selectedDate && selectedTime
-      ? `${selectedDate} ${selectedTime}`
-      : undefined;
+    activeDate && displayTime ? `${activeDate} ${displayTime}` : undefined;
 
   const { data: menuData, isLoading: isMenuLoading } = useQuery<Menu[]>({
     queryKey: ['menus', storeId],
@@ -45,16 +59,16 @@ export default function StoreOptions() {
 
   const { data: pickupData, isLoading: isPickupLoading } =
     useQuery<PickupTimeInfo>({
-      queryKey: ['pickupTimes', storeId, selectedDate],
+      queryKey: ['pickupTimes', storeId, activeDate],
       queryFn: async () => {
         const response = await fetchClient(
-          `/api/stores/${storeId}/pickup-times?date=${selectedDate}`
+          `/api/stores/${storeId}/pickup-times?date=${activeDate}`
         );
         const result = response as unknown as ApiResponse<PickupTimeInfo>;
         if (!result.isSuccess) throw new Error(result.message);
         return result.data;
       },
-      enabled: !!storeId && !!selectedDate,
+      enabled: !!storeId && !!activeDate,
     });
 
   const handleDateChange = (date: string) => {
@@ -79,7 +93,8 @@ export default function StoreOptions() {
   };
 
   const getMenuCartQuantity = (menuName: string) => {
-    const currentStoreCart = storeCarts.find(
+    const safeStoreCarts = Array.isArray(storeCarts) ? storeCarts : [];
+    const currentStoreCart = safeStoreCarts.find(
       (cart) => cart.storeId?.toString() === storeId
     );
     if (!currentStoreCart || !currentStoreCart.cartItems) return 0;
@@ -105,7 +120,7 @@ export default function StoreOptions() {
                 <span className="text-base font-semibold text-text-default flex items-center gap-1">
                   픽업 일자
                 </span>
-                <div className='flex pr-1 pt-0.5 items-center gap-2.5'>
+                <div className="flex pr-1 pt-0.5 items-center gap-2.5">
                   {formattedDate && !isDateExpanded && (
                     <div className="w-1 h-1 rounded-full bg-brand-default" />
                   )}
@@ -122,8 +137,8 @@ export default function StoreOptions() {
               <div className="w-full flex flex-col animate-in fade-in slide-in-from-top-2 duration-200 pb-5">
                 <div className="pb-5">
                   <DateFilter
-                    date={selectedDate}
-                    times={selectedTime ? [selectedTime] : []}
+                    date={activeDate}
+                    times={displayTime ? [displayTime] : []}
                     onDateChange={handleDateChange}
                     onTimeChange={handleTimeChange}
                   />
@@ -201,10 +216,12 @@ export default function StoreOptions() {
 
                         <div className="w-22.5 h-22.5 bg-neutral-10 rounded-xl shrink-0 flex items-end justify-end p-1.5 relative overflow-hidden bg-black">
                           {menu.imageUrl ? (
-                            <img
+                            <Image
                               src={menu.imageUrl}
-                              alt={menu.name}
-                              className="absolute inset-0 w-full h-full object-cover"
+                              alt={menu.name || '메뉴 이미지'}
+                              fill
+                              className="object-cover"
+                              priority={false}
                             />
                           ) : (
                             <div className="absolute inset-0 bg-neutral-20" />
@@ -246,8 +263,8 @@ export default function StoreOptions() {
         <MenuBottomSheet
           storeId={storeId}
           menu={selectedMenu}
-          pickupDate={selectedDate}
-          pickupTime={selectedTime}
+          pickupDate={activeDate}
+          pickupTime={activeTime}
           onClose={() => setSelectedMenu(null)}
         />
       )}

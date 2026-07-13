@@ -5,6 +5,8 @@ import { InputHTMLAttributes } from 'react';
 interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   required?: boolean;
+  labelClassName?: string;
+  inputClassName?: string;
 }
 
 export default function InputField({
@@ -12,25 +14,32 @@ export default function InputField({
   required = false,
   className = '',
   value,
+  labelClassName,
+  inputClassName,
+  disabled,
   ...props
 }: InputFieldProps) {
   const isFilled = typeof value === 'string' && value.trim().length > 0;
 
   return (
-    <div className={`flex flex-col gap-2 w-full ${className}`}>
+    <div className={`${className || 'w-full'} flex flex-col gap-2`}>
       {/* 라벨 영역 */}
-      <label className="text-label1 text-text-default font-medium">
+      <label
+        className={`text-label1 font-medium ${labelClassName ?? 'text-text-default'}`}
+      >
         {label} {required && <span className="text-brand-default">*</span>}
       </label>
 
-      {/* 입력 영역 */}
       <input
         value={value}
-        className={`w-full h-11 pl-4 pr-3 py-3 rounded-lg font-pretendard font-normal text-body text-text-default placeholder:text-text-placeholder transition-colors  ${
+        disabled={disabled}
+        className={`w-full h-11 pl-4 pr-3 py-3 rounded-lg font-pretendard font-normal text-body placeholder:text-text-placeholder transition-colors border outline-none ${
+          disabled ? 'text-text-placeholder' : 'text-text-default'
+        } ${
           isFilled
-            ? 'bg-background-subtle outline-none border-none'
-            : 'bg-white outline-1 outline-offset-1 outline-border-strong'
-        }`}
+            ? 'bg-background-subtle border-transparent'
+            : 'bg-white border-border-strong'
+        } ${inputClassName ?? ''}`}
         {...props}
       />
     </div>

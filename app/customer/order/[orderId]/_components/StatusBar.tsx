@@ -1,6 +1,9 @@
 'use client';
 
 import CheckIcon from '@/public/icons/icon_check_linear.svg';
+import OrderCheckIllust from '@/public/illust/illust_OrderCheck.svg';
+import PickupIllust from '@/public/illust/illust_Waiting.svg';
+import PickupDoneIllust from '@/public/illust/illust_PickupDone.svg';
 
 interface StatusBarProps {
   currentStep: number; // 0: 승인 대기, 1: 픽업 예정, 2: 픽업 완료
@@ -10,19 +13,23 @@ export default function StatusBar({ currentStep }: StatusBarProps) {
   const steps = ['승인 대기', '픽업 예정', '픽업 완료'];
   const imageLeftPositions = ['10%', '50%', '90%'];
 
+  const stepIllusts = [OrderCheckIllust, PickupIllust, PickupDoneIllust];
+
+  const CurrentIllust = stepIllusts[currentStep];
+
   return (
     <div className="w-full inline-flex flex-col items-center justify-center pt-16 pb-2">
       {/* 2. 상태 바 전체 컨테이너 */}
       <div className="relative flex flex-col items-center justify-start px-5 py-4 w-80 h-16 gap-2.5">
-        <img
-          src="https://placehold.co/52x52"
-          alt="가게 프로필"
-          className="absolute -top-16 object-cover w-[52px] h-[52px] rounded-[999px] transition-all duration-500 ease-in-out z-10 shadow-sm"
+        <div
+          className="absolute -top-16 w-17.5 h-17.5 transition-all duration-500 ease-in-out z-10 overflow-hidden"
           style={{
             left: imageLeftPositions[currentStep] || '50%',
-            transform: 'translateX(-50%)', // 기준점을 이미지의 정중앙으로 맞춤
+            transform: 'translateX(-50%)',
           }}
-        />
+        >
+          <CurrentIllust className="w-full h-full object-cover" />
+        </div>
 
         {/* ─── 1층: 진행 선 ─── */}
         <div className="inline-flex items-center justify-start w-64">

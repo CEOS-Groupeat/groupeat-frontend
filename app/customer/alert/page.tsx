@@ -2,8 +2,7 @@
 
 import AlertComponent from '@/components/ui/Alert';
 import BackButton from '@/components/ui/BackButton';
-import DefaultButton from '@/components/ui/ButtonDefault';
-import ArrowLeft from '@/public/icons/icon_arrow_Left.svg';
+import NoAlarmIllust from '@/public/illust/ilust_NoAlarm.svg';
 import { useRouter } from 'next/navigation';
 
 const alerts_mock = [
@@ -53,33 +52,44 @@ export default function CustomerAlertPage() {
         </div>
       </div>
 
-      <main className="flex pt-2 flex-col items-end gap-1 self-stretch">
-        <div className="flex px-4 justify-between items-center self-stretch">
-          <h1 className="text-text-default text-headline2 font-semibold">
-            알림 목록
-          </h1>
-          <button className="flex h-8 px-3 flex-col justify-center items-center border border-px border-border-default rounded-lg bg-background-default">
-            <p className="text-text-default text-caption1 font-semibold">
-              모두 읽음
-            </p>
-          </button>
-        </div>
-      </main>
-      {alerts_mock.map((a) => {
-        return (
-          <div key={a.id} className="w-full flexw">
-            <AlertComponent
-              isSucceded={a.isSucceded}
-              message={a.message}
-              storeName={a.storeName}
-              isRead={a.isRead}
-              menus={a.menus}
-              menuQuantity={a.menuQuantity}
-              pickupDate={a.pickupDate}
-            />
+      {alerts_mock.length > 0 ? (
+        <>
+          <main className="flex pt-2 flex-col items-end gap-1 self-stretch">
+            <div className="flex px-4 justify-between items-center self-stretch">
+              <h1 className="text-text-default text-headline2 font-semibold">
+                알림 목록
+              </h1>
+              <button className="flex h-8 px-3 flex-col justify-center items-center border border-px border-border-default rounded-lg bg-background-default">
+                <p className="text-text-default text-caption1 font-semibold">
+                  모두 읽음
+                </p>
+              </button>
+            </div>
+          </main>
+          {alerts_mock.map((a) => {
+            return (
+              <div key={a.id} className="w-full flexw">
+                <AlertComponent
+                  isSucceded={a.isSucceded}
+                  message={a.message}
+                  storeName={a.storeName}
+                  isRead={a.isRead}
+                  menus={a.menus}
+                  menuQuantity={a.menuQuantity}
+                  pickupDate={a.pickupDate}
+                />
+              </div>
+            );
+          })}
+        </>
+      ) : (
+        <div className="w-full h-dvh flex justify-center pt-40">
+          <div className="flex flex-col items-center gap-3">
+            <NoAlarmIllust />
+            <p className='text-text-subtle text-body font-medium'>알림이 없습니다</p>
           </div>
-        );
-      })}
+        </div>
+      )}
     </div>
   );
 }

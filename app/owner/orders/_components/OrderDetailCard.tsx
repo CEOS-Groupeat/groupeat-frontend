@@ -2,19 +2,20 @@
 
 import { useRouter } from 'next/navigation';
 import RightChevronIcon from '@/public/icons/icon-right_chevron.svg';
+import type { OwnerOrderStatus } from '@/src/types/api';
 
 interface OrderCardProps {
   orderId: number;
-  status: 'pending' | 'confirmed' | 'past';
+  orderStatus: OwnerOrderStatus;
   isReorder: boolean;
   groupName: string;
   customerName: string;
   pickupDate: string;
-  paymentAmount: number;
-  paymentMethod: 'PREPAID' | 'ON_SITE';
+  pickupTime: string;
+  totalAmount: number;
+  paymentMethod: 'PREPAID' | 'ON_SITE' | null;
+  remainingHours: number | null;
   items: { menuName: string; quantity: number }[];
-  //orderDate: string; (추후 구현 예정)
-  pastStatus?: 'REJECTED' | 'CANCELLED' | 'COMPLETED';
   onReject?: () => void;
   onApprove?: () => void;
   onPickupComplete?: () => void;
@@ -22,21 +23,27 @@ interface OrderCardProps {
 
 export default function OrderCard({
   orderId,
-  status,
+  orderStatus,
   isReorder,
   groupName,
   customerName,
   pickupDate,
-  paymentAmount,
-  paymentMethod,
+  pickupTime,
+  totalAmount,
+  remainingHours,
   items,
-  // orderDate,
-  pastStatus,
   onReject,
   onApprove,
   onPickupComplete,
 }: OrderCardProps) {
   const router = useRouter();
+
+  const isWaiting = orderStatus === 'PAID';
+  const isConfirmed = orderStatus === 'ACCEPTED';
+  const isPast =
+    orderStatus === 'COMPLETED' ||
+    orderStatus === 'REJECTED' ||
+    orderStatus === 'CANCELLED';
 
   return (
     <div className="w-full px-3 bg-background-default rounded-xl shadow-[6px_6px_54px_0px_rgba(0,0,0,0.05)] outline outline-1 outline-offset-[-1px] outline-border-subtle flex flex-col overflow-hidden font-['Pretendard'] py-[14px]">
@@ -47,31 +54,31 @@ export default function OrderCard({
             재주문
           </span>
         )}
-        {status === 'pending' && (
+        {isWaiting && remainingHours !== null && (
           <span className="px-1.5 py-0.5 bg-background-subtlest rounded-sm text-caption2 font-medium text-text-subtle">
-            18시간 이내 승인 필요
+            {remainingHours}시간 이내 승인 필요
           </span>
         )}
       </div>
 
       {/* 주문 정보 영역 */}
       <div className="flex flex-col gap-1.5 mt-2">
-        <div className="flex justify-between items-center">
-          <div className="flex flex-col">
+        <div className="flex flex-col">
+          <div className="flex justify-between items-center">
             <span className="text-caption1 font-normal text-text-subtlest">
               {groupName}
             </span>
-            <span className="text-body font-semibold text-text-default">
-              {customerName}
-            </span>
+            <button
+              type="button"
+              onClick={() => router.push(`/owner/orders/${orderId}`)}
+              aria-label="주문 상세 보기"
+            >
+              <RightChevronIcon className="size-5 text-icon-subtlest pl-2.5" />
+            </button>
           </div>
-          <button
-            type="button"
-            onClick={() => router.push(`/owner/orders/${orderId}`)}
-            aria-label="주문 상세 보기"
-          >
-            <RightChevronIcon className="size-5 text-icon-subtlest" />
-          </button>
+          <span className="text-body font-semibold text-text-default">
+            {customerName}
+          </span>
         </div>
 
         <div className="w-full h-px bg-border-subtle" />
@@ -81,14 +88,16 @@ export default function OrderCard({
             <span className="w-[55px] font-normal text-text-subtlest">
               픽업 일자
             </span>
-            <span className="font-medium text-text-default">{pickupDate}</span>
+            <span className="font-medium text-text-default">
+              {pickupDate} {pickupTime}
+            </span>
           </div>
           <div className="flex items-center gap-2">
             <span className="w-[55px] font-normal text-text-subtlest">
               총금액
             </span>
             <span className="font-medium text-text-default">
-              {paymentAmount.toLocaleString()}원
+              {totalAmount.toLocaleString()}원
             </span>
           </div>
           <div className="flex flex-col gap-1">
@@ -116,7 +125,7 @@ export default function OrderCard({
 
       {/* 버튼 영역 */}
       <div className="flex items-center gap-2 mt-4">
-        {status === 'pending' && (
+        {isWaiting && (
           <>
             <button
               type="button"
@@ -134,23 +143,23 @@ export default function OrderCard({
             </button>
           </>
         )}
-        {status === 'confirmed' && (
+        {isConfirmed && (
           <button
             type="button"
             onClick={onPickupComplete}
-            className="flex-1 h-[38px] rounded-lg bg-brand-background text-label2 font-semibold text-brand-default"
+            className="flex-1 h-[38px] rounded-lg bg-brand-default text-label2 font-semibold text-text-inverse"
           >
             픽업 완료
           </button>
         )}
-        {status === 'past' && (
+        {isPast && (
           <button
             type="button"
             className="flex-1 h-[38px] rounded-lg bg-background-subtle text-label2 font-semibold text-text-subtlest"
           >
-            {pastStatus === 'REJECTED'
+            {orderStatus === 'REJECTED'
               ? '주문 거절'
-              : pastStatus === 'CANCELLED'
+              : orderStatus === 'CANCELLED'
                 ? '취소됨'
                 : '픽업 완료'}
           </button>

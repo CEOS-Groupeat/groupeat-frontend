@@ -26,13 +26,13 @@ export default function CustomerLandingPage() {
       </header>
 
       {/* 메인 콘텐츠 영역 */}
-      <section className="relative flex flex-col flex-1 w-full justify-center items-center py-12 overflow-hidden animate-fade-in-up">
+      <section className="relative flex flex-col flex-1 w-full justify-center items-center pt-9 pb-15 overflow-hidden animate-fade-in-up">
         <div className="w-full absolute inset-0 flex justify-center items-center pointer-events-none -z-Base">
           <div className="absolute flex justify-center items-center pointer-events-none -z-Base w-110.5 h-110.5 -translate-y-8 opacity-35 bg-[radial-gradient(ellipse_70.71%_70.71%_at_50.00%_50.00%,#FCD2C6_0%,rgba(252,210,198,0)_70%)] rounded-[260px]" />
         </div>
 
         <main className="relative z-10 flex flex-col items-center justify-center w-full">
-          <div className="flex flex-col items-center gap-1">
+          <div className="flex flex-col items-center gap-1 pb-2">
             <h1 className="text-[#484950] text-[20px] font-bold text-center">
               단체 주문의 고민이 멈추는 곳
             </h1>
@@ -131,8 +131,8 @@ export default function CustomerLandingPage() {
                 협업 문의하기
               </p>
             </a>
-            <Link href='https://www.instagram.com/groupeat_order/' target="_blank" rel="noopener noreferrer" className="flex w-39.5 h-12 px-5 py-2 bg-orange-60 justify-center items-center gap-1.5 rounded-full border border-px border-orange-60 z-20">
-              <AlarmIcon width={24} height={24} />
+            <Link href='https://www.instagram.com/groupeat_order/' target="_blank" rel="noopener noreferrer" className="flex w-39.5 h-12 px-5 py-2 bg-orange-50 justify-center items-center gap-1.5 rounded-full border border-px border-orange-60 z-20">
+              <AlarmIcon className="w-6 h-6 shrink-0" />
               <p className="text-white text-body font-semibold whitespace-nowrap">
                 출시 알림받기
               </p>

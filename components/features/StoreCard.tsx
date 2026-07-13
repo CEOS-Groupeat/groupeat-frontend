@@ -14,9 +14,9 @@ export default function StoreCard({ store, onClick }: StoreCardProps) {
     <button
       type="button"
       onClick={onClick}
-      className="w-42 h-[214px] rounded-xl outline outline-1 outline-offset-[-1px] outline-border-subtle flex flex-col overflow-hidden text-left font-['Pretendard']"
+      className="w-full h-[132px] flex self-stretch px-4 py-2.5 border-b border-border-subtle overflow-hidden text-left font-['Pretendard']"
     >
-      <div className="relative w-full h-24">
+      <div className="relative min-w-[112px] h-[94px] my-[9px]">
         <Image
           //imageUrl이 잘못된 형식으로 올 경우 방어 처리
           src={
@@ -24,40 +24,43 @@ export default function StoreCard({ store, onClick }: StoreCardProps) {
             store.imageUrl?.startsWith('http://') ||
             store.imageUrl?.startsWith('https://')
               ? store.imageUrl
-              : `/images/image_logo.png`
+              : `/images/day-brunch.png`
           }
-          alt={store.name}
+          alt={store.name ?? ''}
           fill
-          className="object-cover"
+          className="object-cover rounded-lg"
         />
       </div>
 
-      <div className="self-stretch bg-background-default p-2.5 flex flex-col gap-2.5">
-        <div className="flex flex-col gap-2">
+      <div className="w-full bg-background-default py-1 pl-3.5 pr-3 flex flex-col">
+        <div className="flex flex-col gap-1.5">
           {/* 카테고리 + 이름 + 가격 */}
-          <div className="flex flex-col gap-1.5">
-            <BadgeCategory label={store.category} />
+          <div className="flex flex-col gap-1">
+            <BadgeCategory label={store.category ?? ''} />
             <div className="pl-0.5 flex flex-col text-text-default">
-              <span className="text-label1 font-semibold">{store.name}</span>
-              <span className="text-caption1 font-medium">
-                {store.minPrice.toLocaleString()}원 ~{' '}
-                {store.maxPrice.toLocaleString()}원/개
+              <span className="text-body font-semibold">{store.name}</span>
+              <span className="text-label2 font-medium">
+                {(store.minPrice ?? 0).toLocaleString()}원 ~{' '}
+                {(store.maxPrice ?? 0).toLocaleString()}원/개
               </span>
             </div>
           </div>
 
-          {/* 별점 + 위치 => 위치코드는 추후 수정 예정 */}
+          {/* 별점 + 리뷰 수 + 위치 => 위치코드는 추후 수정 예정 */}
           <div className="flex flex-col">
             <div className="flex items-center gap-0.5">
               <Star className="size-3.5 text-icon-star" />
-              <span className="text-caption2 text-text-subtle">
+              <span className="text-caption2 font-normal text-text-subtle">
                 {store.rating}
+              </span>
+              <span className="text-caption2 font-normal text-text-subtle">
+                ({store.reviewCount})
               </span>
             </div>
             {store.pickupTimeRange && (
               <div className="flex items-center gap-0.5">
                 <Location className="size-3.5" />
-                <span className="text-caption2 text-text-subtle">
+                <span className="text-caption2 font-normal text-text-subtle">
                   {store.pickupTimeRange}
                 </span>
               </div>

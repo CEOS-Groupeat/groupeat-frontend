@@ -2,24 +2,26 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSearchStore } from '@/store/useSearchStore';
 
-import Filter from '@/public/icons/icon-filter.svg';
 import SearchField from '@/components/ui/SearchField';
-import FilterBottomSheet from '@/app/customer/search/_components/FilterBottomSheet';
-import DeleteIcon from '@/public/icons/icon_delete.svg';
+import DeleteIcon from '@/public/icons/icon_close.svg';
 
 interface SearchBarProps {
   onFocus?: () => void;
   onChange?: (value: string) => void;
+  autoFocus?: boolean;
+  initialKeyword?: string;
 }
 
-export default function SearchBar({ onFocus, onChange }: SearchBarProps) {
+export default function SearchBar({
+  onFocus,
+  onChange,
+  autoFocus,
+  initialKeyword = '',
+}: SearchBarProps) {
   const router = useRouter();
-  const { setResults } = useSearchStore();
 
-  const [keyword, setKeyword] = useState('');
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [keyword, setKeyword] = useState(initialKeyword);
 
   const handleSearch = (kw: string) => {
     const trimmed = kw.trim();
@@ -29,50 +31,30 @@ export default function SearchBar({ onFocus, onChange }: SearchBarProps) {
 
   const handleChange = (value: string) => {
     setKeyword(value);
-    onChange?.(value); // 추가 - 외부로 전달
+    onChange?.(value);
   };
 
   return (
-    <>
-      <SearchField
-        value={keyword}
-        onChange={handleChange}
-        onSearch={handleSearch}
-        onFocus={onFocus}
-        placeholder="가게나 메뉴를 검색해 보세요"
-        variant="outlined"
-        showIcon={!keyword}
-      >
-        {keyword ? (
-          <button
-            type="button"
-            onClick={() => {
-              setKeyword('');
-              onChange?.('');
-            }}
-            className="w-14 h-10 shrink-0 self-stretch px-3 py-2.5 flex justify-center items-center"
-          >
-            <DeleteIcon className="size-6" />
-          </button>
-        ) : (
-          <button
-            type="button"
-            onClick={() => setIsFilterOpen(true)}
-            className="w-14 shrink-0 self-stretch px-3 py-2.5 bg-background-subtlest rounded-3xl flex justify-center items-center gap-1"
-          >
-            <Filter />
-          </button>
-        )}
-      </SearchField>
-
-      <FilterBottomSheet
-        isOpen={isFilterOpen}
-        onClose={() => setIsFilterOpen(false)}
-        onSearchResult={(data, filters) => {
-          setResults(data, filters);
-          router.push('/customer/search');
-        }}
-      />
-    </>
+    <SearchField
+      value={keyword}
+      onChange={handleChange}
+      onSearch={handleSearch}
+      onFocus={onFocus}
+      iconPosition={keyword ? undefined : 'right'}
+      autoFocus={autoFocus}
+    >
+      {keyword && (
+        <button
+          type="button"
+          onClick={() => {
+            setKeyword('');
+            onChange?.('');
+          }}
+          aria-label="검색어 지우기"
+        >
+          <DeleteIcon className="size-5 text-icon-subtlest" />
+        </button>
+      )}
+    </SearchField>
   );
 }

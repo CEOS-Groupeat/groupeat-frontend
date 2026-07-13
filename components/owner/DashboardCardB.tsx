@@ -10,7 +10,7 @@ interface DashboardCardBProps {
 
 export default function DashBoardCardB({ text, icon, count, increasedCount }: DashboardCardBProps){
     return (
-        <div className="flex w-1/2 pt-3.5 px-3 pb-3 flex-col items-start gap-4 rounded-lg border border-px border-border-subtle bg-static-white shadow-[6px_6px_54px_0_rgba(0, 0, 0, 0.05)]">
+        <div className="flex w-1/2 pt-3.5 px-3 pb-3 flex-col items-start gap-4 rounded-lg border border-px border-border-subtle bg-static-white shadow-[6px_6px_54px_0_rgba(0,0,0,0.05)]">
             <div className="flex items-center gap-5 self-stretch">
                 <p className="text-text-subtlest text-label2 font-semibold">{text}</p>
             </div>

@@ -185,7 +185,7 @@
   --color-background-subtlest: var(--color-gray-15);
   --color-background-dim: #1717198c;
   --color-background-toast: #171719d9;
-  --color-background-transparent: #f0f0f1cc;
+  --color-background-transparent: rgba(240, 240, 241, 0.80);
 
   /* Icon */
   --color-icon-default: var(--color-gray-70);
@@ -196,15 +196,9 @@
   --color-icon-star: var(--color-yellow-25);
   --color-icon-subtlest: var(--color-gray-30);
 
-  /* Fill */
-  --color-fill-netural: var(--color-gray-10);
-  --color-fill-normal: var(--color-gray-0);
-
   /* Label */
   --color-label-normal: #17171a;
   --color-label-light: #5b5c63;
-  --color-label-netural: #484950;
-  --color-label-alternative: #777982;
 
   --color-hover: #00000008;
 

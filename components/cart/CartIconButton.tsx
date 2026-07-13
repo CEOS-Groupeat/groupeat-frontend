@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import CartIcon from '@/public/icons/icon-shopping_cart.svg';
-import { useCartQuery } from '@/hooks/useCartQuery';
+import { useCart } from '@/app/customer/cart/_hooks/useCart';
 import { useCartStore } from '@/store/useCartStore';
 
 interface CartIconButtonProps {
@@ -13,14 +13,15 @@ export default function CartIconButton({
   iconColor = 'text-icon-inverse',
 }: CartIconButtonProps) {
   const router = useRouter();
-  useCartQuery();
+  useCart();
   const storeCarts = useCartStore((state) => state.storeCarts);
 
-  const totalCount =
-    storeCarts?.reduce(
-      (acc, store) => acc + (store.cartItems ?? []).length,
-      0
-    ) ?? 0;
+  const totalCount = Array.isArray(storeCarts)
+    ? storeCarts?.reduce(
+        (acc, store) => acc + (store.cartItems ?? []).length,
+        0
+      )
+    : 0;
 
   return (
     <button

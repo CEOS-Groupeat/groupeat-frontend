@@ -29,9 +29,9 @@ export default function OrderForm({
 
   return (
     <form onSubmit={handleSubmit} className="w-full font-pretendard">
-      <h2 className="mb-6 text-xl font-bold text-gray-900">추가 정보 입력</h2>
+      <h2 className="mb-3 text-text-default text-headline3 font-semibold">추가 정보 입력</h2>
 
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-4.5">
         <InputField
           label="주문자명"
           name="customerName"

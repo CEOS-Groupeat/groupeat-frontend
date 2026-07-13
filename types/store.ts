@@ -23,7 +23,6 @@ export interface StoreDetail {
   minOrderDays: number;
   discountConditionQuantity: number;
   discountRate: number;
-  orderProcess: string;
 }
 
 export interface PickupTimeInfo {

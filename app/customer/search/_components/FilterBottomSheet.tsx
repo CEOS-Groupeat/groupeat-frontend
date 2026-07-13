@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useSearchStores } from '@/hooks/useSearchStores';
 import type {
-  SearchStoresResponse,
+  StoreListData,
   StoreSearchParams,
 } from '@/app/customer/search/_types/store.type';
 import { FILTER_ITEMS } from '../_constants/filterItems';
@@ -28,7 +28,7 @@ interface FilterBottomSheetProps {
   isOpen: boolean;
   onClose: () => void;
   onSearchResult: (
-    data: SearchStoresResponse,
+    data: StoreListData,
     filters?: StoreSearchParams
   ) => void;
   initialFilters?: StoreSearchParams;
@@ -49,7 +49,9 @@ export default function FilterBottomSheet({
   initialFilters = {},
   initialOpenFilter,
 }: FilterBottomSheetProps) {
-  const [snap, setSnap] = useState<SnapPoint>('half');
+  const [snap, setSnap] = useState<SnapPoint>(
+    initialOpenFilter ? 'full' : 'half'
+  );
   const [filters, setFilters] = useState<StoreSearchParams>(initialFilters);
   const [openFilter, setOpenFilter] = useState<keyof StoreSearchParams | null>(
     initialOpenFilter ?? null
@@ -142,7 +144,7 @@ export default function FilterBottomSheet({
 
   return (
     <div
-      className={`fixed inset-0 z-50 transition-all duration-300 ${isOpen ? 'visible' : 'invisible'}`}
+      className={`fixed inset-0 z-modal transition-all duration-300 ${isOpen ? 'visible' : 'invisible'}`}
     >
       {/* 오버레이 */}
       <button
@@ -275,7 +277,9 @@ export default function FilterBottomSheet({
                         date={filters.pickupDate}
                         times={filters.pickupTimes ?? []}
                         onDateChange={(v) => updateFilter('pickupDate', v)}
-                        onTimeChange={(times) => updateFilter('pickupTimes', times)}
+                        onTimeChange={(times) =>
+                          updateFilter('pickupTimes', times)
+                        }
                       />
                     </div>
                   )}

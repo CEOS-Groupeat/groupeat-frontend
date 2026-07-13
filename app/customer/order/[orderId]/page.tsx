@@ -1,8 +1,9 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchClient } from '@/lib/fetchClient';
+import { useState } from 'react';
 
 import OrderStatusBar from '@/app/customer/order/[orderId]/_components/OrderStatusBar';
 import OrderCard from '@/app/customer/order/request/_components/OrderCard';
@@ -10,12 +11,22 @@ import OrderPrice from '@/app/customer/order/request/_components/OrderPrice';
 import SectionDivider from '@/components/ui/SectionDivider';
 import Ellipse from '@/public/icons/icon_ellipse.svg';
 import Alert from '@/public/icons/icon_alert.svg';
-import BackButton from '@/components/ui/BackButton';
 import { components } from '@/src/types/schema';
+import DialogModal from '@/components/ui/DialogModal';
+import AlertIcon from '@/public/icons/icon_modal_alert.svg';
+import CheckBoxTrueIcon from '@/public/icons/icon_checkboxTrue.svg';
+import BoundingBoxIcon from '@/public/icons/icon_checkboxFalse.svg';
+import ArrowLeft from '@/public/icons/icon_arrow_left_padding.svg';
 
-type OrderDetailResponse = components['schemas']['ApiResponseOrderDetailDTO'];
+import Link from 'next/link';
 
-// 헬퍼 함수: 날짜 포맷 (2026-07-02 -> 7월 2일)
+type ApiOrderDetailResponse =
+  components['schemas']['ApiResponseOrderDetailResponse_OrderDetailDTO'];
+type OrderDetailData =
+  components['schemas']['OrderDetailResponse_OrderDetailDTO'];
+type ApiOrderCancelResponse =
+  components['schemas']['ApiResponseOrderCancelResponse'];
+
 const formatOrderDate = (dateStr?: string) => {
   if (!dateStr) return '';
   const parts = dateStr.split('-');
@@ -23,41 +34,79 @@ const formatOrderDate = (dateStr?: string) => {
   return `${parseInt(parts[1], 10)}월 ${parseInt(parts[2], 10)}일`;
 };
 
-// 헬퍼 함수: 주문 상태를 OrderStatusBar의 Step으로 변환
-const getStepFromStatus = (status: string) => {
+const formatTime = (timeStr?: string) => {
+  if (!timeStr) return '';
+  return timeStr.slice(0, 5);
+};
+
+const getStepFromStatus = (status?: string) => {
   switch (status) {
     case 'PENDING':
     case 'PAID':
-      return 1;
+      return 0;
     case 'ACCEPTED':
-      return 2;
-    case 'COMPLETED':
-      return 3;
-    default:
       return 1;
+    case 'COMPLETED':
+      return 2;
+    default:
+      return 0;
   }
 };
+
+const CANCEL_REASONS = [
+  '단순 변심',
+  '메뉴 및 수량 잘못 선택',
+  '중복 주문',
+  '픽업 일정, 위치, 인원 변경',
+];
 
 export default function CustomerOrderDetail() {
   const params = useParams();
   const orderId = params.orderId as string;
+  const queryClient = useQueryClient();
 
-  const { data, isLoading } = useQuery({
+  const [modalOn, setModalOn] = useState(false);
+  const [selectedReason, setSelectedReason] = useState<string>(
+    CANCEL_REASONS[0]
+  );
+
+  const { data, isLoading } = useQuery<OrderDetailData | undefined>({
     queryKey: ['orderDetail', orderId],
     queryFn: async () => {
-      const res = await fetchClient<OrderDetailResponse>(
+      const res = await fetchClient<ApiOrderDetailResponse>(
         `/api/orders/${orderId}`
       );
       if (!res.isSuccess) throw new Error(res.message);
+
       return res.data;
     },
     enabled: !!orderId,
   });
 
-  const cancelOrder = () => {
-    // todo: 주문취소 (openapi의 cancelOrder 엔드포인트 연결)
-    return;
-  };
+  const cancelMutation = useMutation({
+    mutationFn: async () => {
+      const res = await fetchClient<ApiOrderCancelResponse>(
+        `/api/orders/${orderId}/cancel`,
+        {
+          method: 'PATCH',
+          body: JSON.stringify({ cancelReason: selectedReason }),
+        }
+      );
+      if (!res.isSuccess) throw new Error(res.message);
+      return res.data;
+    },
+    onSuccess: () => {
+      setModalOn(false);
+      queryClient.invalidateQueries({ queryKey: ['orderDetail', orderId] });
+    },
+    onError: (error) => {
+      alert(`주문 취소에 실패했습니다: ${error.message}`);
+    },
+  });
+
+  const cancelOrder = () => setModalOn(true);
+
+  const handleCancelSubmit = () => cancelMutation.mutate();
 
   if (isLoading || !data) {
     return (
@@ -67,16 +116,23 @@ export default function CustomerOrderDetail() {
     );
   }
 
-  const { ordererInfo, orderMenus, paymentInfo } = data;
+  const {
+    storeName,
+    pickupDate,
+    pickupTime,
+    ordererInfo,
+    orderMenus,
+    paymentInfo,
+    orderStatus,
+  } = data;
 
-  // 💡 OpenAPI 스키마에 orderStatus가 누락되어 있어 임시로 타입 단언하여 사용합니다.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const orderStatus = (data as any).orderStatus as string;
+  const formattedPickupDate = formatOrderDate(pickupDate);
+  const formattedPickupTime = formatTime(pickupTime);
+  const formattedOrderTime = formatTime(ordererInfo?.orderTime);
 
-  // OrderCard 컴포넌트 Props 규격에 맞게 데이터 매핑
   const mappedStoreCart = {
     storeId: 0,
-    storeName: '가게명 (API 추가 필요)', // 🚨 스키마에 가게 정보 없음
+    storeName: storeName || '',
     storeTotalPrice: paymentInfo?.originalTotalAmount,
     cartItems: orderMenus?.map((menu, idx) => ({
       cartItemId: idx,
@@ -91,10 +147,12 @@ export default function CustomerOrderDetail() {
   };
 
   return (
-    <div className="w-full flex pb-16 flex-col items-center gap-6 bg-white">
-      <header className="w-full flex pt-10 items-start gap-2.5 self-stretch">
+    <div className="w-full flex pb-16 flex-col items-center gap-5 bg-white">
+      <header className="w-full flex pt-10 items-start gap-2.5 self-stretch pb-1">
         <div className="w-full flex p-4 items-center justify-between self-stretch">
-          <BackButton />
+          <Link href="/customer/order/status">
+            <ArrowLeft className="w-5 h-5 cursor-pointer" />
+          </Link>
           <h1 className="text-text-default text-headline3 font-semibold">
             주문 상세
           </h1>
@@ -103,47 +161,48 @@ export default function CustomerOrderDetail() {
       </header>
 
       <main className="flex px-4 flex-col items-center gap-5 self-stretch">
-        {/* 💡 조건부 렌더링: REJECTED, CANCELLED 상태 처리 */}
         {orderStatus === 'REJECTED' ? (
           <div className="w-full flex flex-col items-start gap-3">
             <div className="flex flex-col items-start gap-0.75">
-              <p className="text-text-subtle font-semibold">
-                가게명 (API 추가 필요)
-              </p>
+              <p className="text-text-subtle font-semibold">{storeName}</p>
               <p className="text-headline1 font-semibold">
                 주문이 거절되었습니다.
               </p>
               <div className="flex items-center gap-1">
-                <p className="text-text-subtlest text-label1">날짜 누락</p>
+                <p className="text-text-subtlest text-label1">
+                  {formattedPickupDate}
+                </p>
                 <Ellipse className="w-1 h-1 text-text-subtlest" />
-                <p className="text-text-subtlest text-label1">시간 누락</p>
-                <div className="flex items-center gap-1 mt-0.5"></div>
+                <p className="text-text-subtlest text-label1">
+                  {formattedPickupTime}
+                </p>
               </div>
             </div>
           </div>
         ) : orderStatus === 'CANCELLED' ? (
           <div className="w-full flex flex-col items-start gap-3">
             <div className="flex flex-col items-start gap-0.75">
-              <p className="text-text-subtle font-semibold">
-                가게명 (API 추가 필요)
-              </p>
+              <p className="text-text-subtle font-semibold">{storeName}</p>
               <p className="text-headline1 font-semibold">
                 주문이 취소되었습니다.
               </p>
               <div className="flex items-center gap-1">
-                <p className="text-text-subtlest text-label1">날짜 누락</p>
+                <p className="text-text-subtlest text-label1">
+                  {formattedPickupDate}
+                </p>
                 <Ellipse className="w-1 h-1 text-text-subtlest" />
-                <p className="text-text-subtlest text-label1">시간 누락</p>
-                <div className="flex items-center gap-1 mt-0.5"></div>
+                <p className="text-text-subtlest text-label1">
+                  {formattedPickupTime}
+                </p>
               </div>
             </div>
           </div>
         ) : (
           <OrderStatusBar
-            storeName="가게명 (API 추가 필요)"
+            storeName={storeName || ''}
             currentStep={getStepFromStatus(orderStatus)}
-            pickupDate="날짜 누락 (API)"
-            pickupTime="시간 누락 (API)"
+            pickupDate={formattedPickupDate}
+            pickupTime={formattedPickupTime}
             paymentMethod={
               paymentInfo?.paymentMeans === 'TOSS' ? '토스페이' : '카카오페이'
             }
@@ -151,25 +210,25 @@ export default function CustomerOrderDetail() {
         )}
       </main>
 
-      <SectionDivider className="w-full" />
+      <SectionDivider className="w-full h-1.5" />
 
-      <section className="flex flex-col pb-1 items-start self-stretch px-4">
+      <section className="flex flex-col items-start self-stretch px-4">
         <div className="flex flex-col items-start gap-3 self-stretch">
           <h1 className="text-text-default text-headline3 font-semibold">
             주문 정보
           </h1>
           <OrderCard
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            storeCart={mappedStoreCart as any} // Option 매핑으로 인한 타입 단언
-            pickupDate="날짜 누락" // 🚨
-            pickupTime="시간 누락" // 🚨
+            storeCart={mappedStoreCart as any}
+            pickupDate={formattedPickupDate}
+            pickupTime={formattedPickupTime}
           />
         </div>
       </section>
 
-      <SectionDivider className="w-full" />
+      <SectionDivider className="w-full h-1.5" />
 
-      <section className="flex flex-col pb-1 items-start self-stretch px-4">
+      <section className="flex flex-col items-start self-stretch px-4">
         <div className="flex flex-col items-start gap-3 self-stretch">
           <h1 className="text-text-default text-headline3 font-semibold">
             결제 정보
@@ -199,6 +258,7 @@ export default function CustomerOrderDetail() {
             </div>
 
             <OrderPrice
+              perPersonAmount={paymentInfo?.perPersonAmount ?? 0}
               originalPrice={paymentInfo?.originalTotalAmount ?? 0}
               discountAmount={paymentInfo?.totalDiscountAmount ?? 0}
               finalPrice={paymentInfo?.finalPaymentAmount ?? 0}
@@ -208,7 +268,9 @@ export default function CustomerOrderDetail() {
         </div>
       </section>
 
-      <section className="flex flex-col pb-1 items-start self-stretch px-4">
+      <SectionDivider className="w-full h-1.5" />
+
+      <section className="flex flex-col items-start self-stretch px-4">
         <h1 className="text-text-default text-headline3 font-semibold pb-2">
           주문자 정보
         </h1>
@@ -240,8 +302,9 @@ export default function CustomerOrderDetail() {
                 {formatOrderDate(ordererInfo?.orderDate)}
               </p>
               <Ellipse />
-              {/* 스키마에 orderTime이 존재하지 않음 */}
-              <p className="text-text-default text-body">시간 확인 불가</p>
+              <p className="text-text-default text-body">
+                {formattedOrderTime}
+              </p>
             </div>
           </div>
 
@@ -265,26 +328,75 @@ export default function CustomerOrderDetail() {
         </div>
       </section>
 
-      {/* 💡 거절/취소/완료 상태일 때는 '주문 취소하기' 버튼 숨김 처리 (선택 사항) */}
       {orderStatus !== 'REJECTED' &&
         orderStatus !== 'CANCELLED' &&
         orderStatus !== 'COMPLETED' && (
-          <div className="w-full flex flex-col items-start justify-center px-4 gap-2.5">
-            <SectionDivider className="w-full" />
-            <button
-              onClick={cancelOrder}
-              className="w-full h-12 rounded-xl flex justify-center items-center py-3 px-12 font-semibold border border-border-default"
-            >
-              주문 취소하기
-            </button>
-            <div className="flex items-start gap-1">
-              <Alert className="text-icon-disable w-4 h-4 shrink-0 mt-0.5" />
-              <p className="text-text-subtlest text-label2 font-medium">
-                주문 정보 변경을 원하시면 취소 후 재주문해 주세요.
-              </p>
+          <div className="w-full flex flex-col items-start justify-center">
+            <SectionDivider className="w-full h-1.5 mb-5" />
+            <div className="w-full flex flex-col gap-2.5 px-4">
+              <button
+                onClick={cancelOrder}
+                className="w-full h-12 rounded-xl flex justify-center items-center py-3 px-12 font-semibold border border-border-default"
+              >
+                주문 취소하기
+              </button>
+
+              <div className="flex items-start gap-1">
+                <Alert className="text-icon-disable w-4 h-4 shrink-0 mt-0.5" />
+                <p className="text-text-subtlest text-label2 font-medium">
+                  주문 정보 변경을 원하시면 취소 후 재주문해 주세요.
+                </p>
+              </div>
             </div>
           </div>
         )}
+
+      {modalOn && (
+        <DialogModal
+          icon={<AlertIcon className="text-status-danger w-11 h-11" />}
+          title="주문을 취소하시겠습니까?"
+          description="취소 사유를 선택해주세요"
+          primaryButton={{
+            label: '돌아가기',
+            onClick: () => setModalOn(false),
+          }}
+          secondaryButton={{
+            label: cancelMutation.isPending ? '처리 중' : '취소하기',
+            onClick: handleCancelSubmit,
+          }}
+          onClose={() => setModalOn(false)}
+        >
+          <div className="w-full flex flex-col gap-1 mt-1">
+            {CANCEL_REASONS.map((reason) => {
+              const isSelected = selectedReason === reason;
+              return (
+                <label
+                  key={reason}
+                  className="flex items-center gap-2 cursor-pointer py-1.5 px-2 rounded-lg hover:bg-background-subtle transition-colors"
+                  onClick={() => setSelectedReason(reason)}
+                >
+                  <div className="flex items-center justify-center w-5 h-5 shrink-0">
+                    {isSelected ? (
+                      <CheckBoxTrueIcon className="w-5 h-5 text-icon-default" />
+                    ) : (
+                      <BoundingBoxIcon className="w-5 h-5 text-icon-disable" />
+                    )}
+                  </div>
+                  <span
+                    className={`text-label1 pt-0.5 ${
+                      isSelected
+                        ? 'text-text-default font-medium'
+                        : 'text-text-subtle'
+                    }`}
+                  >
+                    {reason}
+                  </span>
+                </label>
+              );
+            })}
+          </div>
+        </DialogModal>
+      )}
     </div>
   );
 }
