@@ -94,13 +94,20 @@ function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
               대표 이미지
             </label>
             <div
-              className="w-full h-37 bg-black pr-3 pb-2.5 rounded-xl bg-cover bg-center bg-no-repeat"
+              className="w-full h-37 bg-black pr-3 pb-2.5 rounded-xl bg-cover bg-center bg-no-repeat relative"
               style={{
                 backgroundImage: values.imageUrl
                   ? `url(${values.imageUrl})`
                   : undefined,
               }}
             >
+              {isUploading && (
+                <div className="absolute inset-0 bg-black/50 rounded-xl flex items-center justify-center">
+                  <span className="text-static-white text-sm font-medium font-['Pretendard']">
+                    업로드 중...
+                  </span>
+                </div>
+              )}
               <div className="w-full flex h-full justify-end items-end">
                 <button
                   type="button"
