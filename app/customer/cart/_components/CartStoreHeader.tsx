@@ -22,14 +22,20 @@ export default function CartStoreHeader({
 
   return (
     <div className="flex gap-1 pt-5 border-t border-border-default">
-      <button type="button" onClick={onSelectAll} aria-label={hasSelected ? '매장 선택 해제' : '매장 선택'}  aria-pressed={hasSelected} className="flex shrink-0">
+      <button
+        type="button"
+        onClick={onSelectAll}
+        aria-label={hasSelected ? '매장 선택 해제' : '매장 선택'}
+        aria-pressed={hasSelected}
+        className="flex shrink-0"
+      >
         {hasSelected ? (
           <RadioOn className="size-6 text-icon-default" />
         ) : (
           <RadioOff className="size-6 text-icon-disable" />
         )}
       </button>
-      <span className="text-body font-bold text-text-default font-['Pretendard']">
+      <span className="text-headline3 font-bold text-text-default font-['Pretendard']">
         {storeName}
       </span>
       <button
