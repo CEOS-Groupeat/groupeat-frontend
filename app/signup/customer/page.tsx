@@ -91,11 +91,19 @@ function CustomerSignupForm() {
   };
 
   const hasRequiredName = name.trim() !== '';
+  const hasRequiredBirthDate = birthDate.trim() !== '';
+  const hasRequiredGender = gender !== null;
   const hasAllRequiredTerms =
     terms.length > 0 &&
     terms
       .filter((term) => term.required)
       .every((term) => checkedTerms[term.termsId]);
+
+  const isFormValid =
+    hasRequiredName &&
+    hasRequiredBirthDate &&
+    hasRequiredGender &&
+    hasAllRequiredTerms;
 
   const handleSubmitClick = () => {
     if (!hasRequiredName) {
@@ -316,7 +324,7 @@ function CustomerSignupForm() {
           {toastMessage && <ToastError text={toastMessage} />}
           <DefaultButton
             onClick={handleSubmitClick}
-            disabled={submitSignupMutation.isPending}
+            disabled={submitSignupMutation.isPending || !isFormValid}
           >
             {submitSignupMutation.isPending ? '처리 중...' : '확인'}
           </DefaultButton>
