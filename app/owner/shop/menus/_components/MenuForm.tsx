@@ -173,6 +173,7 @@ export default function MenuForm({
               labelClassName="text-text-subtlest"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              placeholder="메뉴명을 입력해주세요"
             />
 
             <InputField
@@ -180,14 +181,16 @@ export default function MenuForm({
               labelClassName="text-text-subtlest"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              placeholder="설명을 입력해주세요"
             />
 
             <InputField
-              label="기본 가격"
+              label="가격"
               labelClassName="text-text-subtlest"
               type="number"
               value={basePrice}
               onChange={(e) => setBasePrice(e.target.value)}
+              placeholder="가격을 입력해주세요"
             />
 
             {optionGroups.length === 0 ? (
@@ -213,6 +216,7 @@ export default function MenuForm({
                         label="그룹명"
                         value={group.name}
                         onChange={(e) => handleGroupChange(group.id, e.target.value)}
+                        placeholder="그룹명"
                       />
                       <div className="flex justify-between items-center self-stretch">
                         <p className="text-text-default text-label2 mt-5">세부 옵션</p>
@@ -233,7 +237,7 @@ export default function MenuForm({
                           />
                           <InputField
                             label=""
-                            placeholder="추가 가격"
+                            placeholder="가격"
                             type="number"
                             value={opt.additionalPrice}
                             onChange={(e) => handleOptionChange(group.id, opt.id, 'additionalPrice', e.target.value)}
