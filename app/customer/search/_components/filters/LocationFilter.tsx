@@ -39,7 +39,7 @@ export default function LocationFilter({
       (loc) => loc.value === value
     )?.label;
     return (
-      <div className="h-11 pl-4 pr-3 py-2 bg-background-subtle rounded-lg flex items-center mt-3">
+      <div className="h-11 pl-4 pr-3 py-2 bg-background-subtle rounded-lg flex items-center">
         <span className="text-base text-text-default">{selectedLabel}</span>
       </div>
     );
@@ -47,7 +47,7 @@ export default function LocationFilter({
 
   // 미선택 상태 → 검색 input + 드롭다운
   return (
-    <div className="flex flex-col gap-3 mt-3">
+    <div className="flex flex-col gap-3">
       <div className="h-11 px-3 py-2 bg-background-default rounded-lg outline outline-1 outline-border-strong flex items-center gap-1.5">
         <SearchIcon className="size-5 text-icon-subtlest shrink-0" />
         <input
