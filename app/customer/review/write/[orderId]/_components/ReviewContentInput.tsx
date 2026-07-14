@@ -22,6 +22,8 @@ export default function ReviewContentInput({
     if (!textarea) return;
     textarea.style.height = 'auto';
     textarea.style.height = `${textarea.scrollHeight}px`;
+
+    textarea.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   }, [value, isEditing]);
 
   useEffect(() => {
@@ -55,9 +57,9 @@ export default function ReviewContentInput({
       <button
         type="button"
         onClick={handleEdit}
-        className="w-full min-h-25 px-4 py-2.5 rounded-lg bg-background-subtle text-left flex flex-start"
+        className="w-full min-h-25 px-4 py-3 rounded-lg bg-background-subtle text-left flex flex-start"
       >
-        <span className="font-['Pretendard'] text-label1 font-normal text-text-default whitespace-pre-line">
+        <span className="font-['Pretendard'] text-body font-normal text-text-default whitespace-pre-line">
           {value}
         </span>
       </button>
@@ -66,15 +68,20 @@ export default function ReviewContentInput({
 
   // 작성 중 상태
   return (
-    <div className="w-full min-h-25 px-4 py-2.5 rounded-lg outline outline-1 outline-offset-[-1px] bg-background-default outline-border-strong transition-colors">
+    <div className="relative w-full min-h-25 px-4 py-3 rounded-lg outline outline-1 outline-offset-[-1px] bg-background-default outline-border-strong transition-colors">
+      {!value && (
+        <p className="absolute top-3 left-4 right-4 pointer-events-none break-words font-['Pretendard'] text-body font-normal text-text-placeholder whitespace-pre-line">
+          가게나 메뉴에 대해 만족스러웠던 점이나,{'\n'}픽업·주문에 대해
+          남겨주세요.
+        </p>
+      )}
       <textarea
         ref={textareaRef}
         value={value}
         onChange={(e) => onChange(e.target.value.slice(0, MAX_LENGTH))}
         onBlur={handleBlur}
-        placeholder="가게나 메뉴에 대해 만족스러웠던 점이나, 픽업·주문에 대해 남겨주세요."
         rows={1}
-        className="w-full resize-none outline-none overflow-hidden font-['Pretendard'] text-label1 font-normal text-text-default placeholder:text-label1 placeholder:font-medium placeholder:text-text-placeholder placeholder:whitespace-pre-line"
+        className="w-full resize-none outline-none overflow-hidden break-words font-['Pretendard'] text-body font-normal text-text-default relative bg-transparent"
       />
     </div>
   );

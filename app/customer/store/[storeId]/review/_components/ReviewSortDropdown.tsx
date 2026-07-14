@@ -23,7 +23,7 @@ export default function ReviewSortDropdown({
 
   return (
     <div className="relative flex justify-between items-center px-4 pb-1 pt-0.5 font-['Pretendard']">
-      <span className="text-xs text-text-default">총 {totalCount}개</span>
+      <span className="text-label2 font-normal text-text-default">총 {totalCount}개</span>
 
       <button
         type="button"
@@ -42,7 +42,7 @@ export default function ReviewSortDropdown({
             className="fixed inset-0 z-base"
             onClick={() => setIsOpen(false)}
           />
-          <div className="absolute right-0 top-full z-dropdown rounded-lg shadow-[0px_0px_15px_0px_rgba(0,0,0,0.05)] outline outline-1 outline-offset-[-1px] outline-border-subtle bg-background-default overflow-hidden min-w-[104px]">
+          <div className="absolute right-2 top-full z-dropdown rounded-lg shadow-[0px_0px_15px_0px_rgba(0,0,0,0.05)] outline outline-1 outline-offset-[-1px] outline-border-subtle bg-background-default overflow-hidden min-w-[104px]">
             {SORT_OPTIONS.map((option) => (
               <button
                 key={option.value}

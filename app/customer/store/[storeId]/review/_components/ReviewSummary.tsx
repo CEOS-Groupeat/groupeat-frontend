@@ -48,7 +48,7 @@ export default function ReviewSummary({
 
           return (
             <div key={score} className="h-4 relative flex items-center">
-              <span className="w-[19px] text-caption2 font-medium text-text-default">
+              <span className="w-[19px] text-right text-caption2 font-medium text-text-default shrink-0">
                 {score}점
               </span>
               <div className="relative w-30 h-1 mx-2.5 bg-border-default rounded-full">
