@@ -42,7 +42,7 @@ export default function ReviewSortDropdown({
             className="fixed inset-0 z-base"
             onClick={() => setIsOpen(false)}
           />
-          <div className="absolute right-0 top-full z-dropdown rounded-lg shadow-[0px_0px_15px_0px_rgba(0,0,0,0.05)] outline outline-1 outline-offset-[-1px] outline-border-subtle bg-background-default overflow-hidden min-w-[104px]">
+          <div className="absolute right-2 top-full z-dropdown rounded-lg shadow-[0px_0px_15px_0px_rgba(0,0,0,0.05)] outline outline-1 outline-offset-[-1px] outline-border-subtle bg-background-default overflow-hidden min-w-[104px]">
             {SORT_OPTIONS.map((option) => (
               <button
                 key={option.value}
