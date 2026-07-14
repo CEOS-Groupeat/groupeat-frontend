@@ -6,7 +6,7 @@ import Image from 'next/image';
 import ChevronIcon from '@/public/icons/icon-right_chevron.svg';
 import type { CustomerOrder } from '@/src/types/api';
 import OrderStatusBadge from './OrderStatusBadge';
-import { formatPickupTime } from '../_utils/formatTime';
+import { formatPickupTime, formatPickupDate } from '../_utils/formatTime';
 
 const STATUS_MAP: Record<string, string> = {
   PENDING: '승인 대기',
@@ -79,7 +79,7 @@ export default function CustomerOrderCard({
               </button>
             </div>
             <div className="flex items-center gap-1 text-caption1 font-normal text-text-subtlest">
-              <span>{order.pickupDate}</span>
+              <span>{order.pickupDate ? formatPickupDate(order.pickupDate) : ''}</span>
               <div className="size-0.5 bg-text-subtlest rounded-full" />
               <span>
                 {order.pickupTime ? formatPickupTime(order.pickupTime) : ''}
