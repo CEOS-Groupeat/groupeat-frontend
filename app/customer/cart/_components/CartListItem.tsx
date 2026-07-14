@@ -112,16 +112,16 @@ export default function CartListItem({
           </span>
         </div>
 
-        <div className="flex justify-between">
-          <span className="items-center text-label2 font-semibold text-text-default">
+        <div className="flex items-center justify-between">
+          <span className="text-label1 font-semibold text-text-default">
             총 금액
           </span>
-          <div className="flex items-center gap-1">
-            <span className="text-xs font-normal leading-4 text-text-subtlest line-through">
+          <div className="flex items-center gap-1.5">
+            <span className="text-xs font-medium leading-4.5 text-text-subtlest line-through font-['Pretendard']">
               {((item.unitPrice ?? 0) * (item.quantity ?? 0)).toLocaleString()}
               원
             </span>
-            <span className="text-body font-semibold text-text-default">
+            <span className="text-body font-semibold text-text-default font-['Pretendard']">
               {(item.finalPrice ?? 0).toLocaleString()}원
             </span>
           </div>
