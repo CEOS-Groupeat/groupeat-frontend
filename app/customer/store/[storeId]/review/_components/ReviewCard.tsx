@@ -48,7 +48,6 @@ export default function ReviewCard({
       <div className="flex flex-col gap-1.5">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-1.5">
-            <div className="size-[26px] rounded-full bg-background-subtle" />
             <span className="text-body font-semibold text-text-default">
               {review.authorNickname}
             </span>
