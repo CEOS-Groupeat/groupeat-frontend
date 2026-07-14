@@ -29,7 +29,7 @@ export default function ReviewCard({
   ];
 
   return (
-    <div className="mx-4 py-5 border-b border-border-default flex flex-col gap-3 font-['Pretendard']">
+    <div className="mx-4 py-5 border-b border-border-default flex flex-col gap-[10px] font-['Pretendard']">
       {/* 가게명 (내 리뷰 화면에서만 표시) */}
       {storeName && (
         <button
@@ -112,7 +112,7 @@ export default function ReviewCard({
       </p>
 
       {review.imageUrls && review.imageUrls.length > 0 && (
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3 mt-0.5">
           {review.imageUrls.map((src, i) => (
             <div
               key={i}
@@ -129,7 +129,7 @@ export default function ReviewCard({
         </div>
       )}
 
-      <div className="flex flex-wrap gap-1.5">
+      <div className="flex flex-wrap gap-1.5 mt-0.5">
         {review.orderedMenuNames?.map((tag, i) => (
           <span
             key={i}
@@ -141,7 +141,7 @@ export default function ReviewCard({
       </div>
 
       {review.ownerReply && (
-        <div className="px-4 py-3 bg-border-divider rounded-r-2xl rounded-bl-2xl flex flex-col gap-0.5">
+        <div className="px-4 py-3 mt-0.5 bg-border-divider rounded-r-2xl rounded-bl-2xl flex flex-col gap-0.5">
           <div className="flex justify-between items-center">
             <span className="text-label1 text-text-default font-semibold">
               {review.ownerReply.storeName}
