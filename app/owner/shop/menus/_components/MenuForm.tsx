@@ -7,6 +7,7 @@ import AddIcon from '@/public/icons/icon_add.svg';
 import InputField from '@/components/ui/InputField';
 import DefaultButton from '@/components/ui/ButtonDefault';
 import { imageAPI } from '@/src/api/image.api';
+import MenuDeleteConfirmModal from './MenuDeleteConfirmModal';
 
 export type OptionInput = { id: string; name: string; additionalPrice: string };
 export type GroupInput = { id: string; name: string; options: OptionInput[] };
@@ -49,6 +50,7 @@ export default function MenuForm({
     initialData?.imageUrl || null
   );
   const [isUploading, setIsUploading] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -136,195 +138,203 @@ export default function MenuForm({
       ));
 
   return (
-    <main className="flex pb-6 flex-col items-start gap-5 self-stretch px-4">
-      <div className="flex flex-col items-start gap-6 self-stretch">
-        <div className="flex pt-3 flex-col justify-center items-start gap-11 self-stretch">
-          <div className="flex flex-col items-start gap-5 self-stretch">
-            <label className="text-text-subtlest text-label1 font-medium font-['Pretendard']">
-              메뉴 사진
-            </label>
+    <>
+      <main className="flex pb-6 flex-col items-start gap-5 self-stretch px-4">
+        <div className="flex flex-col items-start gap-6 self-stretch">
+          <div className="flex pt-3 flex-col justify-center items-start gap-11 self-stretch">
+            <div className="flex flex-col items-start gap-5 self-stretch">
+              <label className="text-text-subtlest text-label1 font-medium font-['Pretendard']">
+                메뉴 사진
+              </label>
 
-            <input
-              type="file"
-              accept="image/*"
-              className="hidden"
-              ref={fileInputRef}
-              onChange={handleImageChange}
-            />
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                ref={fileInputRef}
+                onChange={handleImageChange}
+              />
 
-            <div
-              onClick={() => !isUploading && fileInputRef.current?.click()}
-              className={`flex w-21 h-21 justify-center items-center rounded-xl relative cursor-pointer overflow-hidden ${
-                imageUrl ? 'bg-neutral-20 bg-cover bg-center' : ''
-              }`}
-              style={
-                imageUrl ? { backgroundImage: `url(${imageUrl})` } : undefined
-              }
-            >
-              {isUploading ? (
-                <div className="absolute inset-0 bg-black/50 flex justify-center items-center">
-                  <span className="text-white text-caption1 font-medium">
-                    업로드 중...
-                  </span>
-                </div>
-              ) : imageUrl ? (
-                <div className="absolute bottom-1.5 right-1.5 flex w-6.5 h-6.5 justify-center items-center shrink-0 aspect-square rounded-full bg-static-white shadow-[0_0_13px_0_rgba(0, 0, 0, 0.20)] z-10 hover:bg-neutral-10 transition-colors">
-                  <PencilIcon className="w-4 h-4" />
+              <div
+                onClick={() => !isUploading && fileInputRef.current?.click()}
+                className={`flex w-21 h-21 justify-center items-center rounded-xl relative cursor-pointer overflow-hidden ${
+                  imageUrl ? 'bg-neutral-20 bg-cover bg-center' : ''
+                }`}
+                style={
+                  imageUrl ? { backgroundImage: `url(${imageUrl})` } : undefined
+                }
+              >
+                {isUploading ? (
+                  <div className="absolute inset-0 bg-black/50 flex justify-center items-center">
+                    <span className="text-white text-caption1 font-medium">
+                      업로드 중...
+                    </span>
+                  </div>
+                ) : imageUrl ? (
+                  <div className="absolute bottom-1.5 right-1.5 flex w-6.5 h-6.5 justify-center items-center shrink-0 aspect-square rounded-full bg-static-white shadow-[0_0_13px_0_rgba(0, 0, 0, 0.20)] z-10 hover:bg-neutral-10 transition-colors">
+                    <PencilIcon className="w-4 h-4" />
+                  </div>
+                ) : (
+                  <PhotoIcon className="w-21 h-21" />
+                )}
+              </div>
+
+              <InputField
+                label="메뉴명"
+                labelClassName="text-text-subtlest font-['Pretendard']"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="메뉴명을 입력해주세요"
+              />
+
+              <InputField
+                label="설명"
+                labelClassName="text-text-subtlest font-['Pretendard']"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="설명을 입력해주세요"
+              />
+
+              <InputField
+                label="가격"
+                labelClassName="text-text-subtlest font-['Pretendard']"
+                type="number"
+                value={basePrice}
+                onChange={(e) => setBasePrice(e.target.value)}
+                placeholder="가격을 입력해주세요"
+              />
+
+              {optionGroups.length === 0 ? (
+                <div className="w-full flex flex-col items-start font-['Pretendard']">
+                  <h2 className="text-text-subtlest text-label1 font-medium">
+                    옵션 그룹
+                  </h2>
+                  <button
+                    onClick={handleAddGroup}
+                    className="mt-3 w-full flex h-11 px-4 py-3 justify-center items-center rounded-lg bg-brand-background hover:bg-brand-background/80 transition-colors"
+                  >
+                    <div className="flex pb-px justify-center items-center gap-1">
+                      <AddIcon className="w-3.5 h-3.5" />
+                      <p className="text-brand-default text-label1 font-medium">
+                        그룹 추가하기
+                      </p>
+                    </div>
+                  </button>
                 </div>
               ) : (
-                <PhotoIcon className="w-21 h-21" />
+                <div className="w-full flex flex-col items-start font-['Pretendard']">
+                  <h2 className="text-text-subtlest text-label1 font-medium">
+                    메뉴 옵션
+                  </h2>
+                  <div className="w-full flex flex-col">
+                    {optionGroups.map((group) => (
+                      <div
+                        key={group.id}
+                        className="flex flex-col items-start self-stretch mt-5"
+                      >
+                        <InputField
+                          label="그룹명"
+                          labelClassName="text-label2 font-normal text-text-default"
+                          value={group.name}
+                          onChange={(e) =>
+                            handleGroupChange(group.id, e.target.value)
+                          }
+                          placeholder="ex. 시그니쳐 세트"
+                        />
+                        <div className="flex justify-between self-stretch mt-5">
+                          <p className="text-text-default text-label2 font-normal">
+                            세부 옵션
+                          </p>
+                          <button
+                            onClick={() => handleAddOption(group.id)}
+                            className="text-brand-default text-caption1 font-semibold font-['Pretendard'] hover:underline"
+                          >
+                            추가하기
+                          </button>
+                        </div>
+                        {group.options.map((opt) => (
+                          <div
+                            key={opt.id}
+                            className="flex items-start self-stretch gap-2"
+                          >
+                            <InputField
+                              label=""
+                              placeholder="ex. 에그마요 추가"
+                              value={opt.name}
+                              onChange={(e) =>
+                                handleOptionChange(
+                                  group.id,
+                                  opt.id,
+                                  'name',
+                                  e.target.value
+                                )
+                              }
+                            />
+                            <InputField
+                              label=""
+                              placeholder="추가 금액"
+                              type="number"
+                              value={opt.additionalPrice}
+                              onChange={(e) =>
+                                handleOptionChange(
+                                  group.id,
+                                  opt.id,
+                                  'additionalPrice',
+                                  e.target.value
+                                )
+                              }
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                  <button
+                    onClick={handleAddGroup}
+                    className="mt-3 w-full flex h-11 px-4 py-3 justify-center items-center rounded-lg bg-brand-background hover:bg-brand-background/80 transition-colors"
+                  >
+                    <div className="flex pb-px justify-center items-center gap-1">
+                      <AddIcon className="w-3.5 h-3.5" />
+                      <p className="text-brand-default text-label1 font-medium">
+                        그룹 추가하기
+                      </p>
+                    </div>
+                  </button>
+                </div>
               )}
             </div>
-
-            <InputField
-              label="메뉴명"
-              labelClassName="text-text-subtlest font-['Pretendard']"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="메뉴명을 입력해주세요"
-            />
-
-            <InputField
-              label="설명"
-              labelClassName="text-text-subtlest font-['Pretendard']"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="설명을 입력해주세요"
-            />
-
-            <InputField
-              label="가격"
-              labelClassName="text-text-subtlest font-['Pretendard']"
-              type="number"
-              value={basePrice}
-              onChange={(e) => setBasePrice(e.target.value)}
-              placeholder="가격을 입력해주세요"
-            />
-
-            {optionGroups.length === 0 ? (
-              <div className="w-full flex flex-col items-start font-['Pretendard']">
-                <h2 className="text-text-subtlest text-label1 font-medium">
-                  옵션 그룹
-                </h2>
-                <button
-                  onClick={handleAddGroup}
-                  className="mt-3 w-full flex h-11 px-4 py-3 justify-center items-center rounded-lg bg-brand-background hover:bg-brand-background/80 transition-colors"
-                >
-                  <div className="flex pb-px justify-center items-center gap-1">
-                    <AddIcon className="w-3.5 h-3.5" />
-                    <p className="text-brand-default text-label1 font-medium">
-                      그룹 추가하기
-                    </p>
-                  </div>
-                </button>
-              </div>
-            ) : (
-              <div className="w-full flex flex-col items-start font-['Pretendard']">
-                <h2 className="text-text-subtlest text-label1 font-medium">
-                  메뉴 옵션
-                </h2>
-                <div className="w-full flex flex-col">
-                  {optionGroups.map((group) => (
-                    <div
-                      key={group.id}
-                      className="flex flex-col items-start self-stretch mt-5"
-                    >
-                      <InputField
-                        label="그룹명"
-                        labelClassName="text-label2 font-normal text-text-default"
-                        value={group.name}
-                        onChange={(e) =>
-                          handleGroupChange(group.id, e.target.value)
-                        }
-                        placeholder="ex. 시그니쳐 세트"
-                      />
-                      <div className="flex justify-between self-stretch mt-5">
-                        <p className="text-text-default text-label2 font-normal">
-                          세부 옵션
-                        </p>
-                        <button
-                          onClick={() => handleAddOption(group.id)}
-                          className="text-brand-default text-caption1 font-semibold font-['Pretendard'] hover:underline"
-                        >
-                          추가하기
-                        </button>
-                      </div>
-                      {group.options.map((opt) => (
-                        <div
-                          key={opt.id}
-                          className="flex items-start self-stretch gap-2"
-                        >
-                          <InputField
-                            label=""
-                            placeholder="ex. 에그마요 추가"
-                            value={opt.name}
-                            onChange={(e) =>
-                              handleOptionChange(
-                                group.id,
-                                opt.id,
-                                'name',
-                                e.target.value
-                              )
-                            }
-                          />
-                          <InputField
-                            label=""
-                            placeholder="추가 금액"
-                            type="number"
-                            value={opt.additionalPrice}
-                            onChange={(e) =>
-                              handleOptionChange(
-                                group.id,
-                                opt.id,
-                                'additionalPrice',
-                                e.target.value
-                              )
-                            }
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  ))}
-                </div>
-                <button
-                  onClick={handleAddGroup}
-                  className="mt-3 w-full flex h-11 px-4 py-3 justify-center items-center rounded-lg bg-brand-background hover:bg-brand-background/80 transition-colors"
-                >
-                  <div className="flex pb-px justify-center items-center gap-1">
-                    <AddIcon className="w-3.5 h-3.5" />
-                    <p className="text-brand-default text-label1 font-medium">
-                      그룹 추가하기
-                    </p>
-                  </div>
-                </button>
-              </div>
-            )}
           </div>
+
+          {isEditMode && onDelete && (
+            <button
+              onClick={() => setShowDeleteModal(true)}
+              disabled={isDeleting}
+              className="text-text-subtlest text-label2 font-medium font-['Pretendard'] hover:text-status-danger transition-colors"
+            >
+              {isDeleting ? '삭제 중...' : '메뉴 삭제'}
+            </button>
+          )}
         </div>
 
-        {isEditMode && onDelete && (
-          <button
-            onClick={() => {
-              if (window.confirm('정말로 이 메뉴를 삭제하시겠습니까?')) {
-                onDelete();
-              }
-            }}
-            disabled={isDeleting}
-            className="text-text-subtlest text-label2 font-medium font-['Pretendard'] hover:text-status-danger transition-colors"
-          >
-            {isDeleting ? '삭제 중...' : '메뉴 삭제'}
-          </button>
-        )}
-      </div>
+        <DefaultButton
+          onClick={() =>
+            onSave({ name, description, basePrice, imageUrl, optionGroups })
+          }
+          disabled={!isFormValid || isPending || isUploading}
+        >
+          {isPending ? '저장 중...' : '저장하기'}
+        </DefaultButton>
+      </main>
 
-      <DefaultButton
-        onClick={() =>
-          onSave({ name, description, basePrice, imageUrl, optionGroups })
-        }
-        disabled={!isFormValid || isPending || isUploading}
-      >
-        {isPending ? '저장 중...' : '저장하기'}
-      </DefaultButton>
-    </main>
+      {showDeleteModal && (
+        <MenuDeleteConfirmModal
+          onClose={() => setShowDeleteModal(false)}
+          onConfirm={() => {
+            setShowDeleteModal(false);
+            onDelete?.();
+          }}
+        />
+      )}
+    </>
   );
 }
