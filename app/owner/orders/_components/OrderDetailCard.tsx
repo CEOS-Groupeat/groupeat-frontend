@@ -104,10 +104,10 @@ export default function OrderCard({
             {items.map((item, index) => (
               <div
                 key={`${item.menuName}-${index}`}
-                className="flex items-center gap-2"
+                className="flex items-center gap-1"
               >
                 <span
-                  className={`w-[55px] font-normal text-text-subtlest ${index > 0 ? 'opacity-0' : ''}`}
+                  className={`mr-1 w-[55px] font-normal text-text-subtlest ${index > 0 ? 'opacity-0' : ''}`}
                 >
                   메뉴
                 </span>
