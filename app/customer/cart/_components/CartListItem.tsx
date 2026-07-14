@@ -84,7 +84,7 @@ export default function CartListItem({
         </button>
       </div>
 
-      <div className="flex flex-col gap-1 w-60 self-end font-['Pretendard']">
+      <div className="ml-[110px] flex flex-col gap-1 font-['Pretendard']">
         <div className="flex justify-between">
           <span className="text-caption1 font-normal text-text-default">
             수량
