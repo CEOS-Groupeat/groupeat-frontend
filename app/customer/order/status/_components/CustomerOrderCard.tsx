@@ -57,7 +57,10 @@ export default function CustomerOrderCard({
       aria-label={`${order.storeName} 주문 상세 보기`}
       className="w-full p-4 bg-background-default rounded-xl shadow-[6px_6px_54px_0px_rgba(0,0,0,0.05)] outline outline-1 outline-offset-[-1px] outline-border-subtle flex flex-col gap-1.5"
     >
-      <OrderStatusBadge badgeText={badgeText} />
+      <OrderStatusBadge
+        badgeText={badgeText}
+        status={order.orderStatus ?? ''}
+      />
 
       {/* 주문 정보 */}
       <div className="flex justify-between items-start gap-6">
