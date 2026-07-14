@@ -23,7 +23,7 @@ export default function ReviewSortDropdown({
 
   return (
     <div className="relative flex justify-between items-center px-4 pb-1 pt-0.5 font-['Pretendard']">
-      <span className="text-xs text-text-default">총 {totalCount}개</span>
+      <span className="text-label2 font-normal text-text-default">총 {totalCount}개</span>
 
       <button
         type="button"
