@@ -236,7 +236,7 @@ export default function MenuForm({
                         onChange={(e) =>
                           handleGroupChange(group.id, e.target.value)
                         }
-                        placeholder="그룹명"
+                        placeholder="ex. 시그니쳐 세트"
                       />
                       <div className="flex justify-between self-stretch mt-5">
                         <p className="text-text-default text-label2 font-normal">
@@ -256,7 +256,7 @@ export default function MenuForm({
                         >
                           <InputField
                             label=""
-                            placeholder="옵션명"
+                            placeholder="ex. 에그마요 추가"
                             value={opt.name}
                             onChange={(e) =>
                               handleOptionChange(
@@ -269,7 +269,7 @@ export default function MenuForm({
                           />
                           <InputField
                             label=""
-                            placeholder="가격"
+                            placeholder="추가 금액"
                             type="number"
                             value={opt.additionalPrice}
                             onChange={(e) =>
