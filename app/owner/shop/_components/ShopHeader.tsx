@@ -3,18 +3,30 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 
+const tabs = [
+  { label: '기본 정보', path: '/owner/shop/info' },
+  { label: '메뉴 정보', path: '/owner/shop/menus' },
+  { label: '운영 정보', path: '/owner/shop/operations' },
+];
+
+const SECTION_TITLE: Record<string, string> = {
+  '/owner/shop/info': '가게 정보',
+  '/owner/shop/menus': '메뉴 관리',
+  '/owner/shop/operations': '1. 영업 설정',
+};
+
 export default function ShopHeader() {
   const pathname = usePathname();
   const router = useRouter();
 
-  const tabs = [
-    { label: '기본 정보', path: '/owner/shop/info' },
-    { label: '메뉴 정보', path: '/owner/shop/menus' },
-    { label: '운영 정보', path: '/owner/shop/operations' },
-  ];
+  const activeTabPath = tabs.find((tab) =>
+    pathname?.startsWith(tab.path)
+  )?.path;
+  const sectionTitle = activeTabPath ? SECTION_TITLE[activeTabPath] : '';
+  const isMenuTab = pathname?.startsWith('/owner/shop/menus');
 
   return (
-    <header className="flex flex-col items-start w-full gap-2 px-4">
+    <header className="flex flex-col items-start w-full gap-2 px-4 font-['Pretendard']">
       <div className="flex items-center justify-between w-full">
         <div className="flex flex-col items-start gap-1">
           <h2 className="font-bold text-headline1 text-text-default">
@@ -58,17 +70,19 @@ export default function ShopHeader() {
 
       <div className="flex justify-between items-start self-stretch mt-3">
         <h1 className="text-text-default text-headline3 font-semibold">
-          메뉴 관리
+          {sectionTitle}
         </h1>
 
-        <Link
-          href="/owner/shop/menus/add"
-          className="flex justify-center items-center w-16.5 h-8 rounded-lg border border-border-default bg-background-default transition-colors hover:bg-background-subtle"
-        >
-          <p className="text-text-default text-caption1 font-semibold">
-            추가하기
-          </p>
-        </Link>
+        {isMenuTab && (
+          <Link
+            href="/owner/shop/menus/add"
+            className="flex justify-center items-center w-16.5 h-8 rounded-lg border border-border-default bg-background-default transition-colors hover:bg-background-subtle"
+          >
+            <p className="text-text-default text-caption1 font-semibold">
+              추가하기
+            </p>
+          </Link>
+        )}
       </div>
     </header>
   );

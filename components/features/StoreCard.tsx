@@ -26,7 +26,7 @@ export default function StoreCard({ store, onClick }: StoreCardProps) {
               ? store.imageUrl
               : `/images/day-brunch.png`
           }
-          alt={store.name}
+          alt={store.name ?? ''}
           fill
           className="object-cover rounded-lg"
         />
@@ -36,22 +36,25 @@ export default function StoreCard({ store, onClick }: StoreCardProps) {
         <div className="flex flex-col gap-1.5">
           {/* 카테고리 + 이름 + 가격 */}
           <div className="flex flex-col gap-1">
-            <BadgeCategory label={store.category} />
+            <BadgeCategory label={store.category ?? ''} />
             <div className="pl-0.5 flex flex-col text-text-default">
               <span className="text-body font-semibold">{store.name}</span>
               <span className="text-label2 font-medium">
-                {store.minPrice.toLocaleString()}원 ~{' '}
-                {store.maxPrice.toLocaleString()}원/개
+                {(store.minPrice ?? 0).toLocaleString()}원 ~{' '}
+                {(store.maxPrice ?? 0).toLocaleString()}원/개
               </span>
             </div>
           </div>
 
-          {/* 별점 + 위치 => 위치코드는 추후 수정 예정 */}
+          {/* 별점 + 리뷰 수 + 위치 => 위치코드는 추후 수정 예정 */}
           <div className="flex flex-col">
             <div className="flex items-center gap-0.5">
               <Star className="size-3.5 text-icon-star" />
               <span className="text-caption2 font-normal text-text-subtle">
                 {store.rating}
+              </span>
+              <span className="text-caption2 font-normal text-text-subtle">
+                ({store.reviewCount})
               </span>
             </div>
             {store.pickupTimeRange && (

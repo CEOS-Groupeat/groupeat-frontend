@@ -1,13 +1,13 @@
 import { create } from 'zustand';
 import type {
-  SearchStoresResponse,
+  StoreListData,
   StoreSearchParams,
 } from '@/app/customer/search/_types/store.type';
 
 interface SearchStore {
-  results: SearchStoresResponse | null;
+  results: StoreListData | null;
   appliedFilters: StoreSearchParams;
-  setResults: (data: SearchStoresResponse, filters?: StoreSearchParams) => void;
+  setResults: (data: StoreListData, filters?: StoreSearchParams) => void;
   clearResults: () => void;
   clearResultsOnly: () => void;
 }

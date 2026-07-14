@@ -7,6 +7,7 @@ import { useSearchStore } from '@/store/useSearchStore';
 import { useRecentSearches } from '@/hooks/useRecentSearches';
 import { useSearchStores } from '@/hooks/useSearchStores';
 import type { StoreSearchParams } from '@/app/customer/search/_types/store.type';
+import type { SortValue } from './_constants/sortOptions';
 
 import CartIconButton from '@/components/cart/CartIconButton';
 import SearchField from '@/components/ui/SearchField';
@@ -35,7 +36,7 @@ function SearchContent() {
   } = useSearchStore();
   const { search, data: keywordData, isLoading } = useSearchStores();
 
-  const [sort, setSort] = useState('NONE');
+  const [sort, setSort] = useState<SortValue>('NONE');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filterKey, setFilterKey] = useState(0);
   const [searchInput, setSearchInput] = useState(keyword);

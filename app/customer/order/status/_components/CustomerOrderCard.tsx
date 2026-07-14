@@ -6,7 +6,7 @@ import Image from 'next/image';
 import ChevronIcon from '@/public/icons/icon-right_chevron.svg';
 import type { CustomerOrder } from '@/src/types/api';
 import OrderStatusBadge from './OrderStatusBadge';
-import { formatPickupTime } from '../_utils/formatTime';
+import { formatPickupTime, formatPickupDate } from '../_utils/formatTime';
 
 const STATUS_MAP: Record<string, string> = {
   PENDING: '승인 대기',
@@ -19,13 +19,12 @@ const STATUS_MAP: Record<string, string> = {
 
 interface CustomerOrderCardProps {
   order: CustomerOrder;
-  // TODO: 리뷰 버튼 구현 시 추가
   onReviewClick?: (orderId: number) => void;
 }
 
 export default function CustomerOrderCard({
   order,
-  //onReviewClick,
+  onReviewClick,
 }: CustomerOrderCardProps) {
   const router = useRouter();
 
@@ -58,7 +57,10 @@ export default function CustomerOrderCard({
       aria-label={`${order.storeName} 주문 상세 보기`}
       className="w-full p-4 bg-background-default rounded-xl shadow-[6px_6px_54px_0px_rgba(0,0,0,0.05)] outline outline-1 outline-offset-[-1px] outline-border-subtle flex flex-col gap-1.5"
     >
-      <OrderStatusBadge badgeText={badgeText} />
+      <OrderStatusBadge
+        badgeText={badgeText}
+        status={order.orderStatus ?? ''}
+      />
 
       {/* 주문 정보 */}
       <div className="flex justify-between items-start gap-6">
@@ -77,7 +79,7 @@ export default function CustomerOrderCard({
               </button>
             </div>
             <div className="flex items-center gap-1 text-caption1 font-normal text-text-subtlest">
-              <span>{order.pickupDate}</span>
+              <span>{order.pickupDate ? formatPickupDate(order.pickupDate) : ''}</span>
               <div className="size-0.5 bg-text-subtlest rounded-full" />
               <span>
                 {order.pickupTime ? formatPickupTime(order.pickupTime) : ''}
@@ -101,13 +103,16 @@ export default function CustomerOrderCard({
       </div>
 
       {/* 리뷰 버튼 (픽업 완료일 때만) */}
-      {/* {order.orderStatus === 'COMPLETED' && (
+      {order.orderStatus === 'COMPLETED' && (
         <div className="pt-1.5">
           <button
             type="button"
-            onClick={() =>
-              !order.hasReview && onReviewClick?.(order.orderId ?? 0)
-            }
+            onClick={(e) => {
+              e.stopPropagation();
+              if (!order.hasReview) {
+                onReviewClick?.(order.orderId ?? 0);
+              }
+            }}
             disabled={order.hasReview}
             className={`w-full h-[38px] p-3 rounded-lg text-label2 font-semibold
               ${
@@ -119,7 +124,7 @@ export default function CustomerOrderCard({
             {order.hasReview ? '리뷰 작성 완료' : '리뷰 작성'}
           </button>
         </div>
-      )} */}
+      )}
     </div>
   );
 }

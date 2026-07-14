@@ -9,8 +9,8 @@ import OrderManageOn from '@/public/icons/icon_navicon_history_on.svg';
 import OrderManageOff from '@/public/icons/icon_navicon_history_off.svg';
 import StoreInfoOn from '@/public/icons/icon_navicon_store_on.svg';
 import StoreInfoOff from '@/public/icons/icon_navicon_store_off.svg';
-import FavoriteOn from '@/public/icons/icon_navicon_favorite_on.svg';
-import FavoriteOff from '@/public/icons/icon_navicon_favorite_off.svg';
+import ReviewOn from '@/public/icons/icon_navicon_favorite_on.svg';
+import ReviewOff from '@/public/icons/icon_navicon_favorite_off.svg';
 import MyPageOn from '@/public/icons/icon_navicon_my_on.svg';
 import MyPageOff from '@/public/icons/icon_navicon_my_off.svg';
 
@@ -30,10 +30,10 @@ const navigationItems = [
     iconOff: StoreInfoOff,
   },
   {
-    label: '즐겨찾기',
-    href: '/owner/favorites',
-    iconOn: FavoriteOn,
-    iconOff: FavoriteOff,
+    label: '리뷰 관리',
+    href: '/owner/review',
+    iconOn: ReviewOn,
+    iconOff: ReviewOff,
   },
   {
     label: '계정',

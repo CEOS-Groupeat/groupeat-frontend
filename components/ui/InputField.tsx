@@ -6,6 +6,7 @@ interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   required?: boolean;
   labelClassName?: string;
+  inputClassName?: string;
 }
 
 export default function InputField({
@@ -14,6 +15,7 @@ export default function InputField({
   className = '',
   value,
   labelClassName,
+  inputClassName,
   disabled,
   ...props
 }: InputFieldProps) {
@@ -37,7 +39,7 @@ export default function InputField({
           isFilled
             ? 'bg-background-subtle border-transparent'
             : 'bg-white border-border-strong'
-        }`}
+        } ${inputClassName ?? ''}`}
         {...props}
       />
     </div>
