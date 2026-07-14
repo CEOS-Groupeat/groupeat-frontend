@@ -15,23 +15,29 @@ import { useShopImageUpload } from '../_hooks/useShopImageUpload';
 import { isValidPhoneNumber } from '../_utils/validatePhoneNumber';
 import type { ShopInfoData } from '../_types/shop.type';
 
-function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
+import { extractDistrict, extractNeighborhood } from '../_utils/extractDistrict';
+
+interface ShopInfoFormProps {
+  shopInfo: ShopInfoData | null;
+}
+
+function ShopInfoForm({ shopInfo }: ShopInfoFormProps) {
   const { mutateAsync: saveShopInfo, isPending: isSaving } = useSaveShopInfo();
   const { mutateAsync: uploadImage, isPending: isUploading } =
     useShopImageUpload();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [values, setValues] = useState({
-    imageUrl: shopInfo.imageUrl ?? '',
-    storeName: shopInfo.storeName ?? '',
-    address: shopInfo.location?.address ?? '',
-    phoneNumber: shopInfo.phoneNumber ?? '',
-    description: shopInfo.description ?? '',
-    category: shopInfo.category ?? null,
+    imageUrl: shopInfo?.imageUrl ?? '',
+    storeName: shopInfo?.storeName ?? '',
+    address: shopInfo?.location?.address ?? '',
+    phoneNumber: shopInfo?.phoneNumber ?? '',
+    description: shopInfo?.description ?? '',
+    category: shopInfo?.category ?? null,
     discountConditionQuantity: String(
-      shopInfo.discount?.conditionQuantity ?? ''
+      shopInfo?.discount?.conditionQuantity ?? ''
     ),
-    discountRate: String(shopInfo.discount?.rate ?? ''),
+    discountRate: String(shopInfo?.discount?.rate ?? ''),
   });
 
   const [showSuccessToast, setShowSuccessToast] = useState(false);
@@ -97,9 +103,9 @@ function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
         storeName: values.storeName,
         location: {
           address: values.address,
-          district: shopInfo.location?.district ?? '',
-          neighborhood: shopInfo.location?.neighborhood ?? '',
-          detailAddress: shopInfo.location?.detailAddress ?? '',
+          district: extractDistrict(values.address) || shopInfo?.location?.district || '',
+          neighborhood: extractNeighborhood(values.address) || shopInfo?.location?.neighborhood || '',
+          detailAddress: shopInfo?.location?.detailAddress ?? '',
         },
         category: values.category!,
         phoneNumber: values.phoneNumber,
@@ -287,7 +293,7 @@ export default function ShopSection() {
     );
   }
 
-  if (isError || !shopInfo) {
+  if (isError) {
     return (
       <div className="w-full flex-1 flex items-center justify-center py-20">
         <span className="text-sm text-text-subtle">
@@ -297,5 +303,6 @@ export default function ShopSection() {
     );
   }
 
-  return <ShopInfoForm shopInfo={shopInfo} />;
+  // shopInfo가 null이면 아직 등록 안 한 신규 사장님 → 빈 폼으로 시작
+  return <ShopInfoForm shopInfo={shopInfo ?? null} />;
 }
