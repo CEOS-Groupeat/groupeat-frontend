@@ -49,7 +49,7 @@ export default function AddMenuPage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['ownerMenus'] });
-      router.push('/owner/shop/menus');
+      router.push('/owner/shop/menus?toast=saved');
     },
     onError: (error: Error) => {
       alert(`메뉴 등록에 실패했습니다: ${error.message}`);

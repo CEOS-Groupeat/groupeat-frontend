@@ -25,7 +25,7 @@ export default function TimeRangeField({
         {label}
       </span>
       <div className="w-full flex justify-start items-start gap-2">
-        <div className="w-72 flex justify-start items-center gap-2">
+        <div className="flex-1 flex justify-start items-center gap-2">
           <div className="flex-1 h-11 pl-4 pr-3 py-3 bg-background-default rounded-lg outline outline-1 outline-offset-[-1px] outline-border-strong flex justify-start items-center overflow-hidden">
             <div className="flex-1 flex justify-center items-center gap-6">
               {hasTimeRange ? (

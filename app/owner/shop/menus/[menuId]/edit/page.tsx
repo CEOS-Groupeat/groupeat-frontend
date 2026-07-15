@@ -66,7 +66,7 @@ export default function MenuEditPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['ownerMenus'] });
       queryClient.invalidateQueries({ queryKey: ['ownerMenu', menuId] });
-      router.push('/owner/shop/menus');
+     router.push('/owner/shop/menus?toast=saved');
     },
     onError: (error: Error) => {
       alert(`메뉴 수정에 실패했습니다: ${error.message}`);
