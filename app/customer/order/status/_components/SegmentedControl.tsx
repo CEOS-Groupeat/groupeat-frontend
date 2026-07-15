@@ -1,7 +1,7 @@
 import * as ToggleGroup from '@radix-ui/react-toggle-group';
 
 const TAB_ITEMS = [
-  { value: 'IN_PROGRESS', label: '진행 중' },
+  { value: 'IN_PROGRESS', label: '대기 중' },
   { value: 'PAST', label: '지난 주문' },
 ] as const;
 

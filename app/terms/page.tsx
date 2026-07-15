@@ -27,7 +27,6 @@ export default function CommonTermsPage() {
   const targetType = pathname?.includes('/owner') ? 'BUSINESS' : 'CUSTOMER';
 
   const { data: terms, isLoading, isError } = useQuery({
-    // 💡 4. 쿼리 키에 targetType을 넣어 캐시를 안전하게 분리
     queryKey: ['terms', targetType],
     queryFn: async () => {
       const res = await fetchClient<ApiResponseTermsList>(
@@ -39,7 +38,6 @@ export default function CommonTermsPage() {
   });
 
   const handleTermClick = (termsId: number, title: string) => {
-    // TODO: 인터랙션 디자인 확정 시 상세 페이지 라우팅 또는 모달 띄우기 로직 추가
     alert(`[${title}] 상세 보기 로직 추가 예정`);
   };
 

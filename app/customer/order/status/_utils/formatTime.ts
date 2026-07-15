@@ -8,3 +8,10 @@ export function formatPickupTime(time: string): string {
   }
   return `${period} ${displayHour}시`;
 }
+
+export function formatPickupDate(dateString: string): string {
+  const date = new Date(dateString);
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  return `${month}월 ${day}일`;
+}

@@ -2749,6 +2749,17 @@ export interface components {
         ReviewDetailDTO: {
             /**
              * Format: int64
+             * @description 가게 ID
+             * @example 1
+             */
+            storeId?: number;
+            /**
+             * @description 가게 이름
+             * @example 데이브런치
+             */
+            storeName?: string;
+            /**
+             * Format: int64
              * @description 리뷰 ID
              * @example 1
              */
@@ -3278,6 +3289,12 @@ export interface components {
              * @example 42
              */
             nextCursor?: number;
+            /**
+             * Format: int32
+             * @description 다음 별점 커서 (별점순 정렬 시 필수, 그 외엔 null)
+             * @example 4
+             */
+            nextRating?: number;
         };
         ApiResponseOwnerOrderListDTO: {
             isSuccess?: boolean;
@@ -5412,6 +5429,10 @@ export interface operations {
             query?: {
                 /** @description 마지막으로 조회된 리뷰 ID (첫 요청 시 null) */
                 lastReviewId?: number;
+                /** @description 마지막으로 조회된 리뷰 별점 (별점순 정렬 페이징 시 필수) */
+                lastRating?: number;
+                /** @description 정렬 방식 (LATEST, HIGHEST_RATING, LOWEST_RATING) */
+                sortType?: "LATEST" | "HIGHEST_RATING" | "LOWEST_RATING";
                 /** @description 조회할 개수 */
                 size?: number;
             };

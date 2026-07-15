@@ -37,7 +37,7 @@ export default function OrderSummaryBar({
       <div className="relative z-10 bg-background-default rounded-t-3xl shadow-[0_-2px_18px_rgba(0,0,0,0.05)] px-4 pt-3 pb-6">
         {/* 공통 요약 영역 */}
         <div className="flex justify-between items-end pb-2.5">
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-0.5">
             <p className="text-label2 font-normal text-text-subtle">
               {summaryText}
             </p>
@@ -45,7 +45,7 @@ export default function OrderSummaryBar({
               총 {totalQuantity}개
             </p>
           </div>
-          <div className="flex flex-col items-end">
+          <div className="flex flex-col items-end gap-0.5">
             <p className="text-label2 font-normal text-text-subtlest">
               {originalPrice.toLocaleString()}원
             </p>

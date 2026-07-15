@@ -64,7 +64,7 @@ export default function HeadcountInput({
           if (e.key === 'Enter') handleConfirm();
         }}
         onBlur={handleConfirm}
-        className="flex-1 h-full pl-4 outline-none font-normal text-body text-text-default placeholder:text-body placeholder:text-text-placeholder placeholder:font-normal"
+        className="flex-1 h-full pl-4 pr-3 py-3 outline-none font-normal text-body text-text-default placeholder:text-body placeholder:text-text-placeholder placeholder:font-normal"
       />
       {input && (
         <span className="pr-3 text-body text-text-subtlest font-normal">

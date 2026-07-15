@@ -18,7 +18,7 @@ export default function OrderSummaryCard({
   return (
     <div className="w-full px-3 py-4 bg-border-divider rounded-xl flex flex-col gap-5 font-['Pretendard']">
       <div className="flex flex-col gap-4">
-        <div className="flex items-start gap-3">
+        <div className="flex items-center gap-3">
           {representativeImage && (
             <div className="relative size-16 rounded-md overflow-hidden shrink-0">
               <Image
@@ -29,11 +29,11 @@ export default function OrderSummaryCard({
               />
             </div>
           )}
-          <div className="flex-1 flex flex-col justify-center gap-1">
+          <div className="flex-1 flex flex-col gap-1 my-2 font-['Pretendard']">
             <span className="text-headline3 font-semibold text-text-default">
               {order.storeName}
             </span>
-            <span className="text-label2 font-normal text-text-subtlest">
+            <span className="text-label2 font-normal text-text-subtlest leading-[18px]">
               {formatDateWithDots(order.ordererInfo.orderDate)}
             </span>
           </div>

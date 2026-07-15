@@ -1,35 +1,68 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import InputField from '@/components/ui/InputField';
 import TextAreaField from '@/components/ui/TextAreaField';
 import DefaultButton from '@/components/ui/ButtonDefault';
 import PencilIcon from '@/public/icons/icon_pencil.svg';
 import AlertIcon from '@/public/icons/icon_alert.svg';
 import ShopCategorySelector from './ShopCategorySelector';
+import SuccessToast from '@/components/ui/SuccessToast';
+import ToastError from '@/components/ui/ToastError';
 import { useShopInfo } from '../_hooks/useShopInfo';
 import { useSaveShopInfo } from '../_hooks/useSaveShopInfo';
 import { useShopImageUpload } from '../_hooks/useShopImageUpload';
+import { isValidPhoneNumber } from '../_utils/validatePhoneNumber';
 import type { ShopInfoData } from '../_types/shop.type';
 
-function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
+import { extractDistrict, extractNeighborhood } from '../_utils/extractDistrict';
+
+interface ShopInfoFormProps {
+  shopInfo: ShopInfoData | null;
+}
+
+function ShopInfoForm({ shopInfo }: ShopInfoFormProps) {
   const { mutateAsync: saveShopInfo, isPending: isSaving } = useSaveShopInfo();
   const { mutateAsync: uploadImage, isPending: isUploading } =
     useShopImageUpload();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [values, setValues] = useState({
-    imageUrl: shopInfo.imageUrl ?? '',
-    storeName: shopInfo.storeName ?? '',
-    address: shopInfo.location?.address ?? '',
-    phoneNumber: shopInfo.phoneNumber ?? '',
-    description: shopInfo.description ?? '',
-    category: shopInfo.category ?? null,
+    imageUrl: shopInfo?.imageUrl ?? '',
+    storeName: shopInfo?.storeName ?? '',
+    address: shopInfo?.location?.address ?? '',
+    phoneNumber: shopInfo?.phoneNumber ?? '',
+    description: shopInfo?.description ?? '',
+    category: shopInfo?.category ?? null,
     discountConditionQuantity: String(
-      shopInfo.discount?.conditionQuantity ?? ''
+      shopInfo?.discount?.conditionQuantity ?? ''
     ),
-    discountRate: String(shopInfo.discount?.rate ?? ''),
+    discountRate: String(shopInfo?.discount?.rate ?? ''),
   });
+
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [showErrorToast, setShowErrorToast] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const successTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const errorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const [phoneError, setPhoneError] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      if (successTimerRef.current) clearTimeout(successTimerRef.current);
+      if (errorTimerRef.current) clearTimeout(errorTimerRef.current);
+    };
+  }, []);
+
+  const showError = (message: string) => {
+    if (errorTimerRef.current) clearTimeout(errorTimerRef.current);
+    setErrorMessage(message);
+    setShowErrorToast(true);
+    errorTimerRef.current = setTimeout(() => {
+      setShowErrorToast(false);
+    }, 2000);
+  };
 
   const isFormValid =
     values.storeName.trim().length > 0 &&
@@ -46,7 +79,7 @@ function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
       setValues((prev) => ({ ...prev, imageUrl }));
     } catch (error) {
       console.error('이미지 업로드 실패:', error);
-      // TODO: 에러 토스트
+      showError('이미지 업로드에 실패했어요. 다시 시도해주세요.');
     }
     e.target.value = '';
   };
@@ -54,19 +87,25 @@ function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
   const handleSubmit = async () => {
     if (!isFormValid) return;
 
+    if (!isValidPhoneNumber(values.phoneNumber)) {
+      setPhoneError(true);
+      return;
+    }
+    setPhoneError(false);
+
     const hasDiscount =
       values.discountConditionQuantity.trim().length > 0 &&
       values.discountRate.trim().length > 0;
 
     try {
       await saveShopInfo({
-        imageUrl: shopInfo.imageUrl ?? '',
+        imageUrl: values.imageUrl ?? '',
         storeName: values.storeName,
         location: {
           address: values.address,
-          district: shopInfo.location?.district ?? '',
-          neighborhood: shopInfo.location?.neighborhood ?? '',
-          detailAddress: shopInfo.location?.detailAddress ?? '',
+          district: extractDistrict(values.address) || shopInfo?.location?.district || '',
+          neighborhood: extractNeighborhood(values.address) || shopInfo?.location?.neighborhood || '',
+          detailAddress: shopInfo?.location?.detailAddress ?? '',
         },
         category: values.category!,
         phoneNumber: values.phoneNumber,
@@ -78,10 +117,15 @@ function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
             }
           : undefined,
       });
-      // TODO: 성공 토스트
+
+      if (successTimerRef.current) clearTimeout(successTimerRef.current);
+      setShowSuccessToast(true);
+      successTimerRef.current = setTimeout(() => {
+        setShowSuccessToast(false);
+      }, 2000);
     } catch (error) {
       console.error('가게 정보 저장 실패:', error);
-      // TODO: 에러 토스트
+      showError('저장에 실패했어요. 다시 시도해주세요.');
     }
   };
 
@@ -94,13 +138,20 @@ function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
               대표 이미지
             </label>
             <div
-              className="w-full h-37 bg-black pr-3 pb-2.5 rounded-xl bg-cover bg-center bg-no-repeat"
+              className="w-full h-37 bg-black pr-3 pb-2.5 rounded-xl bg-cover bg-center bg-no-repeat relative"
               style={{
                 backgroundImage: values.imageUrl
                   ? `url(${values.imageUrl})`
                   : undefined,
               }}
             >
+              {isUploading && (
+                <div className="absolute inset-0 bg-black/50 rounded-xl flex items-center justify-center">
+                  <span className="text-static-white text-sm font-medium font-['Pretendard']">
+                    업로드 중...
+                  </span>
+                </div>
+              )}
               <div className="w-full flex h-full justify-end items-end">
                 <button
                   type="button"
@@ -135,14 +186,25 @@ function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
             onChange={(e) => setValues({ ...values, address: e.target.value })}
             labelClassName="text-text-subtlest"
           />
-          <InputField
-            label="연락처"
-            value={values.phoneNumber}
-            onChange={(e) =>
-              setValues({ ...values, phoneNumber: e.target.value })
-            }
-            labelClassName="text-text-subtlest"
-          />
+          <div className="flex flex-col gap-2 self-stretch">
+            <InputField
+              label="연락처"
+              value={values.phoneNumber}
+              onChange={(e) => {
+                setValues({ ...values, phoneNumber: e.target.value });
+                if (phoneError) setPhoneError(false);
+              }}
+              labelClassName="text-text-subtlest"
+              inputClassName={phoneError ? '!outline-status-danger' : ''}
+            />
+            {phoneError && (
+              <div className="flex items-center gap-1">
+                <span className="text-status-danger text-xs font-medium font-['Pretendard'] leading-4">
+                  올바른 형식을 입력해주세요
+                </span>
+              </div>
+            )}
+          </div>
           <TextAreaField
             label="한 줄 소개"
             value={values.description}
@@ -213,6 +275,9 @@ function ShopInfoForm({ shopInfo }: { shopInfo: ShopInfoData }) {
       <DefaultButton onClick={handleSubmit} disabled={!isFormValid || isSaving}>
         {isSaving ? '저장 중...' : '저장하기'}
       </DefaultButton>
+
+      {showSuccessToast && <SuccessToast text="저장이 완료되었습니다" />}
+      {showErrorToast && <ToastError text={errorMessage} />}
     </main>
   );
 }
@@ -228,7 +293,7 @@ export default function ShopSection() {
     );
   }
 
-  if (isError || !shopInfo) {
+  if (isError) {
     return (
       <div className="w-full flex-1 flex items-center justify-center py-20">
         <span className="text-sm text-text-subtle">
@@ -238,5 +303,6 @@ export default function ShopSection() {
     );
   }
 
-  return <ShopInfoForm shopInfo={shopInfo} />;
+  // shopInfo가 null이면 아직 등록 안 한 신규 사장님 → 빈 폼으로 시작
+  return <ShopInfoForm shopInfo={shopInfo ?? null} />;
 }

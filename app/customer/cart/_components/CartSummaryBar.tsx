@@ -18,7 +18,23 @@ export default function CartSummaryBar({
   cartData,
   onOrder,
 }: CartSummaryBarProps) {
-  if (!summary || (summary.calculatedItems ?? []).length === 0) return null;
+  const hasItems = summary && (summary.calculatedItems ?? []).length > 0;
+
+  if (!hasItems) {
+    return (
+      <div className="fixed bottom-0 left-0 w-full z-sticky px-4 pt-3 pb-6 bg-background-default rounded-t-3xl flex flex-col items-center animate-in slide-in-from-bottom-full duration-300 overflow-hidden">
+        <button
+          type="button"
+          disabled
+          className="self-stretch h-13 px-12 py-3 bg-background-subtlest rounded-xl flex flex-col justify-center items-center"
+        >
+          <span className="text-center text-text-subtlest text-headline3 font-semibold font-['Pretendard']">
+            주문하기
+          </span>
+        </button>
+      </div>
+    );
+  }
 
   const firstCalculatedItem: CalculatedCartItem = (summary.calculatedItems ??
     [])[0];

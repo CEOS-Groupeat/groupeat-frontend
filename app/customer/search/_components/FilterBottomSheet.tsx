@@ -27,10 +27,7 @@ import CategoryFilter from '../_components/filters/CategoryFilter';
 interface FilterBottomSheetProps {
   isOpen: boolean;
   onClose: () => void;
-  onSearchResult: (
-    data: StoreListData,
-    filters?: StoreSearchParams
-  ) => void;
+  onSearchResult: (data: StoreListData, filters?: StoreSearchParams) => void;
   initialFilters?: StoreSearchParams;
   initialOpenFilter?: keyof StoreSearchParams;
 }
@@ -165,19 +162,14 @@ export default function FilterBottomSheet({
           transition-[transform,height] duration-300 ease-out
           ${isOpen ? 'translate-y-0' : 'translate-y-full'}`}
       >
-        {/* 드래그 핸들 */}
-        <div
+        {/* 헤더 + 드래그 핸들 기능 추가 */}
+        <header
           onPointerDown={handleDragStart}
-          className="flex shrink-0 flex-col items-center pt-3 pb-1 cursor-grab active:cursor-grabbing touch-none"
+          className="shrink-0 h-[62px] py-[18px] border-b border-border-subtle shadow-[0px_0px_9px_0px_rgba(0,0,0,0.04)] flex items-center justify-center cursor-grab active:cursor-grabbing touch-none"
         >
-          <div className="h-1 w-10 rounded-full bg-border-subtle" />
-        </div>
-
-        {/* 헤더 */}
-        <header className="shrink-0 h-14 border-b border-border-subtle shadow-[0px_0px_9px_0px_rgba(0,0,0,0.04)] flex items-center justify-center">
           <h2
             id="sheet-title"
-            className="text-lg font-semibold text-text-default"
+            className="text-headline3 font-semibold text-text-default font-['Pretendard']"
           >
             상세 검색
           </h2>
