@@ -83,6 +83,8 @@ export default function CartPage() {
   };
 
   const totalStoreCount = cartData?.storeCarts?.length ?? 0;
+  const pickupDate = useCartStore((state) => state.pickupDate);
+  const pickupTime = useCartStore((state) => state.pickupTime);
 
   return (
     <div className="w-full min-h-screen bg-background-default flex flex-col pb-44">
@@ -114,6 +116,8 @@ export default function CartPage() {
           <CartSummaryBar
             summary={selectedIds.length === 0 ? null : (summary ?? null)}
             cartData={cartData?.storeCarts ?? null}
+            pickupDate={pickupDate}
+            pickupTime={pickupTime}
             onOrder={() => {
               const checkoutCart = (() => {
                 for (const store of cartData?.storeCarts ?? []) {

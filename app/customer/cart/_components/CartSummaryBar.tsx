@@ -10,12 +10,32 @@ import type {
 interface CartSummaryBarProps {
   summary: CalculatedCartData | null;
   cartData: StoreCart[] | null;
+  pickupDate: string | null;
+  pickupTime: string | null;
   onOrder: () => void;
+}
+
+function formatPickupDateTime(
+  date: string | null,
+  time: string | null
+): string | undefined {
+  if (!date || !time) return undefined;
+  const d = new Date(date);
+  const month = d.getMonth() + 1;
+  const day = d.getDate();
+
+  const [h, m] = time.split(':').map(Number);
+  const period = h < 12 ? '오전' : '오후';
+  const hour = h === 0 ? 12 : h > 12 ? h - 12 : h;
+
+  return `${month}월 ${day}일 · ${period} ${hour}시${m > 0 ? ` ${m}분` : ''}`;
 }
 
 export default function CartSummaryBar({
   summary,
   cartData,
+  pickupDate,
+  pickupTime,
   onOrder,
 }: CartSummaryBarProps) {
   const hasItems = summary && (summary.calculatedItems ?? []).length > 0;
@@ -54,6 +74,7 @@ export default function CartSummaryBar({
 
   return (
     <OrderSummaryBar
+      pickupDateTime={formatPickupDateTime(pickupDate, pickupTime)}
       summaryText={summaryText}
       totalQuantity={summary.totalQuantity ?? 0}
       originalPrice={summary.totalOriginalPrice ?? 0}
