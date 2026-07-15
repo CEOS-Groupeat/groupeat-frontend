@@ -81,7 +81,9 @@ function OperationForm({
 
   const [selectedDay, setSelectedDay] = useState<DayOfWeek>('MONDAY');
   const [minOrderDays, setMinOrderDays] = useState(
-    String(scheduleData.minimumOrderDeadlineDays ?? 0)
+    scheduleData.minimumOrderDeadlineDays != null
+      ? String(scheduleData.minimumOrderDeadlineDays)
+      : ''
   );
   const [daysMap, setDaysMap] = useState(() =>
     buildInitialDaysMap(scheduleData.dailySchedules)
@@ -140,8 +142,8 @@ function OperationForm({
   )?.intervalMinutes;
 
   return (
-    <main className="w-full flex flex-col px-4 items-start gap-9">
-      <div className="self-stretch flex flex-col items-start gap-2 mt-2">
+    <main className="w-full flex flex-col px-4 items-start">
+      <div className="self-stretch flex flex-col items-start gap-2 mt-2 mb-[24px]">
         <PeriodSettingField
           startDate={scheduleData.startDate ?? ''}
           endDate={scheduleData.endDate ?? ''}
@@ -156,6 +158,8 @@ function OperationForm({
           </span>
         </div>
       </div>
+
+      <MinOrderDaysField value={minOrderDays} onChange={setMinOrderDays} />
 
       <div className="self-stretch flex flex-col items-start">
         <WeekdayTabs
@@ -218,6 +222,8 @@ function OperationForm({
               }
               onRemove={() => updateCurrentDay({ pickupTimeRange: null })}
             />
+          </div>
+          <div className="w-full flex flex-col gap-3 mt-[-14px]">
             <TimeRangeField
               label="휴게 시간"
               timeRange={currentDay.breakTimeRange}
@@ -245,7 +251,7 @@ function OperationForm({
               onRemove={() => updateCurrentDay({ breakTimeRange: null })}
             />
 
-            <div className="self-stretch flex items-start gap-1">
+            <div className="self-stretch flex items-start gap-1 pb-11">
               <AlertIcon className="size-4 text-icon-subtlest" />
               <p className="text-text-subtlest text-caption1 font-normal font-['Pretendard']">
                 고객에게 {currentDayInterval ?? 30}분 단위로 노출돼요
@@ -254,8 +260,6 @@ function OperationForm({
           </div>
         </div>
       </div>
-
-      <MinOrderDaysField value={minOrderDays} onChange={setMinOrderDays} />
 
       <DefaultButton onClick={handleSubmit} disabled={isSaving}>
         {isSaving ? '저장 중...' : '저장하기'}
