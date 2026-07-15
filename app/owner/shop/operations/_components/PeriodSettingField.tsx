@@ -1,7 +1,7 @@
 'use client';
 
 import { formatDateWithDots } from '../_utils/formatDate';
-import PencilIcon from '@/public/icons/icon_pencil.svg';
+import CalendarIcon from '@/public/icons/icon-owner-calendar.svg';
 
 interface PeriodSettingFieldProps {
   startDate: string;
@@ -14,27 +14,34 @@ export default function PeriodSettingField({
   endDate,
   onEditClick,
 }: PeriodSettingFieldProps) {
+  const hasDate = startDate && endDate;
+
   return (
-    <div className="self-stretch px-4 py-3 bg-background-transparent rounded-xl flex flex-col justify-start items-start font-['Pretendard']">
-      <div className="self-stretch flex flex-col justify-start items-start gap-1">
-        <div className="self-stretch flex justify-between items-center">
-          <span className="text-center text-text-default text-label1 font-semibold">
-            기간 설정
-          </span>
-          <button
-            type="button"
-            onClick={onEditClick}
-            className="flex justify-start items-center gap-1"
-          >
-            <PencilIcon className="size-4 text-brand-default" />
-            <span className="text-center text-brand-default text-caption1 font-medium">
-              수정하기
+    <div className="self-stretch flex flex-col font-['Pretendard'] gap-3">
+      <span className="text-text-default text-body font-medium">기간 설정</span>
+
+      <div className="w-full flex flex-col gap-2">
+        <button
+          type="button"
+          onClick={onEditClick}
+          className="w-full pl-3.5 pr-4 py-3 bg-background-subtle rounded-xl flex justify-between items-center"
+        >
+          {hasDate ? (
+            <span className="text-text-subtle text-label1 font-normal">
+              {formatDateWithDots(startDate)} - {formatDateWithDots(endDate)}
             </span>
-          </button>
-        </div>
-        <span className="text-text-subtle text-label1 font-normal line-clamp-1">
-          {formatDateWithDots(startDate)} - {formatDateWithDots(endDate)}
-        </span>
+          ) : (
+            <div className="flex items-center gap-2">
+              <CalendarIcon />
+              <span className="text-text-subtlest text-label1 font-normal line-clamp-1">
+                날짜를 등록해주세요
+              </span>
+            </div>
+          )}
+          <span className="text-brand-default text-caption1 font-medium">
+            {hasDate ? '수정하기' : '등록하기'}
+          </span>
+        </button>
       </div>
     </div>
   );
