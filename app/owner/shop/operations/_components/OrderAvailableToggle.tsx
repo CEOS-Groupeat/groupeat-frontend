@@ -14,10 +14,8 @@ export default function OrderAvailableToggle({
   onChange,
 }: OrderAvailableToggleProps) {
   return (
-    <div className="self-stretch flex justify-between items-center">
-      <span className="text-text-default text-body font-medium font-['Pretendard']">
-        주문 받기
-      </span>
+    <div className="self-stretch flex justify-between items-center font-['Pretendard']">
+      <span className="text-text-default text-body font-medium">주문 받기</span>
       <button
         type="button"
         role="switch"
