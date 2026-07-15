@@ -7,6 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchClient } from '@/lib/fetchClient';
 import DownArrow from '@/public/icons/icon_arrow_down.svg';
 import UpArrow from '@/public/icons/icon_arrow_up.svg';
+import AlertIcon from '@/public/icons/icon_alert.svg';
 import StoreDateFilter from '@/app/customer/store/[storeId]/_components/StoreDateFilter';
 import { MenuListApiResponse, Menu } from '@/src/types/api';
 import { ApiResponse, PickupTimeInfo } from '@/types/store';
@@ -14,6 +15,7 @@ import MenuBottomSheet from '@/app/customer/store/[storeId]/_components/MenuBott
 import { useCartStore } from '@/store/useCartStore';
 import FloatingCartBar from '@/app/customer/store/[storeId]/_components/FloatingCartBar';
 import Image from 'next/image';
+import { useStoreDetail } from '@/app/customer/store/_hooks/useStoreDetail';
 
 {
   /* Todo: 픽업 시간이 오픈타임 ~ 클로즈타임(즉 영업시간) 사이로 둘 뿐만 아니라, 
@@ -26,6 +28,7 @@ import Image from 'next/image';
 export default function StoreOptions() {
   const params = useParams();
   const storeId = params.storeId as string;
+  const { data: store } = useStoreDetail(storeId);
 
   const storeCarts = useCartStore((state) => state.storeCarts);
   const globalPickupDate = useCartStore((state) => state.pickupDate);
@@ -37,13 +40,28 @@ export default function StoreOptions() {
   const [isMenuExpanded, setIsMenuExpanded] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState<Menu | null>(null);
 
-  const activeDate = selectedDate || globalPickupDate || undefined;
-  const activeTime = selectedTime || globalPickupTime || undefined;
+  const activeDate = selectedDate ?? globalPickupDate ?? undefined;
+  const activeTime =
+    selectedDate !== undefined ? selectedTime : (globalPickupTime ?? undefined);
 
   const displayTime = activeTime ? activeTime.slice(0, 5) : undefined;
 
-  const formattedDate =
-    activeDate && displayTime ? `${activeDate} ${displayTime}` : undefined;
+  const formattedDate = (() => {
+    if (!activeDate || !displayTime) return undefined;
+
+    const [, monthStr, dayStr] = activeDate.split('-');
+    const month = parseInt(monthStr, 10);
+    const day = parseInt(dayStr, 10);
+
+    const [hourStr, minuteStr] = displayTime.split(':');
+    const hour = parseInt(hourStr, 10);
+
+    const period = hour < 12 ? '오전' : '오후';
+    const displayHour = hour % 12 === 0 ? 12 : hour % 12;
+
+    // 4. 최종 조합 ('N월 N일 오전/오후 N:NN')
+    return `${month}월 ${day}일 ${period} ${displayHour}:${minuteStr}`;
+  })();
 
   const { data: menuData, isLoading: isMenuLoading } = useQuery<Menu[]>({
     queryKey: ['menus', storeId],
@@ -135,30 +153,31 @@ export default function StoreOptions() {
 
             {isDateExpanded && (
               <div className="w-full flex flex-col animate-in fade-in slide-in-from-top-2 duration-200 pb-5">
-                <div className="pb-5">
-                  <StoreDateFilter
-                    date={activeDate}
-                    times={displayTime ? [displayTime] : []}
-                    onDateChange={handleDateChange}
-                    onTimeChange={handleTimeChange}
-                  />
-                </div>
+                <StoreDateFilter
+                  date={activeDate}
+                  times={displayTime ? [displayTime] : []}
+                  minOrderDays={store?.minOrderDays ?? 0}
+                  onDateChange={handleDateChange}
+                  onTimeChange={handleTimeChange}
+                />
 
-                <div className="w-full flex flex-col items-start gap-0.5 self-stretch">
-                  <p className="text-caption1 text-text-subtlest">
-                    {formattedDate || '일시를 선택해주세요'}
-                  </p>
-                  <div className="flex items-start gap-1">
-                    <p className="text-label1 text-text-default">
-                      픽업 가능 수량
+                {activeDate && (
+                  <div className="w-full flex flex-col items-start gap-0.5 self-stretch mt-5 border-border-default">
+                    <p className="text-caption1 text-text-subtlest">
+                      {formattedDate || '시간을 선택해주세요'}
                     </p>
-                    <p className="text-brand-default text-label1 font-semibold">
-                      {isPickupLoading
-                        ? '확인 중...'
-                        : `${pickupData?.dailyAvailableQuantity ?? 0}개`}
-                    </p>
+                    <div className="flex items-start gap-1">
+                      <p className="text-label1 text-text-default">
+                        픽업 가능 수량
+                      </p>
+                      <p className="text-brand-default text-label1 font-semibold">
+                        {isPickupLoading
+                          ? '확인 중...'
+                          : `${pickupData?.dailyAvailableQuantity ?? 0}개`}
+                      </p>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             )}
           </div>
@@ -199,7 +218,7 @@ export default function StoreOptions() {
                   return (
                     <div
                       key={menu.menuId!}
-                      className="flex flex-col w-full gap-6 py-4 border-b border-border-default"
+                      className="flex flex-col w-full gap-5 py-4 border-b border-border-default"
                     >
                       <div className="flex justify-between items-start w-full">
                         <div className="flex flex-col">

@@ -2,9 +2,6 @@
 
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
-import { useQuery } from '@tanstack/react-query';
-import { fetchClient } from '@/lib/fetchClient';
-import { ApiResponse, StoreDetail as StoreDetailType } from '@/types/store';
 
 import Ticket from '@/public/icons/icon_ticket.svg';
 import Star from '@/public/icons/icon_star.svg';
@@ -16,6 +13,7 @@ import Calendar from '@/public/icons/icon_calendar.svg';
 import Notice from '@/public/icons/icon_notice.svg';
 import ArrowUp from '@/public/icons/icon_arrow_up.svg';
 import ArrowDown from '@/public/icons/icon_arrow_down.svg';
+import { useStoreDetail } from '@/app/customer/store/_hooks/useStoreDetail';
 
 const DAY_MAP: Record<string, string> = {
   MONDAY: '월',
@@ -41,23 +39,7 @@ export default function StoreDetail() {
   const storeId = params.storeId as string;
   const [isProcessExpanded, setIsProcessExpanded] = useState<boolean>(false);
 
-  const {
-    data: store,
-    isLoading,
-    isError,
-  } = useQuery<StoreDetailType>({
-    queryKey: ['storeDetail', storeId],
-    queryFn: async () => {
-      const response = await fetchClient(`/api/stores/${storeId}`);
-      const result = response as unknown as ApiResponse<StoreDetailType>;
-
-      if (!result.isSuccess) {
-        throw new Error(result.message);
-      }
-      return result.data;
-    },
-    enabled: !!storeId,
-  });
+  const { data: store, isLoading, isError } = useStoreDetail(storeId);
 
   if (isLoading)
     return (

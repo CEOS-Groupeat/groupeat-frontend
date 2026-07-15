@@ -19,7 +19,7 @@ export default function StoreCustomDayButton({
         disabled={isDisabled || isOutside}
         className={`size-10 rounded-lg flex justify-center items-center text-base transition-colors ${
           isSelected
-            ? 'bg-brand-default text-text-inverse font-bold'
+            ? 'bg-brand-default text-text-inverse'
             : isDisabled || isOutside
               ? 'text-text-placeholder cursor-not-allowed'
               : isToday
@@ -30,7 +30,7 @@ export default function StoreCustomDayButton({
         {day.date.getDate()}
       </button>
       {isToday && (
-        <span className="absolute bottom-0 text-[9px] font-medium text-brand-default leading-4">
+        <span className="absolute bottom-0 text-[9px] text-brand-default leading-4">
           오늘
         </span>
       )}

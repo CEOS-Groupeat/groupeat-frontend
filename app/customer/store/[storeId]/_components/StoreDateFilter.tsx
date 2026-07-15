@@ -8,6 +8,15 @@ import StoreCustomDayButton from '@/app/customer/store/[storeId]/_components/Sto
 
 import PrevMonth from '@/public/icons/icon_calendarButton_left.svg';
 import NextMonth from '@/public/icons/icon_calendarButton_right.svg';
+import AlertIcon from '@/public/icons/icon_alert.svg';
+
+interface DateFilterProps {
+  date: string | undefined;
+  times: string[];
+  minOrderDays?: number;
+  onDateChange: (date: string) => void;
+  onTimeChange: (times: string[]) => void;
+}
 
 // ─── 포맷 헬퍼 ───────────────────────────────────────
 export function formatPickupDate(dateStr: string): string {
@@ -33,6 +42,7 @@ interface DateFilterProps {
 export default function StoreDateFilter({
   date,
   times,
+  minOrderDays,
   onDateChange,
   onTimeChange,
 }: DateFilterProps) {
@@ -107,7 +117,7 @@ export default function StoreDateFilter({
         }}
         className={`h-10 rounded-lg text-xs transition-colors ${
           active
-            ? 'bg-brand-default text-text-inverse font-semibold'
+            ? 'bg-brand-default text-text-inverse'
             : disabled || !date
               ? 'bg-background-subtlest text-text-subtlest cursor-not-allowed outline outline-1'
               : 'bg-background-default outline outline-1 outline-border-default text-text-default hover:bg-background-subtle'
@@ -120,9 +130,7 @@ export default function StoreDateFilter({
 
   return (
     <div className="flex flex-col gap-6">
-      {/* ── 캘린더 ── */}
       <div className="flex flex-col gap-2">
-        {/* ✅ 커스텀 네비게이션 — flex justify-center 로 가운데 정렬 */}
         <div className="flex justify-center items-center gap-4">
           <button
             type="button"
@@ -162,7 +170,7 @@ export default function StoreDateFilter({
             disabled={{ before: today }}
             month={viewMonth}
             onMonthChange={setViewMonth}
-            hideNavigation // ✅ 내장 nav 숨김 → 커스텀 nav 사용
+            hideNavigation
             locale={ko}
             formatters={{
               formatWeekdayName: (weekday) =>
@@ -188,46 +196,35 @@ export default function StoreDateFilter({
             }}
           />
         </div>
-      </div>
 
-      {/* ── 픽업 시간 ── */}
-      <div ref={timeRef} className="flex flex-col gap-3">
         <div className="flex items-center gap-1">
-          <span className="text-base font-semibold text-text-default">
-            픽업 시간
-          </span>
-          <span className="text-xs text-text-subtlest">*선택</span>
-        </div>
-
-        {!date && (
-          <p className="text-sm text-text-placeholder">
-            날짜를 먼저 선택해 주세요
+          <AlertIcon className="w-4 h-4 text-icon-subtlest" />
+          <p className="text-label2 text-text-subtlest">
+            최소 {minOrderDays}일 전부터 주문 가능해요
           </p>
-        )}
-
-        {date && (
-          <>
-            <div className="flex flex-col gap-1">
-              <span className="text-sm font-medium text-text-default">
-                오전
-              </span>
-              {/* ✅ grid-cols-4 → 항상 4개 고정, 너비 자동 균등 */}
-              <div className="grid grid-cols-4 gap-2">
-                {AM_SLOTS.map(renderSlot)}
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-1">
-              <span className="text-sm font-medium text-text-default">
-                오후
-              </span>
-              <div className="grid grid-cols-4 gap-2">
-                {PM_SLOTS.map(renderSlot)}
-              </div>
-            </div>
-          </>
-        )}
+        </div>
       </div>
+
+      {date && (
+        <div
+          ref={timeRef}
+          className="flex flex-col gap-3 animate-in fade-in slide-in-from-top-2 duration-300"
+        >
+          <div className="flex flex-col gap-1.5">
+            <span className="text-sm font-medium text-text-default">오전</span>
+            <div className="grid grid-cols-4 gap-2">
+              {AM_SLOTS.map(renderSlot)}
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <span className="text-sm font-medium text-text-default">오후</span>
+            <div className="grid grid-cols-4 gap-2">
+              {PM_SLOTS.map(renderSlot)}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
