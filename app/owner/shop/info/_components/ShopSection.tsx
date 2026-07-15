@@ -49,6 +49,7 @@ function ShopInfoForm({ shopInfo }: ShopInfoFormProps) {
   const [errorMessage, setErrorMessage] = useState('');
   const successTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const errorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [successMessage, setSuccessMessage] = useState('');
 
   const [phoneError, setPhoneError] = useState(false);
 
@@ -81,6 +82,13 @@ function ShopInfoForm({ shopInfo }: ShopInfoFormProps) {
     try {
       const imageUrl = await uploadImage(file);
       setValues((prev) => ({ ...prev, imageUrl }));
+
+      if (successTimerRef.current) clearTimeout(successTimerRef.current);
+      setSuccessMessage('사진 업로드가 완료되었습니다');
+      setShowSuccessToast(true);
+      successTimerRef.current = setTimeout(() => {
+        setShowSuccessToast(false);
+      }, 2000);
     } catch (error) {
       console.error('이미지 업로드 실패:', error);
       showError('이미지 업로드에 실패했어요. 다시 시도해주세요.');
@@ -129,6 +137,7 @@ function ShopInfoForm({ shopInfo }: ShopInfoFormProps) {
       });
 
       if (successTimerRef.current) clearTimeout(successTimerRef.current);
+      setSuccessMessage('저장이 완료되었습니다');
       setShowSuccessToast(true);
       successTimerRef.current = setTimeout(() => {
         setShowSuccessToast(false);
@@ -289,7 +298,7 @@ function ShopInfoForm({ shopInfo }: ShopInfoFormProps) {
         {isSaving ? '저장 중...' : '저장하기'}
       </DefaultButton>
 
-      {showSuccessToast && <SuccessToast text="저장이 완료되었습니다" />}
+      {showSuccessToast && <SuccessToast text={successMessage} />}
       {showErrorToast && <ToastError text={errorMessage} />}
     </main>
   );
