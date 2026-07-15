@@ -63,6 +63,14 @@ export default function StoreOptions() {
     return `${month}월 ${day}일 ${period} ${displayHour}:${minuteStr}`;
   })();
 
+  const hasMenuInCart = (() => {
+    const safeStoreCarts = Array.isArray(storeCarts) ? storeCarts : [];
+    const currentStoreCart = safeStoreCarts.find(
+      (cart) => cart.storeId?.toString() === storeId
+    );
+    return (currentStoreCart?.cartItems?.length || 0) > 0;
+  })();
+
   const { data: menuData, isLoading: isMenuLoading } = useQuery<Menu[]>({
     queryKey: ['menus', storeId],
     queryFn: async () => {
@@ -192,15 +200,21 @@ export default function StoreOptions() {
                 isMenuExpanded ? '' : 'pb-3 border-b border-border-subtle'
               }`}
             >
-              <div className="flex items-center gap-2">
-                <span className="text-body font-semibold text-text-default">
+              <div className="flex items-start gap-1">
+                <span className="text-base font-semibold text-text-default flex items-center gap-1">
                   메뉴
                 </span>
+                <div className="flex pr-1 pt-0.5 items-center gap-2.5">
+                  {hasMenuInCart && !isMenuExpanded && (
+                    <div className="w-1 h-1 rounded-full bg-brand-default" />
+                  )}
+                </div>
               </div>
+
               {isMenuExpanded ? (
-                <UpArrow className="text-icon-default size-5" />
+                <UpArrow className="text-icon-default size-5 shrink-0" />
               ) : (
-                <DownArrow className="text-icon-subtlest size-5" />
+                <DownArrow className="text-icon-subtlest size-5 shrink-0" />
               )}
             </button>
 
@@ -258,7 +272,7 @@ export default function StoreOptions() {
                               onClick={() => handleMenuSelect(menu)}
                               className="z-10 w-6.5 h-6.5 bg-white rounded-full flex justify-center items-center shadow-sm aspect-square"
                             >
-                              <AddIcon className="w-[17.33px] h-[17.33px] text-icon-default"/>
+                              <AddIcon className="w-[17.33px] h-[17.33px] text-icon-default" />
                             </button>
                           )}
                         </div>
