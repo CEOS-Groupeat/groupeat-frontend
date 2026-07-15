@@ -314,12 +314,8 @@ export default function FilterBottomSheet({
           <button
             type="button"
             onClick={handleSearch}
-            disabled={isLoading || !hasFilter}
-            className={`w-64 h-12 rounded-[36px] text-base font-bold transition-colors ${
-              hasFilter
-                ? 'bg-brand-default text-text-inverse'
-                : 'bg-background-subtlest text-text-subtle cursor-not-allowed'
-            }`}
+            disabled={isLoading}
+            className="w-64 h-12 rounded-[36px] text-base font-bold transition-colors bg-brand-default text-text-inverse"
           >
             {isLoading ? '검색 중...' : '검색하기'}
           </button>
