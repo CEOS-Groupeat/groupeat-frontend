@@ -22,10 +22,9 @@ export default function SearchBar({
   const router = useRouter();
 
   const [keyword, setKeyword] = useState(initialKeyword);
-
+  
   const handleSearch = (kw: string) => {
     const trimmed = kw.trim();
-    if (!trimmed) return;
     router.push(`/customer/search?keyword=${encodeURIComponent(trimmed)}`);
   };
 

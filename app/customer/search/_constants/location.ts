@@ -1,6 +1,6 @@
 import type { StoreSearchParams } from '@/app/customer/search/_types/store.type';
 
-export type RegionValue = NonNullable<StoreSearchParams['region']>;
+export type RegionValue = NonNullable<StoreSearchParams['district']>;
 
 export type LocationOption = {
   value: RegionValue;
@@ -8,29 +8,29 @@ export type LocationOption = {
 };
 
 export const LOCATION_OPTIONS: LocationOption[] = [
-  { value: 'GANGNAM', label: '강남구' },
-  { value: 'GANGDONG', label: '강동구' },
-  { value: 'GANGBUK', label: '강북구' },
-  { value: 'GANGSEO', label: '강서구' },
-  { value: 'GWANAK', label: '관악구' },
-  { value: 'GWANGJIN', label: '광진구' },
-  { value: 'GURO', label: '구로구' },
-  { value: 'GEUMCHEON', label: '금천구' },
-  { value: 'NOWON', label: '노원구' },
-  { value: 'DOBONG', label: '도봉구' },
-  { value: 'DONGDAEMUN', label: '동대문구' },
-  { value: 'DONGJAK', label: '동작구' },
-  { value: 'MAPO', label: '마포구' },
-  { value: 'SEODAEMUN', label: '서대문구' },
-  { value: 'SEOCHO', label: '서초구' },
-  { value: 'SEONGDONG', label: '성동구' },
-  { value: 'SEONGBUK', label: '성북구' },
-  { value: 'SONGPA', label: '송파구' },
-  { value: 'YANGCHEON', label: '양천구' },
-  { value: 'YEONGDEUNGPO', label: '영등포구' },
-  { value: 'YONGSAN', label: '용산구' },
-  { value: 'EUNPYEONG', label: '은평구' },
-  { value: 'JONGNO', label: '종로구' },
-  { value: 'JUNG', label: '중구' },
-  { value: 'JUNGNANG', label: '중랑구' },
+  { value: '강남구', label: '강남구' },
+  { value: '강동구', label: '강동구' },
+  { value: '강북구', label: '강북구' },
+  { value: '강서구', label: '강서구' },
+  { value: '관악구', label: '관악구' },
+  { value: '광진구', label: '광진구' },
+  { value: '구로구', label: '구로구' },
+  { value: '금천구', label: '금천구' },
+  { value: '노원구', label: '노원구' },
+  { value: '도봉구', label: '도봉구' },
+  { value: '동대문구', label: '동대문구' },
+  { value: '동작구', label: '동작구' },
+  { value: '마포구', label: '마포구' },
+  { value: '서대문구', label: '서대문구' },
+  { value: '서초구', label: '서초구' },
+  { value: '성동구', label: '성동구' },
+  { value: '성북구', label: '성북구' },
+  { value: '송파구', label: '송파구' },
+  { value: '양천구', label: '양천구' },
+  { value: '영등포구', label: '영등포구' },
+  { value: '용산구', label: '용산구' },
+  { value: '은평구', label: '은평구' },
+  { value: '종로구', label: '종로구' },
+  { value: '중구', label: '중구' },
+  { value: '중랑구', label: '중랑구' },
 ];
