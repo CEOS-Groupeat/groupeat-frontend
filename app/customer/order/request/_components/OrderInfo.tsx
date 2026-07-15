@@ -66,7 +66,7 @@ export default function OrderInfo({
         <div className="flex items-start gap-1">
           <AlertIcon className="w-4 h-4 text-icon-subtlest" />
           <p className="text-text-subtle text-label2 whitespace-nowrap">
-            현장 결제 시 50% 선지불 후, 나머지 50%는 픽업 시 결제돼요
+            현장 결제 시 결제 금액의 50%를 선지불해 주세요
           </p>
         </div>
       </div>
