@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Lottie from 'lottie-react';
 import PhotoIcon from '@/public/icons/icon_photo.svg';
 import PencilIcon from '@/public/icons/icon_pencil.svg';
@@ -10,6 +10,8 @@ import DefaultButton from '@/components/ui/ButtonDefault';
 import { imageAPI } from '@/src/api/image.api';
 import MenuDeleteConfirmModal from './MenuDeleteConfirmModal';
 import loadingAnimation from '@/public/lottie/loading.json';
+import SuccessToast from '@/components/ui/SuccessToast';
+import ToastError from '@/components/ui/ToastError';
 
 export type OptionInput = { id: string; name: string; additionalPrice: string };
 export type GroupInput = { id: string; name: string; options: OptionInput[] };
@@ -55,6 +57,28 @@ export default function MenuForm({
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [showErrorToast, setShowErrorToast] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const successTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const errorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (successTimerRef.current) clearTimeout(successTimerRef.current);
+      if (errorTimerRef.current) clearTimeout(errorTimerRef.current);
+    };
+  }, []);
+
+  const showError = (message: string) => {
+    if (errorTimerRef.current) clearTimeout(errorTimerRef.current);
+    setErrorMessage(message);
+    setShowErrorToast(true);
+    errorTimerRef.current = setTimeout(() => {
+      setShowErrorToast(false);
+    }, 2000);
+  };
+
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -63,6 +87,12 @@ export default function MenuForm({
       setIsUploading(true);
       const uploadedUrl = await imageAPI.uploadToS3(file, 'MENU');
       setImageUrl(uploadedUrl);
+
+      if (successTimerRef.current) clearTimeout(successTimerRef.current);
+      setShowSuccessToast(true);
+      successTimerRef.current = setTimeout(() => {
+        setShowSuccessToast(false);
+      }, 2000);
     } catch (error: unknown) {
       const err = error as Error;
       alert(err.message || '이미지 업로드에 실패했습니다.');
@@ -339,6 +369,9 @@ export default function MenuForm({
           }}
         />
       )}
+
+      {showSuccessToast && <SuccessToast text="사진 업로드가 완료되었습니다" />}
+      {showErrorToast && <ToastError text={errorMessage} />}
     </>
   );
 }
