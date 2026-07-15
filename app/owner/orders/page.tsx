@@ -188,7 +188,11 @@ export default function Orders() {
               }, 2000);
             } catch (error) {
               console.error('픽업 완료 처리 실패:', error);
-              showError('픽업 완료 처리에 실패했어요. 다시 시도해주세요.');
+              const message =
+                error instanceof Error
+                  ? error.message
+                  : '픽업 완료 처리에 실패했어요. 다시 시도해주세요.';
+              showError(message);
             }
           }}
           isLoading={isPickupCompleting}
