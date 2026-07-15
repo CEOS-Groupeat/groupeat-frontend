@@ -10,6 +10,7 @@ import { fetchClient } from '@/lib/fetchClient';
 import CheckboxTrue from '@/public/icons/icon_checkboxTrue.svg';
 import CheckboxFalse from '@/public/icons/icon_checkboxFalse.svg';
 import DefaultButton from '@/components/ui/ButtonDefault';
+import InputField from '@/components/ui/InputField';
 import { useSignupStore } from '@/store/useSignupStore';
 import ToastError from '@/components/ui/ToastError';
 
@@ -97,6 +98,8 @@ function CustomerSignupForm() {
       .filter((term) => term.required)
       .every((term) => checkedTerms[term.termsId]);
 
+  const isFormValid = hasRequiredName && hasAllRequiredTerms;
+
   const handleSubmitClick = () => {
     if (!hasRequiredName) {
       setIsNameError(true);
@@ -164,79 +167,53 @@ function CustomerSignupForm() {
           추가 정보 입력
         </h2>
 
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-4.5">
           {/* 1. 이름 입력 */}
-          <div className="flex flex-col items-start w-full gap-2">
-            <label
-              htmlFor="userName"
-              className="text-label1 text-text-default font-medium"
-            >
-              이름 <span className="text-brand-default">*</span>
-            </label>
-            <input
+          <div className="flex flex-col items-start w-full">
+            <InputField
               id="userName"
+              label="이름"
+              required
               type="text"
               value={name}
-              onChange={(e) => {
+              placeholder="이름 입력"
+              onChange={(e: any) => {
                 setName(e.target.value);
                 if (isNameError) setIsNameError(false);
               }}
               onBlur={() => {
                 if (name.trim() === '') setIsNameError(true);
               }}
-              className={`w-full h-11 p-3 pl-4 rounded-lg border border-px transition-colors ${
-                isNameError
-                  ? 'border-status-danger'
-                  : 'border-border-strong bg-background-default focus:border-border-active'
-              } placeholder:text-body placeholder:text-text-placeholder focus:outline-none disabled:bg-neutral-5 disabled:text-text-disabled`}
-              placeholder="이름 입력"
             />
-            {isNameError && (
-              <p className="text-status-danger text-caption1">
-                이름을 입력해주세요
-              </p>
-            )}
           </div>
 
           {/* 2. 생년월일 입력 */}
-          <div className="flex flex-col gap-2">
-            <label
-              htmlFor="userBirth"
-              className="text-label1 text-text-default font-medium"
-            >
-              생년월일 <span className="text-brand-default">*</span>
-            </label>
-            <input
+          <div className="flex flex-col">
+            <InputField
+              label="생년월일"
               id="userBirth"
               type="date"
               value={birthDate}
-              onChange={(e) => setBirthDate(e.target.value)}
-              className="w-full h-11 px-4 rounded-lg border border-border-strong bg-background-default focus:ring-1 focus:ring-brand-default outline-none text-text-default"
+              onChange={(e: any) => setBirthDate(e.target.value)}
             />
           </div>
 
           {/* 3. 이메일 입력 */}
           <div className="flex flex-col gap-2">
-            <label
-              htmlFor="userEmail"
-              className="text-label1 text-text-default font-medium"
-            >
-              이메일
-            </label>
-            <input
+            <InputField
+              label="이메일"
               id="userEmail"
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full h-11 px-4 rounded-lg border border-border-strong bg-background-default focus:ring-1 focus:ring-brand-default outline-none"
               placeholder="이메일 입력"
+              onChange={(e: any) => setEmail(e.target.value)}
             />
           </div>
 
-          {/* 4. 성별 선택 */}
+          {/* 4. 성별 선택 (이 부분은 버튼이므로 유지) */}
           <div className="flex flex-col gap-2">
             <label className="text-label1 text-text-default font-medium">
-              성별 <span className="text-brand-default">*</span>
+              성별
             </label>
             <div className="flex w-full items-center gap-3">
               <button
@@ -316,9 +293,9 @@ function CustomerSignupForm() {
           {toastMessage && <ToastError text={toastMessage} />}
           <DefaultButton
             onClick={handleSubmitClick}
-            disabled={submitSignupMutation.isPending}
+            disabled={submitSignupMutation.isPending || !isFormValid}
           >
-            {submitSignupMutation.isPending ? '처리 중...' : '확인'}
+            {submitSignupMutation.isPending ? '처리 중...' : '다음'}
           </DefaultButton>
         </div>
       </div>

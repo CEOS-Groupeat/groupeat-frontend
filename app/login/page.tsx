@@ -7,6 +7,8 @@ import GoogleLoginButton from '@/public/icons/icon_login_google.svg';
 import CheckLinear from '@/public/icons/icon_check_linear.svg';
 import Close from '@/public/icons/icon_close.svg';
 
+import CustomerIllust from '@/public/illust/illust_Customer.svg';
+
 import { useEffect, useState } from 'react';
 
 export default function HomePage() {
@@ -45,7 +47,7 @@ export default function HomePage() {
           </h1>
           <div className="w-full flex justify-center items-center mt-4">
             <button
-              className="text-headline3 text-text-subtle font-medium"
+              className="text-headline3 text-text-subtle font-medium cursor-pointer"
               onClick={() => setIsModalOpen(true)}
             >
               서비스 둘러보기 →
@@ -109,7 +111,7 @@ export default function HomePage() {
           />
 
           {/* 2. 실제 모달 창 (내용물) */}
-          <div className="relative w-75 max-w-sm bg-white rounded-xl p-5 shadow-lg min-h-92.5 flex flex-col animate-in fade-in zoom-in-95 duration-200">
+          <div className="relative w-82 max-w-sm bg-white rounded-xl p-4 shadow-[0_0_15.2px_0_rgba(0,0,0,0.05)] min-h-80 flex flex-col animate-in fade-in zoom-in-95 duration-200">
             {/* 상단 닫기(X) 버튼 영역 */}
             <div className="w-full flex justify-end">
               <button
@@ -121,44 +123,47 @@ export default function HomePage() {
               </button>
             </div>
 
-            {/* 모달 콘텐츠가 들어갈 빈 공간 */}
-            <div className="flex flex-col items-center justify-center mt-1">
-              <div className="w-18.5 h-18.5 bg-gray-300">임시</div>
-              <div className="flex w-full mt-3 items-center justify-center">
-                <h2 className="text-text-default font-bold text-headline3 text-[20px] text-center">
-                  단체주문,
-                  <br />
-                  찾아오는 고객을 받아보세요
-                </h2>
+            <div className="flex flex-col items-start gap-4 self-stretch">
+              <div className="flex flex-col w-full items-center gap-3 self-stretch">
+                <CustomerIllust className="w-18 h-18" />
+                <div className="flex flex-col items-center gap-1">
+                  <p className="text-text-default text-[20px] text-center leading-7 font-bold">
+                    로그인 후 그루핏을 이용해보세요
+                  </p>
+                </div>
+
+                <div className="flex px-4 py-3 flex-col items-start gap-2.5 self-stretch rounded-lg bg-background-transparent">
+                  <div className="flex flex-col items-start gap-1">
+                    <div className="flex items-center justify-center gap-1">
+                      <CheckLinear className="text-[#42BE65]" />
+                      <p className="text-label2 text-text-subtlest font-medium">
+                        플랫폼 입점 시 단체주문 고객에게 자동 노출
+                      </p>
+                    </div>
+                    <div className="flex items-center justify-center gap-1">
+                      <CheckLinear className="text-[#42BE65]" />
+                      <p className="text-label2 text-text-subtlest font-medium">
+                        날짜별 픽업 가능 시간 및 수량 사전 설정 가능
+                      </p>
+                    </div>
+                    <div className="flex items-center justify-center gap-1">
+                      <CheckLinear className="text-[#42BE65]" />
+                      <p className="text-label2 text-text-subtlest font-medium">
+                        주문 승인/거절 선택 및 상세 주문 관리 가능
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <h3 className="text-label2 text-text-subtle mt-1">
-                그루핏(Groupeat)이 연결해드립니다
-              </h3>
             </div>
 
-            <div className="flex flex-col items-start mt-4 gap-1.5">
-              <div className="flex items-center justify-center gap-1">
-                <CheckLinear className="text-[#42BE65]" />
-                <p className="text-label2 text-text-default font-medium">
-                  플랫폼 입점 시 단체주문 고객에게 자동 노출
-                </p>
-              </div>
-              <div className="flex items-center justify-center gap-1">
-                <CheckLinear className="text-[#42BE65]" />
-                <p className="text-label2 text-text-default font-medium">
-                  날짜별 픽업 가능 시간 및 수량 사전 설정 가능
-                </p>
-              </div>
-              <div className="flex items-center justify-center gap-1">
-                <CheckLinear className="text-[#42BE65]" />
-                <p className="text-label2 text-text-default font-medium">
-                  주문 승인/거절 선택 및 상세 주문 관리 가능
-                </p>
-              </div>
-            </div>
-
-            <div className='w-full flex items-center justify-center h-11 bg-brand-default mt-5 rounded-lg'>
-              <Link className='text-text-inverse text-label1 font-semibold' href='/customer/home'>서비스 이용하러 가기 →</Link>
+            <div className="w-full flex items-center justify-center h-11 bg-brand-default mt-5 rounded-lg">
+              <Link
+                className="text-text-inverse text-label1 font-semibold"
+                href="/signup"
+              >
+                회원가입 →
+              </Link>
             </div>
           </div>
         </div>
