@@ -45,13 +45,13 @@ function SearchContent() {
   >();
 
   const { add } = useRecentSearches();
-  useEffect(() => {
-    if (keyword) {
-      add(keyword);
-      clearResultsOnly();
-      search({ keyword, sortType: sort });
-    }
-  }, [keyword, sort, add, search, clearResultsOnly]);
+useEffect(() => {
+  if (keyword) {
+    add(keyword); 
+  }
+  clearResultsOnly();
+  search({ keyword, sortType: sort });
+}, [keyword, sort, add, search, clearResultsOnly]);
 
   // ── 활성 필터 수 ──
   const activeFilterCount = Object.keys(appliedFilters).filter(

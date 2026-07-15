@@ -9,7 +9,7 @@ export function formatChipLabel(
   value: unknown
 ): string {
   if (!value) return '';
-  if (key === 'region') {
+  if (key === 'district') {
     return (
       LOCATION_OPTIONS.find((loc) => loc.value === value)?.label ??
       String(value)

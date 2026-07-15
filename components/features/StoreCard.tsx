@@ -57,11 +57,11 @@ export default function StoreCard({ store, onClick }: StoreCardProps) {
                 ({store.reviewCount})
               </span>
             </div>
-            {store.pickupTimeRange && (
+            {store.district && (
               <div className="flex items-center gap-0.5">
                 <Location className="size-3.5" />
                 <span className="text-caption2 font-normal text-text-subtle">
-                  {store.pickupTimeRange}
+                  {store.district}
                 </span>
               </div>
             )}
