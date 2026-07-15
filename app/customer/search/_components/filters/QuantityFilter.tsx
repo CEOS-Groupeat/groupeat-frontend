@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 interface QuantityFilterProps {
   value: number | undefined;
-  onChange: (value: number) => void;
+  onChange: (value: number | undefined) => void;
   onConfirm: () => void;
 }
 
@@ -13,23 +13,32 @@ export default function QuantityFilter({
   onChange,
   onConfirm,
 }: QuantityFilterProps) {
+  const [isEditing, setIsEditing] = useState(value === undefined);
   const [input, setInput] = useState(value ? String(value) : '');
 
   const handleConfirm = () => {
     const num = parseInt(input, 10);
     if (!input || isNaN(num) || num <= 0) return;
     onChange(num);
+    setIsEditing(false);
     onConfirm(); // Enter → 토글 닫힘
   };
 
   // 선택 완료 상태 → bg-background-subtle 박스
-  if (value !== undefined) {
+  if (value !== undefined && !isEditing) {
     return (
-      <div className="w-full h-11 pl-4 pr-3 py-3 rounded-lg flex items-center bg-background-subtle">
+      <button
+        type="button"
+        onClick={() => {
+          setInput(String(value));
+          setIsEditing(true);
+        }}
+        className="w-full h-11 pl-4 pr-3 py-3 rounded-lg flex items-center bg-background-subtle text-left"
+      >
         <span className="text-body text-text-default font-['Pretendard'] font-normal">
           {value}
         </span>
-      </div>
+      </button>
     );
   }
 
