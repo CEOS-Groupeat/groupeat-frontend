@@ -130,7 +130,7 @@ export default function StoreDetail() {
 
               <div className="flex items-start gap-1">
                 <div className="flex pt-0.5 items-center gap-2.5">
-                  <Place className="text-icon-subtlest" />
+                  <Place className="text-icon-subtlest w-4 h-4" />
                 </div>
                 <p className="text-text-subtle text-label2 leading-4.5">
                   {store.address}

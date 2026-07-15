@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchClient } from '@/lib/fetchClient';
 import DownArrow from '@/public/icons/icon_arrow_down.svg';
 import UpArrow from '@/public/icons/icon_arrow_up.svg';
-import AlertIcon from '@/public/icons/icon_alert.svg';
+import AddIcon from '@/public/icons/icon_add_store.svg';
 import StoreDateFilter from '@/app/customer/store/[storeId]/_components/StoreDateFilter';
 import { MenuListApiResponse, Menu } from '@/src/types/api';
 import { ApiResponse, PickupTimeInfo } from '@/types/store';
@@ -256,9 +256,9 @@ export default function StoreOptions() {
                           ) : (
                             <button
                               onClick={() => handleMenuSelect(menu)}
-                              className="relative z-10 w-6.5 h-6.5 bg-white rounded-full flex items-center justify-center shadow-sm text-lg leading-none"
+                              className="z-10 w-6.5 h-6.5 bg-white rounded-full flex justify-center items-center shadow-sm aspect-square"
                             >
-                              +
+                              <AddIcon className="w-[17.33px] h-[17.33px] text-icon-default"/>
                             </button>
                           )}
                         </div>

@@ -7,6 +7,7 @@ import { fetchClient } from '@/lib/fetchClient';
 import { useCartStore } from '@/store/useCartStore';
 import OrderSummaryBar from '@/components/cart/OrderSummaryBar';
 import { components } from '@/src/types/schema';
+import Ellipse from '@/public/icons/icon_ellipse.svg'; // ✅ Ellipse 아이콘 추가
 
 type ApiCartListResponse = components['schemas']['ApiResponseCartListResponse'];
 type CartListResponse = components['schemas']['CartListResponse'];
@@ -15,7 +16,7 @@ type CartItem = components['schemas']['CartItemDTO'];
 
 export default function FloatingCartBar({
   storeId,
-  pickupDateTime,
+  pickupDateTime, // 기존 문자열 prop도 예비로 유지
 }: {
   storeId: string;
   pickupDateTime?: string;
@@ -30,12 +31,10 @@ export default function FloatingCartBar({
     queryKey: ['cart'],
     queryFn: async () => {
       const response = await fetchClient<ApiCartListResponse>('/api/carts');
-      
+
       if (!response.isSuccess) {
         throw new Error(response.message || '장바구니 조회 실패');
       }
-      
-      // 알맹이만 반환
       return response.data;
     },
   });
@@ -76,14 +75,44 @@ export default function FloatingCartBar({
       : firstItemName;
 
   const originalTotal = currentStoreCart.cartItems.reduce(
-    (acc: number, item: CartItem) => acc + (item.unitPrice || 0) * (item.quantity || 0),
+    (acc: number, item: CartItem) =>
+      acc + (item.unitPrice || 0) * (item.quantity || 0),
     0
   );
   const finalTotal = currentStoreCart.storeTotalPrice || 0;
 
+  // ✅ Req 5: 서버 데이터 기반 포맷팅 (N월 N일 <Ellipse/> 오후 N시 N분)
+  let displayDateTime: React.ReactNode = pickupDateTime || '픽업 일시 미지정';
+
+  if (fetchedData?.pickupDate && fetchedData?.pickupTime) {
+    const [, monthStr, dayStr] = fetchedData.pickupDate.split('-');
+    const month = parseInt(monthStr, 10);
+    const day = parseInt(dayStr, 10);
+
+    const [hourStr, minStr] = fetchedData.pickupTime.split(':');
+    const hour = parseInt(hourStr, 10);
+    const minute = parseInt(minStr, 10);
+
+    const period = hour < 12 ? '오전' : '오후';
+    const displayHour = hour % 12 === 0 ? 12 : hour % 12;
+    const minuteText = minute > 0 ? ` ${minute}분` : '';
+
+    displayDateTime = (
+      <div className="flex items-center gap-1.5">
+        <span>
+          {month}월 {day}일
+        </span>
+        <Ellipse className="w-0.5 h-0.5 text-icon-subtlest shrink-0" />
+        <span>
+          {period} {displayHour}시{minuteText}
+        </span>
+      </div>
+    );
+  }
+
   return (
     <OrderSummaryBar
-      pickupDateTime={pickupDateTime || '픽업 일시 미지정'}
+      pickupDateTime={displayDateTime} // 변경된 ReactNode를 전달
       summaryText={summaryText}
       totalQuantity={totalQuantity}
       originalPrice={originalTotal}
