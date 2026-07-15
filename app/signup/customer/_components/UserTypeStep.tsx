@@ -25,7 +25,7 @@ export default function UserTypeStep() {
                 : 'border-border-default bg-background-default hover:bg-gray-50'
             }`}
           >
-            <div>
+            <div className="w-18.5 h-18.5">
               <CustomerIllust />
             </div>
             <p
@@ -44,7 +44,7 @@ export default function UserTypeStep() {
                 : 'border-border-default bg-background-default hover:bg-gray-50'
             }`}
           >
-            <div>
+            <div className="w-18.5 h-18.5">
               <ClientIllust />
             </div>
             <p

@@ -7,10 +7,11 @@ import { fetchClient } from '@/lib/fetchClient';
 import { Menu } from '@/src/types/api';
 import ToastError from '@/components/ui/ToastError';
 import ButtonDefault from '@/components/ui/ButtonDefault';
+import InputField from '@/components/ui/InputField';
 import DownArrow from '@/public/icons/icon_arrow_down.svg';
 import UpArrow from '@/public/icons/icon_arrow_up.svg';
 import Ellipse from '@/public/icons/icon_ellipse.svg';
-import DefaultButton from '@/components/ui/ButtonDefault';
+import CloseIcon from '@/public/icons/icon_close.svg';
 
 interface MenuBottomSheetProps {
   storeId: string;
@@ -186,13 +187,13 @@ export default function MenuBottomSheet({
   const renderOptionForm = () => {
     return (
       <>
-        <div className="flex justify-center items-center py-4.5 border-b border-border-subtle shadow-[0_0_9px_0_rgba(0,0,0,0.04)] relative shrink-0 z-modal">
+        <div className="flex justify-center items-center py-4.5 border-b border-border-subtle shadow-[0_0_9px_0_rgba(0,0,0,0.04)] shrink-0 z-modal bg-background-default">
           <h2 className="text-text-default text-headline3 font-semibold">
             {mode === 'EDIT' ? '옵션 수정' : menu.name}
           </h2>
         </div>
 
-        <div className="flex flex-col gap-3 px-4 pt-4.5 overflow-y-auto min-h-0">
+        <div className="flex-1 overflow-y-auto px-4 pt-4.5 pb-4 flex flex-col gap-3 min-h-0 bg-background-default">
           {menu.optionGroups?.map((group) => {
             const isExpanded = expandedGroupId === group.optionGroupId;
             const selectedText = getSelectedOptionText(group.optionGroupId!);
@@ -200,10 +201,10 @@ export default function MenuBottomSheet({
             return (
               <div
                 key={group.optionGroupId!}
-                className="flex flex-col border border-border-strong rounded-lg overflow-hidden"
+                className="flex flex-col border border-border-strong rounded-lg overflow-hidden shrink-0"
               >
                 <button
-                  className="flex justify-between items-center w-full px-4 py-3 bg-white"
+                  className="flex justify-between items-center w-full h-11 pl-4 pr-3 py-3 bg-white"
                   onClick={() =>
                     setExpandedGroupId(isExpanded ? null : group.optionGroupId!)
                   }
@@ -220,7 +221,7 @@ export default function MenuBottomSheet({
                     </span>
                     {selectedText && !isExpanded && (
                       <div className="flex h-full items-center justify-center gap-2">
-                        <Ellipse className="text-text-subtlest" />
+                        <Ellipse className="text-text-subtlest w-0.5 h-0.5 shrink-0" />
                         <p className="text-text-subtlest text-label1">
                           {selectedText}
                         </p>
@@ -228,9 +229,9 @@ export default function MenuBottomSheet({
                     )}
                   </div>
                   {isExpanded ? (
-                    <UpArrow className="w-5 h-5 text-icon-default" />
+                    <UpArrow className="w-5 h-5 text-icon-default shrink-0" />
                   ) : (
-                    <DownArrow className="w-5 h-5 text-icon-default" />
+                    <DownArrow className="w-5 h-5 text-icon-default shrink-0" />
                   )}
                 </button>
 
@@ -247,7 +248,7 @@ export default function MenuBottomSheet({
                               group.isMultiple || false
                             )
                           }
-                          className="w-full flex justify-between items-center px-4 py-3 cursor-pointer transition-colors bg-white text-text-default"
+                          className="w-full h-11 flex justify-between items-center pl-4 pr-3 py-3 cursor-pointer transition-colors bg-white text-text-default"
                         >
                           <span className="text-label1">{option.name}</span>
                           <span className="text-label1">
@@ -261,27 +262,26 @@ export default function MenuBottomSheet({
               </div>
             );
           })}
+
+          <div className="flex flex-col items-start w-full gap-2 shrink-0">
+            <InputField
+              type="number"
+              placeholder="수량을 입력하세요"
+              value={quantity}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setQuantity(e.target.value === '' ? '' : Number(e.target.value))
+              }
+            />
+            {discountRate > 0 && discountCondition > 0 && (
+              <p className="text-brand-default text-caption2 font-medium animate-in fade-in">
+                {discountCondition}개 이상 주문 시 {discountRate}% 할인
+              </p>
+            )}
+          </div>
         </div>
 
-        <div className="flex flex-col items-start w-full gap-2 px-4 mt-3 shrink-0 pb-24">
-          <input
-            type="number"
-            min="1"
-            placeholder="수량을 입력하세요"
-            value={quantity}
-            onChange={(e) =>
-              setQuantity(e.target.value === '' ? '' : Number(e.target.value))
-            }
-            className="w-full h-11 pl-4 pr-3 py-3 rounded-lg border border-border-default bg-background-default text-body placeholder:text-text-placeholder transition-colors focus:outline-none focus:border-brand-default"
-          />
-          {discountRate > 0 && discountCondition > 0 && (
-            <p className="text-brand-default text-caption2 font-medium animate-in fade-in">
-              {discountCondition}개 이상 주문 시 {discountRate}% 할인
-            </p>
-          )}
-        </div>
-
-        <div className="flex items-center justify-center px-4 pb-6 mt-6 shrink-0">
+        {/* 하단 버튼 영역 (높이 고정, 스크롤 안 됨) */}
+        <div className="flex items-center justify-center px-4 pb-6 pt-2 shrink-0 bg-background-default border-t border-border-subtle">
           <ButtonDefault onClick={handleSaveForm} disabled={!isFormValid()}>
             {mode === 'EDIT' ? '옵션 수정하기' : '메뉴 담기'}
           </ButtonDefault>
@@ -292,14 +292,16 @@ export default function MenuBottomSheet({
 
   const renderCardList = () => {
     return (
-      <div className="flex flex-col flex-1 min-h-87.5">
-        <div className="flex justify-center items-center py-4.5 border-b border-border-subtle relative shrink-0">
+      <>
+        {/* 상단 헤더 */}
+        <div className="flex justify-center items-center py-4.5 border-b border-border-subtle shrink-0 bg-background-default">
           <h2 className="text-text-default text-headline3 font-semibold">
             {menu.name}
           </h2>
         </div>
 
-        <div className="flex-1 overflow-y-auto px-4 pt-4 pb-4 flex flex-col gap-4">
+        {/* 카드가 많아지면 스크롤 되는 영역 */}
+        <div className="flex-1 overflow-y-auto px-4 pt-4 pb-4 flex flex-col gap-4 min-h-0 bg-background-default">
           {cards.map((card) => {
             let optionsPrice = 0;
             const optionTexts: string[] = [];
@@ -332,7 +334,7 @@ export default function MenuBottomSheet({
             return (
               <div
                 key={card.id}
-                className="border border-border-default rounded-lg px-4 py-3 cursor-pointer"
+                className="border border-border-default rounded-lg px-4 py-3 cursor-pointer shrink-0"
                 onClick={() => handleEditCard(card)}
               >
                 <div className="flex justify-between items-start">
@@ -345,7 +347,7 @@ export default function MenuBottomSheet({
                       setCards((prev) => prev.filter((c) => c.id !== card.id));
                     }}
                   >
-                    x
+                    <CloseIcon className="w-5 h-5 text-icon-subtlest" />
                   </button>
                 </div>
                 <div className="flex flex-col items-start justify-center w-full my-1.5 text-label1 text-text-subtle gap-0.5">
@@ -359,7 +361,7 @@ export default function MenuBottomSheet({
                   </p>
                   <p>수량: {card.quantity}개</p>
                 </div>
-                <div className="flex items-center justify-end w-full mt-2">
+                <div className="flex items-center justify-start w-full mt-2">
                   <p className="text-body text-text-default font-semibold">
                     {totalPrice.toLocaleString()}원
                   </p>
@@ -376,15 +378,16 @@ export default function MenuBottomSheet({
           </button>
         </div>
 
-        <div className="px-4 pb-6 pt-2 shrink-0 mt-auto">
-          <DefaultButton
+        {/* 하단 버튼 영역 */}
+        <div className="px-4 pb-6 pt-2 shrink-0 bg-background-default border-t border-border-subtle">
+          <ButtonDefault
             onClick={handleSubmitCart}
             disabled={addCartMutation.isPending || cards.length === 0}
           >
             {addCartMutation.isPending ? '담는 중...' : '메뉴 담기'}
-          </DefaultButton>
+          </ButtonDefault>
         </div>
-      </div>
+      </>
     );
   };
 
@@ -394,7 +397,7 @@ export default function MenuBottomSheet({
 
       <div className="absolute inset-0" onClick={onClose} />
 
-      <div className="relative w-full bg-background-default rounded-t-[35px] flex flex-col max-h-[80vh] overflow-hidden animate-in slide-in-from-bottom-full duration-200">
+      <div className="relative w-full h-109 bg-background-default rounded-t-[35px] flex flex-col overflow-hidden animate-in slide-in-from-bottom-full duration-200">
         {mode === 'LIST' ? renderCardList() : renderOptionForm()}
       </div>
     </div>

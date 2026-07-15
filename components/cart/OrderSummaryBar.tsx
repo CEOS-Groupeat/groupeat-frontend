@@ -4,7 +4,7 @@ import DefaultButton from '@/components/ui/ButtonDefault';
 import CalendarIcon from '@/public/icons/icon_calendar.svg';
 
 interface SharedCartBarProps {
-  pickupDateTime?: string;
+  pickupDateTime?: React.ReactNode;
   summaryText: string;
   totalQuantity: number;
   originalPrice: number;
@@ -26,16 +26,14 @@ export default function OrderSummaryBar({
     <div className="fixed bottom-0 left-0 w-full z-sticky animate-in slide-in-from-bottom-full duration-300 font-['Pretendard']">
       {pickupDateTime && (
         <div className="flex items-center bg-background-subtlest gap-2 pl-4 pt-2 pb-6 -mb-4 rounded-t-3xl">
-          <CalendarIcon className="text-icon-subtlest" />
-          <span className="text-label2 text-text-subtlest font-medium">
+          <CalendarIcon className="text-icon-subtlest shrink-0" />
+          <div className="text-label2 text-text-subtlest font-medium flex items-center leading-4">
             {pickupDateTime}
-          </span>
+          </div>
         </div>
       )}
 
-      {/* 2. 메인 컨텐츠 영역 */}
       <div className="relative z-10 bg-background-default rounded-t-3xl shadow-[0_-2px_18px_rgba(0,0,0,0.05)] px-4 pt-3 pb-6">
-        {/* 공통 요약 영역 */}
         <div className="flex justify-between items-end pb-2.5">
           <div className="flex flex-col gap-0.5">
             <p className="text-label2 font-normal text-text-subtle">
@@ -46,7 +44,7 @@ export default function OrderSummaryBar({
             </p>
           </div>
           <div className="flex flex-col items-end gap-0.5">
-            <p className="text-label2 font-normal text-text-subtlest">
+            <p className="text-label2 font-normal text-text-subtlest line-through">
               {originalPrice.toLocaleString()}원
             </p>
             <p className="text-headline3 font-semibold text-text-default">

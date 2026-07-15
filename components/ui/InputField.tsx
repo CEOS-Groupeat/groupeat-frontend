@@ -3,7 +3,7 @@
 import { InputHTMLAttributes } from 'react';
 
 interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
-  label: string;
+  label?: string;
   required?: boolean;
   labelClassName?: string;
   inputClassName?: string;
@@ -24,11 +24,13 @@ export default function InputField({
   return (
     <div className={`${className || 'w-full'} flex flex-col gap-2`}>
       {/* 라벨 영역 */}
-      <label
-        className={`text-label1 font-medium ${labelClassName ?? 'text-text-default'}`}
-      >
-        {label} {required && <span className="text-brand-default">*</span>}
-      </label>
+      {label && (
+        <label
+          className={`text-label1 font-medium ${labelClassName ?? 'text-text-default'}`}
+        >
+          {label} {required && <span className="text-brand-default">*</span>}
+        </label>
+      )}
 
       <input
         value={value}
