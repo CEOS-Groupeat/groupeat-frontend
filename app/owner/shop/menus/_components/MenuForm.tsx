@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
+import Lottie from 'lottie-react';
 import PhotoIcon from '@/public/icons/icon_photo.svg';
 import PencilIcon from '@/public/icons/icon_pencil.svg';
 import AddIcon from '@/public/icons/icon_add.svg';
@@ -8,6 +9,7 @@ import InputField from '@/components/ui/OwnerInputField';
 import DefaultButton from '@/components/ui/ButtonDefault';
 import { imageAPI } from '@/src/api/image.api';
 import MenuDeleteConfirmModal from './MenuDeleteConfirmModal';
+import loadingAnimation from '@/public/lottie/loading.json';
 
 export type OptionInput = { id: string; name: string; additionalPrice: string };
 export type GroupInput = { id: string; name: string; options: OptionInput[] };
@@ -166,9 +168,11 @@ export default function MenuForm({
               >
                 {isUploading ? (
                   <div className="absolute inset-0 bg-black/50 flex justify-center items-center">
-                    <span className="text-white text-caption1 font-medium">
-                      업로드 중...
-                    </span>
+                    <Lottie
+                      animationData={loadingAnimation}
+                      loop
+                      className="w-[84px]"
+                    />
                   </div>
                 ) : imageUrl ? (
                   <div className="absolute bottom-1.5 right-1.5 flex w-6.5 h-6.5 justify-center items-center shrink-0 aspect-square rounded-full bg-static-white shadow-[0_0_13px_0_rgba(0, 0, 0, 0.20)] z-10 hover:bg-neutral-10 transition-colors">
