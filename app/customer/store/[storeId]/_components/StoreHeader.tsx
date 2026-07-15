@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation'; // useParams 추가
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
 import { fetchClient } from '@/lib/fetchClient';
@@ -9,8 +9,10 @@ import { ApiResponse, StoreDetail as StoreDetailType } from '@/types/store';
 import BackIcon from '@/public/icons/icon_arrow_Left.svg';
 import CartIconButton from '@/components/cart/CartIconButton';
 
-export default function StoreHeader({ storeId }: { storeId: string }) {
+export default function StoreHeader() {
   const router = useRouter();
+  const params = useParams();
+  const storeId = params.storeId as string;
 
   const { data: store } = useQuery<StoreDetailType>({
     queryKey: ['storeDetail', storeId],
@@ -32,13 +34,14 @@ export default function StoreHeader({ storeId }: { storeId: string }) {
   };
 
   return (
-    <div className="relative w-full shrink-0 h-37 bg-black">
+    <div className="relative w-full shrink-0 h-37 z-0 bg-gray-100">
       {store?.imageUrl && (
         <Image
           src={store.imageUrl}
           alt="스토어 헤더 이미지"
           fill
           priority
+          unoptimized
           className="object-cover opacity-80"
         />
       )}
