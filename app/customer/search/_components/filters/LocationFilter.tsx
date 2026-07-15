@@ -19,6 +19,7 @@ export default function LocationFilter({
   onChange,
   onConfirm,
 }: LocationFilterProps) {
+  const [isEditing, setIsEditing] = useState(value === undefined);
   const [search, setSearch] = useState('');
   const [isFocused, setIsFocused] = useState(false);
 
@@ -30,18 +31,23 @@ export default function LocationFilter({
     onChange(loc.value);
     setSearch('');
     setIsFocused(false);
+    setIsEditing(false);
     onConfirm(); // 선택 즉시 토글 닫힘
   };
 
   // 선택 완료 상태 → bg-background-subtle 박스
-  if (value) {
+  if (value && !isEditing) {
     const selectedLabel = LOCATION_OPTIONS.find(
       (loc) => loc.value === value
     )?.label;
     return (
-      <div className="h-11 pl-4 pr-3 py-2 bg-background-subtle rounded-lg flex items-center">
+      <button
+        type="button"
+        onClick={() => setIsEditing(true)} 
+        className="w-full h-11 pl-4 pr-3 py-2 bg-background-subtle rounded-lg flex items-center"
+      >
         <span className="text-base text-text-default">{selectedLabel}</span>
-      </div>
+      </button>
     );
   }
 
@@ -57,6 +63,7 @@ export default function LocationFilter({
           onChange={(e) => setSearch(e.target.value)}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setTimeout(() => setIsFocused(false), 150)}
+          autoFocus
           className="flex-1 bg-transparent text-base text-text-default placeholder:text-text-placeholder outline-none"
         />
       </div>
