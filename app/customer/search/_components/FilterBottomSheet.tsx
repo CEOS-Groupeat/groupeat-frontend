@@ -264,10 +264,10 @@ export default function FilterBottomSheet({
                   </button>
 
                   {/* 각 필터 컴포넌트 — 조건만 여기서, 로직은 컴포넌트 안에 */}
-                  {isExpanded && item.key === 'region' && (
+                  {isExpanded && item.key === 'district' && (
                     <LocationFilter
-                      value={filters.region}
-                      onChange={(v) => updateFilter('region', v)}
+                      value={filters.district}
+                      onChange={(v) => updateFilter('district', v)}
                       onConfirm={closeFilter}
                     />
                   )}

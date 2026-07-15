@@ -6,7 +6,7 @@ import { LOCATION_OPTIONS } from '@/app/customer/search/_constants/location';
 import type { LocationOption } from '@/app/customer/search/_constants/location';
 import type { StoreSearchParams } from '@/app/customer/search/_types/store.type';
 
-type RegionValue = StoreSearchParams['region'];
+type RegionValue = StoreSearchParams['district'];
 
 interface LocationFilterProps {
   value: RegionValue;
