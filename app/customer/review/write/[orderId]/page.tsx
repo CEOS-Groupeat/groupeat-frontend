@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useOrderDetail } from './_hooks/useOrderDetail';
 import { useCreateReview } from './_hooks/useCreateReview';
 import ToastError from '@/components/ui/ToastError';
-
+import SuccessToast from '@/components/ui/SuccessToast';
 import ReviewWriteHeader from './_components/ReviewWriteHeader';
 import ReviewForm, { type ReviewFormValues } from './_components/ReviewForm';
 import SubmitButton from './_components/SubmitButton';
@@ -35,6 +35,8 @@ export default function ReviewWritePage({ params }: PageProps) {
   const [showErrorToast, setShowErrorToast] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const errorToastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const successTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const { mutateAsync: createReview, isPending: isSubmitting } =
     useCreateReview();
@@ -51,11 +53,18 @@ export default function ReviewWritePage({ params }: PageProps) {
     }, 2000);
   };
 
+  const showSuccess = () => {
+    if (successTimerRef.current) clearTimeout(successTimerRef.current);
+    setShowSuccessToast(true);
+    successTimerRef.current = setTimeout(() => {
+      setShowSuccessToast(false);
+    }, 2000);
+  };
+
   useEffect(() => {
     return () => {
-      if (errorToastTimerRef.current) {
-        clearTimeout(errorToastTimerRef.current);
-      }
+      if (errorToastTimerRef.current) clearTimeout(errorToastTimerRef.current);
+      if (successTimerRef.current) clearTimeout(successTimerRef.current);
     };
   }, []);
 
@@ -113,7 +122,13 @@ export default function ReviewWritePage({ params }: PageProps) {
   return (
     <div className="w-full min-h-screen bg-background-default flex flex-col pb-32">
       <ReviewWriteHeader />
-      <ReviewForm order={order} values={formValues} onChange={setFormValues} />
+      <ReviewForm
+        order={order}
+        values={formValues}
+        onChange={setFormValues}
+        onImageUploadSuccess={showSuccess}
+        onImageUploadError={() => showError('이미지 업로드에 실패했어요.')}
+      />
       <SubmitButton
         disabled={!isFormValid || isSubmitting}
         isLoading={isSubmitting}
@@ -124,6 +139,7 @@ export default function ReviewWritePage({ params }: PageProps) {
           onComplete={() => router.push('/customer/order/status')}
         />
       )}
+      {showSuccessToast && <SuccessToast text="사진 업로드가 완료되었습니다" />}
       {showErrorToast && <ToastError text={errorMessage} />}
     </div>
   );

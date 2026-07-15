@@ -25,12 +25,16 @@ interface ReviewFormProps {
   order: OrderDetail;
   values: ReviewFormValues;
   onChange: (values: ReviewFormValues) => void;
+  onImageUploadSuccess?: () => void;
+  onImageUploadError?: () => void;
 }
 
 export default function ReviewForm({
   order,
   values,
   onChange,
+  onImageUploadSuccess,
+  onImageUploadError,
 }: ReviewFormProps) {
   const { mutateAsync: uploadImage, isPending: isUploading } =
     useReviewImageUpload();
@@ -39,8 +43,10 @@ export default function ReviewForm({
     try {
       const imageUrl = await uploadImage(file);
       onChange({ ...values, imageUrls: [...values.imageUrls, imageUrl] });
+      onImageUploadSuccess?.();
     } catch (error) {
       console.error('이미지 업로드 실패:', error);
+      onImageUploadError?.();
     }
   };
 

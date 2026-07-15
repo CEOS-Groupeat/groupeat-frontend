@@ -1,7 +1,9 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import InputField from '@/components/ui/InputField';
+import Lottie from 'lottie-react';
+import loadingAnimation from '@/public/lottie/loading.json';
+import InputField from '@/components/ui/OwnerInputField';
 import TextAreaField from '@/components/ui/TextAreaField';
 import DefaultButton from '@/components/ui/ButtonDefault';
 import PencilIcon from '@/public/icons/icon_pencil.svg';
@@ -14,8 +16,10 @@ import { useSaveShopInfo } from '../_hooks/useSaveShopInfo';
 import { useShopImageUpload } from '../_hooks/useShopImageUpload';
 import { isValidPhoneNumber } from '../_utils/validatePhoneNumber';
 import type { ShopInfoData } from '../_types/shop.type';
-
-import { extractDistrict, extractNeighborhood } from '../_utils/extractDistrict';
+import {
+  extractDistrict,
+  extractNeighborhood,
+} from '../_utils/extractDistrict';
 
 interface ShopInfoFormProps {
   shopInfo: ShopInfoData | null;
@@ -45,6 +49,7 @@ function ShopInfoForm({ shopInfo }: ShopInfoFormProps) {
   const [errorMessage, setErrorMessage] = useState('');
   const successTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const errorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [successMessage, setSuccessMessage] = useState('');
 
   const [phoneError, setPhoneError] = useState(false);
 
@@ -77,6 +82,13 @@ function ShopInfoForm({ shopInfo }: ShopInfoFormProps) {
     try {
       const imageUrl = await uploadImage(file);
       setValues((prev) => ({ ...prev, imageUrl }));
+
+      if (successTimerRef.current) clearTimeout(successTimerRef.current);
+      setSuccessMessage('사진 업로드가 완료되었습니다');
+      setShowSuccessToast(true);
+      successTimerRef.current = setTimeout(() => {
+        setShowSuccessToast(false);
+      }, 2000);
     } catch (error) {
       console.error('이미지 업로드 실패:', error);
       showError('이미지 업로드에 실패했어요. 다시 시도해주세요.');
@@ -103,8 +115,14 @@ function ShopInfoForm({ shopInfo }: ShopInfoFormProps) {
         storeName: values.storeName,
         location: {
           address: values.address,
-          district: extractDistrict(values.address) || shopInfo?.location?.district || '',
-          neighborhood: extractNeighborhood(values.address) || shopInfo?.location?.neighborhood || '',
+          district:
+            extractDistrict(values.address) ||
+            shopInfo?.location?.district ||
+            '',
+          neighborhood:
+            extractNeighborhood(values.address) ||
+            shopInfo?.location?.neighborhood ||
+            '',
           detailAddress: shopInfo?.location?.detailAddress ?? '',
         },
         category: values.category!,
@@ -119,6 +137,7 @@ function ShopInfoForm({ shopInfo }: ShopInfoFormProps) {
       });
 
       if (successTimerRef.current) clearTimeout(successTimerRef.current);
+      setSuccessMessage('저장이 완료되었습니다');
       setShowSuccessToast(true);
       successTimerRef.current = setTimeout(() => {
         setShowSuccessToast(false);
@@ -147,9 +166,11 @@ function ShopInfoForm({ shopInfo }: ShopInfoFormProps) {
             >
               {isUploading && (
                 <div className="absolute inset-0 bg-black/50 rounded-xl flex items-center justify-center">
-                  <span className="text-static-white text-sm font-medium font-['Pretendard']">
-                    업로드 중...
-                  </span>
+                  <Lottie
+                    animationData={loadingAnimation}
+                    loop
+                    className="w-[84px]"
+                  />
                 </div>
               )}
               <div className="w-full flex h-full justify-end items-end">
@@ -194,6 +215,7 @@ function ShopInfoForm({ shopInfo }: ShopInfoFormProps) {
                 setValues({ ...values, phoneNumber: e.target.value });
                 if (phoneError) setPhoneError(false);
               }}
+              placeholder="010-1234-5678"
               labelClassName="text-text-subtlest"
               inputClassName={phoneError ? '!outline-status-danger' : ''}
             />
@@ -276,7 +298,7 @@ function ShopInfoForm({ shopInfo }: ShopInfoFormProps) {
         {isSaving ? '저장 중...' : '저장하기'}
       </DefaultButton>
 
-      {showSuccessToast && <SuccessToast text="저장이 완료되었습니다" />}
+      {showSuccessToast && <SuccessToast text={successMessage} />}
       {showErrorToast && <ToastError text={errorMessage} />}
     </main>
   );
