@@ -22,7 +22,9 @@ export default function CustomDayButton({
             ? 'bg-brand-default text-text-inverse'
             : isDisabled || isOutside
               ? 'text-text-placeholder cursor-not-allowed'
-              : 'text-text-default hover:bg-background-subtle'
+              : isToday
+                ? 'text-brand-default hover:bg-background-subtle'
+                : 'text-text-default hover:bg-background-subtle'
         }`}
       >
         {day.date.getDate()}
