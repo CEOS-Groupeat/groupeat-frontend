@@ -39,6 +39,21 @@ const formatTime = (timeStr?: string) => {
   return timeStr.slice(0, 5);
 };
 
+const formatKoreanTime = (timeStr?: string) => {
+  if (!timeStr) return '';
+  const [hourStr, minStr] = timeStr.split(':');
+  if (!hourStr || !minStr) return timeStr; // 예외 처리
+
+  const hour = parseInt(hourStr, 10);
+  const minute = parseInt(minStr, 10);
+
+  const period = hour < 12 ? '오전' : '오후';
+  const displayHour = hour % 12 === 0 ? 12 : hour % 12;
+  const minuteText = minute > 0 ? ` ${minute}분` : '';
+
+  return `${period} ${displayHour}시${minuteText}`;
+};
+
 const getStepFromStatus = (status?: string) => {
   switch (status) {
     case 'PENDING':
@@ -222,6 +237,8 @@ export default function CustomerOrderDetail() {
             storeCart={mappedStoreCart as any}
             pickupDate={formattedPickupDate}
             pickupTime={formattedPickupTime}
+            hidePickupInfo
+            noBorder
           />
         </div>
       </section>
@@ -303,7 +320,7 @@ export default function CustomerOrderDetail() {
               </p>
               <Ellipse />
               <p className="text-text-default text-body">
-                {formattedOrderTime}
+                {formatKoreanTime(ordererInfo?.orderTime)}
               </p>
             </div>
           </div>
