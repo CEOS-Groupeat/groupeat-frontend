@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import Lottie from 'lottie-react';
+import loadingAnimation from '@/public/lottie/loading.json';
 import InputField from '@/components/ui/OwnerInputField';
 import TextAreaField from '@/components/ui/TextAreaField';
 import DefaultButton from '@/components/ui/ButtonDefault';
@@ -14,8 +16,10 @@ import { useSaveShopInfo } from '../_hooks/useSaveShopInfo';
 import { useShopImageUpload } from '../_hooks/useShopImageUpload';
 import { isValidPhoneNumber } from '../_utils/validatePhoneNumber';
 import type { ShopInfoData } from '../_types/shop.type';
-
-import { extractDistrict, extractNeighborhood } from '../_utils/extractDistrict';
+import {
+  extractDistrict,
+  extractNeighborhood,
+} from '../_utils/extractDistrict';
 
 interface ShopInfoFormProps {
   shopInfo: ShopInfoData | null;
@@ -103,8 +107,14 @@ function ShopInfoForm({ shopInfo }: ShopInfoFormProps) {
         storeName: values.storeName,
         location: {
           address: values.address,
-          district: extractDistrict(values.address) || shopInfo?.location?.district || '',
-          neighborhood: extractNeighborhood(values.address) || shopInfo?.location?.neighborhood || '',
+          district:
+            extractDistrict(values.address) ||
+            shopInfo?.location?.district ||
+            '',
+          neighborhood:
+            extractNeighborhood(values.address) ||
+            shopInfo?.location?.neighborhood ||
+            '',
           detailAddress: shopInfo?.location?.detailAddress ?? '',
         },
         category: values.category!,
@@ -147,9 +157,11 @@ function ShopInfoForm({ shopInfo }: ShopInfoFormProps) {
             >
               {isUploading && (
                 <div className="absolute inset-0 bg-black/50 rounded-xl flex items-center justify-center">
-                  <span className="text-static-white text-sm font-medium font-['Pretendard']">
-                    업로드 중...
-                  </span>
+                  <Lottie
+                    animationData={loadingAnimation}
+                    loop
+                    className="w-[84px]"
+                  />
                 </div>
               )}
               <div className="w-full flex h-full justify-end items-end">
