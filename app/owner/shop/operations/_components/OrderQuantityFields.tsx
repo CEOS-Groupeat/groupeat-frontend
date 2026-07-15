@@ -1,6 +1,6 @@
 'use client';
 
-import InputField from '@/components/ui/InputField';
+import InputField from '@/components/ui/OwnerInputField';
 
 interface OrderQuantityFieldsProps {
   minQuantity: string;

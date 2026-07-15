@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import InputField from '@/components/ui/InputField';
+import InputField from '@/components/ui/OwnerInputField';
 import TextAreaField from '@/components/ui/TextAreaField';
 import DefaultButton from '@/components/ui/ButtonDefault';
 import PencilIcon from '@/public/icons/icon_pencil.svg';
@@ -194,6 +194,7 @@ function ShopInfoForm({ shopInfo }: ShopInfoFormProps) {
                 setValues({ ...values, phoneNumber: e.target.value });
                 if (phoneError) setPhoneError(false);
               }}
+              placeholder="010-1234-5678"
               labelClassName="text-text-subtlest"
               inputClassName={phoneError ? '!outline-status-danger' : ''}
             />

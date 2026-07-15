@@ -4,7 +4,7 @@ import { useState, useRef } from 'react';
 import PhotoIcon from '@/public/icons/icon_photo.svg';
 import PencilIcon from '@/public/icons/icon_pencil.svg';
 import AddIcon from '@/public/icons/icon_add.svg';
-import InputField from '@/components/ui/InputField';
+import InputField from '@/components/ui/OwnerInputField';
 import DefaultButton from '@/components/ui/ButtonDefault';
 import { imageAPI } from '@/src/api/image.api';
 import MenuDeleteConfirmModal from './MenuDeleteConfirmModal';
