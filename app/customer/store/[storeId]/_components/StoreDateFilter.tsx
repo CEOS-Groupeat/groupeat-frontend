@@ -4,7 +4,7 @@ import { useRef, useState, useMemo } from 'react';
 import { DayPicker } from 'react-day-picker';
 import { ko } from 'date-fns/locale';
 import { AM_SLOTS, PM_SLOTS } from '@/app/customer/search/_constants/timeSlots';
-import CustomDayButton from '../CustomDayButton';
+import StoreCustomDayButton from '@/app/customer/store/[storeId]/_components/StoreCustomDayButton';
 
 import PrevMonth from '@/public/icons/icon_calendarButton_left.svg';
 import NextMonth from '@/public/icons/icon_calendarButton_right.svg';
@@ -30,7 +30,7 @@ interface DateFilterProps {
   onTimeChange: (times: string[]) => void;
 }
 
-export default function DateFilter({
+export default function StoreDateFilter({
   date,
   times,
   onDateChange,
@@ -168,12 +168,12 @@ export default function DateFilter({
               formatWeekdayName: (weekday) =>
                 ['일', '월', '화', '수', '목', '금', '토'][weekday.getDay()],
             }}
-            components={{ DayButton: CustomDayButton }}
+            components={{ DayButton: StoreCustomDayButton }}
             classNames={{
               root: 'w-full',
               months: 'w-full',
               month: 'w-full',
-              month_caption: 'hidden',
+              month_caption: 'hidden', // ✅ 내장 캡션 숨김 (커스텀 nav에서 처리)
               month_grid: 'w-full',
               weekdays: 'flex',
               weekday: 'flex-1 text-center text-xs text-text-subtlest py-1',

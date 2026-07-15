@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchClient } from '@/lib/fetchClient';
 import DownArrow from '@/public/icons/icon_arrow_down.svg';
 import UpArrow from '@/public/icons/icon_arrow_up.svg';
-import DateFilter from '@/app/customer/search/_components/filters/DateFilter';
+import StoreDateFilter from '@/app/customer/store/[storeId]/_components/StoreDateFilter';
 import { MenuListApiResponse, Menu } from '@/src/types/api';
 import { ApiResponse, PickupTimeInfo } from '@/types/store';
 import MenuBottomSheet from '@/app/customer/store/[storeId]/_components/MenuBottomSheet';
@@ -136,7 +136,7 @@ export default function StoreOptions() {
             {isDateExpanded && (
               <div className="w-full flex flex-col animate-in fade-in slide-in-from-top-2 duration-200 pb-5">
                 <div className="pb-5">
-                  <DateFilter
+                  <StoreDateFilter
                     date={activeDate}
                     times={displayTime ? [displayTime] : []}
                     onDateChange={handleDateChange}
