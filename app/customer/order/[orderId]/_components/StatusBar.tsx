@@ -19,8 +19,6 @@ export default function StatusBar({ currentStep }: StatusBarProps) {
   return (
     <div className="w-full inline-flex flex-col items-center justify-center pt-16 pb-2">
       <div className="relative flex flex-col items-center justify-start w-80 h-16">
-        
-        {/* ─── 움직이는 일러스트 (QA 반영: 마진 제거, 자체 패딩 적용) ─── */}
         <div
           className="absolute -top-17.5 h-17.5 transition-all duration-500 ease-in-out z-10 box-border"
           style={{
@@ -28,11 +26,9 @@ export default function StatusBar({ currentStep }: StatusBarProps) {
             transform: 'translateX(-50%)',
           }}
         >
-          {/* object-contain으로 변경하여 패딩 안에서 비율이 깨지지 않게 방어 */}
-          <CurrentIllust className="w-full h-full object-contain" />
+          <CurrentIllust className="object-contain" />
         </div>
 
-        {/* ─── 1층: 진행 선 (absolute로 변경하여 노드들의 정중앙을 정확히 관통) ─── */}
         <div className="absolute top-[14px] -translate-y-1/2 left-1/2 -translate-x-1/2 inline-flex items-center justify-start w-64 z-0">
           <div
             className={`flex-1 h-1 rounded-full transition-colors duration-300 ${
