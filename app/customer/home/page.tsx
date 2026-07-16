@@ -1,15 +1,17 @@
+'use client';
+
 import HomeHero from './_components/HomeHero';
 import FiltersContainer from './_components/FiltersContainer';
 import StoreSection from './_components/StoreSection';
-import {
-  popularStores,
-  discountStores,
-  recommendedStores,
-} from './_mocks/stores.mock';
+import { discountStores, recommendedStores } from './_mocks/stores.mock';
 import CustomerNavbar from '@/components/ui/CustomerNavbar';
+import { useTopRatedStores } from './_hooks/useTopRatedStores';
+import { toHomeStore } from './_types/recommendation.type';
 
-export default async function CustomerHomePage() {
-  // MVP 구현범위: 고객 메인 페이지-가게 추천 api 대신 mocks 데이터로 구현.
+export default function CustomerHomePage() {
+  const { data: topRatedData } = useTopRatedStores();
+  const popularStores = (topRatedData?.stores ?? []).map(toHomeStore);
+
   const section1 = [
     {
       id: 'popular',
