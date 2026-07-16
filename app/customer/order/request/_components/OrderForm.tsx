@@ -39,6 +39,7 @@ export default function OrderForm({
           onChange={(e) => setCustomerName(e.target.value)}
           required
           placeholder="이름 입력"
+          isFontWeightNormal
         />
 
         <InputField
@@ -49,6 +50,7 @@ export default function OrderForm({
           onChange={(e) => setCustomerPhone(e.target.value)}
           required
           placeholder="010-0000-0000"
+          isFontWeightNormal={true}
         />
 
         <InputField
@@ -57,6 +59,7 @@ export default function OrderForm({
           value={groupName}
           onChange={(e) => setGroupName(e.target.value)}
           placeholder="단체명 / 행사명 입력"
+          isFontWeightNormal
         />
 
         <InputField
@@ -65,6 +68,7 @@ export default function OrderForm({
           value={requests}
           onChange={(e) => setRequests(e.target.value)}
           placeholder="요청사항 입력"
+          isFontWeightNormal
         />
       </div>
     </form>
