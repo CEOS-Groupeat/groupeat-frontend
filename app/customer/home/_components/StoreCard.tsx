@@ -1,6 +1,9 @@
-import Image from 'next/image';
+'use client';
 
-import { HomeStore } from '../_types/store.type';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+
+import { HomeStore } from '../_types/recommendation.type';
 
 import Star from '@/public/icons/icon_star.svg';
 import Location from '@/public/icons/icon_place.svg';
@@ -14,9 +17,13 @@ export default function StoreCard({
   store,
   variant = 'small',
 }: StoreCardProps) {
+  const router = useRouter();
+
   return (
-    <div
-      className={`rounded-xl outline outline-1 outline-offset-[-1px] outline-border-subtle overflow-hidden shrink-0 font-['Pretendard'] 
+    <button
+      type="button"
+      onClick={() => router.push(`/customer/store/${store.id}`)}
+      className={`rounded-xl outline outline-1 outline-offset-[-1px] outline-border-subtle overflow-hidden shrink-0 font-['Pretendard'] text-left
       ${variant === 'large' ? 'w-[343px]' : 'w-48'}`}
     >
       <div
@@ -61,6 +68,6 @@ export default function StoreCard({
           </div>
         </div>
       </div>
-    </div>
+    </button>
   );
 }
