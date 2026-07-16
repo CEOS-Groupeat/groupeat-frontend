@@ -22,6 +22,7 @@ export default function CustomerHomePage() {
       title: '인기 만점 가게',
       description: '만족도가 높은 가게를 추천드려요',
       stores: popularStores,
+      sortType: 'RATING_DESC',
     },
 
     {
@@ -29,6 +30,7 @@ export default function CustomerHomePage() {
       title: '할인율 높은 가게',
       description: '단체 주문 시 할인율이 높은 가게를 추천드려요',
       stores: discountStores,
+      sortType: 'DISCOUNT_DESC',
     },
   ];
 
