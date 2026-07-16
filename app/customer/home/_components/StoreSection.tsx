@@ -3,7 +3,7 @@ import RightGradientOverlay from '@/public/components/gradient_overlay_right.svg
 
 import StoreCard from './StoreCard';
 
-import { HomeStore } from '../_types/store.type';
+import { HomeStore } from '../_types/recommendation.type';
 
 interface StoreSectionProps {
   title: string;

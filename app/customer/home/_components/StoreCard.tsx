@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { HomeStore } from '../_types/store.type';
+import { HomeStore } from '../_types/recommendation.type';
 
 import Star from '@/public/icons/icon_star.svg';
 import Location from '@/public/icons/icon_place.svg';
