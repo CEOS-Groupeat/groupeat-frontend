@@ -1,8 +1,14 @@
 import type { GetResponse } from '@/src/types/api';
 
-export type TopRatedStoresResponse = GetResponse<'/api/recommendations/top-rated'>;
+export type TopRatedStoresResponse =
+  GetResponse<'/api/recommendations/top-rated'>;
+export type HighDiscountStoresResponse =
+  GetResponse<'/api/recommendations/high-discount'>;
+
 export type TopRatedStoresData = NonNullable<TopRatedStoresResponse['data']>;
-export type RecommendedStore = NonNullable<TopRatedStoresData['stores']>[number];
+export type RecommendedStore = NonNullable<
+  TopRatedStoresData['stores']
+>[number];
 
 export interface HomeStore {
   id: number;
