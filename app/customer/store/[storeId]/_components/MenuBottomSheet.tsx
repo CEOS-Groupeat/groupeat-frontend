@@ -50,17 +50,42 @@ export default function MenuBottomSheet({
   const discountRate = storeDetail?.discountRate || 0;
   const discountCondition = storeDetail?.discountConditionQuantity || 0;
 
+  // 최소/최대 주문 수량 기준값 설정 (타입에 없어도 목데이터로 동작하도록 fallback)
+  const minQ =
+    (menu as Menu & { minOrderQuantity?: number }).minOrderQuantity ?? 10;
+  const maxQ =
+    (menu as Menu & { maxOrderQuantity?: number }).maxOrderQuantity ?? 99;
+
   const [cards, setCards] = useState<MenuCard[]>([]);
   const [mode, setMode] = useState<'CREATE' | 'LIST' | 'EDIT'>('CREATE');
   const [editingCardId, setEditingCardId] = useState<string | null>(null);
 
   const [quantity, setQuantity] = useState<number | ''>('');
+  const [quantityError, setQuantityError] = useState<string | null>(null); // 에러 상태 추가
   const [selectedOptions, setSelectedOptions] = useState<
     Record<number, number[]>
   >({});
   const [expandedGroupId, setExpandedGroupId] = useState<number | null>(null);
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  // 수량 검증 로직 추가
+  const handleQuantityChange = (val: string) => {
+    if (val === '') {
+      setQuantity('');
+      setQuantityError('수량을 입력해주세요.');
+      return;
+    }
+    const num = Number(val);
+    setQuantity(num);
+    if (num < minQ) {
+      setQuantityError(`최소 ${minQ}개 이상 주문해주세요`);
+    } else if (num > maxQ) {
+      setQuantityError(`최대 ${maxQ}개까지 주문 가능합니다`);
+    } else {
+      setQuantityError(null);
+    }
+  };
 
   const toggleOption = (
     groupId: number,
@@ -105,11 +130,19 @@ export default function MenuBottomSheet({
     const hasAllRequired = requiredGroups.every(
       (group) => (selectedOptions[group.optionGroupId!] ?? []).length > 0
     );
-    return hasAllRequired && typeof quantity === 'number' && quantity > 0;
+    // 검증 조건 업데이트
+    return (
+      hasAllRequired &&
+      typeof quantity === 'number' &&
+      quantity >= minQ &&
+      quantity <= maxQ &&
+      !quantityError
+    );
   };
 
   const handleAddNewItem = () => {
     setQuantity('');
+    setQuantityError(null); // 초기화 추가
     setSelectedOptions({});
     setExpandedGroupId(null);
     setMode('CREATE');
@@ -117,6 +150,7 @@ export default function MenuBottomSheet({
 
   const handleEditCard = (card: MenuCard) => {
     setQuantity(card.quantity);
+    setQuantityError(null); // 초기화 추가
     setSelectedOptions(card.selectedOptions);
     setExpandedGroupId(null);
     setEditingCardId(card.id);
@@ -269,14 +303,19 @@ export default function MenuBottomSheet({
               placeholder="수량을 입력하세요"
               value={quantity}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setQuantity(e.target.value === '' ? '' : Number(e.target.value))
+                handleQuantityChange(e.target.value)
+              }
+              isError={!!quantityError}
+              errorMessage={quantityError ?? undefined}
+              disableFillStyle={true}
+              helperText={
+                discountRate > 0 && discountCondition > 0 ? (
+                  <p className="text-brand-default text-caption2 font-medium animate-in fade-in">
+                    {discountCondition}개 이상 주문 시 {discountRate}% 할인
+                  </p>
+                ) : undefined
               }
             />
-            {discountRate > 0 && discountCondition > 0 && (
-              <p className="text-brand-default text-caption2 font-medium animate-in fade-in">
-                {discountCondition}개 이상 주문 시 {discountRate}% 할인
-              </p>
-            )}
           </div>
         </div>
 

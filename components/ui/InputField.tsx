@@ -8,6 +8,10 @@ interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   labelClassName?: string;
   inputClassName?: string;
   isFontWeightNormal?: boolean;
+  isError?: boolean;
+  errorMessage?: string;
+  helperText?: React.ReactNode;
+  disableFillStyle?: boolean;
 }
 
 export default function InputField({
@@ -19,9 +23,14 @@ export default function InputField({
   inputClassName,
   disabled,
   isFontWeightNormal,
+  isError = false,
+  errorMessage,
+  helperText,
+  disableFillStyle = false,
   ...props
 }: InputFieldProps) {
-  const isFilled = typeof value === 'string' && value.trim().length > 0;
+  const isFilled =
+    value !== undefined && value !== null && String(value).trim().length > 0;
 
   return (
     <div className={`${className || 'w-full'} flex flex-col gap-2`}>
@@ -37,15 +46,25 @@ export default function InputField({
       <input
         value={value}
         disabled={disabled}
-        className={`w-full h-11 pl-4 pr-3 py-3 rounded-lg font-pretendard font-normal text-body placeholder:text-text-placeholder placeholder:font-normal transition-colors border outline-none ${
-          disabled ? 'text-text-placeholder' : 'text-text-default'
-        } ${
-          isFilled
-            ? 'bg-background-subtle border-transparent'
-            : 'bg-white border-border-strong'
+        className={`w-full h-11 pl-4 pr-3 py-3 rounded-lg font-pretendard font-normal text-body placeholder:text-text-placeholder placeholder:font-normal transition-colors border outline-none 
+        ${disabled ? 'text-text-placeholder' : 'text-text-default'} 
+        ${
+          isError
+            ? 'border-status-danger focus:border-status-danger'
+            : isFilled && !disableFillStyle
+              ? 'bg-background-subtle border-transparent focus:border-border-active'
+              : 'bg-white border-border-strong focus:border-border-active'
         } ${inputClassName ?? ''}`}
         {...props}
       />
+
+      {isError && errorMessage ? (
+        <p className="text-status-danger text-caption1 font-medium animate-in fade-in">
+          {errorMessage}
+        </p>
+      ) : (
+        helperText && <>{helperText}</>
+      )}
     </div>
   );
 }
