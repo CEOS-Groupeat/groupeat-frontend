@@ -8,6 +8,12 @@ import { useSignupStore } from '@/store/useSignupStore';
 import { useRouter } from 'next/navigation';
 import DefaultButton from '@/components/ui/ButtonDefault';
 
+// 임시 확인용
+function extractVerificationCode(message: string): string | null {
+  const match = message.match(/\d{4,10}/); 
+  return match ? match[0] : null;
+}
+
 export default function PhoneVerifyStep() {
   const router = useRouter();
   const {
@@ -22,6 +28,7 @@ export default function PhoneVerifyStep() {
   const [code, setCode] = useState('');
   const [isVerified, setIsVerified] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [devCode, setDevCode] = useState<string | null>(null); // 임시 확인용
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const onlyNumbers = e.target.value.replace(/[^0-9]/g, '');
@@ -42,10 +49,14 @@ export default function PhoneVerifyStep() {
         method: 'POST',
         body: JSON.stringify({ phoneNumber }),
       }),
-    onSuccess: () => {
+    onSuccess: (response: any) => { // 임시 확인용
       alert('인증번호가 발송되었습니다.');
       setIsError(false);
       setCode('');
+
+      const message = response.data?.message ?? ''; // 임시 확인용
+      const extractedCode = extractVerificationCode(message);// 임시 확인용
+      setDevCode(extractedCode); // 임시 확인용
     },
     onError: (error: any) => {
       alert(error.message || '인증번호 발송에 실패했습니다.');
@@ -181,6 +192,12 @@ export default function PhoneVerifyStep() {
               {isError && (
                 <p className="text-status-danger text-caption1">
                   인증번호가 틀렸습니다
+                </p>
+              )}
+              {/* 임시확인용 */}
+              {devCode && (
+                <p className="text-caption1 text-brand-default font-semibold">
+                  (개발용) 인증번호: {devCode}
                 </p>
               )}
             </div>
