@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { formatDateWithDots } from '../_utils/formatDate';
 import CalendarIcon from '@/public/icons/icon-owner-calendar.svg';
+import PeriodCalendarPopover from './PeriodCalendarPopover';
 
 interface PeriodSettingFieldProps {
   startDate: string;
@@ -19,6 +20,7 @@ export default function PeriodSettingField({
   const [tempStart, setTempStart] = useState(startDate);
   const [tempEnd, setTempEnd] = useState(endDate);
 
+  const [showCalendar, setShowCalendar] = useState(false);
   const hasDate = startDate && endDate;
 
   const handleSave = () => {
@@ -27,12 +29,18 @@ export default function PeriodSettingField({
     setIsEditing(false);
   };
 
+  const handleComplete = (newStart: string, newEnd: string) => {
+    onSave(newStart, newEnd);
+    setShowCalendar(false);
+  };
+
   if (isEditing) {
     return (
       <div className="self-stretch flex flex-col font-['Pretendard'] gap-3">
         <span className="text-text-default text-body font-medium">
           기간 설정
         </span>
+
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2">
             <span className="text-text-subtlest text-xs w-12">시작일</span>
@@ -69,10 +77,10 @@ export default function PeriodSettingField({
     <div className="self-stretch flex flex-col font-['Pretendard'] gap-3">
       <span className="text-text-default text-body font-medium">기간 설정</span>
 
-      <div className="w-full flex flex-col gap-2">
+      <div className="w-full flex flex-col gap-2 relative">
         <button
           type="button"
-          onClick={() => setIsEditing(true)}
+          onClick={() => setShowCalendar((prev) => !prev)}
           className="w-full pl-3.5 pr-4 py-3 bg-background-subtle rounded-xl flex justify-between items-center"
         >
           {hasDate ? (
@@ -91,6 +99,15 @@ export default function PeriodSettingField({
             {hasDate ? '수정하기' : '등록하기'}
           </span>
         </button>
+
+        {showCalendar && (
+          <PeriodCalendarPopover
+            initialStartDate={startDate}
+            initialEndDate={endDate}
+            onComplete={handleComplete}
+            onClose={() => setShowCalendar(false)}
+          />
+        )}
       </div>
     </div>
   );

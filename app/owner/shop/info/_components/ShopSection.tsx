@@ -16,10 +16,7 @@ import { useSaveShopInfo } from '../_hooks/useSaveShopInfo';
 import { useShopImageUpload } from '../_hooks/useShopImageUpload';
 import { isValidPhoneNumber } from '../_utils/validatePhoneNumber';
 import type { ShopInfoData } from '../_types/shop.type';
-import {
-  extractDistrict,
-  extractNeighborhood,
-} from '../_utils/extractDistrict';
+import { getDistrictFromKakao } from '../_utils/getDistrictFromKakao';
 
 interface ShopInfoFormProps {
   shopInfo: ShopInfoData | null;
@@ -110,19 +107,17 @@ function ShopInfoForm({ shopInfo }: ShopInfoFormProps) {
       values.discountRate.trim().length > 0;
 
     try {
+      const { district, neighborhood } = await getDistrictFromKakao(
+        values.address
+      );
+
       await saveShopInfo({
         imageUrl: values.imageUrl ?? '',
         storeName: values.storeName,
         location: {
           address: values.address,
-          district:
-            extractDistrict(values.address) ||
-            shopInfo?.location?.district ||
-            '',
-          neighborhood:
-            extractNeighborhood(values.address) ||
-            shopInfo?.location?.neighborhood ||
-            '',
+          district: district || shopInfo?.location?.district || '',
+          neighborhood: neighborhood || shopInfo?.location?.neighborhood || '',
           detailAddress: shopInfo?.location?.detailAddress ?? '',
         },
         category: values.category!,
