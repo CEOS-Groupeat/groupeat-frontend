@@ -7,8 +7,8 @@ import HomeOn from '@/public/icons/icon_navicon_home_on.svg';
 import HomeOff from '@/public/icons/icon_navicon_home_off.svg';
 import OrderManageOn from '@/public/icons/icon_navicon_history_on.svg';
 import OrderManageOff from '@/public/icons/icon_navicon_history_off.svg';
-import FavoriteOn from '@/public/icons/icon_navicon_favorite_on.svg';
-import FavoriteOff from '@/public/icons/icon_navicon_favorite_off.svg';
+// import FavoriteOn from '@/public/icons/icon_navicon_favorite_on.svg';
+// import FavoriteOff from '@/public/icons/icon_navicon_favorite_off.svg';
 import MyPageOn from '@/public/icons/icon_navicon_my_on.svg';
 import MyPageOff from '@/public/icons/icon_navicon_my_off.svg';
 
@@ -20,12 +20,12 @@ const navigationItems = [
     iconOn: OrderManageOn,
     iconOff: OrderManageOff,
   },
-  {
-    label: '즐겨찾기',
-    href: '/customer/favorites',
-    iconOn: FavoriteOn,
-    iconOff: FavoriteOff,
-  },
+  // {
+  //   label: '즐겨찾기',
+  //   href: '/customer/favorites',
+  //   iconOn: FavoriteOn,
+  //   iconOff: FavoriteOff,
+  // },
   {
     label: '마이',
     href: '/customer/settings',

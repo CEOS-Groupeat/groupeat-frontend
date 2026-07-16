@@ -32,8 +32,8 @@ export default function SearchField({
           onChange={(e) => onChange?.(e.target.value)}
           onFocus={onFocus}
           onKeyDown={(e) => {
-            if (e.key === 'Enter' && value?.trim()) {
-              onSearch?.(value.trim());
+            if (e.key === 'Enter') {
+              onSearch?.(value?.trim() ?? '');
             }
           }}
           placeholder={placeholder}

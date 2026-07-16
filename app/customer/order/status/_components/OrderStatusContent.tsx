@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useCustomerOrders } from '../_hooks/useCustomerOrders';
 import SegmentedControl from './SegmentedControl';
 import CustomerOrderCard from './CustomerOrderCard';
+import CustomerOrderEmptyState from './CustomerOrderEmptyState';
 
 export default function OrderStatusContent() {
   const router = useRouter();
@@ -44,11 +45,7 @@ export default function OrderStatusContent() {
           </span>
         </div>
       ) : !data?.orderList || data.orderList.length === 0 ? (
-        <div className="flex-1 flex items-center justify-center">
-          <span className="text-sm text-text-subtle">
-            주문 내역이 없습니다.
-          </span>
-        </div>
+        <CustomerOrderEmptyState />
       ) : (
         <div className="flex flex-col gap-2">
           {data.orderList.map((order, index) => (

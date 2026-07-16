@@ -1,40 +1,113 @@
 'use client';
 
+import { useState } from 'react';
 import { formatDateWithDots } from '../_utils/formatDate';
-import PencilIcon from '@/public/icons/icon_pencil.svg';
+import CalendarIcon from '@/public/icons/icon-owner-calendar.svg';
+import PeriodCalendarPopover from './PeriodCalendarPopover';
 
 interface PeriodSettingFieldProps {
   startDate: string;
   endDate: string;
-  onEditClick: () => void;
+  onSave: (startDate: string, endDate: string) => void;
 }
 
 export default function PeriodSettingField({
   startDate,
   endDate,
-  onEditClick,
+  onSave,
 }: PeriodSettingFieldProps) {
-  return (
-    <div className="self-stretch px-4 py-3 bg-background-transparent rounded-xl flex flex-col justify-start items-start font-['Pretendard']">
-      <div className="self-stretch flex flex-col justify-start items-start gap-1">
-        <div className="self-stretch flex justify-between items-center">
-          <span className="text-center text-text-default text-label1 font-semibold">
-            기간 설정
-          </span>
+  const [isEditing, setIsEditing] = useState(false);
+  const [tempStart, setTempStart] = useState(startDate);
+  const [tempEnd, setTempEnd] = useState(endDate);
+
+  const [showCalendar, setShowCalendar] = useState(false);
+  const hasDate = startDate && endDate;
+
+  const handleSave = () => {
+    if (!tempStart || !tempEnd) return;
+    onSave(tempStart, tempEnd);
+    setIsEditing(false);
+  };
+
+  const handleComplete = (newStart: string, newEnd: string) => {
+    onSave(newStart, newEnd);
+    setShowCalendar(false);
+  };
+
+  if (isEditing) {
+    return (
+      <div className="self-stretch flex flex-col font-['Pretendard'] gap-3">
+        <span className="text-text-default text-body font-medium">
+          기간 설정
+        </span>
+
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-2">
+            <span className="text-text-subtlest text-xs w-12">시작일</span>
+            <input
+              type="date"
+              value={tempStart}
+              onChange={(e) => setTempStart(e.target.value)}
+              className="flex-1 h-11 px-3 rounded-lg outline outline-1 outline-border-strong text-text-default text-sm"
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-text-subtlest text-xs w-12">종료일</span>
+            <input
+              type="date"
+              value={tempEnd}
+              onChange={(e) => setTempEnd(e.target.value)}
+              className="flex-1 h-11 px-3 rounded-lg outline outline-1 outline-border-strong text-text-default text-sm"
+            />
+          </div>
           <button
             type="button"
-            onClick={onEditClick}
-            className="flex justify-start items-center gap-1"
+            onClick={handleSave}
+            disabled={!tempStart || !tempEnd}
+            className="h-11 rounded-lg bg-brand-default text-text-inverse text-sm font-semibold disabled:bg-background-subtlest disabled:text-text-subtlest"
           >
-            <PencilIcon className="size-4 text-brand-default" />
-            <span className="text-center text-brand-default text-caption1 font-medium">
-              수정하기
-            </span>
+            확인
           </button>
         </div>
-        <span className="text-text-subtle text-label1 font-normal line-clamp-1">
-          {formatDateWithDots(startDate)} - {formatDateWithDots(endDate)}
-        </span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="self-stretch flex flex-col font-['Pretendard'] gap-3">
+      <span className="text-text-default text-body font-medium">기간 설정</span>
+
+      <div className="w-full flex flex-col gap-2 relative">
+        <button
+          type="button"
+          onClick={() => setShowCalendar((prev) => !prev)}
+          className="w-full pl-3.5 pr-4 py-3 bg-background-subtle rounded-xl flex justify-between items-center"
+        >
+          {hasDate ? (
+            <span className="text-text-subtle text-label1 font-normal">
+              {formatDateWithDots(startDate)} - {formatDateWithDots(endDate)}
+            </span>
+          ) : (
+            <div className="flex items-center gap-2">
+              <CalendarIcon />
+              <span className="text-text-subtlest text-label1 font-normal line-clamp-1">
+                날짜를 등록해주세요
+              </span>
+            </div>
+          )}
+          <span className="text-brand-default text-caption1 font-medium">
+            {hasDate ? '수정하기' : '등록하기'}
+          </span>
+        </button>
+
+        {showCalendar && (
+          <PeriodCalendarPopover
+            initialStartDate={startDate}
+            initialEndDate={endDate}
+            onComplete={handleComplete}
+            onClose={() => setShowCalendar(false)}
+          />
+        )}
       </div>
     </div>
   );

@@ -33,7 +33,7 @@ export default function FiltersContainer() {
       </h1>
       <button
         type="button"
-        onClick={() => handleOpenFilter('region')}
+        onClick={() => handleOpenFilter('district')}
         className="flex gap-2 mb-2.5"
       >
         <span className="text-headline1 font-bold text-text-default">지역</span>

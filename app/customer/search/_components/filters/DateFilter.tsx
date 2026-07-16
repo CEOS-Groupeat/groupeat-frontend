@@ -173,7 +173,7 @@ export default function DateFilter({
               root: 'w-full',
               months: 'w-full',
               month: 'w-full',
-              month_caption: 'hidden', // ✅ 내장 캡션 숨김 (커스텀 nav에서 처리)
+              month_caption: 'hidden',
               month_grid: 'w-full',
               weekdays: 'flex',
               weekday: 'flex-1 text-center text-xs text-text-subtlest py-1',
@@ -182,7 +182,7 @@ export default function DateFilter({
               day: 'flex-1 flex justify-center',
               day_button: 'size-10',
               selected: '',
-              today: '',
+              today: 'text-brand-default',
               disabled: '',
               outside: '',
             }}

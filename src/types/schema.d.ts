@@ -328,6 +328,30 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/notifications/fcm-registrations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * FCM 등록
+         * @description 로그인한 회원의 웹 FCM registration token을 등록하거나 갱신합니다.
+         */
+        post: operations["register"];
+        /**
+         * FCM 등록 비활성화
+         * @description 로그인한 회원의 FCM registration token을 비활성화합니다. 등록값이 없거나 이미 비활성화된 경우에도 성공 응답을 반환합니다.
+         */
+        delete: operations["deactivate"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/carts/items": {
         parameters: {
             query?: never;
@@ -428,6 +452,54 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/owner/mypage/profile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 사업자 프로필 조회
+         * @description 로그인한 사업자 회원의 프로필과 연결된 소셜 계정을 조회합니다.
+         */
+        get: operations["getProfile"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * 사업자 프로필 수정
+         * @description 이메일, 생년월일, 성별을 수정합니다. 실명과 휴대폰 번호는 수정할 수 없습니다.
+         */
+        patch: operations["updateProfile"];
+        trace?: never;
+    };
+    "/api/owner/mypage/notification-settings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 사업자 알림 설정 조회
+         * @description 마케팅 정보 수신 동의 여부와 주문 현황 알림 동의 여부를 조회합니다.
+         */
+        get: operations["getNotificationSettings"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * 사업자 알림 설정 수정
+         * @description 마케팅 정보 수신 동의 여부와 주문 현황 알림 동의 여부를 각각 토글합니다. 변경할 값만 전달할 수 있습니다.
+         */
+        patch: operations["updateNotificationSettings"];
+        trace?: never;
+    };
     "/api/orders/{orderId}/reject": {
         parameters: {
             query?: never;
@@ -519,7 +591,7 @@ export interface paths {
          * 알림 설정 조회
          * @description 마케팅 정보 수신 동의 여부와 주문 현황 알림 동의 여부를 조회합니다.
          */
-        get: operations["getNotificationSettings"];
+        get: operations["getNotificationSettings_1"];
         put?: never;
         post?: never;
         delete?: never;
@@ -529,7 +601,7 @@ export interface paths {
          * 알림 설정 수정
          * @description 마케팅 정보 수신 동의 여부와 주문 현황 알림 동의 여부를 각각 토글합니다. 변경할 값만 전달할 수 있습니다.
          */
-        patch: operations["updateNotificationSettings"];
+        patch: operations["updateNotificationSettings_1"];
         trace?: never;
     };
     "/api/customer/mypage/account": {
@@ -760,6 +832,46 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/recommendations/top-rated": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 인기 만점 가게 추천 조회
+         * @description 별점이 높은 가게 2개를 추천하여 반환합니다.
+         */
+        get: operations["getTopRatedStores"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/recommendations/high-discount": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 할인율 높은 가게 추천 조회
+         * @description 할인율이 높은 가게 2개를 추천하여 반환합니다.
+         */
+        get: operations["getHighDiscountStores"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/owner/reviews": {
         parameters: {
             query?: never;
@@ -840,6 +952,66 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/owner/mypage/terms": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 사업자 필수 약관 목록 조회
+         * @description 약관 페이지에서 노출할 COMMON 및 BUSINESS 대상의 활성 필수 약관을 현재 회원의 동의 상태와 함께 조회합니다.
+         */
+        get: operations["getTerms_1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/owner/mypage/terms/{termsId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 사업자 필수 약관 전문 조회
+         * @description 약관 페이지에서 노출할 COMMON 또는 BUSINESS 대상 활성 필수 약관의 전문을 조회합니다.
+         */
+        get: operations["getTermsDetail"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/owner/mypage/business-profile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 사업자 정보 조회
+         * @description 대표자명, 상호명, 개업연월일, 사업자 유형, 사업자등록번호, 사업자등록증 파일 URL을 조회합니다.
+         */
+        get: operations["getBusinessProfile"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/owner/dashboard/summary": {
         parameters: {
             query?: never;
@@ -911,7 +1083,7 @@ export interface paths {
          * 고객 필수 약관 목록 조회
          * @description 약관 페이지에서 노출할 COMMON 및 CUSTOMER 대상의 활성 필수 약관을 현재 회원의 동의 상태와 함께 조회합니다.
          */
-        get: operations["getTerms_1"];
+        get: operations["getTerms_2"];
         put?: never;
         post?: never;
         delete?: never;
@@ -931,7 +1103,7 @@ export interface paths {
          * 고객 필수 약관 전문 조회
          * @description 약관 페이지에서 노출할 COMMON 또는 CUSTOMER 대상 활성 필수 약관의 전문을 조회합니다.
          */
-        get: operations["getTermsDetail"];
+        get: operations["getTermsDetail_1"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1059,6 +1231,26 @@ export interface paths {
          * @description 작성한 리뷰를 소프트 딜리트 방식으로 삭제하며, 가게의 별점 통계가 자동으로 롤백됩니다.
          */
         delete: operations["deleteReview"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/owner/mypage/account": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * 사업자 회원 탈퇴
+         * @description 진행 중인 주문과 정산 대기 건이 없는 사업자 회원을 탈퇴 처리합니다. 회원 개인정보와 소셜 연결은 제거하고, 가게는 운영 중단 상태로 soft delete 처리합니다.
+         */
+        delete: operations["withdraw_1"];
         options?: never;
         head?: never;
         patch?: never;
@@ -1561,11 +1753,11 @@ export interface components {
             openedDate: string;
             businessValidationToken: string;
             businessRegistrationCertificateUrl: string;
-            email: string;
+            email?: string;
             /** Format: date */
-            birthDate: string;
+            birthDate?: string;
             /** @enum {string} */
-            gender: "MALE" | "FEMALE" | "NONE";
+            gender?: "MALE" | "FEMALE" | "NONE";
         };
         ApiResponseBusinessSignupResponse: {
             isSuccess?: boolean;
@@ -1830,6 +2022,47 @@ export interface components {
              */
             customerName?: string;
         };
+        FcmRegistrationRequest: {
+            /** @description Firebase Web SDK에서 발급한 FCM registration token */
+            registrationToken: string;
+            /**
+             * @description FCM 등록 플랫폼
+             * @example WEB
+             * @enum {string}
+             */
+            platform: "WEB";
+        };
+        ApiResponseFcmRegistrationResponse: {
+            isSuccess?: boolean;
+            code?: string;
+            message?: string;
+            data?: components["schemas"]["FcmRegistrationResponse"];
+        };
+        FcmRegistrationResponse: {
+            /**
+             * Format: int64
+             * @description FCM 등록 ID
+             * @example 1
+             */
+            fcmRegistrationId?: number;
+            /**
+             * @description FCM 등록 플랫폼
+             * @example WEB
+             * @enum {string}
+             */
+            platform?: "WEB";
+            /**
+             * @description 활성화 여부
+             * @example true
+             */
+            active?: boolean;
+            /**
+             * Format: date-time
+             * @description 마지막 등록 시각
+             * @example 2026-07-13T14:30:00
+             */
+            lastRegisteredAt?: string;
+        };
         CartItemAddRequest: {
             /**
              * Format: int64
@@ -2080,6 +2313,119 @@ export interface components {
         LogoutResponse: {
             message?: string;
         };
+        OwnerProfileUpdateRequest: {
+            /**
+             * @description 변경할 이메일. 빈 문자열 전송 시 null로 저장
+             * @example owner@example.com
+             */
+            email?: string;
+            /**
+             * Format: date
+             * @description 변경할 생년월일. 미입력 시 null로 저장
+             * @example 1988-03-15
+             */
+            birthDate?: string;
+            /**
+             * @description 변경할 성별. 미입력 시 null로 저장
+             * @example MALE
+             * @enum {string}
+             */
+            gender?: "MALE" | "FEMALE" | "NONE";
+        };
+        ApiResponseOwnerProfileResponse: {
+            isSuccess?: boolean;
+            code?: string;
+            message?: string;
+            data?: components["schemas"]["OwnerProfileResponse"];
+        };
+        OwnerProfileResponse: {
+            /**
+             * @description 실명
+             * @example 홍길동
+             */
+            name?: string;
+            /**
+             * @description 휴대폰 번호
+             * @example 01012345678
+             */
+            phoneNumber?: string;
+            /**
+             * Format: date
+             * @description 생년월일
+             * @example 1988-03-15
+             */
+            birthDate?: string;
+            /**
+             * @description 회원 이메일
+             * @example owner@example.com
+             */
+            email?: string;
+            /**
+             * @description 성별
+             * @example MALE
+             * @enum {string}
+             */
+            gender?: "MALE" | "FEMALE" | "NONE";
+            /** @description 연결된 소셜 계정 정보 */
+            socialAccount?: components["schemas"]["SocialAccountResponse"];
+        };
+        SocialAccountResponse: {
+            /**
+             * @description 소셜 로그인 제공자
+             * @example KAKAO
+             * @enum {string}
+             */
+            provider?: "KAKAO" | "NAVER" | "GOOGLE";
+            /** @description 소셜 계정 이메일. 제공되지 않은 경우 빈 문자열 반환 */
+            email?: string;
+        };
+        OwnerNotificationSettingsUpdateRequest: {
+            /**
+             * @description 마케팅 정보 수신 동의 여부. 변경하지 않을 경우 생략
+             * @example true
+             */
+            marketingAgreed?: boolean;
+            /**
+             * @description 주문 현황 알림 동의 여부. 변경하지 않을 경우 생략
+             * @example true
+             */
+            orderStatusNotificationAgreed?: boolean;
+        };
+        ApiResponseOwnerNotificationSettingsResponse: {
+            isSuccess?: boolean;
+            code?: string;
+            message?: string;
+            data?: components["schemas"]["OwnerNotificationSettingsResponse"];
+        };
+        OwnerNotificationSettingsResponse: {
+            /**
+             * Format: int64
+             * @description 마케팅 정보 수신 동의 약관 ID
+             * @example 3
+             */
+            marketingTermsId?: number;
+            /**
+             * @description 마케팅 정보 수신 동의 약관 제목
+             * @example 마케팅 정보 수신 동의
+             */
+            marketingTermsTitle?: string;
+            /**
+             * @description 마케팅 정보 수신 동의 여부
+             * @example true
+             */
+            marketingAgreed?: boolean;
+            /**
+             * Format: date-time
+             * @description 마케팅 정보 수신 동의 시각. 미동의 상태이면 null
+             * @example 2026-07-03T14:30:00
+             */
+            marketingAgreedAt?: string;
+            /**
+             * @description 주문 현황 알림 동의 여부
+             * @example true
+             */
+            orderStatusNotificationAgreed?: boolean;
+        };
         ApiResponseOrderStatusChangeResponse: {
             isSuccess?: boolean;
             code?: string;
@@ -2223,16 +2569,6 @@ export interface components {
             gender?: "MALE" | "FEMALE" | "NONE";
             /** @description 연결된 소셜 계정 정보 */
             socialAccount?: components["schemas"]["SocialAccountResponse"];
-        };
-        SocialAccountResponse: {
-            /**
-             * @description 소셜 로그인 제공자
-             * @example KAKAO
-             * @enum {string}
-             */
-            provider?: "KAKAO" | "NAVER" | "GOOGLE";
-            /** @description 소셜 계정 이메일. 제공되지 않은 경우 빈 문자열 반환 */
-            email?: string;
         };
         AdminVerificationProcessRequest: {
             /**
@@ -2483,6 +2819,11 @@ export interface components {
         };
         /** @description 리뷰 목록 조회 응답 */
         ReviewListResponse: {
+            /**
+             * @description 가게 이름
+             * @example 데이브런치
+             */
+            storeName?: string;
             /** @description 리뷰 목록 */
             reviewList?: components["schemas"]["ReviewDetailDTO"][];
             /**
@@ -2677,9 +3018,8 @@ export interface components {
             /**
              * @description 위치 필터
              * @example 마포구
-             * @enum {string}
              */
-            region?: "GANGNAM" | "GANGDONG" | "GANGBUK" | "GANGSEO" | "GWANAK" | "GWANGJIN" | "GURO" | "GEUMCHEON" | "NOWON" | "DOBONG" | "DONGDAEMUN" | "DONGJAK" | "MAPO" | "SEODAEMUN" | "SEOCHO" | "SEONGDONG" | "SEONGBUK" | "SONGPA" | "YANGCHEON" | "YEONGDEUNGPO" | "YONGSAN" | "EUNPYEONG" | "JONGNO" | "JUNG" | "JUNGNANG";
+            district?: string;
             /**
              * Format: date
              * @description 픽업 날짜 필터 (단일 선택)
@@ -2688,10 +3028,7 @@ export interface components {
             pickupDate?: string;
             /**
              * @description 픽업 시간 필터 (다중 선택 가능)
-             * @example [
-             *       "12:00:00",
-             *       "13:00:00"
-             *     ]
+             * @example 12:00:00,13:00:00
              */
             pickupTimes?: string[];
             /**
@@ -2760,11 +3097,6 @@ export interface components {
              */
             maxPrice?: number;
             /**
-             * @description 연락처
-             * @example 051-1234-5678
-             */
-            phoneNumber?: string;
-            /**
              * Format: double
              * @description 별점
              * @example 4.7
@@ -2777,10 +3109,15 @@ export interface components {
              */
             reviewCount?: number;
             /**
-             * @description 픽업 시간
-             * @example 10:00 ~ 17:00
+             * @description 지역 (구)
+             * @example 마포구
              */
-            pickupTimeRange?: string;
+            district?: string;
+            /**
+             * @description 상세 지역 (동)
+             * @example 아현동
+             */
+            neighborhood?: string;
         };
         StoreListDTO: {
             /**
@@ -2791,6 +3128,75 @@ export interface components {
             totalElements?: number;
             /** @description 가게 카드 리스트 */
             storeList?: components["schemas"]["StoreCardDTO"][];
+        };
+        ApiResponseRecommendationListResponse: {
+            isSuccess?: boolean;
+            code?: string;
+            message?: string;
+            data?: components["schemas"]["RecommendationListResponse"];
+        };
+        /** @description 추천 가게 단일 카드 정보 */
+        RecommendationCardDTO: {
+            /**
+             * Format: int64
+             * @description 가게 ID
+             * @example 1
+             */
+            storeId?: number;
+            /**
+             * @description 가게 대표 이미지 URL
+             * @example https://groupeat-bucket.../store.jpg
+             */
+            imageUrl?: string;
+            /**
+             * @description 카테고리명
+             * @example 샌드위치&김밥
+             */
+            category?: string;
+            /**
+             * @description 가게명
+             * @example 사르르 연남
+             */
+            storeName?: string;
+            /**
+             * @description 구 정보 (위치)
+             * @example 마포구
+             */
+            district?: string;
+            /**
+             * @description 동 정보 (위치)
+             * @example 연남동
+             */
+            neighborhood?: string;
+            /**
+             * Format: int32
+             * @description 최소 가격
+             * @example 5500
+             */
+            minPrice?: number;
+            /**
+             * Format: int32
+             * @description 최대 가격
+             * @example 9000
+             */
+            maxPrice?: number;
+            /**
+             * Format: double
+             * @description 별점
+             * @example 4.8
+             */
+            rating?: number;
+            /**
+             * Format: int32
+             * @description 리뷰 수
+             * @example 45
+             */
+            reviewCount?: number;
+        };
+        /** @description 가게 추천 목록 응답 */
+        RecommendationListResponse: {
+            /** @description 추천 가게 목록 */
+            stores?: components["schemas"]["RecommendationCardDTO"][];
         };
         ApiResponseOwnerReviewListResponse: {
             isSuccess?: boolean;
@@ -2949,6 +3355,11 @@ export interface components {
              * @enum {string}
              */
             paymentMethod?: "PREPAID" | "ON_SITE";
+            /**
+             * @description 픽업 완료 처리 가능 여부
+             * @example true
+             */
+            canCompletePickup?: boolean;
             /**
              * Format: int32
              * @description 승인 마감까지 남은 시간 (대기 중 탭에서만 노출, 그 외엔 null)
@@ -3119,6 +3530,143 @@ export interface components {
              * @example 30000
              */
             finalPaymentAmount?: number;
+        };
+        ApiResponseListCustomerTermsResponse: {
+            isSuccess?: boolean;
+            code?: string;
+            message?: string;
+            data?: components["schemas"]["CustomerTermsResponse"][];
+        };
+        CustomerTermsResponse: {
+            /**
+             * Format: int64
+             * @description 약관 ID
+             * @example 3
+             */
+            termsId?: number;
+            /**
+             * @description 약관 제목
+             * @example 마케팅 정보 수신 동의
+             */
+            title?: string;
+            /**
+             * @description 필수 약관 여부
+             * @example false
+             */
+            required?: boolean;
+            /**
+             * @description 약관 버전
+             * @example 1
+             */
+            version?: string;
+            /**
+             * @description 현재 회원의 동의 여부
+             * @example true
+             */
+            agreed?: boolean;
+            /**
+             * Format: date-time
+             * @description 최근 동의 시각. 미동의 상태이면 null
+             * @example 2026-07-03T14:30:00
+             */
+            agreedAt?: string;
+            /**
+             * @description 마이페이지에서 동의 상태 변경 가능 여부. 선택 약관만 true
+             * @example true
+             */
+            modifiable?: boolean;
+        };
+        ApiResponseCustomerTermsDetailResponse: {
+            isSuccess?: boolean;
+            code?: string;
+            message?: string;
+            data?: components["schemas"]["CustomerTermsDetailResponse"];
+        };
+        CustomerTermsDetailResponse: {
+            /**
+             * Format: int64
+             * @description 약관 ID
+             * @example 1
+             */
+            termsId?: number;
+            /**
+             * @description 약관 제목
+             * @example 서비스 이용약관
+             */
+            title?: string;
+            /**
+             * @description 약관 전문
+             * @example 제1조 (목적) 본 약관은...
+             */
+            content?: string;
+            /**
+             * @description 필수 약관 여부
+             * @example true
+             */
+            required?: boolean;
+            /**
+             * @description 약관 대상. COMMON 또는 CUSTOMER
+             * @example COMMON
+             */
+            targetType?: string;
+            /**
+             * @description 약관 버전
+             * @example 1
+             */
+            version?: string;
+            /**
+             * @description 현재 회원의 동의 여부
+             * @example true
+             */
+            agreed?: boolean;
+            /**
+             * Format: date-time
+             * @description 최근 동의 시각. 미동의 상태이면 null
+             * @example 2026-07-03T14:30:00
+             */
+            agreedAt?: string;
+            /**
+             * @description 마이페이지에서 동의 상태 변경 가능 여부
+             * @example false
+             */
+            modifiable?: boolean;
+        };
+        ApiResponseOwnerBusinessProfileResponse: {
+            isSuccess?: boolean;
+            code?: string;
+            message?: string;
+            data?: components["schemas"]["OwnerBusinessProfileResponse"];
+        };
+        OwnerBusinessProfileResponse: {
+            /**
+             * @description 대표자명
+             * @example 홍길동
+             */
+            representativeName?: string;
+            /**
+             * @description 상호명
+             * @example 그룹잇 케이터링
+             */
+            businessName?: string;
+            /**
+             * Format: date
+             * @description 개업연월일
+             * @example 2020-03-15
+             */
+            openedDate?: string;
+            /**
+             * @description 사업자 유형
+             * @example INDIVIDUAL
+             * @enum {string}
+             */
+            businessType?: "INDIVIDUAL" | "CORPORATION";
+            /**
+             * @description 사업자등록번호
+             * @example 1234567890
+             */
+            businessRegistrationNumber?: string;
+            /** @description 사업자등록증 파일 URL */
+            businessRegistrationCertificateUrl?: string;
         };
         ApiResponseOwnerDashboardSummaryResponse: {
             isSuccess?: boolean;
@@ -3407,106 +3955,6 @@ export interface components {
              */
             reviewCount?: number;
         };
-        ApiResponseListCustomerTermsResponse: {
-            isSuccess?: boolean;
-            code?: string;
-            message?: string;
-            data?: components["schemas"]["CustomerTermsResponse"][];
-        };
-        CustomerTermsResponse: {
-            /**
-             * Format: int64
-             * @description 약관 ID
-             * @example 3
-             */
-            termsId?: number;
-            /**
-             * @description 약관 제목
-             * @example 마케팅 정보 수신 동의
-             */
-            title?: string;
-            /**
-             * @description 필수 약관 여부
-             * @example false
-             */
-            required?: boolean;
-            /**
-             * @description 약관 버전
-             * @example 1
-             */
-            version?: string;
-            /**
-             * @description 현재 회원의 동의 여부
-             * @example true
-             */
-            agreed?: boolean;
-            /**
-             * Format: date-time
-             * @description 최근 동의 시각. 미동의 상태이면 null
-             * @example 2026-07-03T14:30:00
-             */
-            agreedAt?: string;
-            /**
-             * @description 마이페이지에서 동의 상태 변경 가능 여부. 선택 약관만 true
-             * @example true
-             */
-            modifiable?: boolean;
-        };
-        ApiResponseCustomerTermsDetailResponse: {
-            isSuccess?: boolean;
-            code?: string;
-            message?: string;
-            data?: components["schemas"]["CustomerTermsDetailResponse"];
-        };
-        CustomerTermsDetailResponse: {
-            /**
-             * Format: int64
-             * @description 약관 ID
-             * @example 1
-             */
-            termsId?: number;
-            /**
-             * @description 약관 제목
-             * @example 서비스 이용약관
-             */
-            title?: string;
-            /**
-             * @description 약관 전문
-             * @example 제1조 (목적) 본 약관은...
-             */
-            content?: string;
-            /**
-             * @description 필수 약관 여부
-             * @example true
-             */
-            required?: boolean;
-            /**
-             * @description 약관 대상. COMMON 또는 CUSTOMER
-             * @example COMMON
-             */
-            targetType?: string;
-            /**
-             * @description 약관 버전
-             * @example 1
-             */
-            version?: string;
-            /**
-             * @description 현재 회원의 동의 여부
-             * @example true
-             */
-            agreed?: boolean;
-            /**
-             * Format: date-time
-             * @description 최근 동의 시각. 미동의 상태이면 null
-             * @example 2026-07-03T14:30:00
-             */
-            agreedAt?: string;
-            /**
-             * @description 마이페이지에서 동의 상태 변경 가능 여부
-             * @example false
-             */
-            modifiable?: boolean;
-        };
         ApiResponseAuthenticatedMemberResponse: {
             isSuccess?: boolean;
             code?: string;
@@ -3657,6 +4105,23 @@ export interface components {
             code?: string;
             message?: string;
             data?: components["schemas"]["AdminVerificationDetailResponse"];
+        };
+        FcmRegistrationDeactivateRequest: {
+            /** @description 비활성화할 FCM registration token */
+            registrationToken: string;
+        };
+        ApiResponseFcmRegistrationDeactivateResponse: {
+            isSuccess?: boolean;
+            code?: string;
+            message?: string;
+            data?: components["schemas"]["FcmRegistrationDeactivateResponse"];
+        };
+        FcmRegistrationDeactivateResponse: {
+            /**
+             * @description 실제 비활성화 처리 여부
+             * @example true
+             */
+            deactivated?: boolean;
         };
     };
     responses: never;
@@ -4172,6 +4637,54 @@ export interface operations {
             };
         };
     };
+    register: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FcmRegistrationRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseFcmRegistrationResponse"];
+                };
+            };
+        };
+    };
+    deactivate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FcmRegistrationDeactivateRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseFcmRegistrationDeactivateResponse"];
+                };
+            };
+        };
+    };
     addCartItems: {
         parameters: {
             query?: never;
@@ -4284,6 +4797,94 @@ export interface operations {
             };
         };
     };
+    getProfile: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseOwnerProfileResponse"];
+                };
+            };
+        };
+    };
+    updateProfile: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OwnerProfileUpdateRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseOwnerProfileResponse"];
+                };
+            };
+        };
+    };
+    getNotificationSettings: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseOwnerNotificationSettingsResponse"];
+                };
+            };
+        };
+    };
+    updateNotificationSettings: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OwnerNotificationSettingsUpdateRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseOwnerNotificationSettingsResponse"];
+                };
+            };
+        };
+    };
     rejectOrder: {
         parameters: {
             query?: never;
@@ -4380,7 +4981,7 @@ export interface operations {
             };
         };
     };
-    getNotificationSettings: {
+    getNotificationSettings_1: {
         parameters: {
             query?: never;
             header?: never;
@@ -4400,7 +5001,7 @@ export interface operations {
             };
         };
     };
-    updateNotificationSettings: {
+    updateNotificationSettings_1: {
         parameters: {
             query?: never;
             header?: never;
@@ -4642,6 +5243,8 @@ export interface operations {
     getStoreReviews: {
         parameters: {
             query?: {
+                /** @description 정렬 기준 (LATEST, HIGHEST_RATING, LOWEST_RATING) */
+                sortType?: "LATEST" | "HIGHEST_RATING" | "LOWEST_RATING";
                 /** @description 마지막으로 조회된 리뷰 ID (첫 페이지는 null) */
                 lastReviewId?: number;
                 /** @description 조회할 개수 */
@@ -4781,6 +5384,46 @@ export interface operations {
             };
         };
     };
+    getTopRatedStores: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseRecommendationListResponse"];
+                };
+            };
+        };
+    };
+    getHighDiscountStores: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseRecommendationListResponse"];
+                };
+            };
+        };
+    };
     getStoreReviews_1: {
         parameters: {
             query?: {
@@ -4879,6 +5522,72 @@ export interface operations {
             };
         };
     };
+    getTerms_1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseListCustomerTermsResponse"];
+                };
+            };
+        };
+    };
+    getTermsDetail: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /**
+                 * @description 조회할 약관 ID
+                 * @example 1
+                 */
+                termsId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseCustomerTermsDetailResponse"];
+                };
+            };
+        };
+    };
+    getBusinessProfile: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseOwnerBusinessProfileResponse"];
+                };
+            };
+        };
+    };
     getSummary: {
         parameters: {
             query?: never;
@@ -4942,7 +5651,7 @@ export interface operations {
             };
         };
     };
-    getTerms_1: {
+    getTerms_2: {
         parameters: {
             query?: never;
             header?: never;
@@ -4962,7 +5671,7 @@ export interface operations {
             };
         };
     };
-    getTermsDetail: {
+    getTermsDetail_1: {
         parameters: {
             query?: never;
             header?: never;
@@ -5132,6 +5841,79 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["ApiResponseString"];
+                };
+            };
+        };
+    };
+    withdraw_1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 사업자 회원 탈퇴 성공 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "isSuccess": true,
+                     *       "code": "COMMON200",
+                     *       "message": "요청이 성공했습니다.",
+                     *       "data": {
+                     *         "message": "사업자 회원 탈퇴가 완료되었습니다."
+                     *       }
+                     *     }
+                     */
+                    "application/json": unknown;
+                };
+            };
+            /** @description 인증 정보가 없거나 유효하지 않은 경우 */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "isSuccess": false,
+                     *       "code": "COMMON401",
+                     *       "message": "인증이 필요합니다.",
+                     *       "data": null
+                     *     }
+                     */
+                    "application/json": unknown;
+                };
+            };
+            /** @description 사업자 회원이 아닌 경우 */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "isSuccess": false,
+                     *       "code": "MEMBER4031",
+                     *       "message": "사업자 회원만 이용할 수 있습니다.",
+                     *       "data": null
+                     *     }
+                     */
+                    "application/json": unknown;
+                };
+            };
+            /** @description 진행 중인 주문 또는 정산 대기 건이 있어 탈퇴할 수 없는 경우 */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
                 };
             };
         };

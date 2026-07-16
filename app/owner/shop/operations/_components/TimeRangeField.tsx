@@ -1,4 +1,7 @@
-'use client'; // 피그마 토큰
+'use client';
+
+import { useState, useRef } from 'react';
+import TimeScrollDropdown from './TimeScrollDropdown';
 
 interface TimeRangeFieldProps {
   label: string;
@@ -18,33 +21,75 @@ export default function TimeRangeField({
   onRemove,
 }: TimeRangeFieldProps) {
   const hasTimeRange = timeRange !== null;
+  const [openDropdown, setOpenDropdown] = useState<'start' | 'end' | null>(
+    null
+  );
+  const [dropdownTop, setDropdownTop] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleOpenDropdown = (which: 'start' | 'end') => {
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      setDropdownTop(rect.bottom + 16); 
+    }
+    setOpenDropdown((prev) => (prev === which ? null : which));
+  };
 
   return (
     <div className="flex flex-col justify-center items-start gap-2 font-['Pretendard']">
-      <span className="text-text-subtle text-label2 font-normal">
-        {label}
-      </span>
+      <span className="text-text-subtle text-label2 font-normal">{label}</span>
       <div className="w-full flex justify-start items-start gap-2">
-        <div className="w-72 flex justify-start items-center gap-2">
-          <div className="flex-1 h-11 pl-4 pr-3 py-3 bg-background-default rounded-lg outline outline-1 outline-offset-[-1px] outline-border-strong flex justify-start items-center overflow-hidden">
+        <div className="flex-1 flex justify-start items-center gap-2">
+          <div
+            ref={containerRef}
+            className="relative flex-1 h-11 pl-4 pr-3 py-3 bg-background-default rounded-lg outline outline-1 outline-offset-[-1px] outline-border-strong flex justify-start items-center"
+          >
             <div className="flex-1 flex justify-center items-center gap-6">
               {hasTimeRange ? (
                 <>
-                  <input
-                    type="text"
-                    value={timeRange.startTime}
-                    onChange={(e) => onStartChange(e.target.value)}
-                    className="w-20 text-center text-text-default text-body font-medium font-['Pretendard'] placeholder:font-normal placeholder:text-text-placeholder leading-6 bg-transparent"
-                  />
+                  <div className="relative w-20 text-center">
+                    <button
+                      type="button"
+                      onClick={() => handleOpenDropdown('start')}
+                      className="w-full text-center text-text-default text-body font-medium font-['Pretendard'] leading-6"
+                    >
+                      {timeRange.startTime}
+                    </button>
+                    {openDropdown === 'start' && (
+                      <TimeScrollDropdown
+                        value={timeRange.startTime}
+                        top={dropdownTop}
+                        onApply={(value) => {
+                          onStartChange(value);
+                          setOpenDropdown(null);
+                        }}
+                        onClose={() => setOpenDropdown(null)}
+                      />
+                    )}
+                  </div>
                   <span className="text-text-subtlest text-base font-normal">
                     -
                   </span>
-                  <input
-                    type="text"
-                    value={timeRange.endTime}
-                    onChange={(e) => onEndChange(e.target.value)}
-                    className="w-20 text-center text-text-default text-base font-medium font-['Pretendard'] leading-6 bg-transparent"
-                  />
+                  <div className="relative w-20 text-center">
+                    <button
+                      type="button"
+                      onClick={() => handleOpenDropdown('end')}
+                      className="w-full text-center text-text-default text-base font-medium font-['Pretendard'] leading-6"
+                    >
+                      {timeRange.endTime}
+                    </button>
+                    {openDropdown === 'end' && (
+                      <TimeScrollDropdown
+                        value={timeRange.endTime}
+                        top={dropdownTop}
+                        onApply={(value) => {
+                          onEndChange(value);
+                          setOpenDropdown(null);
+                        }}
+                        onClose={() => setOpenDropdown(null)}
+                      />
+                    )}
+                  </div>
                 </>
               ) : (
                 <>

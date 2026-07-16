@@ -1,7 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
+import { useRouter, useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { fetchClient } from '@/lib/fetchClient';
 import { ApiResponse, StoreDetail as StoreDetailType } from '@/types/store';
@@ -9,8 +8,10 @@ import { ApiResponse, StoreDetail as StoreDetailType } from '@/types/store';
 import BackIcon from '@/public/icons/icon_arrow_Left.svg';
 import CartIconButton from '@/components/cart/CartIconButton';
 
-export default function StoreHeader({ storeId }: { storeId: string }) {
+export default function StoreHeader() {
   const router = useRouter();
+  const params = useParams();
+  const storeId = params.storeId as string;
 
   const { data: store } = useQuery<StoreDetailType>({
     queryKey: ['storeDetail', storeId],
@@ -32,16 +33,14 @@ export default function StoreHeader({ storeId }: { storeId: string }) {
   };
 
   return (
-    <div className="relative w-full shrink-0 h-37 bg-black">
-      {store?.imageUrl && (
-        <Image
-          src={store.imageUrl}
-          alt="스토어 헤더 이미지"
-          fill
-          priority
-          className="object-cover opacity-80"
-        />
-      )}
+    <div
+      className="relative w-full shrink-0 h-37 z-0"
+      style={{
+        background: store?.imageUrl
+          ? `linear-gradient(180deg, rgba(0, 0, 0, 0.67) -11.43%, rgba(0, 0, 0, 0.00) 50%), url(${store.imageUrl}) lightgray 50% / cover no-repeat`
+          : 'lightgray',
+      }}
+    >
 
       <div className="absolute top-0 left-0 z-10 flex w-full pt-10 pb-2.5 px-4 justify-between items-center text-white drop-shadow-md">
         <button

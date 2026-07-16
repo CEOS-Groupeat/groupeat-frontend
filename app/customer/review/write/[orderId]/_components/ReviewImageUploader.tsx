@@ -1,6 +1,8 @@
 'use client';
 
-import { useRef } from 'react';
+import { useState, useRef } from 'react';
+import Lottie from 'lottie-react';
+import loadingAnimation from '@/public/lottie/loading.json';
 import Image from 'next/image';
 import IconAddPhoto from '@/public/icons/icon_add-photo.svg';
 import IconDelete from '@/public/icons/icon_close.svg';
@@ -21,10 +23,12 @@ export default function ReviewImageUploader({
   isUploading,
 }: ReviewImageUploaderProps) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setPreviewUrl(URL.createObjectURL(file));
       onSelect(file);
     }
     e.target.value = ''; // 같은 파일 다시 선택 가능하도록 초기화
@@ -62,9 +66,22 @@ export default function ReviewImageUploader({
           onClick={() => inputRef.current?.click()}
           disabled={isUploading}
           className="size-[90px] bg-background-default rounded-lg outline outline-1 outline-offset-[-1px] outline-border-strong flex items-center justify-center disabled:opacity-80"
+          style={
+            isUploading && previewUrl
+              ? {
+                  backgroundImage: `url(${previewUrl})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                }
+              : undefined
+          }
         >
           {isUploading ? (
-            <span className="text-body text-text-subtlest">업로드 중...</span>
+            <Lottie
+              animationData={loadingAnimation}
+              loop
+              className="w-[84px]"
+            />
           ) : (
             <IconAddPhoto />
           )}

@@ -14,6 +14,7 @@ import OrderRequestHeader from '@/app/customer/order/request/_components/OrderRe
 import DefaultButton from '@/components/ui/ButtonDefault';
 import SectionDivider from '@/components/ui/SectionDivider';
 
+import StatusError from '@/public/icons/icon_status_error.svg';
 import DialogModal from '@/components/ui/DialogModal';
 import AlertIcon from '@/public/icons/icon_modal_alert.svg';
 import ToastError from '@/components/ui/ToastError';
@@ -214,9 +215,7 @@ export default function CustomerOrderRequestPage() {
 
   return (
     <>
-      <main className="w-full min-h-dvh pt-10 pb-52.5 relative">
-        {showError && <ToastError text={errorMessage} />}
-
+      <main className="w-full min-h-dvh pt-10 pb-22 relative">
         <OrderRequestHeader onBack={() => setIsModalOpen(true)} />
 
         <section className="w-full flex flex-col items-start gap-3 mt-4 px-4">
@@ -269,7 +268,16 @@ export default function CustomerOrderRequestPage() {
           />
         </div>
 
-        <div className="fixed w-full bottom-6 px-4 z-dropdown">
+        <div className="fixed left-0 w-full bottom-6 px-4 z-dropdown">
+          {showError && (
+            <div className="absolute left-1/2 -translate-x-1/2 bottom-[calc(100%+24px)] flex w-fit pl-3 pr-4 py-1.5 justify-center items-center gap-1 rounded-full bg-background-toast/52 backdrop-blur-[32px] animate-in fade-in slide-in-from-bottom-5 duration-300">
+              <StatusError className="shrink-0" />
+              <p className="text-label1 text-text-inverse whitespace-nowrap">
+                {errorMessage}
+              </p>
+            </div>
+          )}
+
           <DefaultButton
             onClick={handlePaymentSubmit}
             disabled={createOrderMutation.isPending || !isFormValid}

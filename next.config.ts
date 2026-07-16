@@ -28,8 +28,40 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'groupeat-prod-uploads-025042199776-ap-northeast-2-an.s3.ap-northeast-2.amazonaws.com',
         pathname: '/**',
-      }
+      },
+      {
+        protocol: 'https',
+        hostname: '*.cloudfront.net', // 모든 CloudFront 도메인 허용
+        port: '',
+        pathname: '/**',
+      },
     ],
+  },
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: [
+        {
+          loader: '@svgr/webpack',
+          options: {
+            svgoConfig: {
+              plugins: [
+                {
+                  name: 'preset-default',
+                  params: {
+                    overrides: {
+                      cleanupIds: false, 
+                    },
+                  },
+                },
+                'prefixIds', 
+              ],
+            },
+          },
+        },
+      ],
+    });
+    return config;
   },
 };
 

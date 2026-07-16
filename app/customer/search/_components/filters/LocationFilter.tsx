@@ -6,7 +6,7 @@ import { LOCATION_OPTIONS } from '@/app/customer/search/_constants/location';
 import type { LocationOption } from '@/app/customer/search/_constants/location';
 import type { StoreSearchParams } from '@/app/customer/search/_types/store.type';
 
-type RegionValue = StoreSearchParams['region'];
+type RegionValue = StoreSearchParams['district'];
 
 interface LocationFilterProps {
   value: RegionValue;
@@ -19,6 +19,7 @@ export default function LocationFilter({
   onChange,
   onConfirm,
 }: LocationFilterProps) {
+  const [isEditing, setIsEditing] = useState(value === undefined);
   const [search, setSearch] = useState('');
   const [isFocused, setIsFocused] = useState(false);
 
@@ -30,24 +31,29 @@ export default function LocationFilter({
     onChange(loc.value);
     setSearch('');
     setIsFocused(false);
+    setIsEditing(false);
     onConfirm(); // 선택 즉시 토글 닫힘
   };
 
   // 선택 완료 상태 → bg-background-subtle 박스
-  if (value) {
+  if (value && !isEditing) {
     const selectedLabel = LOCATION_OPTIONS.find(
       (loc) => loc.value === value
     )?.label;
     return (
-      <div className="h-11 pl-4 pr-3 py-2 bg-background-subtle rounded-lg flex items-center mt-3">
+      <button
+        type="button"
+        onClick={() => setIsEditing(true)} 
+        className="w-full h-11 pl-4 pr-3 py-2 bg-background-subtle rounded-lg flex items-center"
+      >
         <span className="text-base text-text-default">{selectedLabel}</span>
-      </div>
+      </button>
     );
   }
 
   // 미선택 상태 → 검색 input + 드롭다운
   return (
-    <div className="flex flex-col gap-3 mt-3">
+    <div className="flex flex-col gap-3">
       <div className="h-11 px-3 py-2 bg-background-default rounded-lg outline outline-1 outline-border-strong flex items-center gap-1.5">
         <SearchIcon className="size-5 text-icon-subtlest shrink-0" />
         <input
@@ -57,6 +63,7 @@ export default function LocationFilter({
           onChange={(e) => setSearch(e.target.value)}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setTimeout(() => setIsFocused(false), 150)}
+          autoFocus
           className="flex-1 bg-transparent text-base text-text-default placeholder:text-text-placeholder outline-none"
         />
       </div>

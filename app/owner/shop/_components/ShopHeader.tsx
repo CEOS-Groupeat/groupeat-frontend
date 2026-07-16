@@ -12,7 +12,7 @@ const tabs = [
 const SECTION_TITLE: Record<string, string> = {
   '/owner/shop/info': '가게 정보',
   '/owner/shop/menus': '메뉴 관리',
-  '/owner/shop/operations': '1. 영업 설정',
+  '/owner/shop/operations': '영업 설정을 진행해주세요',
 };
 
 export default function ShopHeader() {

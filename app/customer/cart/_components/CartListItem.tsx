@@ -63,7 +63,7 @@ export default function CartListItem({
               </span>
               {/* 💡 수정됨: 백엔드에서 주는 문자열 배열을 그대로 줄바꿈으로 렌더링 */}
               {options.length > 0 && (
-                <span className="text-label1 text-text-subtle font-normal whitespace-pre-line">
+                <span className="text-label2 text-text-subtle font-normal whitespace-pre-line">
                   {options.join('\n')}
                 </span>
               )}
@@ -84,7 +84,7 @@ export default function CartListItem({
         </button>
       </div>
 
-      <div className="flex flex-col gap-1 w-60 self-end font-['Pretendard']">
+      <div className="ml-[110px] flex flex-col gap-1 font-['Pretendard']">
         <div className="flex justify-between">
           <span className="text-caption1 font-normal text-text-default">
             수량
@@ -112,16 +112,16 @@ export default function CartListItem({
           </span>
         </div>
 
-        <div className="flex justify-between">
-          <span className="items-center text-label2 font-semibold text-text-default">
+        <div className="flex items-center justify-between">
+          <span className="text-label1 font-semibold text-text-default">
             총 금액
           </span>
-          <div className="flex items-center gap-1">
-            <span className="text-xs font-normal leading-4 text-text-subtlest line-through">
+          <div className="flex items-center gap-1.5">
+            <span className="text-xs font-medium leading-4.5 text-text-subtlest line-through font-['Pretendard']">
               {((item.unitPrice ?? 0) * (item.quantity ?? 0)).toLocaleString()}
               원
             </span>
-            <span className="text-body font-semibold text-text-default">
+            <span className="text-body font-semibold text-text-default font-['Pretendard']">
               {(item.finalPrice ?? 0).toLocaleString()}원
             </span>
           </div>

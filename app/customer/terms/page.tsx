@@ -1,6 +1,6 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { fetchClient } from '@/lib/fetchClient';
 import BackButton from '@/components/ui/BackButton';
@@ -21,26 +21,25 @@ interface ApiResponseTermsList {
   data: TermDTO[];
 }
 
-export default function CommonTermsPage() {
+export default function CustomerTermsPage() {
   const pathname = usePathname();
+  const router = useRouter();
 
   const targetType = pathname?.includes('/owner') ? 'BUSINESS' : 'CUSTOMER';
 
   const { data: terms, isLoading, isError } = useQuery({
-    // 💡 4. 쿼리 키에 targetType을 넣어 캐시를 안전하게 분리
     queryKey: ['terms', targetType],
     queryFn: async () => {
       const res = await fetchClient<ApiResponseTermsList>(
-        `/api/terms?targetType=${targetType}`
+        `/api/customer/mypage/terms`
       );
       if (!res.isSuccess) throw new Error(res.message);
       return res.data;
     },
   });
 
-  const handleTermClick = (termsId: number, title: string) => {
-    // TODO: 인터랙션 디자인 확정 시 상세 페이지 라우팅 또는 모달 띄우기 로직 추가
-    alert(`[${title}] 상세 보기 로직 추가 예정`);
+  const handleTermClick = (termsId: number) => {
+    router.push(`/customer/terms/${termsId}`);
   };
 
   if (isLoading) {
@@ -76,7 +75,7 @@ export default function CommonTermsPage() {
           {terms.map((t) => (
             <div
               key={t.termsId}
-              onClick={() => handleTermClick(t.termsId, t.title)}
+              onClick={() => handleTermClick(t.termsId)}
               className="flex h-11 pb-3 flex-col justify-center items-start self-stretch border-b border-border-subtle cursor-pointer hover:bg-background-subtle transition-colors"
             >
               <div className="flex py-3 pr-1 justify-between items-center flex-1 self-stretch">

@@ -23,7 +23,7 @@ export default function GenderSelector({
           key={option.value}
           type="button"
           onClick={() => onChange(option.value)}
-          className={`w-[165.5px] h-11 px-2.5 py-3 rounded-lg outline outline-1 outline-offset-[-1px] flex justify-center items-center ${
+          className={`flex-1 h-11 px-2.5 py-3 rounded-lg outline outline-1 outline-offset-[-1px] flex justify-center items-center ${
             value === option.value
               ? 'outline-brand-background bg-brand-background font-semibold text-brand-default'
               : 'outline-border-strong font-medium text-text-default'

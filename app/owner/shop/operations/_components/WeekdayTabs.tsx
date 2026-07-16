@@ -26,15 +26,11 @@ export default function WeekdayTabs({
   onSelectDay,
 }: WeekdayTabsProps) {
   return (
-    <div className="self-stretch flex flex-col justify-start items-start gap-3 font-['Pretendard'] pb-4">
-      <div className="self-stretch flex flex-col justify-center items-start gap-1">
-        <span className="text-center text-text-default text-body font-medium">
-          요일별 주문 관리
+    <div className="self-stretch flex flex-col justify-start items-start gap-4 font-['Pretendard'] pb-4">
+        <span className="text-text-default text-headline3 font-semibold">
+          요일별 주문 관리를 설정해주세요
         </span>
-        <span className="text-center text-text-subtlest text-caption1 font-normal">
-          요일별로 주문 가능 여부와 영업시간을 설정해 주세요
-        </span>
-      </div>
+
       <div className="self-stretch flex justify-start items-center gap-1">
         {WEEKDAYS.map((day) => (
           <WeekdayTabButton

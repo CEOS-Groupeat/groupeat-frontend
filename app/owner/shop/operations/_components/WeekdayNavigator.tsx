@@ -40,7 +40,7 @@ export default function WeekdayNavigator({
       <button type="button" onClick={goToPrevious} aria-label="이전 요일">
         <ChevronIcon className="size-4 pl-2 rotate-180 text-text-subtlest" />
       </button>
-      <span className="text-center text-text-default text-headline3 font-semibold">
+      <span className="text-text-default text-headline3 font-semibold">
         {currentLabel}
       </span>
       <button type="button" onClick={goToNext} aria-label="다음 요일">

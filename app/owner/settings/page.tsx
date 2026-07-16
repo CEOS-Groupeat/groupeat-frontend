@@ -1,14 +1,35 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import SettingOption from '@/app/owner/settings/_components/SettingOption';
 import OwnerNavbar from '@/components/owner/OwnerNavbar';
 import ProfileIcon from '@/public/icons/icon_profile.svg';
 import IllustClient from '@/public/illust/illust_Client.svg';
 import DialogModal from '@/components/ui/DialogModal';
 import { fetchClient } from '@/lib/fetchClient';
+import SuccessToast from '@/components/ui/SuccessToast';
+
+// 승연: useSearchParams를 쓰는 부분만 별도 컴포넌트로 분리하여 Suspense로 감쌈.
+function ProfileUpdateToast() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [showToast, setShowToast] = useState(
+    () => searchParams.get('toast') === 'profile-updated'
+  );
+
+  useEffect(() => {
+    if (showToast) {
+      router.replace('/owner/settings');
+      const timer = setTimeout(() => setShowToast(false), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [showToast, router]);
+
+  if (!showToast) return null;
+  return <SuccessToast text="수정이 완료되었습니다" />;
+}
 
 export default function OwnerMyPage() {
   const router = useRouter();
@@ -58,7 +79,7 @@ export default function OwnerMyPage() {
             </section>
 
             <section className="flex pb-8 flex-col items-start gap-3 self-stretch w-full">
-              <Link href="/profile" className="w-full">
+              <Link href="/owner/profile" className="w-full">
                 <SettingOption text="프로필" icon="profile" />
               </Link>
               <Link href="/owner/info" className="w-full">
@@ -103,6 +124,11 @@ export default function OwnerMyPage() {
           }}
         />
       )}
+
+      {/* 승연: my-프로필 페이지 토스트 코드입니다. */}
+      <Suspense fallback={null}>
+        <ProfileUpdateToast />
+      </Suspense>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 'use client';
 
 interface OrderPriceProps {
-  perPersonAmount: number; // 💡 1인당 금액 prop 추가
+  perPersonAmount: number;
   originalPrice: number;
   discountAmount: number;
   finalPrice: number;
@@ -21,7 +21,7 @@ export default function OrderPrice({
         <div className="flex flex-col items-start gap-2 self-stretch">
           <div className="flex justify-between items-center self-stretch">
             <p className="text-text-default text-label2">1인당 금액</p>
-            <p className="text-text-default text-label2">
+            <p className="text-text-default text-label1 font-semibold">
               {perPersonAmount.toLocaleString()}원
             </p>
           </div>
