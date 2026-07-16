@@ -36,7 +36,9 @@ function SearchContent() {
   } = useSearchStore();
   const { search, data: keywordData, isLoading } = useSearchStores();
 
-  const [sort, setSort] = useState<SortValue>('NONE');
+  const [sort, setSort] = useState<SortValue>(
+    () => (searchParams.get('sortType') as SortValue) ?? 'NONE'
+  );
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filterKey, setFilterKey] = useState(0);
   const [searchInput, setSearchInput] = useState(keyword);
