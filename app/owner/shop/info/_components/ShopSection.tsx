@@ -16,10 +16,6 @@ import { useSaveShopInfo } from '../_hooks/useSaveShopInfo';
 import { useShopImageUpload } from '../_hooks/useShopImageUpload';
 import { isValidPhoneNumber } from '../_utils/validatePhoneNumber';
 import type { ShopInfoData } from '../_types/shop.type';
-import {
-  extractDistrict,
-  extractNeighborhood,
-} from '../_utils/extractDistrict';
 import { getDistrictFromKakao } from '../_utils/getDistrictFromKakao';
 
 interface ShopInfoFormProps {
