@@ -3,7 +3,7 @@ import { HomeStore } from '../_types/recommendation.type';
 
 export const recommendedStores: HomeStore[] = [
   {
-    id: 7,
+    id: 1,
     name: '데이브런치',
     category: '샌드위치&김밥',
     priceRange: '7,000원 ~ 12,000원/개',
@@ -13,7 +13,7 @@ export const recommendedStores: HomeStore[] = [
     image: '/images/day-brunch.png',
   },
   {
-    id: 8,
+    id: 2,
     name: '마이엑스',
     category: '샌드위치&김밥',
     priceRange: '11,000원 ~ 20,000원/개',
@@ -23,7 +23,7 @@ export const recommendedStores: HomeStore[] = [
     image: '/images/my-x.png',
   },
   {
-    id: 9,
+    id: 3,
     name: '하울즈',
     category: '샌드위치&김밥',
     priceRange: '7,000원 ~ 12,000원/개',
