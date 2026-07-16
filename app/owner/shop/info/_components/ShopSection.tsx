@@ -20,6 +20,7 @@ import {
   extractDistrict,
   extractNeighborhood,
 } from '../_utils/extractDistrict';
+import { getDistrictFromKakao } from '../_utils/getDistrictFromKakao';
 
 interface ShopInfoFormProps {
   shopInfo: ShopInfoData | null;
@@ -110,19 +111,18 @@ function ShopInfoForm({ shopInfo }: ShopInfoFormProps) {
       values.discountRate.trim().length > 0;
 
     try {
+      const { district, neighborhood } = await getDistrictFromKakao(
+        values.address
+      );
+      console.log('카카오 응답:', { district, neighborhood }); // 임시 로그
+
       await saveShopInfo({
         imageUrl: values.imageUrl ?? '',
         storeName: values.storeName,
         location: {
           address: values.address,
-          district:
-            extractDistrict(values.address) ||
-            shopInfo?.location?.district ||
-            '',
-          neighborhood:
-            extractNeighborhood(values.address) ||
-            shopInfo?.location?.neighborhood ||
-            '',
+          district: district || shopInfo?.location?.district || '',
+          neighborhood: neighborhood || shopInfo?.location?.neighborhood || '',
           detailAddress: shopInfo?.location?.detailAddress ?? '',
         },
         category: values.category!,
