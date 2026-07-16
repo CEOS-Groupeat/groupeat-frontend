@@ -30,7 +30,7 @@ export default function StoreCustomDayButton({
         {day.date.getDate()}
       </button>
       {isToday && (
-        <span className="absolute bottom-0 text-[9px] text-brand-default leading-4">
+        <span className="absolute bottom-0 text-[9px] text-brand-default">
           오늘
         </span>
       )}

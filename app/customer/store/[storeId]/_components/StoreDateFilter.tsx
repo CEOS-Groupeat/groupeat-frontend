@@ -3,22 +3,12 @@
 import { useRef, useState, useMemo } from 'react';
 import { DayPicker } from 'react-day-picker';
 import { ko } from 'date-fns/locale';
-import { AM_SLOTS, PM_SLOTS } from '@/app/customer/search/_constants/timeSlots';
 import StoreCustomDayButton from '@/app/customer/store/[storeId]/_components/StoreCustomDayButton';
 
 import PrevMonth from '@/public/icons/icon_calendarButton_left.svg';
 import NextMonth from '@/public/icons/icon_calendarButton_right.svg';
 import AlertIcon from '@/public/icons/icon_alert.svg';
 
-interface DateFilterProps {
-  date: string | undefined;
-  times: string[];
-  minOrderDays?: number;
-  onDateChange: (date: string) => void;
-  onTimeChange: (times: string[]) => void;
-}
-
-// ─── 포맷 헬퍼 ───────────────────────────────────────
 export function formatPickupDate(dateStr: string): string {
   const d = new Date(dateStr);
   return `${d.getMonth() + 1}월 ${d.getDate()}일`;
@@ -31,10 +21,11 @@ export function formatPickupTime(time: string): string {
   return `${period} ${hour}:${String(m).padStart(2, '0')}`;
 }
 
-// ─── Props ───────────────────────────────────────────
 interface DateFilterProps {
   date: string | undefined;
   times: string[];
+  availableTimes?: string[];
+  minOrderDays?: number;
   onDateChange: (date: string) => void;
   onTimeChange: (times: string[]) => void;
 }
@@ -42,6 +33,7 @@ interface DateFilterProps {
 export default function StoreDateFilter({
   date,
   times,
+  availableTimes = [],
   minOrderDays,
   onDateChange,
   onTimeChange,
@@ -54,14 +46,12 @@ export default function StoreDateFilter({
     return d;
   }, []);
 
-  // ✅ 월 탐색 상태 직접 관리 → 화살표 가운데 정렬 가능
   const [viewMonth, setViewMonth] = useState<Date>(
     () => new Date(today.getFullYear(), today.getMonth(), 1)
   );
 
   const selectedDate = date ? new Date(date) : undefined;
 
-  // ── 이전 달 버튼 비활성 (현재 달 이전 불가) ──
   const isPrevDisabled =
     viewMonth.getFullYear() === today.getFullYear() &&
     viewMonth.getMonth() === today.getMonth();
@@ -71,7 +61,6 @@ export default function StoreDateFilter({
   const goNextMonth = () =>
     setViewMonth((p) => new Date(p.getFullYear(), p.getMonth() + 1, 1));
 
-  // ── 날짜 선택 → 시간 섹션으로 스크롤 ──
   const handleDaySelect = (day: Date | undefined) => {
     if (!day) return;
     const yyyy = day.getFullYear();
@@ -84,7 +73,6 @@ export default function StoreDateFilter({
     }, 100);
   };
 
-  // ── 오늘이면 현재 시간 이전 슬롯 비활성 ──
   const isSlotDisabled = (slot: string): boolean => {
     if (!date) return false;
     const selected = new Date(date);
@@ -96,7 +84,6 @@ export default function StoreDateFilter({
     );
   };
 
-  // ✅ grid grid-cols-4 로 항상 4개 고정
   const renderSlot = (slot: string) => {
     const disabled = isSlotDisabled(slot);
     const active = times.includes(slot);
@@ -127,6 +114,20 @@ export default function StoreDateFilter({
       </button>
     );
   };
+
+  const amSlots = useMemo(() => {
+    return availableTimes.filter((time) => {
+      const [h] = time.split(':').map(Number);
+      return h < 12;
+    });
+  }, [availableTimes]);
+
+  const pmSlots = useMemo(() => {
+    return availableTimes.filter((time) => {
+      const [h] = time.split(':').map(Number);
+      return h >= 12;
+    });
+  }, [availableTimes]);
 
   return (
     <div className="flex flex-col gap-6">
@@ -161,7 +162,6 @@ export default function StoreDateFilter({
           </button>
         </div>
 
-        {/* 캘린더 그리드 */}
         <div className="w-full px-3 pt-3 pb-5 bg-background-default rounded-2xl outline outline-1 outline-border-default">
           <DayPicker
             mode="single"
@@ -181,7 +181,7 @@ export default function StoreDateFilter({
               root: 'w-full',
               months: 'w-full',
               month: 'w-full',
-              month_caption: 'hidden', // ✅ 내장 캡션 숨김 (커스텀 nav에서 처리)
+              month_caption: 'hidden',
               month_grid: 'w-full',
               weekdays: 'flex',
               weekday: 'flex-1 text-center text-xs text-text-subtlest py-1',
@@ -210,19 +210,33 @@ export default function StoreDateFilter({
           ref={timeRef}
           className="flex flex-col gap-3 animate-in fade-in slide-in-from-top-2 duration-300"
         >
-          <div className="flex flex-col gap-1.5">
-            <span className="text-sm font-medium text-text-default">오전</span>
-            <div className="grid grid-cols-4 gap-2">
-              {AM_SLOTS.map(renderSlot)}
+          {amSlots.length > 0 && (
+            <div className="flex flex-col gap-1.5">
+              <span className="text-sm font-medium text-text-default">
+                오전
+              </span>
+              <div className="grid grid-cols-4 gap-2">
+                {amSlots.map(renderSlot)}
+              </div>
             </div>
-          </div>
+          )}
 
-          <div className="flex flex-col gap-1.5">
-            <span className="text-sm font-medium text-text-default">오후</span>
-            <div className="grid grid-cols-4 gap-2">
-              {PM_SLOTS.map(renderSlot)}
+          {pmSlots.length > 0 && (
+            <div className="flex flex-col gap-1.5">
+              <span className="text-sm font-medium text-text-default">
+                오후
+              </span>
+              <div className="grid grid-cols-4 gap-2">
+                {pmSlots.map(renderSlot)}
+              </div>
             </div>
-          </div>
+          )}
+
+          {amSlots.length === 0 && pmSlots.length === 0 && (
+            <div className="py-4 text-center text-sm text-text-subtlest bg-background-subtle rounded-lg">
+              선택 가능한 픽업 시간이 없습니다.
+            </div>
+          )}
         </div>
       )}
     </div>

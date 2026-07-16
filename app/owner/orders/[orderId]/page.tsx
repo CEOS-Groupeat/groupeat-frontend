@@ -17,24 +17,35 @@ type ApiResponseOrderDetailResponse =
 type OrderDetailData =
   components['schemas']['OrderDetailResponse_OrderDetailDTO'];
 
-const formatOrderDate = (dateStr?: string) => {
-  if (!dateStr) return '';
+const formatOrderDateTime = (dateStr?: string, timeStr?: string) => {
+  if (!dateStr || !timeStr) return '일시 미상';
+
   const parts = dateStr.split('-');
   if (parts.length < 3) return dateStr;
-  return `${parseInt(parts[1], 10)}월 ${parseInt(parts[2], 10)}일`;
-};
+  const month = parseInt(parts[1], 10);
+  const day = parseInt(parts[2], 10);
 
-const formatOrderTime = (timeStr?: string) => {
-  if (!timeStr) return '';
-  const parts = timeStr.split(':');
-  if (parts.length < 2) return timeStr;
+  const [hourStr, minStr] = timeStr.split(':');
+  if (!hourStr || !minStr) return '일시 미상';
 
-  const hour = parseInt(parts[0], 10);
-  const minute = parts[1];
-  const ampm = hour >= 12 ? '오후' : '오전';
-  const displayHour = hour > 12 ? hour - 12 : hour === 0 ? 12 : hour;
+  const hour = parseInt(hourStr, 10);
+  const minute = parseInt(minStr, 10);
 
-  return `${ampm} ${displayHour}시 ${minute}분`;
+  const period = hour < 12 ? '오전' : '오후';
+  const displayHour = hour % 12 === 0 ? 12 : hour % 12;
+  const minuteText = minute > 0 ? ` ${minute}분` : '';
+
+  return (
+    <div className="flex items-center gap-1">
+      <p className="text-text-default text-body">
+        {month}월 {day}일
+      </p>
+      <Ellipse className="w-1 h-1 text-text-subtlest shrink-0" />
+      <p className="text-text-default text-body">
+        {period} {displayHour}시{minuteText}
+      </p>
+    </div>
+  );
 };
 
 export default function OwnerOrderDetail() {
@@ -77,12 +88,7 @@ export default function OwnerOrderDetail() {
     );
   }
 
-  const {
-    storeName,
-    ordererInfo,
-    orderMenus,
-    paymentInfo,
-  } = orderDetail;
+  const { storeName, ordererInfo, orderMenus, paymentInfo } = orderDetail;
 
   const mappedStoreCart = {
     storeId: 0,
@@ -101,7 +107,7 @@ export default function OwnerOrderDetail() {
   };
 
   return (
-    <div className="w-full flex pb-9 flex-col items-center gap-6 bg-background-default">
+    <div className="w-full flex pb-9 flex-col items-center gap-5 bg-background-default">
       <header className="w-full flex pt-10 items-start gap-2.5 self-stretch">
         <div className="w-full flex p-4 items-center justify-between self-stretch">
           <BackButton />
@@ -113,7 +119,7 @@ export default function OwnerOrderDetail() {
       </header>
 
       <section className="w-full flex flex-col pb-1 items-start self-stretch px-4">
-        <h1 className="text-text-default text-headline3 font-semibold pb-2">
+        <h1 className="text-text-default text-headline3 font-semibold pb-3">
           주문자 정보
         </h1>
         <div className="flex flex-col items-start gap-2.75 self-stretch">
@@ -139,15 +145,10 @@ export default function OwnerOrderDetail() {
             <p className="text-text-subtlest text-caption1 font-medium">
               주문 일자
             </p>
-            <div className="flex items-center gap-1">
-              <p className="text-text-default text-body">
-                {formatOrderDate(ordererInfo?.orderDate)}
-              </p>
-              <Ellipse />
-              <p className="text-text-default text-body">
-                {formatOrderTime(ordererInfo?.orderTime)}
-              </p>
-            </div>
+            {formatOrderDateTime(
+              ordererInfo?.orderDate,
+              ordererInfo?.orderTime
+            )}
           </div>
 
           <div className="flex flex-col items-start gap-0.5 self-stretch">
@@ -178,7 +179,8 @@ export default function OwnerOrderDetail() {
             주문 정보
           </h1>
           <OrderCard
-            storeCart={mappedStoreCart}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            storeCart={mappedStoreCart as any}
             hidePickupInfo={true}
             noBorder={true}
           />
@@ -194,7 +196,7 @@ export default function OwnerOrderDetail() {
           </h1>
           <div className="flex flex-col items-start gap-2 self-stretch w-full">
             <div className="flex justify-between items-center self-stretch">
-              <p className="text-text-subtlest text-label1">결제 방식</p>
+              <p className="text-text-default text-label1">결제 방식</p>
               <p className="text-text-default text-label1">
                 {paymentInfo?.paymentMethod === 'PREPAID'
                   ? '선결제'
@@ -202,7 +204,7 @@ export default function OwnerOrderDetail() {
               </p>
             </div>
             <div className="flex justify-between items-center self-stretch">
-              <p className="text-text-subtlest text-label1">결제 수단</p>
+              <p className="text-text-default text-label1">결제 수단</p>
               <p className="text-text-default text-label1">
                 {paymentInfo?.paymentMeans === 'TOSS'
                   ? '토스페이'
@@ -210,7 +212,7 @@ export default function OwnerOrderDetail() {
               </p>
             </div>
             <div className="flex justify-between items-center self-stretch">
-              <p className="text-text-subtlest text-label1">총 금액</p>
+              <p className="text-text-default text-label1">총 금액</p>
               <p className="text-text-default text-label1 font-semibold">
                 {paymentInfo?.finalPaymentAmount?.toLocaleString() ?? 0}원
               </p>

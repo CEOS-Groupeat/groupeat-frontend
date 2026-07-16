@@ -6,7 +6,7 @@ interface AlertCardProps {
 }
 export default function AlertCard({ pendingCount }: AlertCardProps) {
   return (
-    <div className="w-full flex h-18.5 p-4 items-center gap-2 self-stretch border border-px rounded-lg border-brand-default bg-brand-background shadow-[6px_6px_54px_0px_rgba(0,0,0,0.05)]">
+    <div className="w-full flex h-18.5 p-4 items-center gap-2 self-stretch border border-px rounded-lg border-brand-default bg-brand-background shadow-[0_0_6.4px_0_rgba(244,92,51,0.2)]">
       <div className="flex items-center gap-2 flex-1">
         <div className="flex flex-col items-start gap-0.5">
           <p className="text-body text-brand-default font-bold">

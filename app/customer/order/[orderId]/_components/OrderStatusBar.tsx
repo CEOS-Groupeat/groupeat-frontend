@@ -31,6 +31,23 @@ export default function OrderStatusBar({
     }
   };
 
+  const getFormattedTime = (time: string) => {
+    if (!time) return '';
+    
+    // "14:30" 형태의 문자열 분해
+    const [hourStr, minStr] = time.split(':');
+    if (!hourStr || !minStr) return time;
+
+    const hour = parseInt(hourStr, 10);
+    const minute = parseInt(minStr, 10);
+
+    const period = hour < 12 ? '오전' : '오후';
+    const displayHour = hour % 12 === 0 ? 12 : hour % 12;
+    const minuteText = minute > 0 ? ` ${minute}분` : '';
+
+    return `${period} ${displayHour}시${minuteText}`;
+  };
+
   return (
     <div className="flex flex-col items-start w-full gap-3">
       <div className="flex flex-col items-start gap-1">
@@ -45,8 +62,12 @@ export default function OrderStatusBar({
 
         <div className="flex items-center gap-1 mt-0.5">
           <p className="text-text-subtlest text-label1">{pickupDate}</p>
-          <Ellipse className="w-1 h-1 text-text-subtlest" />
-          <p className="text-text-subtlest text-label1">{pickupTime}</p>
+          
+          <Ellipse className="w-1 h-1 text-text-subtlest shrink-0" />
+          
+          <p className="text-text-subtlest text-label1">
+            {getFormattedTime(pickupTime)}
+          </p>
         </div>
       </div>
 

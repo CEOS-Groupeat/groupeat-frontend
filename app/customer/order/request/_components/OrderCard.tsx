@@ -38,8 +38,8 @@ export default function OrderCard({
   storeCart,
   pickupDate,
   pickupTime,
-  hidePickupInfo = false, // 기본값 false
-  noBorder = false, // 기본값 false
+  hidePickupInfo = false,
+  noBorder = false,
 }: OrderCardProps) {
   if (!storeCart || !storeCart.cartItems) return null;
 
@@ -50,7 +50,7 @@ export default function OrderCard({
       }`}
     >
       {!hidePickupInfo && (
-        <div className="flex pb-3 flex-col items-start gap-0.5 self-stretch">
+        <div className="flex flex-col items-start gap-0.5 self-stretch">
           <p className="text-text-default text-body font-semibold">
             {storeCart.storeName}
           </p>
@@ -67,7 +67,7 @@ export default function OrderCard({
       )}
 
       <div
-        className={`flex flex-col items-start gap-6 self-stretch ${hidePickupInfo ? '' : 'pt-2'}`}
+        className={`flex flex-col items-start gap-5 self-stretch ${hidePickupInfo ? '' : 'mt-3'}`}
       >
         {storeCart.cartItems.map((item) => {
           return (
@@ -96,12 +96,12 @@ export default function OrderCard({
                   </p>
 
                   {item.optionNames && item.optionNames.length > 0 && (
-                    <p className="self-stretch text-text-subtle text-caption1 line-clamp-2">
-                      {item.optionNames.join(', ')}
+                    <p className="self-stretch text-text-subtle text-caption1 leading-4.5 whitespace-pre-line line-clamp-2">
+                      {item.optionNames.join('\n')}
                     </p>
                   )}
 
-                  <div className="flex flex-col items-start self-stretch mt-1.5 gap-1">
+                  <div className="flex flex-col items-start self-stretch mt-2">
                     <div className="flex justify-between items-center self-stretch">
                       <p className="text-text-default text-caption1">수량</p>
                       <p className="text-text-default text-label1 font-semibold">
@@ -110,7 +110,7 @@ export default function OrderCard({
                     </div>
                     <div className="flex justify-between items-center self-stretch">
                       <p className="text-text-default text-caption1">가격</p>
-                      <div className="flex items-center gap-1">
+                      <div className="flex items-center gap-1.5">
                         {item.discountRate !== undefined &&
                           item.discountRate > 0 && (
                             <p className="text-brand-default text-caption2 font-medium">

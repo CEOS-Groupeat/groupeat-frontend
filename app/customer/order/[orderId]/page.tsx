@@ -39,6 +39,21 @@ const formatTime = (timeStr?: string) => {
   return timeStr.slice(0, 5);
 };
 
+const formatKoreanTime = (timeStr?: string) => {
+  if (!timeStr) return '';
+  const [hourStr, minStr] = timeStr.split(':');
+  if (!hourStr || !minStr) return timeStr; // 예외 처리
+
+  const hour = parseInt(hourStr, 10);
+  const minute = parseInt(minStr, 10);
+
+  const period = hour < 12 ? '오전' : '오후';
+  const displayHour = hour % 12 === 0 ? 12 : hour % 12;
+  const minuteText = minute > 0 ? ` ${minute}분` : '';
+
+  return `${period} ${displayHour}시${minuteText}`;
+};
+
 const getStepFromStatus = (status?: string) => {
   switch (status) {
     case 'PENDING':
@@ -222,6 +237,8 @@ export default function CustomerOrderDetail() {
             storeCart={mappedStoreCart as any}
             pickupDate={formattedPickupDate}
             pickupTime={formattedPickupTime}
+            hidePickupInfo
+            noBorder
           />
         </div>
       </section>
@@ -235,7 +252,7 @@ export default function CustomerOrderDetail() {
           </h1>
           <div className="flex flex-col items-start gap-2 self-stretch">
             <div className="flex justify-between items-center self-stretch">
-              <p className="text-text-subtlest text-label1">결제 방식</p>
+              <p className="text-text-default text-label1">결제 방식</p>
               <p className="text-text-default text-label1">
                 {paymentInfo?.paymentMethod === 'PREPAID'
                   ? '선결제'
@@ -243,7 +260,7 @@ export default function CustomerOrderDetail() {
               </p>
             </div>
             <div className="flex justify-between items-center self-stretch">
-              <p className="text-text-subtlest text-label1">결제 수단</p>
+              <p className="text-text-default text-label1">결제 수단</p>
               <p className="text-text-default text-label1">
                 {paymentInfo?.paymentMeans === 'TOSS'
                   ? '토스페이'
@@ -251,7 +268,7 @@ export default function CustomerOrderDetail() {
               </p>
             </div>
             <div className="flex justify-between items-center self-stretch">
-              <p className="text-text-subtlest text-label1">총 금액</p>
+              <p className="text-text-default text-label1">총 금액</p>
               <p className="text-text-default text-label1 font-semibold">
                 {paymentInfo?.finalPaymentAmount?.toLocaleString() ?? 0}원
               </p>
@@ -271,7 +288,7 @@ export default function CustomerOrderDetail() {
       <SectionDivider className="w-full h-1.5" />
 
       <section className="flex flex-col items-start self-stretch px-4">
-        <h1 className="text-text-default text-headline3 font-semibold pb-2">
+        <h1 className="text-text-default text-headline3 font-semibold pb-3">
           주문자 정보
         </h1>
         <div className="flex flex-col items-start gap-2.75 self-stretch">
@@ -303,7 +320,7 @@ export default function CustomerOrderDetail() {
               </p>
               <Ellipse />
               <p className="text-text-default text-body">
-                {formattedOrderTime}
+                {formatKoreanTime(ordererInfo?.orderTime)}
               </p>
             </div>
           </div>

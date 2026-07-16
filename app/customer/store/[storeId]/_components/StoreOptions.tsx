@@ -17,18 +17,56 @@ import FloatingCartBar from '@/app/customer/store/[storeId]/_components/Floating
 import Image from 'next/image';
 import { useStoreDetail } from '@/app/customer/store/_hooks/useStoreDetail';
 
-{
-  /* Todo: 픽업 시간이 오픈타임 ~ 클로즈타임(즉 영업시간) 사이로 둘 뿐만 아니라, 
-  휴게 시간을 고려하여 설계가 되면 그 때 완전히 가능한 시간을 캘린더에 필터링하여 클릭 가능여부 설정하기 
+// 💡 1. 픽업 가능 시간 목록을 생성하는 유틸리티 함수 추가
+const generateAvailableTimes = (
+  openTime?: string,
+  closeTime?: string
+): string[] => {
+  if (!openTime || !closeTime) return [];
 
-  현재 이미지 최적화를 위해 Image(next/Image) 사용 중인데, 메뉴 이미지가 없거나 가게 이미지가 없다면 렌더링이 터져버립니다.
-  방어하려면 Image를 img로 대체하고 className에 w-22.5 h-22.5 옵션 넣어주면 됩니다
-  */
-}
+  // "10:00:00" -> 10, 0
+  const parseTime = (timeStr: string) => {
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    return { hours, minutes };
+  };
+
+  const open = parseTime(openTime);
+  const close = parseTime(closeTime);
+  const times: string[] = [];
+
+  let currentHours = open.hours;
+  let currentMinutes = open.minutes;
+
+  // 마감 시간과 같거나 작을 때까지 30분 단위로 시간 생성
+  while (
+    currentHours < close.hours ||
+    (currentHours === close.hours && currentMinutes <= close.minutes)
+  ) {
+    const formattedHours = currentHours.toString().padStart(2, '0');
+    const formattedMinutes = currentMinutes.toString().padStart(2, '0');
+
+    // "HH:MM" 형식으로 배열에 추가 (서버에 넘겨줄 형식과 동일하게 맞춤)
+    times.push(`${formattedHours}:${formattedMinutes}`);
+
+    currentMinutes += 30;
+    if (currentMinutes >= 60) {
+      currentHours += 1;
+      currentMinutes = 0;
+    }
+  }
+
+  return times;
+};
+
 export default function StoreOptions() {
   const params = useParams();
   const storeId = params.storeId as string;
   const { data: store } = useStoreDetail(storeId);
+
+  const availableTimes = generateAvailableTimes(
+    store?.pickupOpenTime,
+    store?.pickupCloseTime
+  );
 
   const storeCarts = useCartStore((state) => state.storeCarts);
   const globalPickupDate = useCartStore((state) => state.pickupDate);
@@ -59,8 +97,15 @@ export default function StoreOptions() {
     const period = hour < 12 ? '오전' : '오후';
     const displayHour = hour % 12 === 0 ? 12 : hour % 12;
 
-    // 4. 최종 조합 ('N월 N일 오전/오후 N:NN')
     return `${month}월 ${day}일 ${period} ${displayHour}:${minuteStr}`;
+  })();
+
+  const hasMenuInCart = (() => {
+    const safeStoreCarts = Array.isArray(storeCarts) ? storeCarts : [];
+    const currentStoreCart = safeStoreCarts.find(
+      (cart) => cart.storeId?.toString() === storeId
+    );
+    return (currentStoreCart?.cartItems?.length || 0) > 0;
   })();
 
   const { data: menuData, isLoading: isMenuLoading } = useQuery<Menu[]>({
@@ -159,6 +204,7 @@ export default function StoreOptions() {
                   minOrderDays={store?.minOrderDays ?? 0}
                   onDateChange={handleDateChange}
                   onTimeChange={handleTimeChange}
+                  availableTimes={availableTimes}
                 />
 
                 {activeDate && (
@@ -192,15 +238,21 @@ export default function StoreOptions() {
                 isMenuExpanded ? '' : 'pb-3 border-b border-border-subtle'
               }`}
             >
-              <div className="flex items-center gap-2">
-                <span className="text-body font-semibold text-text-default">
+              <div className="flex items-start gap-1">
+                <span className="text-base font-semibold text-text-default flex items-center gap-1">
                   메뉴
                 </span>
+                <div className="flex pr-1 pt-0.5 items-center gap-2.5">
+                  {hasMenuInCart && !isMenuExpanded && (
+                    <div className="w-1 h-1 rounded-full bg-brand-default" />
+                  )}
+                </div>
               </div>
+
               {isMenuExpanded ? (
-                <UpArrow className="text-icon-default size-5" />
+                <UpArrow className="text-icon-default size-5 shrink-0" />
               ) : (
-                <DownArrow className="text-icon-subtlest size-5" />
+                <DownArrow className="text-icon-subtlest size-5 shrink-0" />
               )}
             </button>
 
@@ -258,7 +310,7 @@ export default function StoreOptions() {
                               onClick={() => handleMenuSelect(menu)}
                               className="z-10 w-6.5 h-6.5 bg-white rounded-full flex justify-center items-center shadow-sm aspect-square"
                             >
-                              <AddIcon className="w-[17.33px] h-[17.33px] text-icon-default"/>
+                              <AddIcon className="w-[17.33px] h-[17.33px] text-icon-default" />
                             </button>
                           )}
                         </div>
