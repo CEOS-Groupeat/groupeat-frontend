@@ -3,14 +3,18 @@
 import HomeHero from './_components/HomeHero';
 import FiltersContainer from './_components/FiltersContainer';
 import StoreSection from './_components/StoreSection';
-import { discountStores, recommendedStores } from './_mocks/stores.mock';
+import { recommendedStores } from './_mocks/stores.mock';
 import CustomerNavbar from '@/components/ui/CustomerNavbar';
 import { useTopRatedStores } from './_hooks/useTopRatedStores';
+import { useHighDiscountStores } from './_hooks/useHighDiscountStores';
 import { toHomeStore } from './_types/recommendation.type';
 
 export default function CustomerHomePage() {
   const { data: topRatedData } = useTopRatedStores();
+  const { data: highDiscountData } = useHighDiscountStores();
+
   const popularStores = (topRatedData?.stores ?? []).map(toHomeStore);
+  const discountStores = (highDiscountData?.stores ?? []).map(toHomeStore);
 
   const section1 = [
     {
