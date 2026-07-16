@@ -19,7 +19,6 @@ export async function GET(request: NextRequest) {
     );
 
     const data = await res.json();
-    console.log('카카오 원본 응답:', JSON.stringify(data, null, 2)); // 임시 로그
 
     const document = data.documents?.[0];
     const district = document?.address?.region_2depth_name ?? '';

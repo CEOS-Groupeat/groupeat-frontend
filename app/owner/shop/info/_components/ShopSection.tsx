@@ -110,7 +110,6 @@ function ShopInfoForm({ shopInfo }: ShopInfoFormProps) {
       const { district, neighborhood } = await getDistrictFromKakao(
         values.address
       );
-      console.log('카카오 응답:', { district, neighborhood }); // 임시 로그
 
       await saveShopInfo({
         imageUrl: values.imageUrl ?? '',
