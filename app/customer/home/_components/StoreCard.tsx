@@ -50,7 +50,7 @@ export default function StoreCard({
             <h3 className="text-body font-semibold tracking-tight">
               {store.name}
             </h3>
-            <p className="text-label1 font-medium">{store.priceRange}</p>
+            <p className="text-label1 font-medium">{store.priceRange}/개</p>
           </div>
         </div>
 
