@@ -47,24 +47,31 @@ interface ApiResponseOrderList {
 }
 
 export default function OwnerHomePage() {
-  const { data: dashboardData, isLoading: isDashboardLoading } = useQuery<DashboardSummaryData>({
-    queryKey: ['ownerDashboardSummary'],
-    queryFn: async () => {
-      const res = await fetchClient<ApiResponseDashboard>(
-        '/api/owner/dashboard/summary'
-      );
-      if (!res.isSuccess) throw new Error(res.message || '대시보드 요약을 불러오지 못했습니다.');
-      return res.data;
-    },
-  });
+  const { data: dashboardData, isLoading: isDashboardLoading } =
+    useQuery<DashboardSummaryData>({
+      queryKey: ['ownerDashboardSummary'],
+      queryFn: async () => {
+        const res = await fetchClient<ApiResponseDashboard>(
+          '/api/owner/dashboard/summary'
+        );
+        if (!res.isSuccess)
+          throw new Error(
+            res.message || '대시보드 요약을 불러오지 못했습니다.'
+          );
+        return res.data;
+      },
+    });
 
-  const { data: todaysOrders, isLoading: isOrdersLoading } = useQuery<OrderSummaryDTO[]>({
+  const { data: todaysOrders, isLoading: isOrdersLoading } = useQuery<
+    OrderSummaryDTO[]
+  >({
     queryKey: ['ownerOrders', 'today'],
     queryFn: async () => {
       const res = await fetchClient<ApiResponseOrderList>(
         '/api/owner/orders?filter=today'
       );
-      if (!res.isSuccess) throw new Error(res.message || '주문 목록을 불러오지 못했습니다.');
+      if (!res.isSuccess)
+        throw new Error(res.message || '주문 목록을 불러오지 못했습니다.');
       return res.data?.orders || [];
     },
   });
@@ -99,7 +106,7 @@ export default function OwnerHomePage() {
             <h2 className="text-[20px] font-bold text-headline2 text-text-default">
               {storeName} 사장님
             </h2>
-            <p className="text-label2 text-text-subtlest">
+            <p className="text-label2 font-normal text-text-default">
               오늘의 단체주문 현황을 확인하세요
             </p>
           </div>
@@ -113,11 +120,7 @@ export default function OwnerHomePage() {
       )}
 
       <section className="flex w-full gap-2 px-4 mt-2">
-        <DashboardCardA
-          text="픽업 예정 건"
-          icon="box"
-          count={confirmedCount}
-        />
+        <DashboardCardA text="픽업 예정 건" icon="box" count={confirmedCount} />
         <DashboardCardA
           text="픽업 완료"
           icon="terminated"
