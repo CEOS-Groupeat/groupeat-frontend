@@ -7,7 +7,7 @@ const TAB_ITEMS = [
 ] as const;
 
 const ITEM_BASE_CLASSES =
-  'flex-1 px-4 py-2 gap-1 flex items-center justify-center bg-border-divider rounded-lg text-label2 text-text-subtlest transition-colors overflow-hidden ' +
+  'flex-1 px-4 py-2 gap-1 flex items-center justify-center rounded-lg text-label2 text-text-subtlest transition-colors overflow-hidden ' +
   'data-[state=on]:bg-background-default data-[state=on]:focus:shadow-[0px_4px_20px_0px_rgba(0,0,0,0.04)] data-[state=on]:backdrop-blur-sm';
 
 type TabValue = (typeof TAB_ITEMS)[number]['value'];
