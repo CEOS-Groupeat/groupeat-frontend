@@ -11,7 +11,7 @@ export default function SuccessToast({ text }: SuccessToastProps) {
     <div
       role="status"
       aria-live="polite"
-      className="pl-3 pr-4 py-1.5 rounded-full bg-background-toast/52 backdrop-blur-[32px] flex justify-center items-center overflow-hidden fixed bottom-[90px] left-1/2 -translate-x-1/2 z-toast animate-in fade-in slide-in-from-bottom-5 duration-300"
+      className="pl-3 pr-4 py-1.5 rounded-full bg-background-toast/52 backdrop-blur-[32px] flex justify-center items-center overflow-hidden fixed bottom-[102px] left-1/2 -translate-x-1/2 z-toast animate-in fade-in slide-in-from-bottom-5 duration-300"
     >
       <div className="flex items-center gap-1">
         <IconCheckSuccess className="size-4.5 shrink-0" />
