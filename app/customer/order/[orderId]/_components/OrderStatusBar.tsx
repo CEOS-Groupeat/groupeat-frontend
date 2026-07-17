@@ -63,7 +63,7 @@ export default function OrderStatusBar({
         <div className="flex items-center gap-1 mt-0.5">
           <p className="text-text-subtlest text-label1">{pickupDate}</p>
           
-          <Ellipse className="w-1 h-1 text-text-subtlest shrink-0" />
+          <Ellipse className="size-0.5 text-icon-subtlest shrink-0" />
           
           <p className="text-text-subtlest text-label1">
             {getFormattedTime(pickupTime)}

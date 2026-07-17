@@ -187,7 +187,7 @@ export default function CustomerOrderDetail() {
                 <p className="text-text-subtlest text-label1">
                   {formattedPickupDate}
                 </p>
-                <Ellipse className="w-1 h-1 text-text-subtlest" />
+                <Ellipse className="size-0.5 text-text-subtlest" />
                 <p className="text-text-subtlest text-label1">
                   {formattedPickupTime}
                 </p>
@@ -205,7 +205,7 @@ export default function CustomerOrderDetail() {
                 <p className="text-text-subtlest text-label1">
                   {formattedPickupDate}
                 </p>
-                <Ellipse className="w-1 h-1 text-text-subtlest" />
+                <Ellipse className="size-0.5 text-text-subtlest" />
                 <p className="text-text-subtlest text-label1">
                   {formattedPickupTime}
                 </p>

@@ -40,7 +40,7 @@ const formatOrderDateTime = (dateStr?: string, timeStr?: string) => {
       <p className="text-text-default text-body">
         {month}월 {day}일
       </p>
-      <Ellipse className="w-1 h-1 text-text-subtlest shrink-0" />
+      <Ellipse className="size-0.5 text-icon-subtlest shrink-0" />
       <p className="text-text-default text-body">
         {period} {displayHour}시{minuteText}
       </p>

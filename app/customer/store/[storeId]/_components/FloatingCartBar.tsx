@@ -102,7 +102,7 @@ export default function FloatingCartBar({
         <span>
           {month}월 {day}일
         </span>
-        <Ellipse className="w-0.5 h-0.5 text-icon-subtlest shrink-0" />
+        <Ellipse className="size-0.5 text-icon-subtlest shrink-0" />
         <span>
           {period} {displayHour}시{minuteText}
         </span>
