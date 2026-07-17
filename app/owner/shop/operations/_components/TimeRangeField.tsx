@@ -38,16 +38,16 @@ export default function TimeRangeField({
   return (
     <div className="flex flex-col justify-center items-start gap-2 font-['Pretendard']">
       <span className="text-text-subtle text-label2 font-normal">{label}</span>
-      <div className="w-full flex justify-start items-start gap-2">
+      <div className="relative w-full flex justify-start items-start gap-2">
         <div className="flex-1 flex justify-start items-center gap-2">
           <div
             ref={containerRef}
-            className="relative flex-1 h-11 pl-4 pr-3 py-3 bg-background-default rounded-lg outline outline-1 outline-offset-[-1px] outline-border-strong flex justify-start items-center"
+            className="flex-1 h-11 pl-4 pr-3 py-3 bg-background-default rounded-lg outline outline-1 outline-offset-[-1px] outline-border-strong flex justify-start items-center"
           >
             <div className="flex-1 flex justify-center items-center gap-6">
               {hasTimeRange ? (
                 <>
-                  <div className="relative w-20 text-center">
+                  <div className="w-20 text-center">
                     <button
                       type="button"
                       onClick={() => handleOpenDropdown('start')}
