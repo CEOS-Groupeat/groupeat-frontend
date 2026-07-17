@@ -4,14 +4,16 @@ import IconCheckSuccess from '@/public/icons/icon_check_success.svg';
 
 interface SuccessToastProps {
   text: string;
+  bottom?: number;
 }
 
-export default function SuccessToast({ text }: SuccessToastProps) {
+export default function SuccessToast({ text, bottom }: SuccessToastProps) {
   return (
     <div
       role="status"
       aria-live="polite"
-      className="pl-3 pr-4 py-1.5 rounded-full bg-background-toast/52 backdrop-blur-[32px] flex justify-center items-center overflow-hidden fixed bottom-[90px] left-1/2 -translate-x-1/2 z-toast animate-in fade-in slide-in-from-bottom-5 duration-300"
+      style={{ bottom: `${bottom}px` }}
+      className="pl-3 pr-4 py-1.5 rounded-full bg-background-toast/52 backdrop-blur-[32px] flex justify-center items-center overflow-hidden fixed left-1/2 -translate-x-1/2 z-toast animate-in fade-in slide-in-from-bottom-5 duration-300"
     >
       <div className="flex items-center gap-1">
         <IconCheckSuccess className="size-4.5 shrink-0" />

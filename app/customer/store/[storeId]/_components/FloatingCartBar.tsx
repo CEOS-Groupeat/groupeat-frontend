@@ -99,11 +99,11 @@ export default function FloatingCartBar({
 
     displayDateTime = (
       <div className="flex items-center gap-1.5">
-        <span>
+        <span className="text-label2 font-normal text-text-subtlest">
           {month}월 {day}일
         </span>
-        <Ellipse className="w-0.5 h-0.5 text-icon-subtlest shrink-0" />
-        <span>
+        <Ellipse className="size-0.5 text-text-subtlest shrink-0" />
+        <span className="text-label2 font-normal text-text-subtlest">
           {period} {displayHour}시{minuteText}
         </span>
       </div>

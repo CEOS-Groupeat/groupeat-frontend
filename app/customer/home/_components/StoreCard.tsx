@@ -50,21 +50,23 @@ export default function StoreCard({
             <h3 className="text-body font-semibold tracking-tight">
               {store.name}
             </h3>
-            <p className="text-label1 font-medium">{store.priceRange}</p>
+            <p className="text-label1 font-medium">{store.priceRange}/개</p>
           </div>
         </div>
 
         <div className="flex flex-col text-caption1 text-text-subtle font-normal">
           <div className="flex items-center h-[18px] gap-0.5">
             <Star className="size-3.5 text-icon-star" />
-            <span>
+            <span className="text-caption1 font-normal text-text-subtle">
               {store.rating} ({store.reviewCount})
             </span>
           </div>
 
           <div className="flex items-center h-[18px] gap-0.5">
             <Location className="size-3.5" />
-            <span>{store.location}</span>
+            <span className="text-caption1 font-normal text-text-subtle">
+              {store.location}
+            </span>
           </div>
         </div>
       </div>

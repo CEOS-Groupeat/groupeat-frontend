@@ -23,7 +23,7 @@ function MenuSavedToast() {
   }, [showToast, router]);
 
   if (!showToast) return null;
-  return <SuccessToast text="저장되었습니다." />;
+  return <SuccessToast text="저장되었습니다." bottom={102} />;
 }
 
 export default function StoreMenusPage() {

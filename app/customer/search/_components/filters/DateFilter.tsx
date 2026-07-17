@@ -192,7 +192,7 @@ export default function DateFilter({
 
       {/* ── 픽업 시간 ── */}
       <div ref={timeRef} className="flex flex-col gap-3">
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1.5">
           <span className="text-base font-semibold text-text-default">
             픽업 시간
           </span>

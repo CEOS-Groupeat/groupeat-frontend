@@ -51,11 +51,21 @@ export default function ProfileContent({
           onChange={(email) => onChange({ ...values, email })}
           type="email"
         />
-        <GenderSelector
-          value={values.gender}
-          onChange={(gender) => onChange({ ...values, gender })}
-        />
-        <SocialAccountInfo provider={socialProvider} email={socialEmail} />
+        <div className="flex flex-col gap-2">
+          <span className="text-label1 font-normal text-text-default">
+            성별
+          </span>
+          <GenderSelector
+            value={values.gender}
+            onChange={(gender) => onChange({ ...values, gender })}
+          />
+        </div>
+        <div className="flex flex-col gap-2">
+          <span className="text-label1 font-normal text-text-default">
+            소셜 로그인
+          </span>
+          <SocialAccountInfo provider={socialProvider} email={socialEmail} />
+        </div>
       </div>
 
       <WithdrawLink onClick={onWithdraw} />

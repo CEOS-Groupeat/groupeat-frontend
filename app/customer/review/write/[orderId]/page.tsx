@@ -139,7 +139,9 @@ export default function ReviewWritePage({ params }: PageProps) {
           onComplete={() => router.push('/customer/order/status')}
         />
       )}
-      {showSuccessToast && <SuccessToast text="사진 업로드가 완료되었습니다" />}
+      {showSuccessToast && (
+        <SuccessToast text="사진 업로드가 완료되었습니다" bottom={102} />
+      )}
       {showErrorToast && <ToastError text={errorMessage} />}
     </div>
   );

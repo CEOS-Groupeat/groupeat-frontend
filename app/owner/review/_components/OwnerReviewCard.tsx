@@ -73,7 +73,7 @@ export default function OwnerReviewCard({
   };
 
   return (
-    <div className="w-full border-b border-border-default flex flex-col gap-3 font-['Pretendard']">
+    <div className="w-full flex flex-col gap-3 font-['Pretendard']">
       <div className="flex flex-col gap-2.5">
         <div className="flex flex-col gap-1.5">
           <div className="flex justify-between items-center">
@@ -155,19 +155,21 @@ export default function OwnerReviewCard({
       </div>
 
       {hasReply ? (
-        <div className="px-4 py-3 bg-border-divider rounded-tr-2xl rounded-bl-2xl rounded-br-2xl flex flex-col gap-0.5">
-          <div className="flex justify-between items-center">
-            <span className="text-label1 font-semibold text-text-default">
-              {storeName}
-            </span>
-            <span className="text-caption2 font-normal text-text-subtlest">
-              {formatReviewDate(review.repliedAt ?? '')}
-            </span>
+        <>
+          <div className="px-4 py-3 bg-border-divider rounded-tr-2xl rounded-bl-2xl rounded-br-2xl flex flex-col gap-0.5">
+            <div className="flex justify-between items-center">
+              <span className="text-label1 font-semibold text-text-default">
+                {storeName}
+              </span>
+              <span className="text-caption2 font-normal text-text-subtlest">
+                {formatReviewDate(review.repliedAt ?? '')}
+              </span>
+            </div>
+            <p className="text-label2 font-normal text-text-strong whitespace-pre-line">
+              {review.ownerReplyContent}
+            </p>
           </div>
-          <p className="text-label2 font-normal text-text-strong whitespace-pre-line">
-            {review.ownerReplyContent}
-          </p>
-        </div>
+        </>
       ) : (
         <div className="pl-4 pr-3 py-3 bg-border-divider rounded-tl-lg rounded-tr-2xl rounded-bl-2xl rounded-br-2xl outline outline-1 outline-offset-[-1px] outline-border-subtle flex flex-col gap-1">
           <div className="flex flex-col gap-1">
@@ -202,7 +204,9 @@ export default function OwnerReviewCard({
         </div>
       )}
 
-      {showSuccessToast && <SuccessToast text="답글 작성이 완료되었습니다." />}
+      {showSuccessToast && (
+        <SuccessToast text="답글 작성이 완료되었습니다." bottom={102} />
+      )}
       {showErrorToast && (
         <ToastError text="답글 등록에 실패했어요. 다시 시도해주세요." />
       )}

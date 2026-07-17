@@ -26,8 +26,8 @@ export default function ShopHeader() {
   const isMenuTab = pathname?.startsWith('/owner/shop/menus');
 
   return (
-    <header className="flex flex-col items-start w-full gap-2 px-4 font-['Pretendard']">
-      <div className="flex items-center justify-between w-full">
+    <header className="flex flex-col items-start w-full gap-2 font-['Pretendard']">
+      <div className="flex items-center justify-between px-4 w-full">
         <div className="flex flex-col items-start gap-1">
           <h2 className="font-bold text-headline1 text-text-default">
             가게 정보
@@ -36,7 +36,7 @@ export default function ShopHeader() {
       </div>
 
       <div className="flex flex-col items-center gap-5 self-stretch">
-        <div className="flex h-11 justify-center items-start gap-3 self-stretch border-b border-border-subtle">
+        <div className="flex h-11 justify-center items-start gap-3 px-4 self-stretch border-b border-border-subtle">
           <div className="w-full flex items-start gap-2.5 self-stretch">
             {tabs.map((tab) => {
               const isActive = pathname?.startsWith(tab.path);
@@ -68,7 +68,7 @@ export default function ShopHeader() {
         </div>
       </div>
 
-      <div className="flex justify-between items-start self-stretch mt-3">
+      <div className="px-4 flex justify-between items-start self-stretch mt-3">
         <h1 className="text-text-default text-headline3 font-semibold">
           {sectionTitle}
         </h1>
