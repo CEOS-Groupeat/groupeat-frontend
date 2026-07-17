@@ -340,7 +340,7 @@ export default function MenuBottomSheet({
         </div>
 
         {/* 카드가 많아지면 스크롤 되는 영역 */}
-        <div className="flex-1 overflow-y-auto px-4 pt-4 pb-4 flex flex-col gap-4 min-h-0 bg-background-default">
+        <div className="flex-1 overflow-y-auto px-4 pt-4 pb-4 flex flex-col gap-3 min-h-0 bg-background-default">
           {cards.map((card) => {
             let optionsPrice = 0;
             const optionTexts: string[] = [];
