@@ -10,7 +10,6 @@ import AlertIcon from '@/public/icons/icon_alert.svg';
 import Place from '@/public/icons/icon_place.svg';
 import Phone from '@/public/icons/icon_phone.svg';
 import Calendar from '@/public/icons/icon-calendar-storeDetail.svg';
-import Notice from '@/public/icons/icon_notice.svg';
 import ArrowUp from '@/public/icons/icon_arrow_up.svg';
 import ArrowDown from '@/public/icons/icon_arrow_down.svg';
 import { useStoreDetail } from '@/app/customer/store/_hooks/useStoreDetail';
@@ -37,7 +36,7 @@ const formatClosedDays = (daysString?: string | null) => {
 export default function StoreDetail() {
   const params = useParams();
   const storeId = params.storeId as string;
-  const [isProcessExpanded, setIsProcessExpanded] = useState<boolean>(false);
+  const [isProcessExpanded, setIsProcessExpanded] = useState<boolean>(true);
 
   const { data: store, isLoading, isError } = useStoreDetail(storeId);
 
@@ -161,7 +160,6 @@ export default function StoreDetail() {
                 onClick={() => setIsProcessExpanded((prev) => !prev)}
               >
                 <div className="flex justify-center items-center gap-1.5">
-                  <Notice className="text-icon-subtlest w-4 h-4" />
                   <p className="text-text-default text-label2 font-medium">
                     주문 프로세스 안내
                   </p>
