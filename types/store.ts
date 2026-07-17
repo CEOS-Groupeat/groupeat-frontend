@@ -23,6 +23,8 @@ export interface StoreDetail {
   minOrderDays: number;
   discountConditionQuantity: number;
   discountRate: number;
+  minOrderQuantity?: number | undefined;
+  maxOrderQuantity?: number | undefined;
 }
 
 export interface PickupTimeInfo {
@@ -59,4 +61,3 @@ export interface Menu {
 export interface MenusResponse {
   menus: Menu[];
 }
-

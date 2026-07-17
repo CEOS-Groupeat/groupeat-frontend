@@ -8,18 +8,7 @@ import StoreCustomDayButton from '@/app/customer/store/[storeId]/_components/Sto
 import PrevMonth from '@/public/icons/icon_calendarButton_left.svg';
 import NextMonth from '@/public/icons/icon_calendarButton_right.svg';
 import AlertIcon from '@/public/icons/icon_alert.svg';
-
-export function formatPickupDate(dateStr: string): string {
-  const d = new Date(dateStr);
-  return `${d.getMonth() + 1}월 ${d.getDate()}일`;
-}
-
-export function formatPickupTime(time: string): string {
-  const [h, m] = time.split(':').map(Number);
-  const period = h < 12 ? '오전' : '오후';
-  const hour = h === 0 ? 12 : h > 12 ? h - 12 : h;
-  return `${period} ${hour}:${String(m).padStart(2, '0')}`;
-}
+import StatusError from '@/public/icons/icon_status_error.svg'; // 💡 에러 아이콘 임포트
 
 interface DateFilterProps {
   date: string | undefined;
@@ -39,6 +28,9 @@ export default function StoreDateFilter({
   onTimeChange,
 }: DateFilterProps) {
   const timeRef = useRef<HTMLDivElement>(null);
+
+  const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const today = useMemo(() => {
     const d = new Date();
@@ -63,6 +55,17 @@ export default function StoreDateFilter({
 
   const handleDaySelect = (day: Date | undefined) => {
     if (!day) return;
+
+    const minAllowedDate = new Date(today);
+    minAllowedDate.setDate(today.getDate() + minOrderDays!);
+
+    if (day < minAllowedDate) {
+      setErrorMessage('최소 주문 기한을 확인해주세요');
+      setShowError(true);
+      setTimeout(() => setShowError(false), 2000);
+      return;
+    }
+
     const yyyy = day.getFullYear();
     const mm = String(day.getMonth() + 1).padStart(2, '0');
     const dd = String(day.getDate()).padStart(2, '0');
@@ -130,7 +133,16 @@ export default function StoreDateFilter({
   }, [availableTimes]);
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 relative">
+      {showError && (
+        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 flex w-fit pl-3 pr-4 py-1.5 justify-center items-center gap-1 rounded-full bg-background-toast/52 backdrop-blur-[32px] z-toast animate-in fade-in slide-in-from-bottom-5 duration-300">
+          <StatusError className="shrink-0" />
+          <p className="text-label1 text-text-inverse whitespace-nowrap">
+            {errorMessage}
+          </p>
+        </div>
+      )}
+
       <div className="flex flex-col gap-2">
         <div className="flex justify-center items-center gap-4">
           <button
@@ -197,7 +209,7 @@ export default function StoreDateFilter({
           />
         </div>
 
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1 pt-1">
           <AlertIcon className="w-4 h-4 text-icon-subtlest" />
           <p className="text-label2 text-text-subtlest">
             최소 {minOrderDays}일 전부터 주문 가능해요
@@ -210,33 +222,19 @@ export default function StoreDateFilter({
           ref={timeRef}
           className="flex flex-col gap-3 animate-in fade-in slide-in-from-top-2 duration-300"
         >
-          {amSlots.length > 0 && (
-            <div className="flex flex-col gap-1.5">
-              <span className="text-sm font-medium text-text-default">
-                오전
-              </span>
-              <div className="grid grid-cols-4 gap-2">
-                {amSlots.map(renderSlot)}
-              </div>
+          <div className="flex flex-col gap-1.5">
+            <span className="text-sm font-medium text-text-default">오전</span>
+            <div className="grid grid-cols-4 gap-2">
+              {amSlots.map(renderSlot)}
             </div>
-          )}
+          </div>
 
-          {pmSlots.length > 0 && (
-            <div className="flex flex-col gap-1.5">
-              <span className="text-sm font-medium text-text-default">
-                오후
-              </span>
-              <div className="grid grid-cols-4 gap-2">
-                {pmSlots.map(renderSlot)}
-              </div>
+          <div className="flex flex-col gap-1.5">
+            <span className="text-sm font-medium text-text-default">오후</span>
+            <div className="grid grid-cols-4 gap-2">
+              {pmSlots.map(renderSlot)}
             </div>
-          )}
-
-          {amSlots.length === 0 && pmSlots.length === 0 && (
-            <div className="py-4 text-center text-sm text-text-subtlest bg-background-subtle rounded-lg">
-              선택 가능한 픽업 시간이 없습니다.
-            </div>
-          )}
+          </div>
         </div>
       )}
     </div>
