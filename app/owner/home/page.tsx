@@ -164,7 +164,7 @@ export default function OwnerHomePage() {
             <ArrowRight className="w-5 h-5 text-icon-subtlest" />
           </Link>
         </div>
-        <div className="flex w-full gap-2 mt-4">
+        <div className="flex w-full gap-2 mt-2">
           <DashBoardCardB
             text="이번 주 주문 수"
             icon="people"
