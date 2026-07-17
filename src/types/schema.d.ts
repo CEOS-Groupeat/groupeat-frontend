@@ -580,6 +580,46 @@ export interface paths {
         patch: operations["acceptOrder"];
         trace?: never;
     };
+    "/api/notifications/{notificationId}/read": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * 알림 단건 읽음 처리
+         * @description 로그인한 회원의 알림을 읽음 처리합니다.
+         */
+        patch: operations["markAsRead"];
+        trace?: never;
+    };
+    "/api/notifications/read-all": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * 알림 전체 읽음 처리
+         * @description 로그인한 회원의 미읽음 알림을 전체 읽음 처리합니다.
+         */
+        patch: operations["markAllAsRead"];
+        trace?: never;
+    };
     "/api/customer/mypage/notification-settings": {
         parameters: {
             query?: never;
@@ -1044,6 +1084,46 @@ export interface paths {
          * @description 특정 주문의 상세 정보(메뉴, 옵션, 결제정보 등)를 조회합니다.
          */
         get: operations["getOrderDetail"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/notifications": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 알림 목록 조회
+         * @description 로그인한 회원의 알림 목록을 최신순으로 조회합니다.
+         */
+        get: operations["getNotificationList"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/notifications/unread-count": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 미읽음 알림 개수 조회
+         * @description 로그인한 회원의 미읽음 알림 개수를 조회합니다.
+         */
+        get: operations["getUnreadCount"];
         put?: never;
         post?: never;
         delete?: never;
@@ -2467,6 +2547,45 @@ export interface components {
             cancelledDate?: string;
             cancelledTime?: string;
         };
+        ApiResponseNotificationReadResponse: {
+            isSuccess?: boolean;
+            code?: string;
+            message?: string;
+            data?: components["schemas"]["NotificationReadResponse"];
+        };
+        NotificationReadResponse: {
+            /**
+             * Format: int64
+             * @description 알림 ID
+             * @example 1
+             */
+            notificationId?: number;
+            /**
+             * @description 읽음 여부
+             * @example true
+             */
+            read?: boolean;
+            /**
+             * Format: date-time
+             * @description 읽음 처리 시각
+             * @example 2026-07-15T16:30:00
+             */
+            readAt?: string;
+        };
+        ApiResponseNotificationReadAllResponse: {
+            isSuccess?: boolean;
+            code?: string;
+            message?: string;
+            data?: components["schemas"]["NotificationReadAllResponse"];
+        };
+        NotificationReadAllResponse: {
+            /**
+             * Format: int32
+             * @description 읽음 처리된 알림 개수
+             * @example 5
+             */
+            updatedCount?: number;
+        };
         CustomerNotificationSettingsUpdateRequest: {
             /**
              * @description 마케팅 정보 수신 동의 여부. 변경하지 않을 경우 생략
@@ -2719,6 +2838,18 @@ export interface components {
              * @example 1. 예약 주문 2. 픽업 대기 3. 픽업 완료
              */
             orderProcess?: string;
+            /**
+             * Format: int32
+             * @description 주문 가능 최소 수량 (전체 요일 중 최솟값)
+             * @example 10
+             */
+            minOrderQuantity?: number;
+            /**
+             * Format: int32
+             * @description 주문 가능 최대 수량 (전체 요일 중 최댓값)
+             * @example 200
+             */
+            maxOrderQuantity?: number;
         };
         ApiResponseReviewListResponse: {
             isSuccess?: boolean;
@@ -3935,6 +4066,115 @@ export interface components {
              */
             finalPaymentAmount?: number;
         };
+        ApiResponseNotificationListResponse: {
+            isSuccess?: boolean;
+            code?: string;
+            message?: string;
+            data?: components["schemas"]["NotificationListResponse"];
+        };
+        NotificationDTO: {
+            /**
+             * Format: int64
+             * @description 알림 ID
+             * @example 1
+             */
+            notificationId?: number;
+            /**
+             * @description 알림 타입
+             * @example ORDER_ACCEPTED
+             * @enum {string}
+             */
+            notificationType?: "ORDER_ACCEPTED" | "ORDER_REJECTED" | "PICKUP_REMINDER_DAY_BEFORE" | "NEW_ORDER_REQUEST" | "ORDER_ACCEPT_DEADLINE_12H" | "ORDER_ACCEPT_DEADLINE_1H";
+            /**
+             * @description 알림 제목
+             * @example 승인 완료
+             */
+            title?: string;
+            /**
+             * @description 알림 본문
+             * @example 데이브런치에서 주문을 승인했습니다.
+             */
+            body?: string;
+            /**
+             * @description 가게명
+             * @example 데이브런치
+             */
+            storeName?: string;
+            /**
+             * @description 메뉴 요약
+             * @example 햄치즈 샌드위치 외 1개
+             */
+            menuSummary?: string;
+            /**
+             * Format: date
+             * @description 픽업 날짜
+             * @example 2026-07-21
+             */
+            pickupDate?: string;
+            /**
+             * @description 픽업 시간
+             * @example 10:00:00
+             */
+            pickupTime?: string;
+            /**
+             * @description 참조 대상 타입
+             * @example ORDER
+             * @enum {string}
+             */
+            referenceType?: "ORDER";
+            /**
+             * Format: int64
+             * @description 참조 대상 ID
+             * @example 9
+             */
+            referenceId?: number;
+            /**
+             * @description 읽음 여부
+             * @example false
+             */
+            read?: boolean;
+            /**
+             * Format: date-time
+             * @description 수신 시각
+             * @example 2026-07-15T14:30:00
+             */
+            receivedAt?: string;
+        };
+        NotificationListResponse: {
+            /**
+             * Format: int64
+             * @description 조회 가능한 전체 알림 개수
+             * @example 12
+             */
+            totalElements?: number;
+            /** @description 알림 목록 */
+            notificationList?: components["schemas"]["NotificationDTO"][];
+            /**
+             * @description 다음 페이지 존재 여부
+             * @example true
+             */
+            hasNext?: boolean;
+            /**
+             * Format: int64
+             * @description 다음 커서 ID
+             * @example 42
+             */
+            nextCursor?: number;
+        };
+        ApiResponseNotificationUnreadCountResponse: {
+            isSuccess?: boolean;
+            code?: string;
+            message?: string;
+            data?: components["schemas"]["NotificationUnreadCountResponse"];
+        };
+        NotificationUnreadCountResponse: {
+            /**
+             * Format: int64
+             * @description 미읽음 알림 개수
+             * @example 3
+             */
+            unreadCount?: number;
+        };
         ApiResponseCustomerMyPageResponse: {
             isSuccess?: boolean;
             code?: string;
@@ -4981,6 +5221,48 @@ export interface operations {
             };
         };
     };
+    markAsRead: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                notificationId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseNotificationReadResponse"];
+                };
+            };
+        };
+    };
+    markAllAsRead: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseNotificationReadAllResponse"];
+                };
+            };
+        };
+    };
     getNotificationSettings_1: {
         parameters: {
             query?: never;
@@ -5627,6 +5909,51 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["ApiResponseOrderDetailResponse_OrderDetailDTO"];
+                };
+            };
+        };
+    };
+    getNotificationList: {
+        parameters: {
+            query?: {
+                /** @description 마지막으로 조회된 알림 ID */
+                lastNotificationId?: number;
+                /** @description 한 번에 조회할 알림 개수 */
+                size?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseNotificationListResponse"];
+                };
+            };
+        };
+    };
+    getUnreadCount: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ApiResponseNotificationUnreadCountResponse"];
                 };
             };
         };
