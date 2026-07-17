@@ -91,13 +91,13 @@ export default function StoreDetail() {
 
               <div className="flex items-center gap-0.5">
                 <Star className="w-3.5 h-3.5 text-icon-star" />
-                <p className="text-label2 text-text-default">
+                <p className="text-label2 font-medium text-text-default">
                   {store.reviewRating.toFixed(1)}
                 </p>
-                <p className="text-label2 text-text-default">
+                <p className="text-label2 font-medium text-text-default">
                   ({store.reviewCount})
                 </p>
-                <p className="text-label2 text-text-default">&gt;</p>
+                <p className="text-label2 font-medium text-text-default">&gt;</p>
               </div>
 
               <h3 className="text-label1 self-stretch mt-2 text-text-default whitespace-pre-line">
