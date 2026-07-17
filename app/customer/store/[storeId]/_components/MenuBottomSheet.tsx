@@ -255,7 +255,7 @@ export default function MenuBottomSheet({
                     </span>
                     {selectedText && !isExpanded && (
                       <div className="flex h-full items-center justify-center gap-2">
-                        <Ellipse className="size-0.5 text-icon-subtlest shrink-0" />
+                        <Ellipse className="size-0.5 text-text-subtlest shrink-0" />
                         <p className="text-text-subtlest text-label1">
                           {selectedText}
                         </p>

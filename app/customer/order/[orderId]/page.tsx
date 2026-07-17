@@ -318,7 +318,7 @@ export default function CustomerOrderDetail() {
               <p className="text-text-default text-body">
                 {formatOrderDate(ordererInfo?.orderDate)}
               </p>
-              <Ellipse />
+              <Ellipse className="size-0.5 text-text-default" />
               <p className="text-text-default text-body">
                 {formatKoreanTime(ordererInfo?.orderTime)}
               </p>

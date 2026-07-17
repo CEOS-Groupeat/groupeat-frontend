@@ -33,7 +33,7 @@ export default function OrderStatusBar({
 
   const getFormattedTime = (time: string) => {
     if (!time) return '';
-    
+
     // "14:30" 형태의 문자열 분해
     const [hourStr, minStr] = time.split(':');
     if (!hourStr || !minStr) return time;
@@ -62,9 +62,9 @@ export default function OrderStatusBar({
 
         <div className="flex items-center gap-1 mt-0.5">
           <p className="text-text-subtlest text-label1">{pickupDate}</p>
-          
-          <Ellipse className="size-0.5 text-icon-subtlest shrink-0" />
-          
+
+          <Ellipse className="size-0.5 text-text-subtlest shrink-0" />
+
           <p className="text-text-subtlest text-label1">
             {getFormattedTime(pickupTime)}
           </p>
