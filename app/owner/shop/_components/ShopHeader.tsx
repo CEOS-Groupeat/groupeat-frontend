@@ -68,7 +68,7 @@ export default function ShopHeader() {
         </div>
       </div>
 
-      <div className="flex justify-between items-start self-stretch mt-3">
+      <div className="px-4 flex justify-between items-start self-stretch mt-3">
         <h1 className="text-text-default text-headline3 font-semibold">
           {sectionTitle}
         </h1>
