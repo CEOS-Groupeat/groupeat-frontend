@@ -258,23 +258,23 @@ export default function HomePage() {
               </div>
             </div>
 
-            <button
+            <Link
+              href="/customer/home"
               className="flex mt-9 pl-4.5 pr-4 py-2 justify-center items-center gap-1 transition-opacity cursor-pointer border border-border-default bg-background-default shadow-[6px_6px_54px_0_rgba(0,0,0,0.03)] rounded-full"
-              onClick={() => setIsModalOpen(true)}
             >
               <p className="text-text-subtle text-label1 font-semibold">
                 서비스 둘러보기 →
               </p>
-            </button>
+            </Link>
 
             {/* 하단 네비게이션 링크 영역 */}
             <div className="w-full flex items-center justify-center mt-8">
-              <Link
-                href="/owner"
+              <button
+                onClick={() => setIsModalOpen(true)}
                 className="text-text-subtlest text-label2 underline underline-offset-2 decoration-1 hover:text-brand-hover transition-colors"
               >
                 사장님이신가요?
-              </Link>
+              </button>
             </div>
           </div>
         </div>
