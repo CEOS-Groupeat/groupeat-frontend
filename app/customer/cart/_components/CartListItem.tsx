@@ -63,7 +63,7 @@ export default function CartListItem({
               </span>
               {/* 💡 수정됨: 백엔드에서 주는 문자열 배열을 그대로 줄바꿈으로 렌더링 */}
               {options.length > 0 && (
-                <span className="text-label2 text-text-subtle font-normal whitespace-pre-line">
+                <span className="text-label2 leading-[18px] text-text-subtle font-normal whitespace-pre-line">
                   {options.join('\n')}
                 </span>
               )}
