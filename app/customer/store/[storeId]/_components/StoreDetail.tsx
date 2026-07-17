@@ -99,7 +99,7 @@ export default function StoreDetail() {
                 <p className="text-label2 font-medium text-text-default">&gt;</p>
               </div>
 
-              <h3 className="text-label1 self-stretch mt-2 text-text-default whitespace-pre-line">
+              <h3 className="text-label1 self-stretch mt-1 text-text-default whitespace-pre-line">
                 {store.description}
               </h3>
             </div>
