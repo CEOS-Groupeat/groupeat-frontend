@@ -169,7 +169,6 @@ export default function OwnerReviewCard({
               {review.ownerReplyContent}
             </p>
           </div>
-  
         </>
       ) : (
         <div className="pl-4 pr-3 py-3 bg-border-divider rounded-tl-lg rounded-tr-2xl rounded-bl-2xl rounded-br-2xl outline outline-1 outline-offset-[-1px] outline-border-subtle flex flex-col gap-1">
@@ -205,7 +204,9 @@ export default function OwnerReviewCard({
         </div>
       )}
 
-      {showSuccessToast && <SuccessToast text="답글 작성이 완료되었습니다." />}
+      {showSuccessToast && (
+        <SuccessToast text="답글 작성이 완료되었습니다." bottom={102} />
+      )}
       {showErrorToast && (
         <ToastError text="답글 등록에 실패했어요. 다시 시도해주세요." />
       )}
