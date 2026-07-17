@@ -9,7 +9,7 @@ import BellIcon from '@/public/icons/icon_bell_active.svg';
 import AlertIcon from '@/public/icons/icon_alert.svg';
 import Place from '@/public/icons/icon_place.svg';
 import Phone from '@/public/icons/icon_phone.svg';
-import Calendar from '@/public/icons/icon_calendar.svg';
+import Calendar from '@/public/icons/icon-calendar-storeDetail.svg';
 import Notice from '@/public/icons/icon_notice.svg';
 import ArrowUp from '@/public/icons/icon_arrow_up.svg';
 import ArrowDown from '@/public/icons/icon_arrow_down.svg';
@@ -111,7 +111,7 @@ export default function StoreDetail() {
             <div className="flex flex-col items-start gap-1.5">
               <div className="flex items-start gap-1">
                 <div className="flex pt-0.5 items-center gap-2.5">
-                  <BellIcon className="text-brand-default w-4 h-4" />
+                  <BellIcon className="text-brand-default size-4" />
                 </div>
                 <p className="text-brand-default text-label2 font-semibold leading-4.5">
                   최소 {store.minOrderDays}일 전 주문
@@ -120,7 +120,7 @@ export default function StoreDetail() {
 
               <div className="flex items-start gap-1">
                 <div className="flex pt-0.5 items-center gap-2.5">
-                  <AlertIcon className="text-brand-default w-4 h-4" />
+                  <AlertIcon className="text-brand-default size-4" />
                 </div>
                 <p className="text-brand-default text-label2 font-semibold leading-4.5">
                   주문 가능 수량 최소 {store.minOrderQuantity ?? 0}개 ~ 최대 {store.maxOrderQuantity ?? 99}개
@@ -129,7 +129,7 @@ export default function StoreDetail() {
 
               <div className="flex items-start gap-1">
                 <div className="flex pt-0.5 items-center gap-2.5">
-                  <Place className="text-icon-subtlest w-4 h-4" />
+                  <Place className="text-icon-subtlest size-4" />
                 </div>
                 <p className="text-text-subtle text-label2 leading-4.5">
                   {store.address}
@@ -138,7 +138,7 @@ export default function StoreDetail() {
 
               <div className="flex items-start gap-1">
                 <div className="flex pt-0.5 items-center gap-2.5">
-                  <Phone className="text-icon-subtlest" />
+                  <Phone className="text-icon-subtlest size-4" />
                 </div>
                 <p className="text-text-subtle text-label2 leading-4.5">
                   Tel. {store.phoneNumber}
@@ -147,7 +147,7 @@ export default function StoreDetail() {
 
               <div className="flex items-start gap-1">
                 <div className="flex pt-0.5 items-center gap-2.5">
-                  <Calendar className="text-icon-subtlest" />
+                  <Calendar className="text-icon-subtlest size-4" />
                 </div>
                 <p className="text-text-subtle text-label2 leading-4.5">
                   {formatClosedDays(store.closedDays)}
