@@ -144,8 +144,8 @@ export default function OwnerHomePage() {
             ))
           ) : (
             <div className="w-full h-32 flex p-3 flex-col justify-center items-center gap-5 rounded-lg border border-border-subtle bg-static-white shadow-[6px_6px_54px_0_rgba(0,0,0,0.05)]">
-              <div className="flex pb-2 flex-col items-center gap-2.5">
-                <NoOrderIllust className="w-15 h-15" />
+              <div className="flex pb-2 flex-col items-center gap-0.5">
+                <NoOrderIllust className="size-[70px]" />
                 <p className="text-text-placeholder text-caption2 font-medium">
                   대기 중인 픽업 주문이 없습니다
                 </p>
