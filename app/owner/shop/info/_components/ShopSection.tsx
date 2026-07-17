@@ -144,7 +144,7 @@ function ShopInfoForm({ shopInfo }: ShopInfoFormProps) {
   };
 
   return (
-    <main className="w-full flex flex-col px-4 items-start gap-4.5 font-['Pretendard']">
+    <main className="w-full flex flex-col px-4 items-start gap-6 mb-[36px] font-['Pretendard']">
       <div className="flex flex-col items-start gap-[18px] self-stretch">
         <div className="flex flex-col items-start gap-5 self-stretch">
           <div className="flex flex-col items-start gap-2 self-stretch">
@@ -261,7 +261,7 @@ function ShopInfoForm({ shopInfo }: ShopInfoFormProps) {
                 />
                 <p className="text-text-default text-body">개 이상</p>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 mb-1">
                 <input
                   value={values.discountRate}
                   onChange={(e) =>
