@@ -28,7 +28,7 @@ function ProfileUpdateToast() {
   }, [showToast, router]);
 
   if (!showToast) return null;
-  return <SuccessToast text="수정이 완료되었습니다" />;
+  return <SuccessToast text="수정이 완료되었습니다" bottom={102} />;
 }
 
 export default function OwnerMyPage() {
