@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 import Ticket from '@/public/icons/icon_ticket.svg';
 import Star from '@/public/icons/icon_star.svg';
@@ -34,6 +34,7 @@ const formatClosedDays = (daysString?: string | null) => {
 };
 
 export default function StoreDetail() {
+  const router = useRouter();
   const params = useParams();
   const storeId = params.storeId as string;
   const [isProcessExpanded, setIsProcessExpanded] = useState<boolean>(true);
@@ -96,7 +97,15 @@ export default function StoreDetail() {
                 <p className="text-label2 font-medium text-text-default">
                   ({store.reviewCount})
                 </p>
-                <p className="text-label2 font-medium text-text-default">&gt;</p>
+                <button
+                  type="button"
+                  onClick={() =>
+                    router.push(`/customer/store/${store.storeId}/review`)
+                  }
+                  className="text-label2 font-medium text-text-default"
+                >
+                  &gt;
+                </button>
               </div>
 
               <h3 className="text-label1 self-stretch mt-1 text-text-default whitespace-pre-line">
@@ -122,7 +131,8 @@ export default function StoreDetail() {
                   <AlertIcon className="text-brand-default size-4" />
                 </div>
                 <p className="text-brand-default text-label2 font-semibold leading-4.5">
-                  주문 가능 수량 최소 {store.minOrderQuantity ?? 0}개 ~ 최대 {store.maxOrderQuantity ?? 99}개
+                  주문 가능 수량 최소 {store.minOrderQuantity ?? 0}개 ~ 최대{' '}
+                  {store.maxOrderQuantity ?? 99}개
                 </p>
               </div>
 
