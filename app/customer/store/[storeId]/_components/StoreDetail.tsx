@@ -123,8 +123,7 @@ export default function StoreDetail() {
                   <AlertIcon className="text-brand-default w-4 h-4" />
                 </div>
                 <p className="text-brand-default text-label2 font-semibold leading-4.5">
-                  {/* 주문 가능 수량 최소 {store.minOrderCount ?? 0}개 ~ 최대 {store.maxOrderCount ?? 99}개 */}
-                  여기는 백엔드가 데이터 채워주면 주석 지우면됨
+                  주문 가능 수량 최소 {store.minOrderQuantity ?? 0}개 ~ 최대 {store.maxOrderQuantity ?? 99}개
                 </p>
               </div>
 
