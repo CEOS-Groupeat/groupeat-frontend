@@ -118,18 +118,22 @@ export default function OwnerReviewPage() {
             </span>
           </div>
         ) : (
-          reviews.map((review) => (
-            <OwnerReviewCard
-              key={review.reviewId}
-              review={review}
-              storeName={summary?.storeName ?? ''}
-              onSubmitReply={async (content) => {
-                await createReply({
-                  reviewId: review.reviewId!,
-                  payload: { replyContent: content },
-                });
-              }}
-            />
+          reviews.map((review, index) => (
+            <div key={review.reviewId}>
+              <OwnerReviewCard
+                review={review}
+                storeName={summary?.storeName ?? ''}
+                onSubmitReply={async (content) => {
+                  await createReply({
+                    reviewId: review.reviewId!,
+                    payload: { replyContent: content },
+                  });
+                }}
+              />
+              {index < reviews.length - 1 && (
+                <div className="h-px bg-border-divider mt-6" />
+              )}
+            </div>
           ))
         )}
       </div>
