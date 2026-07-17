@@ -103,7 +103,7 @@ export default function OwnerHomePage() {
       <section className="flex flex-col items-start w-full gap-2.5 px-4 mt-5">
         <div className="flex items-center justify-between w-full">
           <div className="flex flex-col items-start gap-1">
-            <h2 className="text-[20px] font-bold text-headline2 text-text-default">
+            <h2 className="text-xl font-bold leading-[26px] tracking-[-0.5%] flex items-center">
               {storeName} 사장님
             </h2>
             <p className="text-label2 font-normal text-text-default">
