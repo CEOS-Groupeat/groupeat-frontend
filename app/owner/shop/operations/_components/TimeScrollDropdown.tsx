@@ -62,8 +62,7 @@ export default function TimeScrollDropdown({
     <>
       <div className="fixed inset-0 z-0" onClick={onClose} />
       <div
-        style={{ top }}
-        className="fixed left-4 z-10 w-32 h-80 max-w-32 min-w-32 max-h-80 min-h-80 bg-background-default rounded-lg shadow-[6px_6px_54px_0px_rgba(0,0,0,0.05)] outline outline-1 outline-offset-[-1px] outline-border-subtle flex flex-col font-['Pretendard']"
+        className="absolute left-0 top-[60px] z-10 w-32 h-80 max-w-32 min-w-32 max-h-80 min-h-80 bg-background-default rounded-lg shadow-[6px_6px_54px_0px_rgba(0,0,0,0.05)] outline outline-1 outline-offset-[-1px] outline-border-subtle flex flex-col font-['Pretendard']"
       >
         <div className="flex-1 px-2 flex min-h-0">
           {/* 시(Hour) */}
