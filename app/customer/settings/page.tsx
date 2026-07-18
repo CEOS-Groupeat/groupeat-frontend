@@ -119,7 +119,7 @@ export default function CustomerSettingsPage() {
               >
                 <SettingOption text="약관" icon="terms" />
               </Link>
-              <Link href="/alert" className="w-full">
+              <Link href="/customer/settings/alert" className="w-full">
                 <SettingOption text="알림 설정" icon="alarm" />
               </Link>
             </section>
