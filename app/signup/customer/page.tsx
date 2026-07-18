@@ -14,6 +14,7 @@ import DefaultButton from '@/components/ui/ButtonDefault';
 import InputField from '@/components/ui/InputField';
 import { useSignupStore } from '@/store/useSignupStore';
 import ToastError from '@/components/ui/ToastError';
+import SuccessToast from '@/components/ui/SuccessToast';
 
 interface ApiResponse<T> {
   isSuccess: boolean;
@@ -73,6 +74,7 @@ function CustomerSignupForm() {
     {}
   );
   const [selectedTerm, setSelectedTerm] = useState<Term | null>(null);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
 
   const { data: terms = [] } = useQuery<Term[]>({
     queryKey: ['terms', 'CUSTOMER'],
@@ -158,8 +160,10 @@ function CustomerSignupForm() {
       return result;
     },
     onSuccess: () => {
-      alert('고객 회원가입이 완료되었습니다.');
-      router.replace('/');
+      setShowSuccessToast(true);
+      setTimeout(() => {
+        router.replace('/login');
+      }, 2000);
     },
     onError: (error: any) => {
       console.error(error);
@@ -330,6 +334,9 @@ function CustomerSignupForm() {
           content={selectedTerm.content}
           onClose={() => setSelectedTerm(null)}
         />
+      )}
+      {showSuccessToast && (
+        <SuccessToast text="고객 회원가입이 완료되었습니다." bottom={96} />
       )}
     </div>
   );
