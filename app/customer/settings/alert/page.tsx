@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import BackButton from '@/components/ui/BackButton';
 
-export default function CommonAlertPage() {
+export default function CustomerAlertPage() {
   const [isOrderAlertOn, setIsOrderAlertOn] = useState(false);
   const [isMarketingOn, setIsMarketingOn] = useState(false);
 
