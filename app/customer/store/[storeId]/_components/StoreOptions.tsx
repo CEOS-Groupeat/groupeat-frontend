@@ -266,7 +266,8 @@ export default function StoreOptions() {
                   return (
                     <div
                       key={menu.menuId!}
-                      className="flex flex-col w-full gap-5 py-4 border-b border-border-default"
+                      onClick={() => handleMenuSelect(menu)}
+                      className="flex flex-col w-full gap-5 py-4 border-b border-border-default cursor-pointer"
                     >
                       <div className="flex justify-between items-start w-full">
                         <div className="flex flex-col">
@@ -296,14 +297,20 @@ export default function StoreOptions() {
 
                           {quantityInCart > 0 ? (
                             <button
-                              onClick={() => handleMenuSelect(menu)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleMenuSelect(menu);
+                              }}
                               className="relative z-10 w-6.5 h-6.5 flex items-center justify-center text-label2 rounded-full bg-brand-default text-white"
                             >
                               {quantityInCart}
                             </button>
                           ) : (
                             <button
-                              onClick={() => handleMenuSelect(menu)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleMenuSelect(menu);
+                              }}
                               className="z-10 w-6.5 h-6.5 bg-white rounded-full flex justify-center items-center shadow-sm aspect-square"
                             >
                               <AddIcon className="w-[17.33px] h-[17.33px] text-icon-default" />
