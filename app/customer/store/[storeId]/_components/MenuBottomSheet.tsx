@@ -18,6 +18,7 @@ interface MenuBottomSheetProps {
   menu: Menu;
   pickupDate?: string;
   pickupTime?: string;
+  dailyAvailableQuantity?: number;
   onClose: () => void;
 }
 
@@ -32,6 +33,7 @@ export default function MenuBottomSheet({
   menu,
   pickupDate,
   pickupTime,
+  dailyAvailableQuantity,
   onClose,
 }: MenuBottomSheetProps) {
   const queryClient = useQueryClient();
@@ -50,18 +52,15 @@ export default function MenuBottomSheet({
   const discountRate = storeDetail?.discountRate || 0;
   const discountCondition = storeDetail?.discountConditionQuantity || 0;
 
-  // 최소/최대 주문 수량 기준값 설정 (타입에 없어도 목데이터로 동작하도록 fallback)
-  const minQ =
-    (menu as Menu & { minOrderQuantity?: number }).minOrderQuantity ?? 10;
-  const maxQ =
-    (menu as Menu & { maxOrderQuantity?: number }).maxOrderQuantity ?? 99;
+  // 최소 주문 수량 기준값 수정 필요 (백엔드 필드 추가 대기 중)
+  const minQ = storeDetail?.minOrderQuantity ?? 10;
+  const maxQ = dailyAvailableQuantity ?? storeDetail?.maxOrderQuantity ?? 999;
 
   const [cards, setCards] = useState<MenuCard[]>([]);
   const [mode, setMode] = useState<'CREATE' | 'LIST' | 'EDIT'>('CREATE');
   const [editingCardId, setEditingCardId] = useState<string | null>(null);
 
   const [quantity, setQuantity] = useState<number | ''>('');
-  const [quantityError, setQuantityError] = useState<string | null>(null); // 에러 상태 추가
   const [selectedOptions, setSelectedOptions] = useState<
     Record<number, number[]>
   >({});
@@ -69,21 +68,28 @@ export default function MenuBottomSheet({
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
+  const showToastError = (message: string) => {
+    setErrorMessage(message);
+    setShowError(true);
+    setTimeout(() => setShowError(false), 2000);
+  };
+
   // 수량 검증 로직 추가
   const handleQuantityChange = (val: string) => {
     if (val === '') {
       setQuantity('');
-      setQuantityError('수량을 입력해주세요.');
       return;
     }
-    const num = Number(val);
-    setQuantity(num);
-    if (num < minQ) {
-      setQuantityError(`최소 ${minQ}개 이상 주문해주세요`);
-    } else if (num > maxQ) {
-      setQuantityError(`최대 ${maxQ}개까지 주문 가능합니다`);
-    } else {
-      setQuantityError(null);
+    setQuantity(Number(val));
+  };
+
+  const handleQuantityBlur = () => {
+    if (typeof quantity !== 'number') return;
+
+    if (quantity < minQ) {
+      showToastError(`최소 ${minQ}개 이상 주문해주세요`);
+    } else if (quantity > maxQ) {
+      showToastError(`최대 ${maxQ}개까지 주문 가능합니다`);
     }
   };
 
@@ -135,14 +141,12 @@ export default function MenuBottomSheet({
       hasAllRequired &&
       typeof quantity === 'number' &&
       quantity >= minQ &&
-      quantity <= maxQ &&
-      !quantityError
+      quantity <= maxQ
     );
   };
 
   const handleAddNewItem = () => {
     setQuantity('');
-    setQuantityError(null); // 초기화 추가
     setSelectedOptions({});
     setExpandedGroupId(null);
     setMode('CREATE');
@@ -150,7 +154,6 @@ export default function MenuBottomSheet({
 
   const handleEditCard = (card: MenuCard) => {
     setQuantity(card.quantity);
-    setQuantityError(null); // 초기화 추가
     setSelectedOptions(card.selectedOptions);
     setExpandedGroupId(null);
     setEditingCardId(card.id);
@@ -201,17 +204,13 @@ export default function MenuBottomSheet({
       onClose();
     },
     onError: (error: Error) => {
-      setErrorMessage(error.message || '장바구니 담기에 실패했습니다.');
-      setShowError(true);
-      setTimeout(() => setShowError(false), 2000);
+      showToastError(error.message || '장바구니 담기에 실패했습니다.');
     },
   });
 
   const handleSubmitCart = () => {
     if (!pickupDate || !pickupTime) {
-      setErrorMessage('픽업 날짜를 먼저 선택해주세요.');
-      setShowError(true);
-      setTimeout(() => setShowError(false), 2000);
+      showToastError('픽업 날짜를 먼저 선택해주세요.');
       return;
     }
     if (cards.length === 0) return;
@@ -305,8 +304,7 @@ export default function MenuBottomSheet({
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 handleQuantityChange(e.target.value)
               }
-              isError={!!quantityError}
-              errorMessage={quantityError ?? undefined}
+              onBlur={handleQuantityBlur}
               disableFillStyle={true}
               helperText={
                 discountRate > 0 && discountCondition > 0 ? (

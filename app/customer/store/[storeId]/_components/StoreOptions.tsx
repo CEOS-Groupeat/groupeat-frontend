@@ -339,6 +339,7 @@ export default function StoreOptions() {
           menu={selectedMenu}
           pickupDate={activeDate}
           pickupTime={activeTime}
+          dailyAvailableQuantity={pickupData?.dailyAvailableQuantity}
           onClose={() => setSelectedMenu(null)}
         />
       )}
