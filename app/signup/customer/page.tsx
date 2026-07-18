@@ -7,6 +7,7 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
 import SignupHeader from '@/components/signup/SignupHeader';
 import { fetchClient } from '@/lib/fetchClient';
+import { isValidBirthDate } from '@/app/customer/profile/_utils/validateBirthDate';
 import CheckboxTrue from '@/public/icons/icon_checkboxTrue.svg';
 import CheckboxFalse from '@/public/icons/icon_checkboxFalse.svg';
 import DefaultButton from '@/components/ui/ButtonDefault';
@@ -64,6 +65,7 @@ function CustomerSignupForm() {
   const [name, setName] = useState('');
   const [isNameError, setIsNameError] = useState(false);
   const [birthDate, setBirthDate] = useState('');
+  const [birthDateError, setBirthDateError] = useState(false);
   const [email, setEmail] = useState('');
   const [gender, setGender] = useState<'MALE' | 'FEMALE' | null>(null);
 
@@ -97,12 +99,18 @@ function CustomerSignupForm() {
     terms
       .filter((term) => term.required)
       .every((term) => checkedTerms[term.termsId]);
-
-  const isFormValid = hasRequiredName && hasAllRequiredTerms;
+  const hasValidBirthDate = birthDate === '' || isValidBirthDate(birthDate);
+  const isFormValid =
+    hasRequiredName && hasAllRequiredTerms && hasValidBirthDate;
 
   const handleSubmitClick = () => {
     if (!hasRequiredName) {
       setIsNameError(true);
+      return;
+    }
+
+    if (birthDate && !isValidBirthDate(birthDate)) {
+      setBirthDateError(true);
       return;
     }
 
@@ -192,10 +200,25 @@ function CustomerSignupForm() {
             <InputField
               label="생년월일"
               id="userBirth"
-              type="date"
+              type="text"
               value={birthDate}
-              onChange={(e: any) => setBirthDate(e.target.value)}
+              placeholder="YYYY-MM-DD"
+              onChange={(e: any) => {
+                setBirthDate(e.target.value);
+                if (birthDateError) setBirthDateError(false);
+              }}
+              onBlur={() => {
+                if (birthDate && !isValidBirthDate(birthDate)) {
+                  setBirthDateError(true);
+                }
+              }}
+              inputClassName={birthDateError ? '!outline-status-danger' : ''}
             />
+            {birthDateError && (
+              <span className="text-status-danger text-caption1">
+                YYYY-MM-DD 형식으로 입력해주세요
+              </span>
+            )}
           </div>
 
           {/* 3. 이메일 입력 */}
