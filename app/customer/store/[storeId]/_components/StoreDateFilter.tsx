@@ -209,7 +209,7 @@ export default function StoreDateFilter({
           />
         </div>
 
-        <div className="flex items-center gap-1 pt-1">
+        <div className="flex items-center gap-1 mt-1">
           <AlertIcon className="w-4 h-4 text-icon-subtlest" />
           <p className="text-label2 text-text-subtlest">
             최소 {minOrderDays}일 전부터 주문 가능해요
