@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-// app/signup/customer/page.tsx
 import { Suspense, useEffect, useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
 import SignupHeader from '@/components/signup/SignupHeader';
 import { fetchClient } from '@/lib/fetchClient';
+import TermsContentModal from '@/app/signup/_components/TermsContentModal';
 import { isValidBirthDate } from '@/app/customer/profile/_utils/validateBirthDate';
 import CheckboxTrue from '@/public/icons/icon_checkboxTrue.svg';
 import CheckboxFalse from '@/public/icons/icon_checkboxFalse.svg';
@@ -72,6 +72,7 @@ function CustomerSignupForm() {
   const [checkedTerms, setCheckedTerms] = useState<{ [key: number]: boolean }>(
     {}
   );
+  const [selectedTerm, setSelectedTerm] = useState<Term | null>(null);
 
   const { data: terms = [] } = useQuery<Term[]>({
     queryKey: ['terms', 'CUSTOMER'],
@@ -299,7 +300,7 @@ function CustomerSignupForm() {
                 <button
                   type="button"
                   className="flex items-center gap-1"
-                  onClick={() => alert(term.content)}
+                  onClick={() => setSelectedTerm(term)}
                 >
                   <p className="text-text-subtlest text-caption1 underline">
                     보기
@@ -322,6 +323,14 @@ function CustomerSignupForm() {
           </DefaultButton>
         </div>
       </div>
+
+      {selectedTerm && (
+        <TermsContentModal
+          title={selectedTerm.title}
+          content={selectedTerm.content}
+          onClose={() => setSelectedTerm(null)}
+        />
+      )}
     </div>
   );
 }
