@@ -4,7 +4,13 @@ import { useRouter } from 'next/navigation';
 import ArrowLeft from '@/public/icons/icon_arrow_Left.svg';
 import { useSignupStore } from '@/store/useSignupStore';
 
-export default function SignupHeader() {
+interface SignupHeaderProps {
+  showBackButton?: boolean;
+}
+
+export default function SignupHeader({
+  showBackButton = true,
+}: SignupHeaderProps) {
   const router = useRouter();
   const { step, prevStep } = useSignupStore();
 
@@ -19,12 +25,16 @@ export default function SignupHeader() {
   return (
     <div className="w-full flex flex-col pt-10">
       <div className="flex py-4 items-center justify-between self-stretch">
-        <ArrowLeft
-          width={20}
-          height={20}
-          className="cursor-pointer"
-          onClick={handleBack}
-        />
+        {showBackButton ? (
+          <ArrowLeft
+            width={20}
+            height={20}
+            className="cursor-pointer"
+            onClick={handleBack}
+          />
+        ) : (
+          <div className="w-5 h-5" />
+        )}
         <span className="text-headline3 font-bold">회원가입</span>
         <div className="w-5 h-5" />
       </div>
