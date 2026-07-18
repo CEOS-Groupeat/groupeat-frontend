@@ -160,7 +160,7 @@ function CustomerSignupForm() {
 
   return (
     <div className="flex flex-col w-full bg-white px-4 min-h-screen relative">
-      <SignupHeader />
+      <SignupHeader showBackButton={false} />
 
       <div className="flex-1 flex flex-col gap-3 mt-5 pb-24">
         <h2 className="text-body text-text-default font-semibold">
