@@ -90,14 +90,20 @@ export default function CustomerOrderRequestPage() {
   const [widgets, setWidgets] = useState<any>(null);
   const isWidgetRendered = useRef(false);
 
+  const historyPushCountRef = useRef(0);
+  const handlePopStateRef = useRef<() => void>(() => {});
+
   useEffect(() => {
     history.pushState(null, '', location.href);
+    historyPushCountRef.current += 1;
 
     const handlePopState = () => {
       history.pushState(null, '', location.href);
+      historyPushCountRef.current += 1;
       setIsModalOpen(true);
     };
 
+    handlePopStateRef.current = handlePopState;
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
@@ -105,11 +111,19 @@ export default function CustomerOrderRequestPage() {
   const handleCancelOrder = () => {
     setIsModalOpen(false);
 
-    if (currentCart?.storeId) {
-      router.push(`/customer/store/${currentCart.storeId}`);
-    } else {
-      router.push('/customer/cart');
-    }
+    const target = currentCart?.storeId
+      ? `/customer/store/${currentCart.storeId}`
+      : '/customer/cart';
+
+    window.removeEventListener('popstate', handlePopStateRef.current);
+
+    const onceListener = () => {
+      window.removeEventListener('popstate', onceListener);
+      router.replace(target);
+    };
+    window.addEventListener('popstate', onceListener);
+
+    window.history.go(-historyPushCountRef.current);
   };
 
   useEffect(() => {

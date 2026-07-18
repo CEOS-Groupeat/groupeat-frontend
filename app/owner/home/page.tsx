@@ -160,9 +160,7 @@ export default function OwnerHomePage() {
           <h2 className="font-semibold text-headline3 text-text-default">
             매출 요약
           </h2>
-          <Link href="/owner/order/summary">
             <ArrowRight className="w-5 h-5 text-icon-subtlest" />
-          </Link>
         </div>
         <div className="flex w-full gap-2 mt-2">
           <DashBoardCardB
