@@ -316,7 +316,7 @@ function CustomerSignupForm() {
           {toastMessage && <ToastError text={toastMessage} />}
           <DefaultButton
             onClick={handleSubmitClick}
-            disabled={submitSignupMutation.isPending || !isFormValid}
+            disabled={submitSignupMutation.isPending || !hasRequiredName}
           >
             {submitSignupMutation.isPending ? '처리 중...' : '다음'}
           </DefaultButton>
