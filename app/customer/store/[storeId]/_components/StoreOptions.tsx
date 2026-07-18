@@ -75,7 +75,7 @@ export default function StoreOptions() {
   const [isDateExpanded, setIsDateExpanded] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string | undefined>();
   const [selectedTime, setSelectedTime] = useState<string | undefined>();
-  const [isMenuExpanded, setIsMenuExpanded] = useState(false);
+  const [isMenuExpanded, setIsMenuExpanded] = useState(true);
   const [selectedMenu, setSelectedMenu] = useState<Menu | null>(null);
 
   const activeDate = selectedDate ?? globalPickupDate ?? undefined;
@@ -142,10 +142,6 @@ export default function StoreOptions() {
   const handleTimeChange = (times: string[]) => {
     if (times.length > 0) {
       setSelectedTime(times[times.length - 1]);
-
-      setTimeout(() => {
-        setIsDateExpanded(false);
-      }, 700);
     } else {
       setSelectedTime(undefined);
     }
@@ -202,6 +198,7 @@ export default function StoreOptions() {
                   date={activeDate}
                   times={displayTime ? [displayTime] : []}
                   minOrderDays={store?.minOrderDays ?? 0}
+                  closedDays={store?.closedDays ?? undefined}
                   onDateChange={handleDateChange}
                   onTimeChange={handleTimeChange}
                   availableTimes={availableTimes}
@@ -270,7 +267,8 @@ export default function StoreOptions() {
                   return (
                     <div
                       key={menu.menuId!}
-                      className="flex flex-col w-full gap-5 py-4 border-b border-border-default"
+                      onClick={() => handleMenuSelect(menu)}
+                      className="flex flex-col w-full gap-5 py-4 border-b border-border-default cursor-pointer"
                     >
                       <div className="flex justify-between items-start w-full">
                         <div className="flex flex-col">
@@ -300,14 +298,20 @@ export default function StoreOptions() {
 
                           {quantityInCart > 0 ? (
                             <button
-                              onClick={() => handleMenuSelect(menu)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleMenuSelect(menu);
+                              }}
                               className="relative z-10 w-6.5 h-6.5 flex items-center justify-center text-label2 rounded-full bg-brand-default text-white"
                             >
                               {quantityInCart}
                             </button>
                           ) : (
                             <button
-                              onClick={() => handleMenuSelect(menu)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleMenuSelect(menu);
+                              }}
                               className="z-10 w-6.5 h-6.5 bg-white rounded-full flex justify-center items-center shadow-sm aspect-square"
                             >
                               <AddIcon className="w-[17.33px] h-[17.33px] text-icon-default" />
@@ -336,6 +340,7 @@ export default function StoreOptions() {
           menu={selectedMenu}
           pickupDate={activeDate}
           pickupTime={activeTime}
+          dailyAvailableQuantity={pickupData?.dailyAvailableQuantity}
           onClose={() => setSelectedMenu(null)}
         />
       )}
