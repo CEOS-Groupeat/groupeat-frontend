@@ -109,10 +109,12 @@ export default function MenuBottomSheet({
         }
         return { ...prev, [groupId]: [...currentGroupOptions, optionId] };
       } else {
+        if (currentGroupOptions.includes(optionId)) {
+          return { ...prev, [groupId]: [] };
+        }
         return { ...prev, [groupId]: [optionId] };
       }
     });
-    if (!isMultiple) setExpandedGroupId(null);
   };
 
   const getSelectedOptionText = (groupId: number) => {
@@ -271,6 +273,10 @@ export default function MenuBottomSheet({
                 {isExpanded && (
                   <div className="w-full flex flex-col items-start justify-between border-t border-border-strong">
                     {group.options?.map((option) => {
+                      const isSelected = (
+                        selectedOptions[group.optionGroupId!] ?? []
+                      ).includes(option.optionId!);
+
                       return (
                         <div
                           key={option.optionId!}
@@ -281,7 +287,11 @@ export default function MenuBottomSheet({
                               group.isMultiple || false
                             )
                           }
-                          className="w-full h-11 flex justify-between items-center pl-4 pr-3 py-3 cursor-pointer transition-colors bg-white text-text-default"
+                          className={`w-full h-11 flex justify-between items-center pl-4 pr-3 py-3 cursor-pointer bg-white transition-colors ${
+                            isSelected
+                              ? 'text-brand-default'
+                              : 'text-text-default'
+                          }`}
                         >
                           <span className="text-label1">{option.name}</span>
                           <span className="text-label1">
