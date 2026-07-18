@@ -75,7 +75,7 @@ export default function StoreOptions() {
   const [isDateExpanded, setIsDateExpanded] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string | undefined>();
   const [selectedTime, setSelectedTime] = useState<string | undefined>();
-  const [isMenuExpanded, setIsMenuExpanded] = useState(false);
+  const [isMenuExpanded, setIsMenuExpanded] = useState(true);
   const [selectedMenu, setSelectedMenu] = useState<Menu | null>(null);
 
   const activeDate = selectedDate ?? globalPickupDate ?? undefined;
@@ -142,10 +142,6 @@ export default function StoreOptions() {
   const handleTimeChange = (times: string[]) => {
     if (times.length > 0) {
       setSelectedTime(times[times.length - 1]);
-
-      setTimeout(() => {
-        setIsDateExpanded(false);
-      }, 700);
     } else {
       setSelectedTime(undefined);
     }
