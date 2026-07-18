@@ -85,7 +85,7 @@ export default function OwnerMyPage() {
               <Link href="/owner/info" className="w-full">
                 <SettingOption text="사업자 정보" icon="bag" />
               </Link>
-              <Link href="/alert" className="w-full">
+              <Link href="/owner/settings/alert" className="w-full">
                 <SettingOption text="알림 설정" icon="alarm" />
               </Link>
               <Link href="/owner/terms?targetType=BUSINESS" className="w-full">
