@@ -1,4 +1,3 @@
-// app/signup/SignupFunnel.tsx
 'use client';
 
 import { useSignupStore } from '@/store/useSignupStore';
@@ -13,7 +12,7 @@ export default function OwnerSignupFunnel() {
 
   return (
     <div className="flex flex-col w-full bg-white px-4 min-h-screen">
-      <SignupHeader />
+      <SignupHeader showBackButton={step !== 1} />
 
       <div className="flex-1 flex flex-col">
         {step === 1 && <OwnerTermsStep />}
