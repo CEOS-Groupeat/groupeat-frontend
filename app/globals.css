@@ -6,7 +6,11 @@
 
 @font-face {
   font-family: 'Pretendard';
-  src: url('../assets/fonts/PretendardVariable.woff2') format('woff2');
+  src: url('../assets/fonts/PretendardVariable.woff2')
+    format('woff2-variations');
+  font-weight: 45 920;
+  font-style: normal;
+  font-display: swap;
 }
 
 @theme {
@@ -186,7 +190,7 @@
   --color-background-subtlest: var(--color-gray-15);
   --color-background-dim: #1717198c;
   --color-background-toast: #171719d9;
-  --color-background-transparent: rgba(240, 240, 241, 0.80);
+  --color-background-transparent: rgba(240, 240, 241, 0.8);
 
   /* Icon */
   --color-icon-default: var(--color-gray-70);
