@@ -55,7 +55,7 @@ export default function CustomerHomePage() {
           </div>
         ))}
         <div className="mb-11 px-4">
-          <StoreSection {...section2[0]} variant="large" />
+          <StoreSection {...section2[0]} variant="large" isComingSoon />
         </div>
 
         <CustomerNavbar />
