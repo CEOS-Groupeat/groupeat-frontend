@@ -1,18 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-// app/signup/customer/page.tsx
 import { Suspense, useEffect, useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
 import SignupHeader from '@/components/signup/SignupHeader';
 import { fetchClient } from '@/lib/fetchClient';
+import TermsContentModal from '@/app/signup/_components/TermsContentModal';
+import { isValidBirthDate } from '@/app/customer/profile/_utils/validateBirthDate';
 import CheckboxTrue from '@/public/icons/icon_checkboxTrue.svg';
 import CheckboxFalse from '@/public/icons/icon_checkboxFalse.svg';
 import DefaultButton from '@/components/ui/ButtonDefault';
 import InputField from '@/components/ui/InputField';
 import { useSignupStore } from '@/store/useSignupStore';
 import ToastError from '@/components/ui/ToastError';
+import SuccessToast from '@/components/ui/SuccessToast';
 
 interface ApiResponse<T> {
   isSuccess: boolean;
@@ -64,12 +66,15 @@ function CustomerSignupForm() {
   const [name, setName] = useState('');
   const [isNameError, setIsNameError] = useState(false);
   const [birthDate, setBirthDate] = useState('');
+  const [birthDateError, setBirthDateError] = useState(false);
   const [email, setEmail] = useState('');
   const [gender, setGender] = useState<'MALE' | 'FEMALE' | null>(null);
 
   const [checkedTerms, setCheckedTerms] = useState<{ [key: number]: boolean }>(
     {}
   );
+  const [selectedTerm, setSelectedTerm] = useState<Term | null>(null);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
 
   const { data: terms = [] } = useQuery<Term[]>({
     queryKey: ['terms', 'CUSTOMER'],
@@ -97,12 +102,18 @@ function CustomerSignupForm() {
     terms
       .filter((term) => term.required)
       .every((term) => checkedTerms[term.termsId]);
-
-  const isFormValid = hasRequiredName && hasAllRequiredTerms;
+  const hasValidBirthDate = birthDate === '' || isValidBirthDate(birthDate);
+  const isFormValid =
+    hasRequiredName && hasAllRequiredTerms && hasValidBirthDate;
 
   const handleSubmitClick = () => {
     if (!hasRequiredName) {
       setIsNameError(true);
+      return;
+    }
+
+    if (birthDate && !isValidBirthDate(birthDate)) {
+      setBirthDateError(true);
       return;
     }
 
@@ -149,8 +160,10 @@ function CustomerSignupForm() {
       return result;
     },
     onSuccess: () => {
-      alert('고객 회원가입이 완료되었습니다.');
-      router.replace('/');
+      setShowSuccessToast(true);
+      setTimeout(() => {
+        router.replace('/login');
+      }, 2000);
     },
     onError: (error: any) => {
       console.error(error);
@@ -160,7 +173,7 @@ function CustomerSignupForm() {
 
   return (
     <div className="flex flex-col w-full bg-white px-4 min-h-screen relative">
-      <SignupHeader />
+      <SignupHeader showBackButton={false} />
 
       <div className="flex-1 flex flex-col gap-3 mt-5 pb-24">
         <h2 className="text-body text-text-default font-semibold">
@@ -192,10 +205,25 @@ function CustomerSignupForm() {
             <InputField
               label="생년월일"
               id="userBirth"
-              type="date"
+              type="text"
               value={birthDate}
-              onChange={(e: any) => setBirthDate(e.target.value)}
+              placeholder="YYYY-MM-DD"
+              onChange={(e: any) => {
+                setBirthDate(e.target.value);
+                if (birthDateError) setBirthDateError(false);
+              }}
+              onBlur={() => {
+                if (birthDate && !isValidBirthDate(birthDate)) {
+                  setBirthDateError(true);
+                }
+              }}
+              inputClassName={birthDateError ? '!outline-status-danger' : ''}
             />
+            {birthDateError && (
+              <span className="text-status-danger text-caption1">
+                YYYY-MM-DD 형식으로 입력해주세요
+              </span>
+            )}
           </div>
 
           {/* 3. 이메일 입력 */}
@@ -276,7 +304,7 @@ function CustomerSignupForm() {
                 <button
                   type="button"
                   className="flex items-center gap-1"
-                  onClick={() => alert(term.content)}
+                  onClick={() => setSelectedTerm(term)}
                 >
                   <p className="text-text-subtlest text-caption1 underline">
                     보기
@@ -293,12 +321,23 @@ function CustomerSignupForm() {
           {toastMessage && <ToastError text={toastMessage} />}
           <DefaultButton
             onClick={handleSubmitClick}
-            disabled={submitSignupMutation.isPending || !isFormValid}
+            disabled={submitSignupMutation.isPending || !hasRequiredName}
           >
             {submitSignupMutation.isPending ? '처리 중...' : '다음'}
           </DefaultButton>
         </div>
       </div>
+
+      {selectedTerm && (
+        <TermsContentModal
+          title={selectedTerm.title}
+          content={selectedTerm.content}
+          onClose={() => setSelectedTerm(null)}
+        />
+      )}
+      {showSuccessToast && (
+        <SuccessToast text="고객 회원가입이 완료되었습니다." bottom={96} />
+      )}
     </div>
   );
 }
