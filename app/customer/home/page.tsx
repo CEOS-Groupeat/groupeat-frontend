@@ -1,5 +1,7 @@
 'use client';
 
+import { Suspense, useState } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import HomeHero from './_components/HomeHero';
 import FiltersContainer from './_components/FiltersContainer';
 import StoreSection from './_components/StoreSection';
@@ -8,6 +10,23 @@ import CustomerNavbar from '@/components/ui/CustomerNavbar';
 import { useTopRatedStores } from './_hooks/useTopRatedStores';
 import { useHighDiscountStores } from './_hooks/useHighDiscountStores';
 import { toHomeStore } from './_types/recommendation.type';
+import CustomerInfoModal from '@/app/login/_components/CustomerInfoModal';
+
+function CustomerIntroModalTrigger() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [showModal, setShowModal] = useState(
+    () => searchParams.get('modal') === 'intro'
+  );
+
+  const handleClose = () => {
+    setShowModal(false);
+    router.replace('/customer/home');
+  };
+
+  if (!showModal) return null;
+  return <CustomerInfoModal onClose={handleClose} />;
+}
 
 export default function CustomerHomePage() {
   const { data: topRatedData } = useTopRatedStores();
@@ -60,6 +79,10 @@ export default function CustomerHomePage() {
 
         <CustomerNavbar />
       </div>
+
+      <Suspense fallback={null}>
+        <CustomerIntroModalTrigger />
+      </Suspense>
     </div>
   );
 }
