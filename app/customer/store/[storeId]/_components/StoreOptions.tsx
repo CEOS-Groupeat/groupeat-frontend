@@ -198,6 +198,7 @@ export default function StoreOptions() {
                   date={activeDate}
                   times={displayTime ? [displayTime] : []}
                   minOrderDays={store?.minOrderDays ?? 0}
+                  closedDays={store?.closedDays ?? undefined}
                   onDateChange={handleDateChange}
                   onTimeChange={handleTimeChange}
                   availableTimes={availableTimes}

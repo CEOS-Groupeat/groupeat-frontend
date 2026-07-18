@@ -15,6 +15,7 @@ interface DateFilterProps {
   times: string[];
   availableTimes?: string[];
   minOrderDays?: number;
+  closedDays?: string;
   onDateChange: (date: string) => void;
   onTimeChange: (times: string[]) => void;
 }
@@ -24,6 +25,7 @@ export default function StoreDateFilter({
   times,
   availableTimes = [],
   minOrderDays,
+  closedDays,
   onDateChange,
   onTimeChange,
 }: DateFilterProps) {
@@ -31,6 +33,25 @@ export default function StoreDateFilter({
 
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  const closedDaySet = useMemo(() => {
+    return new Set((closedDays ?? '').split(',').filter(Boolean));
+  }, [closedDays]);
+
+  const dayOfWeekMap = [
+    'SUNDAY',
+    'MONDAY',
+    'TUESDAY',
+    'WEDNESDAY',
+    'THURSDAY',
+    'FRIDAY',
+    'SATURDAY',
+  ];
+
+  const isClosedDay = (day: Date): boolean => {
+    const dayName = dayOfWeekMap[day.getDay()];
+    return closedDaySet.has(dayName);
+  };
 
   const today = useMemo(() => {
     const d = new Date();
@@ -55,6 +76,13 @@ export default function StoreDateFilter({
 
   const handleDaySelect = (day: Date | undefined) => {
     if (!day) return;
+
+    if (isClosedDay(day)) {
+      setErrorMessage('휴무일에는 주문할 수 없어요');
+      setShowError(true);
+      setTimeout(() => setShowError(false), 2000);
+      return;
+    }
 
     const minAllowedDate = new Date(today);
     minAllowedDate.setDate(today.getDate() + minOrderDays!);
@@ -179,7 +207,7 @@ export default function StoreDateFilter({
             mode="single"
             selected={selectedDate}
             onSelect={handleDaySelect}
-            disabled={{ before: today }}
+            disabled={[{ before: today }, isClosedDay]}
             month={viewMonth}
             onMonthChange={setViewMonth}
             hideNavigation
