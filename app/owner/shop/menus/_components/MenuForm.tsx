@@ -131,6 +131,19 @@ export default function MenuForm({
     );
   };
 
+  const handleRemoveOption = (groupId: string, optionId: string) => {
+    setOptionGroups((groups) =>
+      groups.map((g) =>
+        g.id === groupId
+          ? {
+              ...g,
+              options: g.options.filter((o) => o.id !== optionId),
+            }
+          : g
+      )
+    );
+  };
+
   const handleGroupChange = (groupId: string, newName: string) => {
     setOptionGroups((groups) =>
       groups.map((g) => (g.id === groupId ? { ...g, name: newName } : g))
@@ -318,6 +331,17 @@ export default function MenuForm({
                                 )
                               }
                             />
+                            <button
+                              type="button"
+                              onClick={() =>
+                                handleRemoveOption(group.id, opt.id)
+                              }
+                              className="w-14 h-11 bg-background-default rounded-lg outline outline-1 outline-offset-[-1px] outline-border-default flex justify-center items-center shrink-0"
+                            >
+                              <span className="text-text-default text-label1 font-medium">
+                                삭제
+                              </span>
+                            </button>
                           </div>
                         ))}
                       </div>
@@ -370,7 +394,9 @@ export default function MenuForm({
         />
       )}
 
-      {showSuccessToast && <SuccessToast text="사진 업로드가 완료되었습니다" bottom={102} />}
+      {showSuccessToast && (
+        <SuccessToast text="사진 업로드가 완료되었습니다" bottom={102} />
+      )}
       {showErrorToast && <ToastError text={errorMessage} />}
     </>
   );
