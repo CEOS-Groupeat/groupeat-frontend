@@ -23,9 +23,12 @@ export default function LocationFilter({
   const [search, setSearch] = useState('');
   const [isFocused, setIsFocused] = useState(false);
 
-  const filtered = LOCATION_OPTIONS.filter(
-    (loc: LocationOption) => search === '' || loc.label.includes(search)
-  );
+  const filtered =
+    search === ''
+      ? []
+      : LOCATION_OPTIONS.filter((loc: LocationOption) =>
+          loc.label.includes(search)
+        );
 
   const handleSelect = (loc: LocationOption) => {
     onChange(loc.value);
@@ -43,7 +46,7 @@ export default function LocationFilter({
     return (
       <button
         type="button"
-        onClick={() => setIsEditing(true)} 
+        onClick={() => setIsEditing(true)}
         className="w-full h-11 pl-4 pr-3 py-2 bg-background-subtle rounded-lg flex items-center"
       >
         <span className="text-base text-text-default">{selectedLabel}</span>
@@ -58,7 +61,7 @@ export default function LocationFilter({
         <SearchIcon className="size-5 text-icon-subtlest shrink-0" />
         <input
           type="text"
-          placeholder="지역을 선택하세요"
+          placeholder="지역을 선택하세요 (예: 강남구)"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           onFocus={() => setIsFocused(true)}
@@ -69,8 +72,8 @@ export default function LocationFilter({
       </div>
 
       {isFocused && filtered.length > 0 && (
-        <div className="rounded-lg outline outline-1 outline-border-default overflow-hidden shadow-[0px_0px_15px_0px_rgba(0,0,0,0.05)]">
-          {filtered.slice(0, 5).map((loc, idx, arr) => (
+        <div className="max-h-[220px] overflow-y-auto rounded-lg outline outline-1 outline-border-default overflow-hidden shadow-[0px_0px_15px_0px_rgba(0,0,0,0.05)]">
+          {filtered.map((loc, idx, arr) => (
             <button
               key={loc.value}
               type="button"

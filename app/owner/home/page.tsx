@@ -3,6 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchClient } from '@/lib/fetchClient';
 import Link from 'next/link';
+import type { GetResponse } from '@/src/types/api';
 
 import AlertCard from '@/components/owner/AlertCard';
 import DashboardCardA from '@/components/owner/DashboardCardA';
@@ -27,24 +28,9 @@ interface ApiResponseDashboard {
   data: DashboardSummaryData;
 }
 
-interface OrderSummaryDTO {
-  orderId: number;
-  isReorder: boolean;
-  eventName: string;
-  customerName: string;
-  pickupTime: string;
-  menu: string;
-  quantity: string;
-}
-
-interface ApiResponseOrderList {
-  isSuccess: boolean;
-  code: string;
-  message: string;
-  data: {
-    orders: OrderSummaryDTO[];
-  };
-}
+type OwnerOrderListResponse = GetResponse<'/api/owner/orders'>;
+type OwnerOrderListData = NonNullable<OwnerOrderListResponse['data']>;
+type OwnerOrderSummary = NonNullable<OwnerOrderListData['orderList']>[number];
 
 export default function OwnerHomePage() {
   const { data: dashboardData, isLoading: isDashboardLoading } =
@@ -62,17 +48,17 @@ export default function OwnerHomePage() {
       },
     });
 
-  const { data: todaysOrders, isLoading: isOrdersLoading } = useQuery<
-    OrderSummaryDTO[]
-  >({
-    queryKey: ['ownerOrders', 'today'],
+  const todayDate = new Date().toISOString().split('T')[0];
+
+  const { data: todaysOrders, isLoading: isOrdersLoading } = useQuery({
+    queryKey: ['ownerOrders', 'todayDate'],
     queryFn: async () => {
-      const res = await fetchClient<ApiResponseOrderList>(
-        '/api/owner/orders?filter=today'
+      const res = await fetchClient<OwnerOrderListResponse>(
+        `/api/owner/orders?tab=CONFIRMED&filterDate=${todayDate}`
       );
       if (!res.isSuccess)
         throw new Error(res.message || '주문 목록을 불러오지 못했습니다.');
-      return res.data?.orders || [];
+      return res.data?.orderList ?? [];
     },
   });
 
@@ -94,7 +80,7 @@ export default function OwnerHomePage() {
   const increasedOrderCount = 3;
   const increasedSalesAmount = 5;
 
-  const orderList = todaysOrders || [];
+  const orderList: OwnerOrderSummary[] = todaysOrders ?? [];
 
   return (
     <div className="flex flex-col items-center w-full min-h-screen pb-23 bg-background-default">
@@ -120,12 +106,20 @@ export default function OwnerHomePage() {
       )}
 
       <section className="flex w-full gap-2 px-4 mt-2">
-        <DashboardCardA text="픽업 예정 건" icon="box" count={confirmedCount} />
-        <DashboardCardA
-          text="픽업 완료"
-          icon="terminated"
-          count={completedCount}
-        />
+        <Link href="/owner/orders?tab=CONFIRMED" className="flex-1">
+          <DashboardCardA
+            text="픽업 예정 건"
+            icon="box"
+            count={confirmedCount}
+          />
+        </Link>
+        <Link href="/owner/orders?tab=PAST" className="flex-1">
+          <DashboardCardA
+            text="픽업 완료"
+            icon="terminated"
+            count={completedCount}
+          />
+        </Link>
       </section>
 
       <section className="flex flex-col w-full px-4 mt-7">
@@ -133,14 +127,23 @@ export default function OwnerHomePage() {
           <h2 className="font-semibold text-headline3 text-text-default">
             오늘 픽업 건
           </h2>
-          <Link href="/owner/orders">
+          <Link href="/owner/orders?tab=CONFIRMED">
             <ArrowRight className="w-5 h-5 text-icon-subtlest" />
           </Link>
         </div>
         <div className="flex flex-col w-full gap-2 mt-2">
           {orderList.length > 0 ? (
-            orderList.map((order) => (
-              <OrderList key={order.orderId} {...order} />
+            orderList.map((order: OwnerOrderSummary) => (
+              <OrderList
+                key={order.orderId}
+                orderId={order.orderId ?? 0}
+                isReorder={order.isReorder ?? false}
+                eventName={order.groupName ?? ''}
+                customerName={order.customerName ?? ''}
+                pickupTime={order.pickupTime ?? ''}
+                menu={order.items?.[0]?.menuName ?? ''}
+                quantity={String(order.items?.[0]?.quantity ?? '')}
+              />
             ))
           ) : (
             <div className="w-full h-32 flex p-3 flex-col justify-center items-center gap-5 rounded-lg border border-border-subtle bg-static-white shadow-[6px_6px_54px_0_rgba(0,0,0,0.05)]">
@@ -160,7 +163,7 @@ export default function OwnerHomePage() {
           <h2 className="font-semibold text-headline3 text-text-default">
             매출 요약
           </h2>
-            <ArrowRight className="w-5 h-5 text-icon-subtlest" />
+          <ArrowRight className="w-5 h-5 text-icon-subtlest" />
         </div>
         <div className="flex w-full gap-2 mt-2">
           <DashBoardCardB

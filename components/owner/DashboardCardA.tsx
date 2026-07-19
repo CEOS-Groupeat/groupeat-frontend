@@ -9,7 +9,7 @@ interface DashboardCardAProps {
 
 export default function DashboardCardA({ text, icon, count }: DashboardCardAProps) {
   return (
-    <div className="flex w-1/2 h-18.5 p-3 justify-between items-center bg-static-white border border-px border-border-subtle shadow-[6px_6px_54px_0_rgba(0,0,0,0.05)] rounded-lg">
+    <div className="flex h-18.5 p-3 justify-between items-center bg-static-white border border-px border-border-subtle shadow-[6px_6px_54px_0_rgba(0,0,0,0.05)] rounded-lg">
       <div className="flex w-full justify-between items-center shrink-0 self-stretch">
         <div className="flex flex-col justify-center items-start gap-1.5 self-stretch">
           <div className="flex items-center gap-5">
