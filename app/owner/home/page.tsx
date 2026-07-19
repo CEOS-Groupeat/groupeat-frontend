@@ -163,8 +163,19 @@ export default function OwnerHomePage() {
           <h2 className="font-semibold text-headline3 text-text-default">
             매출 요약
           </h2>
-          <ArrowRight className="w-5 h-5 text-icon-subtlest" />
+          <Link href="/owner/orders/summary">
+            <ArrowRight className="w-5 h-5 text-icon-subtlest" />
+          </Link>
         </div>
+        <div className="w-full mt-2 h-32 flex p-3 flex-col justify-center items-center gap-5 rounded-lg border border-border-subtle bg-static-white shadow-[6px_6px_54px_0_rgba(0,0,0,0.05)]">
+          <div className="flex pb-2 flex-col items-center gap-0.5">
+            <NoOrderIllust className="size-[70px]" />
+            <p className="text-text-placeholder text-caption2 font-medium">
+              준비 중인 서비스입니다.
+            </p>
+          </div>
+        </div>
+        {/* 준비 중인 서비스 ui 임시 변경 
         <div className="flex w-full gap-2 mt-2">
           <DashBoardCardB
             text="이번 주 주문 수"
@@ -178,7 +189,7 @@ export default function OwnerHomePage() {
             count={weeklySalesAmount}
             increasedCount={increasedSalesAmount}
           />
-        </div>
+        </div> */}
 
         <OwnerNavbar />
       </section>
