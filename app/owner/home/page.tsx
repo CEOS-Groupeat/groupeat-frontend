@@ -120,12 +120,20 @@ export default function OwnerHomePage() {
       )}
 
       <section className="flex w-full gap-2 px-4 mt-2">
-        <DashboardCardA text="픽업 예정 건" icon="box" count={confirmedCount} />
-        <DashboardCardA
-          text="픽업 완료"
-          icon="terminated"
-          count={completedCount}
-        />
+        <Link href="/owner/orders?tab=CONFIRMED" className="flex-1">
+          <DashboardCardA
+            text="픽업 예정 건"
+            icon="box"
+            count={confirmedCount}
+          />
+        </Link>
+        <Link href="/owner/orders?tab=PAST" className="flex-1">
+          <DashboardCardA
+            text="픽업 완료"
+            icon="terminated"
+            count={completedCount}
+          />
+        </Link>
       </section>
 
       <section className="flex flex-col w-full px-4 mt-7">
@@ -160,7 +168,7 @@ export default function OwnerHomePage() {
           <h2 className="font-semibold text-headline3 text-text-default">
             매출 요약
           </h2>
-            <ArrowRight className="w-5 h-5 text-icon-subtlest" />
+          <ArrowRight className="w-5 h-5 text-icon-subtlest" />
         </div>
         <div className="flex w-full gap-2 mt-2">
           <DashBoardCardB
