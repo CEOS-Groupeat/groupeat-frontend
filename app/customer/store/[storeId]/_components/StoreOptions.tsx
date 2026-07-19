@@ -341,6 +341,7 @@ export default function StoreOptions() {
           pickupDate={activeDate}
           pickupTime={activeTime}
           dailyAvailableQuantity={pickupData?.dailyAvailableQuantity}
+          dailyMinOrderQuantity={pickupData?.dailyMinOrderQuantity}
           onClose={() => setSelectedMenu(null)}
         />
       )}
