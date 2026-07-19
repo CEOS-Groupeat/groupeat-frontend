@@ -245,7 +245,7 @@ export default function PhoneVerifyStep() {
             : '다음'}
         </DefaultButton>
         {showSuccessToast && (
-          <SuccessToast text="인증번호가 발송되었습니다" bottom={96} />
+          <SuccessToast text="인증번호가 전송되었습니다." bottom={96} />
         )}
       </div>
     </div>
