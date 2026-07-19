@@ -2850,6 +2850,18 @@ export interface components {
              * @example 200
              */
             maxOrderQuantity?: number;
+            /**
+             * Format: date
+             * @description 운영 일정 시작일
+             * @example 2026-05-20
+             */
+            scheduleStartDate?: string;
+            /**
+             * Format: date
+             * @description 운영 일정 종료일
+             * @example 2027-05-20
+             */
+            scheduleEndDate?: string;
         };
         ApiResponseReviewListResponse: {
             isSuccess?: boolean;
@@ -3038,6 +3050,12 @@ export interface components {
              * @example 2026-04-23
              */
             date?: string;
+            /**
+             * Format: int32
+             * @description 최소 주문 가능 수량
+             * @example 10
+             */
+            dailyMinOrderQuantity?: number;
             /**
              * Format: int32
              * @description 총 주문 가능 수량

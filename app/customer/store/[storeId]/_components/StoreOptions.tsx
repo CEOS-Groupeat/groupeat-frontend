@@ -199,6 +199,8 @@ export default function StoreOptions() {
                   times={displayTime ? [displayTime] : []}
                   minOrderDays={store?.minOrderDays ?? 0}
                   closedDays={store?.closedDays ?? undefined}
+                  scheduleStartDate={store?.scheduleStartDate}
+                  scheduleEndDate={store?.scheduleEndDate}
                   onDateChange={handleDateChange}
                   onTimeChange={handleTimeChange}
                   availableTimes={availableTimes}
@@ -341,6 +343,7 @@ export default function StoreOptions() {
           pickupDate={activeDate}
           pickupTime={activeTime}
           dailyAvailableQuantity={pickupData?.dailyAvailableQuantity}
+          dailyMinOrderQuantity={pickupData?.dailyMinOrderQuantity}
           onClose={() => setSelectedMenu(null)}
         />
       )}
