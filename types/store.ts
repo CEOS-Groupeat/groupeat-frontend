@@ -30,6 +30,7 @@ export interface StoreDetail {
 export interface PickupTimeInfo {
   date: string;
   dailyAvailableQuantity: number;
+  dailyMinOrderQuantity: number;
   openTime: string;
   closeTime: string;
   intervalMinutes: number;
