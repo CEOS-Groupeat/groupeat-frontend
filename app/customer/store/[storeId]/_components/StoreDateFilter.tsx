@@ -16,6 +16,8 @@ interface DateFilterProps {
   availableTimes?: string[];
   minOrderDays?: number;
   closedDays?: string;
+  scheduleStartDate?: string;
+  scheduleEndDate?: string;
   onDateChange: (date: string) => void;
   onTimeChange: (times: string[]) => void;
 }
@@ -26,6 +28,8 @@ export default function StoreDateFilter({
   availableTimes = [],
   minOrderDays,
   closedDays,
+  scheduleStartDate,
+  scheduleEndDate,
   onDateChange,
   onTimeChange,
 }: DateFilterProps) {
@@ -51,6 +55,20 @@ export default function StoreDateFilter({
   const isClosedDay = (day: Date): boolean => {
     const dayName = dayOfWeekMap[day.getDay()];
     return closedDaySet.has(dayName);
+  };
+
+  const isOutOfSchedule = (day: Date): boolean => {
+    if (scheduleStartDate) {
+      const start = new Date(scheduleStartDate);
+      start.setHours(0, 0, 0, 0);
+      if (day < start) return true;
+    }
+    if (scheduleEndDate) {
+      const end = new Date(scheduleEndDate);
+      end.setHours(0, 0, 0, 0);
+      if (day > end) return true;
+    }
+    return false;
   };
 
   const today = useMemo(() => {
@@ -79,6 +97,13 @@ export default function StoreDateFilter({
 
     if (isClosedDay(day)) {
       setErrorMessage('휴무일에는 주문할 수 없어요');
+      setShowError(true);
+      setTimeout(() => setShowError(false), 2000);
+      return;
+    }
+
+    if (isOutOfSchedule(day)) {
+      setErrorMessage('운영 기간이 아니에요');
       setShowError(true);
       setTimeout(() => setShowError(false), 2000);
       return;
@@ -207,7 +232,7 @@ export default function StoreDateFilter({
             mode="single"
             selected={selectedDate}
             onSelect={handleDaySelect}
-            disabled={[{ before: today }, isClosedDay]}
+            disabled={[{ before: today }, isClosedDay, isOutOfSchedule]}
             month={viewMonth}
             onMonthChange={setViewMonth}
             hideNavigation
