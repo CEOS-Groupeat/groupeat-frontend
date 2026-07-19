@@ -1,4 +1,5 @@
 interface OrderListProps {
+  orderId: number | undefined;
   isReorder: boolean;
   eventName: string;
   customerName: string;
@@ -8,6 +9,7 @@ interface OrderListProps {
 }
 
 export default function OrderList({
+  orderId,
   isReorder,
   eventName,
   customerName,
