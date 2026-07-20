@@ -158,12 +158,12 @@ export default function StoreDateFilter({
             : [...times, slot];
           onTimeChange(updatedTimes);
         }}
-        className={`h-10 rounded-lg text-xs transition-colors ${
+        className={`h-10 rounded-lg text-label2 tracking-normal transition-colors ${
           active
-            ? 'bg-brand-default text-text-inverse'
+            ? 'bg-brand-default text-text-inverse font-semibold'
             : disabled || !date
-              ? 'bg-background-subtlest text-text-subtlest cursor-not-allowed outline outline-1'
-              : 'bg-background-default outline outline-1 outline-border-default text-text-default hover:bg-background-subtle'
+              ? 'bg-background-subtlest text-text-subtlest cursor-not-allowed outline outline-1 font-normal'
+              : 'bg-background-default outline outline-1 outline-border-default text-text-default hover:bg-background-subtle font-normal'
         }`}
       >
         {label}
