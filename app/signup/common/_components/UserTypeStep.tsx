@@ -22,7 +22,7 @@ export default function UserTypeStep() {
             className={`flex w-41.5 h-38.5 px-2.5 py-5.5 flex-col justify-center items-center gap-2.5 flex-1 border rounded-2xl transition-all duration-200 ${
               memberType === 'CUSTOMER'
                 ? 'bg-brand-background border-transparent'
-                : 'border-border-default bg-background-default hover:bg-gray-50'
+                : 'border-border-default bg-background-default hover:bg-hover'
             }`}
           >
             <div className="w-18.5 h-18.5">
@@ -41,7 +41,7 @@ export default function UserTypeStep() {
             className={`flex h-38.5 px-2.5 py-5.5 flex-col justify-center items-center gap-2.5 flex-1 border rounded-2xl transition-all duration-200 ${
               memberType === 'BUSINESS'
                 ? 'bg-brand-background border-transparent'
-                : 'border-border-default bg-background-default hover:bg-gray-50'
+                : 'border-border-default bg-background-default hover:bg-hover'
             }`}
           >
             <div className="w-18.5 h-18.5">

@@ -131,6 +131,19 @@ export default function MenuForm({
     );
   };
 
+  const handleRemoveOption = (groupId: string, optionId: string) => {
+    setOptionGroups((groups) =>
+      groups.map((g) =>
+        g.id === groupId
+          ? {
+              ...g,
+              options: g.options.filter((o) => o.id !== optionId),
+            }
+          : g
+      )
+    );
+  };
+
   const handleGroupChange = (groupId: string, newName: string) => {
     setOptionGroups((groups) =>
       groups.map((g) => (g.id === groupId ? { ...g, name: newName } : g))
@@ -155,6 +168,10 @@ export default function MenuForm({
           : g
       )
     );
+  };
+
+  const handleRemoveGroup = (groupId: string) => {
+    setOptionGroups((groups) => groups.filter((g) => g.id !== groupId));
   };
 
   const isFormValid =
@@ -266,8 +283,20 @@ export default function MenuForm({
                         key={group.id}
                         className="flex flex-col items-start self-stretch mt-5"
                       >
+                        <div className="flex justify-between items-start self-stretch">
+                          <span className="text-text-default text-label2 font-normal">
+                            그룹명
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveGroup(group.id)}
+                            className="text-text-placeholder text-caption1 font-semibold"
+                          >
+                            삭제
+                          </button>
+                        </div>
                         <InputField
-                          label="그룹명"
+                          label=""
                           labelClassName="text-label2 font-normal text-text-default"
                           value={group.name}
                           onChange={(e) =>
@@ -318,6 +347,17 @@ export default function MenuForm({
                                 )
                               }
                             />
+                            <button
+                              type="button"
+                              onClick={() =>
+                                handleRemoveOption(group.id, opt.id)
+                              }
+                              className="w-14 h-11 bg-background-default rounded-lg outline outline-1 outline-offset-[-1px] outline-border-default flex justify-center items-center shrink-0"
+                            >
+                              <span className="text-text-default text-label1 font-medium">
+                                삭제
+                              </span>
+                            </button>
                           </div>
                         ))}
                       </div>
@@ -370,7 +410,9 @@ export default function MenuForm({
         />
       )}
 
-      {showSuccessToast && <SuccessToast text="사진 업로드가 완료되었습니다" bottom={102} />}
+      {showSuccessToast && (
+        <SuccessToast text="사진 업로드가 완료되었습니다" bottom={102} />
+      )}
       {showErrorToast && <ToastError text={errorMessage} />}
     </>
   );
