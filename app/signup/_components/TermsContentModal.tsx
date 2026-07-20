@@ -15,7 +15,7 @@ export default function TermsContentModal({
   onClose,
 }: TermsContentModalProps) {
   return (
-    <div className="fixed inset-0 z-modal flex items-center justify-center p-4">
+    <div className="app-container inset-0 z-modal flex items-center justify-center p-4">
       <button
         type="button"
         aria-label="모달 닫기"

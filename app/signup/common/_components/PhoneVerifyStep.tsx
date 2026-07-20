@@ -162,7 +162,7 @@ export default function PhoneVerifyStep() {
                   if (showPhoneError) setShowPhoneError(false);
                 }}
                 disabled={isVerified}
-                className="flex-1 h-11 pl-4 pr-3 py-3 rounded-lg border border-px border-border-default placeholder:text-body placeholder:text-text-placeholder focus:outline-none focus:border-border-active disabled:bg-neutral-5 disabled:text-text-disabled"
+                className="flex-1 min-w-0 h-11 pl-4 pr-3 py-3 rounded-lg border border-px border-border-strong placeholder:text-body placeholder:text-text-placeholder focus:outline-none focus:border-border-active disabled:bg-neutral-5 disabled:text-text-disabled"
                 placeholder="휴대폰 번호 입력"
               />
 
@@ -231,7 +231,7 @@ export default function PhoneVerifyStep() {
         </div>
       </div>
 
-      <div className="fixed bottom-6 left-0 w-full flex justify-center px-4">
+      <div className="app-container bottom-6 flex justify-center px-4">
         <DefaultButton
           onClick={handleNextStep}
           disabled={
