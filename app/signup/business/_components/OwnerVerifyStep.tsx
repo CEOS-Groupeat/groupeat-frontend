@@ -8,6 +8,7 @@ import { useValidateBusiness } from '@/hooks/useValidateBusiness';
 import { useSignupBusiness } from '@/hooks/useValidateBusiness';
 import { useBusinessSignupStore } from '@/store/useBusinessSignupStore';
 import { businessDocumentAPI } from '@/src/api/businessDocument.api';
+import Close from '@/public/icons/icon_close.svg';
 
 export default function OwnerVerifyStep() {
   const router = useRouter();
@@ -31,6 +32,8 @@ export default function OwnerVerifyStep() {
   const payload = useBusinessSignupStore((state) => state.payload);
   const updatePayload = useBusinessSignupStore((state) => state.updatePayload);
   const resetPayload = useBusinessSignupStore((state) => state.resetPayload);
+
+  const isValidated = !!payload.businessValidationToken;
 
   const handleBusinessNumberChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -165,11 +168,12 @@ export default function OwnerVerifyStep() {
   return (
     <div className="flex flex-col items-start gap-3 self-stretch mt-3 pb-24">
       <div className="flex flex-col justify-center items-start gap-2 self-stretch">
-        <div className="flex w-full flex-col items-start gap-4">
-          <h2 className="text-body font-semibold">휴대폰 본인 인증</h2>
+        <div className="flex w-full flex-col items-start gap-3">
+          <h2 className="text-body font-semibold">사업자 인증</h2>
 
           <div className="flex flex-col items-start gap-4.5 self-stretch w-full">
             <div className="flex flex-col items-start w-full gap-2">
+              <p className="text-label1 text-text-default">사업자등록번호</p>
               <div className="flex items-start gap-2 w-full">
                 <input
                   type="text"
@@ -179,22 +183,28 @@ export default function OwnerVerifyStep() {
                   onChange={handleBusinessNumberChange}
                   className={`flex-1 min-w-0 h-11 pl-4 pr-3 py-3 rounded-lg border border-px transition-colors focus:outline-none ${
                     isError
-                      ? 'border-status-danger bg-status-danger-bg focus:border-status-danger'
+                      ? 'border-status-danger focus:border-status-danger'
                       : 'border-border-default bg-background-default focus:border-border-active'
                   }`}
-                  placeholder="사업자 번호 입력"
+                  placeholder="사업자등록번호 입력"
                 />
                 <button
                   onClick={handleValidateClick}
-                  disabled={validateMutation.isPending || !inputValue}
-                  className={`w-31 h-11 px-6 py-3 flex items-center justify-center rounded-lg transition-all disabled:opacity-50 ${
-                    inputValue ? 'bg-brand-default' : 'bg-background-subtlest'
+                  disabled={
+                    validateMutation.isPending || !inputValue || isValidated
+                  }
+                  className={`w-31 h-11 px-6 py-3 flex items-center justify-center rounded-lg transition-all ${
+                    isValidated ? 'bg-background-subtlest' : 'bg-brand-default'
                   }`}
                 >
                   <p
-                    className={`text-label1 whitespace-nowrap ${inputValue ? 'text-white font-semibold' : 'text-text-white'}`}
+                    className={`text-label1 whitespace-nowrap font-semibold ${isValidated ? 'text-text-subtlest' : 'text-text-inverse'}`}
                   >
-                    {validateMutation.isPending ? '조회 중...' : '사업자 조회'}
+                    {validateMutation.isPending
+                      ? '조회 중...'
+                      : isValidated
+                        ? '인증 완료'
+                        : '사업자 조회'}
                   </p>
                 </button>
               </div>
@@ -231,9 +241,7 @@ export default function OwnerVerifyStep() {
                       onClick={handleRemoveFile}
                       className="p-1 -mr-1"
                     >
-                      <span className="text-icon-subtle text-xl font-bold">
-                        ×
-                      </span>
+                      <Close className="size-6 text-icon-subtle" />
                     </button>
                   </div>
                 </div>
