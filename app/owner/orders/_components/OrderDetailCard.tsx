@@ -85,14 +85,18 @@ export default function OrderCard({
       <div className="flex flex-col gap-1.5 mt-2">
         <div className="flex flex-col">
           <div className="flex justify-between items-center">
-            <span className="text-caption1 font-normal text-text-subtlest">
-              {groupName}
-            </span>
+            <div className="flex flex-col items-start">
+              {groupName && (
+                <span className="text-caption1 font-normal text-text-subtlest">
+                  {groupName}
+                </span>
+              )}
+              <span className="text-body font-semibold text-text-default">
+                {customerName}
+              </span>
+            </div>
             <RightChevronIcon className="size-5 text-icon-subtlest pl-2.5" />
           </div>
-          <span className="text-body font-semibold text-text-default">
-            {customerName}
-          </span>
         </div>
 
         <div className="w-full h-px bg-border-subtle" />
