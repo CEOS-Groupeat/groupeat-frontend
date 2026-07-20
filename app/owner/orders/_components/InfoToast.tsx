@@ -11,29 +11,32 @@ export default function InfoToast({ onInfoClick }: InfoToastProps) {
   if (!isVisible) return null;
 
   return (
-    <div
-      className={`flex justify-between px-4 py-3 rounded-full bg-background-transparent outline outline-1 outline-offset-[-1px] outline-border-subtle shadow-[0px_2px_16px_0px_rgba(0,0,0,0.05)] backdrop-blur-sm font-['Pretendard']
-    fixed bottom-24 left-4 right-4 animate-in slide-in-from-bottom-4 fade-in duration-300`}
-    >
-      <button
-        type="button"
-        onClick={onInfoClick}
-        className="flex justify-center items-center gap-1.5"
-        aria-label="주문 유의사항 보기"
+    <div className="app-container bottom-24 px-4 animate-in slide-in-from-bottom-4 fade-in duration-300">
+      <div
+        className={
+          "flex justify-between px-4 py-3 rounded-full bg-background-transparent outline outline-1 outline-offset-[-1px] outline-border-subtle shadow-[0px_2px_16px_0px_rgba(0,0,0,0.05)] backdrop-blur-sm font-['Pretendard']"
+        }
       >
-        <Notice className="size-4 text-icon-disable" />
-        <span className="text-label2 text-text-default font-medium">
-          주문 유의사항
-        </span>
-      </button>
-      <button
-        type="button"
-        onClick={() => setIsVisible(false)}
-        className="text-caption1 text-text-subtlest font-normal"
-        aria-label="주문 유의사항 닫기"
-      >
-        닫기
-      </button>
+        <button
+          type="button"
+          onClick={onInfoClick}
+          className="flex justify-center items-center gap-1.5"
+          aria-label="주문 유의사항 보기"
+        >
+          <Notice className="size-4 text-icon-disable" />
+          <span className="text-label2 text-text-default font-medium">
+            주문 유의사항
+          </span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setIsVisible(false)}
+          className="text-caption1 text-text-subtlest font-normal"
+          aria-label="주문 유의사항 닫기"
+        >
+          닫기
+        </button>
+      </div>
     </div>
   );
 }
