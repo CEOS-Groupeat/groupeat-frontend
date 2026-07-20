@@ -304,7 +304,7 @@ export default function StoreOptions() {
                                 e.stopPropagation();
                                 handleMenuSelect(menu);
                               }}
-                              className="relative z-10 w-6.5 h-6.5 flex items-center justify-center text-label2 font-semibold rounded-full bg-brand-default text-text-inverse shadow-sm"
+                              className="relative z-10 w-6.5 h-6.5 flex items-center justify-center text-label2 font-semibold tracking-normal rounded-full bg-brand-default text-text-inverse shadow-sm"
                             >
                               {quantityInCart}
                             </button>
