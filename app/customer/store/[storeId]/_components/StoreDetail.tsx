@@ -65,8 +65,8 @@ export default function StoreDetail() {
                   <div className="flex items-center gap-4.5 self-stretch">
                     <div className="flex items-center gap-1">
                       <Ticket className="w-3.5 h-3.5" />
-                      <p className="text-caption1 text-status-info font-semibold">
-                        {store.discountConditionQuantity}개 이상 주문 시{' '}
+                      <p className="text-caption1 text-status-info font-semibold tracking-normal">
+                        {store.discountConditionQuantity}개 이상 주문시{' '}
                         {store.discountRate}% 할인
                       </p>
                     </div>
