@@ -4,7 +4,7 @@ import OwnerNavbar from '@/components/owner/OwnerNavbar';
 
 export default function StoreOperationsPage() {
   return (
-    <div className="w-full min-dvh flex flex-col items-start pt-16 pb-[280px]">
+    <div className="w-full min-dvh bg-background-default flex flex-col items-start pt-16 pb-[280px]">
       <ShopHeader />
       <OperationSection />
       <OwnerNavbar />

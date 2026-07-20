@@ -188,7 +188,7 @@ export default function MenuForm({
 
   return (
     <>
-      <main className="flex pb-6 flex-col items-start gap-5 self-stretch px-4">
+      <main className="flex pb-6 flex-col items-start gap-5 self-stretch px-4 bg-background-default">
         <div className="flex flex-col items-start gap-6 self-stretch">
           <div className="flex pt-3 flex-col justify-center items-start gap-11 self-stretch">
             <div className="flex flex-col items-start gap-5 self-stretch">
