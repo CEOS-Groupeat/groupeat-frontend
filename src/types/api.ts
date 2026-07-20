@@ -18,6 +18,12 @@ export type PatchResponse<T extends keyof paths> = paths[T] extends {
   ? R
   : never;
 
+export type DeleteRequest<T extends keyof paths> = paths[T] extends {
+  delete: { requestBody: { content: { 'application/json': infer R } } };
+}
+  ? R
+  : never;
+
 export type DeleteResponse<T extends keyof paths> = paths[T] extends {
   delete: { responses: { 200: { content: { '*/*': infer R } } } };
 }
