@@ -248,10 +248,12 @@ export default function MenuBottomSheet({
                 >
                   <div className="flex items-center gap-2">
                     <span
-                      className={`text-body font-normal ${
-                        selectedText
-                          ? 'text-text-default'
-                          : 'text-text-placeholder'
+                      className={`text-body  ${
+                        isExpanded
+                          ? 'font-semibold text-text-default'
+                          : selectedText
+                            ? 'font-normal text-text-default'
+                            : 'font-normal text-text-placeholder'
                       }`}
                     >
                       {group.name}
@@ -273,7 +275,7 @@ export default function MenuBottomSheet({
                 </button>
 
                 {isExpanded && (
-                  <div className="w-full flex flex-col items-start justify-between border-t border-border-strong">
+                  <div className="w-full flex flex-col items-start justify-between">
                     {group.options?.map((option) => {
                       const isSelected = (
                         selectedOptions[group.optionGroupId!] ?? []
@@ -295,8 +297,10 @@ export default function MenuBottomSheet({
                               : 'text-text-default'
                           }`}
                         >
-                          <span className="text-label1">{option.name}</span>
-                          <span className="text-label1">
+                          <span className="text-label1 font-medium">
+                            {option.name}
+                          </span>
+                          <span className="text-label1 font-medium">
                             +{(option.additionalPrice || 0).toLocaleString()}원
                           </span>
                         </div>
