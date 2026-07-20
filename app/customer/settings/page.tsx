@@ -12,6 +12,7 @@ import DialogModal from '@/components/ui/DialogModal';
 import { fetchClient } from '@/lib/fetchClient';
 import CustomerNavbar from '@/components/ui/CustomerNavbar';
 import SuccessToast from '@/components/ui/SuccessToast';
+import { useFCMToken } from '@/lib/firebase/_hooks/useFCMToken';
 
 // 승연: useSearchParams를 쓰는 부분만 별도 컴포넌트로 분리하여 Suspense로 감쌈.
 function ProfileUpdateToast() {
@@ -38,9 +39,12 @@ export default function CustomerSettingsPage() {
   const { data: summary } = useMyPageSummary();
   const { data: account } = useCustomerAccount();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const { disableNotification } = useFCMToken();
 
   const executeLogout = async () => {
     try {
+      await disableNotification();
+
       const response = (await fetchClient('/api/auth/logout', {
         method: 'POST',
       })) as { isSuccess?: boolean; message?: string };
