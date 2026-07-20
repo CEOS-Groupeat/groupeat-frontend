@@ -446,7 +446,7 @@ export default function MenuBottomSheet({
 
       <div className="absolute inset-0" onClick={onClose} />
 
-      <div className="relative w-full h-109 bg-background-default rounded-t-[35px] flex flex-col overflow-hidden animate-in slide-in-from-bottom-full duration-200">
+      <div className="relative w-full  max-w-[375px] h-109 bg-background-default rounded-t-[35px] flex flex-col overflow-hidden animate-in slide-in-from-bottom-full duration-200">
         {mode === 'LIST' ? renderCardList() : renderOptionForm()}
       </div>
     </div>
