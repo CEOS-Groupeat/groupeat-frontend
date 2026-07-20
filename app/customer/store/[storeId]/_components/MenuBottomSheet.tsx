@@ -330,7 +330,7 @@ export default function MenuBottomSheet({
         </div>
 
         {/* 하단 버튼 영역 (높이 고정, 스크롤 안 됨) */}
-        <div className="flex items-center justify-center px-4 pb-6 pt-2 shrink-0 bg-background-default border-t border-border-subtle">
+        <div className="flex items-center justify-center px-4 pb-6 pt-2 shrink-0 bg-background-default">
           <ButtonDefault onClick={handleSaveForm} disabled={!isFormValid()}>
             {mode === 'EDIT' ? '옵션 수정하기' : '메뉴 담기'}
           </ButtonDefault>
@@ -388,7 +388,7 @@ export default function MenuBottomSheet({
               >
                 <div className="flex justify-between items-start">
                   <p className="text-body font-medium text-text-default">
-                    옵션 요약
+                    {menu.name}
                   </p>
                   <button
                     onClick={(e) => {
@@ -405,12 +405,10 @@ export default function MenuBottomSheet({
                   ) : (
                     <p>선택된 추가 옵션 없음</p>
                   )}
-                  <p className="mt-1">
-                    개당 가격: {unitPrice.toLocaleString()}원
-                  </p>
+                  <p>개당 가격: {unitPrice.toLocaleString()}원</p>
                   <p>수량: {card.quantity}개</p>
                 </div>
-                <div className="flex items-center justify-start w-full mt-2">
+                <div className="flex items-center justify-start w-full">
                   <p className="text-body text-text-default font-semibold">
                     {totalPrice.toLocaleString()}원
                   </p>
