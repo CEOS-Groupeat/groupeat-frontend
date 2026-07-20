@@ -248,7 +248,7 @@ export default function MenuBottomSheet({
                 >
                   <div className="flex items-center gap-2">
                     <span
-                      className={`text-body font-semibold ${
+                      className={`text-body font-normal ${
                         selectedText
                           ? 'text-text-default'
                           : 'text-text-placeholder'
