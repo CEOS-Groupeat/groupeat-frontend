@@ -426,7 +426,7 @@ export default function MenuBottomSheet({
         </div>
 
         {/* 하단 버튼 영역 */}
-        <div className="px-4 pb-6 pt-2 shrink-0 bg-background-default border-t border-border-subtle">
+        <div className="px-4 pb-6 pt-2 shrink-0 bg-background-default">
           <ButtonDefault
             onClick={handleSubmitCart}
             disabled={addCartMutation.isPending || cards.length === 0}
