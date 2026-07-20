@@ -316,7 +316,7 @@ function CustomerSignupForm() {
         </div>
       </div>
 
-      <div className="fixed bottom-6 left-0 w-full px-4">
+      <div className="app-container bottom-6 px-4">
         <div className="w-full flex flex-col gap-3.5 justify-center items-center">
           {toastMessage && <ToastError text={toastMessage} />}
           <DefaultButton
