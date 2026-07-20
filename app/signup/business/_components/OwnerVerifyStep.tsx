@@ -216,10 +216,7 @@ export default function OwnerVerifyStep() {
             <div className="flex flex-col h-29.5 items-start gap-2 self-stretch">
               <p className="text-label1 text-text-default">사업자등록증 첨부</p>
               {uploadedFile ? (
-                <button
-                  type="button"
-                  className="w-full h-22.5 px-6 py-3 flex flex-col justify-center items-start flex-1 self-stretch border border-px border-border-default rounded-lg bg-background-subtle cursor-default"
-                >
+                <div className="w-full h-22.5 px-6 py-3 flex flex-col justify-center items-start flex-1 self-stretch border border-px border-border-default rounded-lg bg-background-subtle">
                   <div className="flex justify-between items-center self-stretch w-full">
                     <div className="flex flex-col justify-center items-start gap-1 text-left">
                       <p className="text-text-subtle text-label1 font-semibold truncate max-w-56">
@@ -239,7 +236,7 @@ export default function OwnerVerifyStep() {
                       </span>
                     </button>
                   </div>
-                </button>
+                </div>
               ) : (
                 <button
                   type="button"
