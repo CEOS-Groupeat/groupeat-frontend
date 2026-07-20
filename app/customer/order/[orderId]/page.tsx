@@ -353,7 +353,7 @@ export default function CustomerOrderDetail() {
             <div className="w-full flex flex-col gap-2.5 px-4">
               <button
                 onClick={cancelOrder}
-                className="w-full h-12 rounded-xl flex justify-center items-center py-3 px-12 font-semibold border border-border-default"
+                className="w-full h-11 rounded-lg flex justify-center items-center py-3 px-6 text-label1 font-semibold text-text-default border border-border-default"
               >
                 주문 취소하기
               </button>
