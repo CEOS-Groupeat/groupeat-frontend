@@ -440,7 +440,7 @@ export default function MenuBottomSheet({
 
   return (
     <div className="fixed inset-0 z-modal flex items-end justify-center bg-background-dim/40">
-      {showError && <ToastError text={errorMessage} />}
+      {showError && <ToastError text={errorMessage} bottom={96} />}
 
       <div className="absolute inset-0" onClick={onClose} />
 
