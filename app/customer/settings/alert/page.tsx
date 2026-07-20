@@ -3,16 +3,29 @@
 import BackButton from '@/components/ui/BackButton';
 import { useNotificationSettings } from './_hooks/useNotificationSettings';
 import { useUpdateNotificationSettings } from './_hooks/useUpdateNotificationSettings';
+import { useFCMToken } from '@/lib/firebase/_hooks/useFCMToken';
 
 export default function CustomerAlertPage() {
   const { data: settings, isLoading } = useNotificationSettings();
   const { mutate: updateSettings, isPending } = useUpdateNotificationSettings();
+  const { enableNotification, disableNotification } = useFCMToken();
 
   const isOrderAlertOn = settings?.orderStatusNotificationAgreed ?? false;
   const isMarketingOn = settings?.marketingAgreed ?? false;
 
-  const handleToggleOrderAlert = () => {
-    updateSettings({ orderStatusNotificationAgreed: !isOrderAlertOn });
+  const handleToggleOrderAlert = async () => {
+    const next = !isOrderAlertOn;
+
+    if (next) {
+      const success = await enableNotification();
+      if (!success) {
+        return; // 브라우저 권한 거부 시, 서버 값도 바꾸지 않음
+      }
+    } else {
+      await disableNotification();
+    }
+
+    updateSettings({ orderStatusNotificationAgreed: next });
   };
 
   const handleToggleMarketing = () => {
