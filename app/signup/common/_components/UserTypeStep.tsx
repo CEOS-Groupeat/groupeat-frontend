@@ -4,7 +4,7 @@
 import DefaultButton from '@/components/ui/ButtonDefault';
 import { useSignupStore } from '@/store/useSignupStore';
 
-import CustomerIllust from '@/public/illust/illust_Customer.svg';
+import CustomerIllust from '@/public/illust/illust_signup_customerType.svg';
 import ClientIllust from '@/public/illust/illust_Client.svg';
 
 export default function UserTypeStep() {
