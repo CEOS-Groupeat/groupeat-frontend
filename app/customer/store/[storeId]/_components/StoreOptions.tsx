@@ -167,12 +167,12 @@ export default function StoreOptions() {
     <>
       <div className="w-full flex flex-col px-4 pt-2.5 pb-30 gap-3">
         <div className="w-full flex flex-col justify-center items-start gap-2.5 self-stretch">
-          <div className="flex flex-col items-start self-stretch w-full border-b border-px border-border-subtle">
+          <div className="flex flex-col items-start self-stretch w-full">
             <button
               type="button"
               onClick={() => setIsDateExpanded((prev) => !prev)}
               className={`w-full h-11 flex items-center justify-between ${
-                isDateExpanded ? '' : 'border-b border-border-subtle pb-3 '
+                isDateExpanded ? '' : 'border-b border-border-default pb-3 '
               }`}
             >
               <div className="flex items-start gap-1">
@@ -234,7 +234,7 @@ export default function StoreOptions() {
               type="button"
               onClick={() => setIsMenuExpanded((prev) => !prev)}
               className={`w-full flex items-center justify-between ${
-                isMenuExpanded ? '' : 'pb-3 border-b border-border-subtle'
+                isMenuExpanded ? '' : 'pb-3 border-b border-border-default'
               }`}
             >
               <div className="flex items-start gap-1">
