@@ -396,7 +396,8 @@ export default function MenuForm({
             </button>
           )}
         </div>
-
+      </main>
+      <div className="app-container bottom-6 flex justify-center px-4">
         <DefaultButton
           onClick={() =>
             onSave({ name, description, basePrice, imageUrl, optionGroups })
@@ -405,7 +406,7 @@ export default function MenuForm({
         >
           {isPending ? '저장 중...' : '저장하기'}
         </DefaultButton>
-      </main>
+      </div>
 
       {showDeleteModal && (
         <MenuDeleteConfirmModal
