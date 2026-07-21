@@ -13,7 +13,8 @@ import Ellipse from '@/public/icons/icon_ellipse.svg';
 import Alert from '@/public/icons/icon_alert.svg';
 import { components } from '@/src/types/schema';
 import DialogModal from '@/components/ui/DialogModal';
-import AlertIcon from '@/public/icons/icon_modal_alert.svg';
+import BigAlertIcon from '@/public/icons/icon_modal_alert.svg';
+import AlertIcon from '@/public/icons/icon_alert2.svg';
 import CheckBoxTrueIcon from '@/public/icons/icon_checkboxTrue.svg';
 import BoundingBoxIcon from '@/public/icons/icon_checkboxFalse.svg';
 import ArrowLeft from '@/public/icons/icon_arrow_left_padding.svg';
@@ -370,7 +371,7 @@ export default function CustomerOrderDetail() {
 
       {modalOn && (
         <DialogModal
-          icon={<AlertIcon className="text-status-danger w-11 h-11" />}
+          icon={<BigAlertIcon className="text-status-danger w-11 h-11" />}
           title="주문을 취소하시겠습니까?"
           description="취소 사유를 선택해주세요"
           primaryButton={{
@@ -383,34 +384,35 @@ export default function CustomerOrderDetail() {
           }}
           onClose={() => setModalOn(false)}
         >
-          <div className="w-full flex flex-col gap-1 mt-1">
+          <div className="w-full flex flex-col gap-2 mt-3">
             {CANCEL_REASONS.map((reason) => {
               const isSelected = selectedReason === reason;
               return (
                 <label
                   key={reason}
-                  className="flex items-center gap-2 cursor-pointer py-1.5 px-2 rounded-lg hover:bg-background-subtle transition-colors"
+                  className="flex items-center gap-3 cursor-pointer"
                   onClick={() => setSelectedReason(reason)}
                 >
-                  <div className="flex items-center justify-center w-5 h-5 shrink-0">
+                  <div className="flex items-center justify-center w-6 h-6 shrink-0">
                     {isSelected ? (
-                      <CheckBoxTrueIcon className="w-5 h-5 text-icon-default" />
+                      <CheckBoxTrueIcon className="w-6 h-6 text-icon-default" />
                     ) : (
-                      <BoundingBoxIcon className="w-5 h-5 text-icon-disable" />
+                      <BoundingBoxIcon className="w-6 h-6 text-icon-disable" />
                     )}
                   </div>
-                  <span
-                    className={`text-label1 pt-0.5 ${
-                      isSelected
-                        ? 'text-text-default font-medium'
-                        : 'text-text-subtle'
-                    }`}
-                  >
+                  <span className="text-label1 text-text-default">
                     {reason}
                   </span>
                 </label>
               );
             })}
+          </div>
+
+          <div className="w-full flex items-start gap-1 mt-2">
+            <AlertIcon className="w-3.5 h-3.5 text-icon-disable shrink-0 mt-0.5" />
+            <p className="text-caption2 font-medium text-text-subtlest">
+              환불 가능 기간 이후 취소 시 예약금이 환불되지 않습니다.
+            </p>
           </div>
         </DialogModal>
       )}
