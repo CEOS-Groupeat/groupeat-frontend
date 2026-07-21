@@ -421,7 +421,7 @@ export default function MenuForm({
       {showSuccessToast && (
         <SuccessToast text="사진 업로드가 완료되었습니다" bottom={102} />
       )}
-      {showErrorToast && <ToastError text={errorMessage} />}
+      {showErrorToast && <ToastError text={errorMessage} bottom={182} />}
     </>
   );
 }
