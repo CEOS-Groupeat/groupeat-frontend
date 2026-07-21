@@ -60,6 +60,8 @@ export default function InputField({
           onBlur?.(e);
         }}
         className={`w-full h-11 pl-4 pr-3 py-3 rounded-lg font-pretendard font-normal text-body placeholder:text-text-placeholder placeholder:font-normal transition-colors border outline-none 
+        [&:-webkit-autofill]:[transition:background-color_9999s_ease-in-out_0s]
+        [&:-webkit-autofill]:[-webkit-text-fill-color:theme(colors.text-default)]
         ${disabled ? 'text-text-placeholder' : 'text-text-default'} 
         ${
           isError

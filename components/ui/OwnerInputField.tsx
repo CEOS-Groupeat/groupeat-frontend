@@ -49,13 +49,14 @@ export default function OwnerInputField({
           setIsFocused(false);
           onBlur?.(e);
         }}
-        className={`w-full h-11 pl-4 pr-3 py-3 rounded-lg font-pretendard font-normal text-body placeholder:text-text-placeholder transition-colors border outline-none ${
-          disabled ? 'text-text-placeholder' : 'text-text-default'
-        } ${
-          isFilled
-            ? 'bg-background-subtle border-transparent'
-            : 'bg-white border-border-strong'
-        } ${inputClassName ?? ''}`}
+        className={`w-full h-11 pl-4 pr-3 py-3 rounded-lg font-pretendard font-normal text-body placeholder:text-text-placeholder transition-colors border outline-none 
+          [&:-webkit-autofill]:[transition:background-color_9999s_ease-in-out_0s]
+        [&:-webkit-autofill]:[-webkit-text-fill-color:var(--color-text-default)]
+          ${disabled ? 'text-text-placeholder' : 'text-text-default'} ${
+            isFilled
+              ? 'bg-background-subtle border-transparent'
+              : 'bg-white border-border-strong'
+          } ${inputClassName ?? ''}`}
         {...props}
       />
     </div>
