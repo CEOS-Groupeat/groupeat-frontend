@@ -101,7 +101,7 @@ export default function OwnerMyPage() {
         </div>
       </section>
 
-      <div className="fixed bottom-0 w-full">
+      <div className="app-container bottom-0">
         <div className="w-full flex flex-col justify-center items-center relative">
           <button
             type="button"

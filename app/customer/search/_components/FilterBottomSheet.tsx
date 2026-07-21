@@ -142,7 +142,7 @@ export default function FilterBottomSheet({
 
   return (
     <div
-      className={`fixed inset-0 z-modal transition-all duration-300 ${isOpen ? 'visible' : 'invisible'}`}
+      className={`app-container inset-0 z-modal transition-all duration-300 ${isOpen ? 'visible' : 'invisible'}`}
     >
       {/* 오버레이 */}
       <button

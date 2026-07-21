@@ -145,7 +145,7 @@ export default function OwnerTermsStep() {
         </div>
       </div>
 
-      <div className="fixed bottom-6 left-0 w-full flex justify-center px-4">
+      <div className="app-container bottom-6 flex justify-center px-4">
         <DefaultButton onClick={handleNext} disabled={!isAllRequiredChecked}>
           다음
         </DefaultButton>

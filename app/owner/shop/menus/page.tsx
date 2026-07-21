@@ -28,7 +28,7 @@ function MenuSavedToast() {
 
 export default function StoreMenusPage() {
   return (
-    <div className="w-full min-dvh flex flex-col items-start pt-16 pb-24.5">
+    <div className="w-full min-h-screen flex flex-col bg-background-default items-start pt-16 pb-24.5">
       <ShopHeader />
 
       <MenuSection />

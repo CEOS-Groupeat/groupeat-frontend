@@ -16,6 +16,7 @@ import { useCartStore } from '@/store/useCartStore';
 import FloatingCartBar from '@/app/customer/store/[storeId]/_components/FloatingCartBar';
 import Image from 'next/image';
 import { useStoreDetail } from '@/app/customer/store/_hooks/useStoreDetail';
+import Logo from '@/public/illust/illust_Customer.svg';
 
 // 💡 1. 픽업 가능 시간 목록을 생성하는 유틸리티 함수 추가
 const generateAvailableTimes = (
@@ -167,12 +168,12 @@ export default function StoreOptions() {
     <>
       <div className="w-full flex flex-col px-4 pt-2.5 pb-30 gap-3">
         <div className="w-full flex flex-col justify-center items-start gap-2.5 self-stretch">
-          <div className="flex flex-col items-start self-stretch w-full border-b border-px border-border-subtle">
+          <div className="flex flex-col items-start self-stretch w-full">
             <button
               type="button"
               onClick={() => setIsDateExpanded((prev) => !prev)}
               className={`w-full h-11 flex items-center justify-between ${
-                isDateExpanded ? '' : 'border-b border-border-subtle pb-3 '
+                isDateExpanded ? '' : 'border-b border-border-default pb-3 '
               }`}
             >
               <div className="flex items-start gap-1">
@@ -234,7 +235,7 @@ export default function StoreOptions() {
               type="button"
               onClick={() => setIsMenuExpanded((prev) => !prev)}
               className={`w-full flex items-center justify-between ${
-                isMenuExpanded ? '' : 'pb-3 border-b border-border-subtle'
+                isMenuExpanded ? '' : 'pb-3 border-b border-border-default'
               }`}
             >
               <div className="flex items-start gap-1">
@@ -285,7 +286,7 @@ export default function StoreOptions() {
                           </p>
                         </div>
 
-                        <div className="w-22.5 h-22.5 bg-neutral-10 rounded-xl shrink-0 flex items-end justify-end p-1.5 relative overflow-hidden bg-black">
+                        <div className="w-22.5 h-22.5 bg-neutral-10 rounded-xl shrink-0 flex items-end justify-end p-1.5 relative overflow-hidden">
                           {menu.imageUrl ? (
                             <Image
                               src={menu.imageUrl}
@@ -295,7 +296,7 @@ export default function StoreOptions() {
                               priority={false}
                             />
                           ) : (
-                            <div className="absolute inset-0 bg-neutral-20" />
+                            <div className="absolute inset-0 bg-brand-background"><Logo /></div>
                           )}
 
                           {quantityInCart > 0 ? (
@@ -304,7 +305,7 @@ export default function StoreOptions() {
                                 e.stopPropagation();
                                 handleMenuSelect(menu);
                               }}
-                              className="relative z-10 w-6.5 h-6.5 flex items-center justify-center text-label2 rounded-full bg-brand-default text-white"
+                              className="relative z-10 w-6.5 h-6.5 flex items-center justify-center text-label2 font-semibold tracking-normal rounded-full bg-brand-default text-text-inverse shadow-sm"
                             >
                               {quantityInCart}
                             </button>

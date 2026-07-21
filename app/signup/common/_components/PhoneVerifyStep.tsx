@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { fetchClient } from '@/lib/fetchClient';
 import { useSignupStore } from '@/store/useSignupStore';
@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { isValidMobilePhoneNumber } from '@/app/signup/_utils/validatePhoneNumber';
 import DefaultButton from '@/components/ui/ButtonDefault';
 import SuccessToast from '@/components/ui/SuccessToast';
+import ToastError from '@/components/ui/ToastError';
 
 // 개발용: 인증번호 발송 응답 메시지에서 인증번호 추출
 function extractVerificationCode(message: string): string | null {
@@ -36,6 +37,24 @@ export default function PhoneVerifyStep() {
   const [devCode, setDevCode] = useState<string | null>(null);
   const [showPhoneError, setShowPhoneError] = useState(false);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [showErrorToast, setShowErrorToast] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const errorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (errorTimerRef.current) clearTimeout(errorTimerRef.current);
+    };
+  }, []);
+
+  const showError = (message: string) => {
+    if (errorTimerRef.current) clearTimeout(errorTimerRef.current);
+    setErrorMessage(message);
+    setShowErrorToast(true);
+    errorTimerRef.current = setTimeout(() => {
+      setShowErrorToast(false);
+    }, 2000);
+  };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const onlyNumbers = e.target.value.replace(/[^0-9]/g, '');
@@ -67,7 +86,7 @@ export default function PhoneVerifyStep() {
       setDevCode(extractedCode);
     },
     onError: (error: any) => {
-      alert(error.message || '인증번호 발송에 실패했습니다.');
+      showError(error.message || '인증번호 발송에 실패했습니다.');
     },
   });
   const hasSentCode = sendCodeMutation.isSuccess;
@@ -103,7 +122,7 @@ export default function PhoneVerifyStep() {
       }
     },
     onError: (error: any) => {
-      alert(
+      showError(
         error.message ||
           '회원가입 처리에 실패했습니다. 잠시 후 다시 시도해주세요.'
       );
@@ -162,11 +181,10 @@ export default function PhoneVerifyStep() {
                   if (showPhoneError) setShowPhoneError(false);
                 }}
                 disabled={isVerified}
-                className="flex-1 h-11 pl-4 pr-3 py-3 rounded-lg border border-px border-border-default placeholder:text-body placeholder:text-text-placeholder focus:outline-none focus:border-border-active disabled:bg-neutral-5 disabled:text-text-disabled"
+                className="flex-1 min-w-0 h-11 pl-4 pr-3 py-3 rounded-lg border border-px border-border-strong placeholder:text-body placeholder:text-text-placeholder focus:outline-none focus:border-border-active disabled:bg-neutral-5 disabled:text-text-disabled"
                 placeholder="휴대폰 번호 입력"
               />
 
-              {/* 전송 버튼 동적 UI 및 클릭 방어 로직 적용 */}
               <button
                 onClick={handleSendCode}
                 disabled={isVerified || sendCodeMutation.isPending}
@@ -231,7 +249,7 @@ export default function PhoneVerifyStep() {
         </div>
       </div>
 
-      <div className="fixed bottom-6 left-0 w-full flex justify-center px-4">
+      <div className="app-container bottom-6 flex justify-center px-4">
         <DefaultButton
           onClick={handleNextStep}
           disabled={
@@ -247,6 +265,7 @@ export default function PhoneVerifyStep() {
         {showSuccessToast && (
           <SuccessToast text="인증번호가 전송되었습니다." bottom={96} />
         )}
+        {showErrorToast && <ToastError text={errorMessage} bottom={96} />}
       </div>
     </div>
   );

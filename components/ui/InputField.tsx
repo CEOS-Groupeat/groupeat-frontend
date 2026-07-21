@@ -1,6 +1,6 @@
 'use client';
 
-import { InputHTMLAttributes } from 'react';
+import { InputHTMLAttributes, useState } from 'react';
 
 interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -27,8 +27,12 @@ export default function InputField({
   errorMessage,
   helperText,
   disableFillStyle = false,
+  type,
+  onFocus,
+  onBlur,
   ...props
 }: InputFieldProps) {
+  const [isFocused, setIsFocused] = useState(false);
   const isFilled =
     value !== undefined && value !== null && String(value).trim().length > 0;
 
@@ -44,16 +48,31 @@ export default function InputField({
       )}
 
       <input
+        type={type}
         value={value}
         disabled={disabled}
+        onFocus={(e) => {
+          setIsFocused(true);
+          onFocus?.(e);
+        }}
+        onBlur={(e) => {
+          setIsFocused(false);
+          onBlur?.(e);
+        }}
         className={`w-full h-11 pl-4 pr-3 py-3 rounded-lg font-pretendard font-normal text-body placeholder:text-text-placeholder placeholder:font-normal transition-colors border outline-none 
-        ${disabled ? 'text-text-placeholder' : 'text-text-default'} 
-        ${
-          isError
-            ? 'border-status-danger focus:border-status-danger'
-            : isFilled && !disableFillStyle
-              ? 'bg-background-subtle border-transparent focus:border-border-active'
-              : 'bg-white border-border-strong focus:border-border-active'
+[&:-webkit-autofill]:[-webkit-text-fill-color:var(--color-text-default)]
+[&:-webkit-autofill]:
+${disabled ? 'text-text-placeholder' : 'text-text-default'} 
+${
+  isError
+    ? 'border-status-danger focus:border-status-danger'
+    : isFilled && !disableFillStyle && !isFocused
+      ? 'bg-background-subtle border-transparent [&:-webkit-autofill]:[box-shadow:0_0_0px_1000px_var(--color-background-subtle)_inset]'
+      : 'bg-white border-border-strong focus:border-border-active [&:-webkit-autofill]:[box-shadow:0_0_0px_1000px_white_inset]'
+} ${
+          type === 'number'
+            ? '[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
+            : ''
         } ${inputClassName ?? ''}`}
         {...props}
       />

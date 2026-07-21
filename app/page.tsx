@@ -86,7 +86,7 @@ export default function CustomerLandingPage() {
                       </p>
                     </div>
                   </div>
-                  <div className="w-full h-px bg-neutral-10 my-px" />
+                  <div className="w-full h-px bg-gray-30 my-px" />
                   <div className="flex justify-between items-start self-stretch">
                     <p className="text-[#27282B] text-[13px] font-bold">
                       결제 금액
@@ -126,12 +126,21 @@ export default function CustomerLandingPage() {
               href="mailto:contact@groupeat.com"
               className="flex w-39.5 h-12 px-5 py-2 bg-white justify-center items-center gap-1.5 rounded-full border border-px border-[#DCDDDF] z-20"
             >
-              <MailIcon width={24} height={24} className='shrink-0 aspect-square mt-1.5' />
+              <MailIcon
+                width={24}
+                height={24}
+                className="shrink-0 aspect-square mt-1.5"
+              />
               <p className="text-[#27282B] text-body font-semibold whitespace-nowrap">
                 협업 문의하기
               </p>
             </a>
-            <Link href='https://www.instagram.com/groupeat_order/' target="_blank" rel="noopener noreferrer" className="flex w-39.5 h-12 px-5 py-2 bg-orange-50 justify-center items-center gap-1.5 rounded-full border border-px border-orange-60 z-20">
+            <Link
+              href="https://www.instagram.com/groupeat_order/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex w-39.5 h-12 px-5 py-2 bg-orange-50 justify-center items-center gap-1.5 rounded-full border border-px border-orange-60 z-20"
+            >
               <AlarmIcon className="w-6 h-6 shrink-0" />
               <p className="text-white text-body font-semibold whitespace-nowrap">
                 출시 알림받기
@@ -144,9 +153,7 @@ export default function CustomerLandingPage() {
       {/* 푸터 영역, 폰트 지정 예정 */}
       <footer className="flex shrink-0 w-full pl-5 pr-4 pt-11 pb-9 items-center bg-[#EDEEEF] border-t border-px border-[#EDEEEF]">
         <div className="flex flex-col items-start gap-6 w-full">
-          <p className="text-[21.583px] text-[#777982] font-medium">
-            Groupeat
-          </p>
+          <p className="text-[21.583px] text-[#777982] font-medium">Groupeat</p>
           <div className="flex flex-col items-start gap-1.5">
             <p className="text-[14px] font-semibold text-[#35373B] opacity-70">
               Contact

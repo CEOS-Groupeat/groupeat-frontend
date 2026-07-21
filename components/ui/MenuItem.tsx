@@ -1,10 +1,11 @@
 import Image from 'next/image';
 import { OwnerMenu } from '@/types/menu';
 import { ReactNode } from 'react';
+import Logo from '@/public/illust/illust_Customer.svg';
 
 interface MenuItemProps {
   menu: OwnerMenu;
-  actionSlot?: ReactNode; 
+  actionSlot?: ReactNode;
 }
 
 export default function MenuItem({ menu, actionSlot }: MenuItemProps) {
@@ -27,20 +28,18 @@ export default function MenuItem({ menu, actionSlot }: MenuItemProps) {
           {menu.imageUrl ? (
             <Image
               src={menu.imageUrl}
-              alt={menu.name || "메뉴 이미지"}
+              alt={menu.name || '메뉴 이미지'}
               className="absolute inset-0 object-cover"
               fill
               sizes="(max-width: 768px) 90px, 90px"
             />
           ) : (
-            <div className="absolute inset-0 bg-neutral-20" />
-          )}
-
-          {actionSlot && (
-            <div className="relative z-10">
-              {actionSlot}
+            <div className="absolute inset-0 bg-brand-background">
+              <Logo />
             </div>
           )}
+
+          {actionSlot && <div className="relative z-10">{actionSlot}</div>}
         </div>
       </div>
     </div>

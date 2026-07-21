@@ -484,9 +484,9 @@ function OperationForm({
         {isSaving ? '저장 중...' : '저장하기'}
       </DefaultButton>
 
-      {showErrorToast && <ToastError text={errorMessage} />}
+      {showErrorToast && <ToastError text={errorMessage} bottom={182} />}
       {showSuccessToast && (
-        <SuccessToast text="저장이 완료되었습니다" bottom={102} />
+        <SuccessToast text="저장이 완료되었습니다" bottom={182} />
       )}
     </main>
   );

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import CheckLinear from '@/public/icons/icon_check_linear.svg';
 import Close from '@/public/icons/icon_close.svg';
-import OwnerIllust from '@/public/illust/illust_Client.svg'; 
+import OwnerIllust from '@/public/illust/illust_Client.svg';
 
 interface OwnerInfoModalProps {
   onClose: () => void;
@@ -42,19 +42,19 @@ export default function OwnerInfoModal({ onClose }: OwnerInfoModalProps) {
             <div className="flex px-4 py-3 flex-col items-start gap-2.5 self-stretch rounded-lg bg-background-transparent">
               <div className="flex flex-col items-start gap-1">
                 <div className="flex items-center justify-center gap-1">
-                  <CheckLinear className="text-[#42BE65]" />
+                  <CheckLinear className="size-5 text-[#42BE65]" />
                   <p className="text-label2 text-text-subtlest font-medium">
                     플랫폼 입점 시 단체주문 고객에게 자동 노출
                   </p>
                 </div>
                 <div className="flex items-center justify-center gap-1">
-                  <CheckLinear className="text-[#42BE65]" />
+                  <CheckLinear className="size-5 text-[#42BE65]" />
                   <p className="text-label2 text-text-subtlest font-medium">
                     날짜별 픽업 가능 시간 및 수량 사전 설정 가능
                   </p>
                 </div>
                 <div className="flex items-center justify-center gap-1">
-                  <CheckLinear className="text-[#42BE65]" />
+                  <CheckLinear className="size-5 text-[#42BE65]" />
                   <p className="text-label2 text-text-subtlest font-medium">
                     주문 승인/거절 선택 및 상세 주문 관리 가능
                   </p>

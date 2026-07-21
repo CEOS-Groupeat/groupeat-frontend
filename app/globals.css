@@ -258,5 +258,9 @@
   -ms-overflow-style: none;
 }
 
+.app-container {
+  @apply fixed left-1/2 -translate-x-1/2 w-full max-w-[375px];
+}
+
 body {
 }

@@ -75,7 +75,7 @@ export default function CustomerNavbar() {
   const pathname = usePathname();
 
   return (
-    <div className="fixed bottom-0 left-0 z-sticky w-full flex justify-between items-center bg-background-default shadow-[0px_-3px_12px_0px_rgba(165,179,198,0.10)]">
+    <div className="app-container bottom-0 z-sticky w-full flex justify-between items-center bg-background-default shadow-[0px_-3px_12px_0px_rgba(165,179,198,0.10)]">
       <div className="flex items-center justify-between flex-1 w-full">
         {navigationItems.map((item) => (
           <NavigationMenu

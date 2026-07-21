@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useState, useRef } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
 import SignupHeader from '@/components/signup/SignupHeader';
@@ -42,7 +42,18 @@ function CustomerSignupForm() {
   const { memberId, setMemberId, memberType, setMemberType } = useSignupStore();
 
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [showErrorToast, setShowErrorToast] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const errorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const showError = (message: string) => {
+    if (errorTimerRef.current) clearTimeout(errorTimerRef.current);
+    setErrorMessage(message);
+    setShowErrorToast(true);
+    errorTimerRef.current = setTimeout(() => {
+      setShowErrorToast(false);
+    }, 2000);
+  };
   useEffect(() => {
     if (urlMemberId && !memberId) {
       setMemberId(Number(urlMemberId));
@@ -167,7 +178,7 @@ function CustomerSignupForm() {
     },
     onError: (error: any) => {
       console.error(error);
-      alert(error.message || '회원가입 처리 중 오류가 발생했습니다.');
+      showError(error.message || '회원가입 처리 중 오류가 발생했습니다.');
     },
   });
 
@@ -316,7 +327,7 @@ function CustomerSignupForm() {
         </div>
       </div>
 
-      <div className="fixed bottom-6 left-0 w-full px-4">
+      <div className="app-container bottom-6 px-4">
         <div className="w-full flex flex-col gap-3.5 justify-center items-center">
           {toastMessage && <ToastError text={toastMessage} />}
           <DefaultButton
@@ -338,6 +349,7 @@ function CustomerSignupForm() {
       {showSuccessToast && (
         <SuccessToast text="고객 회원가입이 완료되었습니다." bottom={96} />
       )}
+      {showErrorToast && <ToastError text={errorMessage} bottom={96} />}
     </div>
   );
 }

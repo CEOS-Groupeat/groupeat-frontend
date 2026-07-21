@@ -248,10 +248,12 @@ export default function MenuBottomSheet({
                 >
                   <div className="flex items-center gap-2">
                     <span
-                      className={`text-body font-semibold ${
-                        selectedText
-                          ? 'text-text-default'
-                          : 'text-text-placeholder'
+                      className={`text-body  ${
+                        isExpanded
+                          ? 'font-semibold text-text-default'
+                          : selectedText
+                            ? 'font-normal text-text-default'
+                            : 'font-normal text-text-placeholder'
                       }`}
                     >
                       {group.name}
@@ -273,7 +275,7 @@ export default function MenuBottomSheet({
                 </button>
 
                 {isExpanded && (
-                  <div className="w-full flex flex-col items-start justify-between border-t border-border-strong">
+                  <div className="w-full flex flex-col items-start justify-between">
                     {group.options?.map((option) => {
                       const isSelected = (
                         selectedOptions[group.optionGroupId!] ?? []
@@ -295,8 +297,10 @@ export default function MenuBottomSheet({
                               : 'text-text-default'
                           }`}
                         >
-                          <span className="text-label1">{option.name}</span>
-                          <span className="text-label1">
+                          <span className="text-label1 font-medium">
+                            {option.name}
+                          </span>
+                          <span className="text-label1 font-medium">
                             +{(option.additionalPrice || 0).toLocaleString()}원
                           </span>
                         </div>
@@ -330,7 +334,7 @@ export default function MenuBottomSheet({
         </div>
 
         {/* 하단 버튼 영역 (높이 고정, 스크롤 안 됨) */}
-        <div className="flex items-center justify-center px-4 pb-6 pt-2 shrink-0 bg-background-default border-t border-border-subtle">
+        <div className="flex items-center justify-center px-4 pb-6 pt-2 shrink-0 bg-background-default">
           <ButtonDefault onClick={handleSaveForm} disabled={!isFormValid()}>
             {mode === 'EDIT' ? '옵션 수정하기' : '메뉴 담기'}
           </ButtonDefault>
@@ -388,7 +392,7 @@ export default function MenuBottomSheet({
               >
                 <div className="flex justify-between items-start">
                   <p className="text-body font-medium text-text-default">
-                    옵션 요약
+                    {menu.name}
                   </p>
                   <button
                     onClick={(e) => {
@@ -405,12 +409,10 @@ export default function MenuBottomSheet({
                   ) : (
                     <p>선택된 추가 옵션 없음</p>
                   )}
-                  <p className="mt-1">
-                    개당 가격: {unitPrice.toLocaleString()}원
-                  </p>
+                  <p>개당 가격: {unitPrice.toLocaleString()}원</p>
                   <p>수량: {card.quantity}개</p>
                 </div>
-                <div className="flex items-center justify-start w-full mt-2">
+                <div className="flex items-center justify-start w-full">
                   <p className="text-body text-text-default font-semibold">
                     {totalPrice.toLocaleString()}원
                   </p>
@@ -428,7 +430,7 @@ export default function MenuBottomSheet({
         </div>
 
         {/* 하단 버튼 영역 */}
-        <div className="px-4 pb-6 pt-2 shrink-0 bg-background-default border-t border-border-subtle">
+        <div className="px-4 pb-6 pt-2 shrink-0 bg-background-default">
           <ButtonDefault
             onClick={handleSubmitCart}
             disabled={addCartMutation.isPending || cards.length === 0}
@@ -442,11 +444,11 @@ export default function MenuBottomSheet({
 
   return (
     <div className="fixed inset-0 z-modal flex items-end justify-center bg-background-dim/40">
-      {showError && <ToastError text={errorMessage} />}
+      {showError && <ToastError text={errorMessage} bottom={96} />}
 
       <div className="absolute inset-0" onClick={onClose} />
 
-      <div className="relative w-full h-109 bg-background-default rounded-t-[35px] flex flex-col overflow-hidden animate-in slide-in-from-bottom-full duration-200">
+      <div className="relative w-full  max-w-[375px] h-109 bg-background-default rounded-t-[35px] flex flex-col overflow-hidden animate-in slide-in-from-bottom-full duration-200">
         {mode === 'LIST' ? renderCardList() : renderOptionForm()}
       </div>
     </div>

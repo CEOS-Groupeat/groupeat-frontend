@@ -4,6 +4,7 @@ import CheckIcon from '@/public/icons/icon_check_linear.svg';
 import OrderCheckIllust from '@/public/illust/illust_OrderCheck.svg';
 import PickupIllust from '@/public/illust/illust_Waiting.svg';
 import PickupDoneIllust from '@/public/illust/illust_PickupDone.svg';
+import Ellipse from '@/public/icons/icon_ellipse.svg';
 
 interface StatusBarProps {
   currentStep: number; // 0: 승인 대기, 1: 픽업 예정, 2: 픽업 완료
@@ -29,7 +30,7 @@ export default function StatusBar({ currentStep }: StatusBarProps) {
           <CurrentIllust className="object-contain" />
         </div>
 
-        <div className="absolute top-[14px] -translate-y-1/2 left-1/2 -translate-x-1/2 inline-flex items-center justify-start w-64 z-0">
+        <div className="absolute top-[18px] -translate-y-1/2 left-1/2 -translate-x-1/2 inline-flex items-center justify-start w-64 z-0">
           <div
             className={`flex-1 h-1 rounded-full transition-colors duration-300 ${
               currentStep >= 1 ? 'bg-brand-default' : 'bg-background-subtle'
@@ -55,20 +56,25 @@ export default function StatusBar({ currentStep }: StatusBarProps) {
                 // gap-3(12px)가 아이콘 바닥과 텍스트 사이에 정확히 들어갑니다.
                 className="inline-flex flex-col items-center justify-start w-12 gap-3"
               >
-                {/* 노드 UI (h-7로 타이트하게 고정하여 시각적 여백 오차를 없앰) */}
-                <div className="flex items-center justify-center h-7">
-                  {isPassed && (
-                    <div className="w-4 h-4 bg-background-default rounded-full border-[4px] border-brand-default box-content" />
-                  )}
-                  {isCurrent && (
-                    <div className="p-[3.33px] bg-gradient-to-b from-orange-400 to-orange-600 rounded-full inline-flex justify-center items-center">
-                      <CheckIcon className="w-5 h-5 text-white" />
+                {isPassed && (
+                  <div className="flex items-center justify-center size-[36px]">
+                    <div className="size-[18px] rounded-full border-4 border-brand-default">
+                      <Ellipse className="text-background-default" />
                     </div>
-                  )}
-                  {isFuture && (
-                    <div className="w-4 h-4 bg-background-subtle rounded-full border-[4px] border-background-subtle box-content" />
-                  )}
-                </div>
+                  </div>
+                )}
+                {isCurrent && (
+                  <div className="flex items-center justify-center w-[48px]">
+                    <div className="size-[30px] bg-gradient-to-b from-orange-400 to-orange-600 rounded-[82.50px] inline-flex justify-center items-center">
+                      <CheckIcon className="size-[23.33px] text-white" />
+                    </div>
+                  </div>
+                )}
+                {isFuture && (
+                  <div className="flex items-center justify-center size-[36px]">
+                    <div className="size-[18px] bg-background-subtle rounded-full" />
+                  </div>
+                )}
 
                 {/* 텍스트 스타일링 */}
                 <div
@@ -86,7 +92,6 @@ export default function StatusBar({ currentStep }: StatusBarProps) {
             );
           })}
         </div>
-        
       </div>
     </div>
   );

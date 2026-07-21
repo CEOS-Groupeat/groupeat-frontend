@@ -42,19 +42,19 @@ export default function CustomerInfoModal({ onClose }: CustomerInfoModalProps) {
             <div className="flex px-4 py-3 flex-col items-start gap-2.5 self-stretch rounded-lg bg-background-transparent">
               <div className="flex flex-col items-start gap-1">
                 <div className="flex items-center justify-center gap-1">
-                  <CheckLinear className="text-[#42BE65]" />
+                  <CheckLinear className="size-5 text-[#42BE65]" />
                   <p className="text-label2 text-text-subtlest font-medium">
                     원하는 날짜·인원·예산에 따라 딱 맞는 가게 추천
                   </p>
                 </div>
                 <div className="flex items-center justify-center gap-1">
-                  <CheckLinear className="text-[#42BE65]" />
+                  <CheckLinear className="size-5 text-[#42BE65]" />
                   <p className="text-label2 text-text-subtlest font-medium">
                     그루핏만의 할인율로 가장 합리적인 가격
                   </p>
                 </div>
                 <div className="flex items-center justify-center gap-1">
-                  <CheckLinear className="text-[#42BE65]" />
+                  <CheckLinear className="size-5 text-[#42BE65]" />
                   <p className="text-label2 text-text-subtlest font-medium">
                     정기적인 주문은 더 편하게, 원클릭 재주문
                   </p>
