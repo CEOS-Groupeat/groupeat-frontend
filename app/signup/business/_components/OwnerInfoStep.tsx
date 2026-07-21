@@ -2,10 +2,12 @@ import { useState } from 'react';
 import DefaultButton from '@/components/ui/ButtonDefault';
 import { useBusinessSignupStore } from '@/store/useBusinessSignupStore';
 import TextField from '@/components/ui/TextField';
-import { useSignupStore } from '@/store/useSignupStore';
 
-export default function OwnerInfoStep() {
-  const { nextStep } = useSignupStore();
+interface OwnerInfoStepProps {
+  onNext: () => void;
+}
+
+export default function OwnerInfoStep({ onNext }: OwnerInfoStepProps) {
   const { updatePayload } = useBusinessSignupStore();
 
   const [formData, setFormData] = useState({
@@ -45,7 +47,7 @@ export default function OwnerInfoStep() {
       gender: formData.gender,
     });
 
-    nextStep();
+    onNext();
   };
 
   return (
