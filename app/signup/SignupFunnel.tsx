@@ -3,6 +3,7 @@
 
 import { useEffect, useRef } from 'react';
 import { useSignupStore } from '@/store/useSignupStore';
+import { useBusinessSignupStore } from '@/store/useBusinessSignupStore';
 
 import UserTypeStep from '@/app/signup/common/_components/UserTypeStep';
 import TermsStep from '@/app/signup/common/_components/TermsStep';
@@ -15,12 +16,16 @@ export default function SignupFunnel({
   initialToken: string;
 }) {
   const { setSignupToken, step } = useSignupStore();
+  const resetBusinessPayload = useBusinessSignupStore(
+    (state) => state.resetPayload
+  );
   const isInitialized = useRef(false);
 
   useEffect(() => {
     if (!isInitialized.current) {
       isInitialized.current = true;
       setSignupToken(initialToken);
+      resetBusinessPayload(); // 공통 회원가입부터 새로 시작할 때 사업자 스토어도 초기화
       window.history.replaceState(null, '', '/signup');
     }
   }, [initialToken, setSignupToken]);
