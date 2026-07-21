@@ -47,6 +47,8 @@ function ShopInfoForm({ shopInfo }: ShopInfoFormProps) {
   const successTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const errorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [successMessage, setSuccessMessage] = useState('');
+  const [isConditionFocused, setIsConditionFocused] = useState(false);
+  const [isRateFocused, setIsRateFocused] = useState(false);
 
   const [phoneError, setPhoneError] = useState(false);
 
@@ -253,10 +255,13 @@ function ShopInfoForm({ shopInfo }: ShopInfoFormProps) {
                       discountConditionQuantity: e.target.value,
                     })
                   }
+                  onFocus={() => setIsConditionFocused(true)}
+                  onBlur={() => setIsConditionFocused(false)}
                   className={`w-25 h-11 pl-4 pr-3 py-3 rounded-lg font-pretendard font-normal text-body text-text-default outline-none transition-colors border ${
-                    values.discountConditionQuantity.trim().length > 0
+                    values.discountConditionQuantity.trim().length > 0 &&
+                    !isConditionFocused
                       ? 'bg-background-subtle border-transparent'
-                      : 'bg-white border-border-strong'
+                      : 'bg-white border-border-strong focus:border-border-active'
                   }`}
                 />
                 <p className="text-text-default text-body">개 이상</p>
@@ -267,10 +272,12 @@ function ShopInfoForm({ shopInfo }: ShopInfoFormProps) {
                   onChange={(e) =>
                     setValues({ ...values, discountRate: e.target.value })
                   }
+                  onFocus={() => setIsRateFocused(true)}
+                  onBlur={() => setIsRateFocused(false)}
                   className={`w-25 h-11 pl-4 pr-3 py-3 rounded-lg font-pretendard font-normal text-body text-text-default outline-none transition-colors border ${
-                    values.discountRate.trim().length > 0
+                    values.discountRate.trim().length > 0 && !isRateFocused
                       ? 'bg-background-subtle border-transparent'
-                      : 'bg-white border-border-strong'
+                      : 'bg-white border-border-strong focus:border-border-active'
                   }`}
                 />
                 <p className="text-text-default font-normal text-body">
