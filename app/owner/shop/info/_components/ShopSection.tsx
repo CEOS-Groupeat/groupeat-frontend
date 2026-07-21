@@ -300,7 +300,7 @@ function ShopInfoForm({ shopInfo }: ShopInfoFormProps) {
         {isSaving ? '저장 중...' : '저장하기'}
       </DefaultButton>
 
-      {showSuccessToast && <SuccessToast text={successMessage} bottom={102} />}
+      {showSuccessToast && <SuccessToast text={successMessage} bottom={182} />}
       {showErrorToast && <ToastError text={errorMessage} />}
     </main>
   );

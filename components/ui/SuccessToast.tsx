@@ -18,7 +18,7 @@ export default function SuccessToast({ text, bottom }: SuccessToastProps) {
       <div className="pl-3 pr-4 py-1.5 rounded-full bg-background-toast/52 backdrop-blur-[32px] flex justify-center items-center overflow-hidden z-toast animate-in fade-in slide-in-from-bottom-5 duration-300 pointer-events-auto">
         <div className="flex items-center gap-1">
           <IconCheckSuccess className="size-4.5 shrink-0" />
-          <p className="px-0.5 py-1 text-text-inverse text-label1 font-normal font-['Pretendard'] whitespace-nowrap">
+          <p className="px-0.5 py-1 text-text-inverse text-label1 font-semibold font-['Pretendard'] whitespace-nowrap">
             {text}
           </p>
         </div>

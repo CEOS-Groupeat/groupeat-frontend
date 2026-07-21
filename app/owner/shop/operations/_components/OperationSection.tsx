@@ -486,7 +486,7 @@ function OperationForm({
 
       {showErrorToast && <ToastError text={errorMessage} />}
       {showSuccessToast && (
-        <SuccessToast text="저장이 완료되었습니다" bottom={102} />
+        <SuccessToast text="저장이 완료되었습니다" bottom={182} />
       )}
     </main>
   );
