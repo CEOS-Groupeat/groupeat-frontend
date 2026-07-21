@@ -1,27 +1,16 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import ArrowLeft from '@/public/icons/icon_arrow_Left.svg';
-import { useSignupStore } from '@/store/useSignupStore';
 
 interface SignupHeaderProps {
   showBackButton?: boolean;
+  onBack?: () => void;
 }
 
 export default function SignupHeader({
   showBackButton = true,
+  onBack,
 }: SignupHeaderProps) {
-  const router = useRouter();
-  const { step, prevStep } = useSignupStore();
-
-  const handleBack = () => {
-    if (step === 1) {
-      router.replace('/login');
-    } else {
-      prevStep();
-    }
-  };
-
   return (
     <div className="w-full flex flex-col pt-10">
       <div className="flex py-4 items-center justify-between self-stretch">
@@ -30,7 +19,7 @@ export default function SignupHeader({
             width={20}
             height={20}
             className="cursor-pointer"
-            onClick={handleBack}
+            onClick={onBack}
           />
         ) : (
           <div className="w-5 h-5" />

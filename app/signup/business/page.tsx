@@ -1,4 +1,4 @@
-// app/signup/page.tsx
+// app/signup/business/page.tsx
 import OwnerSignupFunnel from '@/app/signup/business/OwnerSignupFunnel';
 
 export default async function SignupPage() {

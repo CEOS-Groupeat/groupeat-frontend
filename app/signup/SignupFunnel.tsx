@@ -2,7 +2,9 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import { useSignupStore } from '@/store/useSignupStore';
+import { useBusinessSignupStore } from '@/store/useBusinessSignupStore';
 
 import UserTypeStep from '@/app/signup/common/_components/UserTypeStep';
 import TermsStep from '@/app/signup/common/_components/TermsStep';
@@ -14,20 +16,33 @@ export default function SignupFunnel({
 }: {
   initialToken: string;
 }) {
-  const { setSignupToken, step } = useSignupStore();
+  const router = useRouter();
+  const { setSignupToken, step, prevStep } = useSignupStore();
+  const resetBusinessPayload = useBusinessSignupStore(
+    (state) => state.resetPayload
+  );
   const isInitialized = useRef(false);
 
   useEffect(() => {
     if (!isInitialized.current) {
       isInitialized.current = true;
       setSignupToken(initialToken);
+      resetBusinessPayload(); // 공통 회원가입부터 새로 시작할 때 사업자 스토어도 초기화
       window.history.replaceState(null, '', '/signup');
     }
   }, [initialToken, setSignupToken]);
 
+  const handleBack = () => {
+    if (step === 1) {
+      router.replace('/login');
+    } else {
+      prevStep();
+    }
+  };
+
   return (
     <div className="flex flex-col w-full bg-white px-4 min-h-screen">
-      <SignupHeader />
+      <SignupHeader onBack={handleBack} />
 
       <div className="flex-1 flex flex-col">
         {step === 1 && <UserTypeStep />}
