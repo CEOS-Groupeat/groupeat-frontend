@@ -16,6 +16,7 @@ import { useCartStore } from '@/store/useCartStore';
 import FloatingCartBar from '@/app/customer/store/[storeId]/_components/FloatingCartBar';
 import Image from 'next/image';
 import { useStoreDetail } from '@/app/customer/store/_hooks/useStoreDetail';
+import Logo from '@/public/illust/illust_Customer.svg';
 
 // 💡 1. 픽업 가능 시간 목록을 생성하는 유틸리티 함수 추가
 const generateAvailableTimes = (
@@ -285,7 +286,7 @@ export default function StoreOptions() {
                           </p>
                         </div>
 
-                        <div className="w-22.5 h-22.5 bg-neutral-10 rounded-xl shrink-0 flex items-end justify-end p-1.5 relative overflow-hidden bg-black">
+                        <div className="w-22.5 h-22.5 bg-neutral-10 rounded-xl shrink-0 flex items-end justify-end p-1.5 relative overflow-hidden">
                           {menu.imageUrl ? (
                             <Image
                               src={menu.imageUrl}
@@ -295,7 +296,7 @@ export default function StoreOptions() {
                               priority={false}
                             />
                           ) : (
-                            <div className="absolute inset-0 bg-neutral-20" />
+                            <div className="absolute inset-0 bg-brand-background"><Logo /></div>
                           )}
 
                           {quantityInCart > 0 ? (
