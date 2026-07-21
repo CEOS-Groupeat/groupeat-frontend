@@ -56,7 +56,7 @@ export default function QuantityFilter({
       onBlur={handleConfirm}
       className="w-full h-11 pl-4 pr-3 py-3 rounded-lg
           outline outline-1 outline-offset-[-1px] outline-border-strong
-          font-['Pretendard'] font-normal text-body text-text-default placeholder:text-text-placeholder placeholder:font-normal"
+          font-['Pretendard'] font-normal text-body text-text-default placeholder:text-text-placeholder placeholder:font-normal [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
       autoFocus
     />
   );
