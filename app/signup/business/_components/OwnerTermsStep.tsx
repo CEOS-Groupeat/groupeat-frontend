@@ -8,15 +8,24 @@ import TermsContentModal from '@/app/signup/_components/TermsContentModal';
 import DefaultButton from '@/components/ui/ButtonDefault';
 import { fetchClient } from '@/lib/fetchClient';
 import { useBusinessSignupStore } from '@/store/useBusinessSignupStore';
-import { useSignupStore } from '@/store/useSignupStore';
 import { Term } from '@/types/term';
 
-export default function OwnerTermsStep() {
-  const { nextStep } = useSignupStore();
-  const { updatePayload } = useBusinessSignupStore();
+interface OwnerTermsStepProps {
+  onNext: () => void;
+}
 
+export default function OwnerTermsStep({ onNext }: OwnerTermsStepProps) {
+  const { payload, updatePayload } = useBusinessSignupStore();
+
+  // 스토어에 저장된 agreements로부터 복원
   const [checkedTerms, setCheckedTerms] = useState<{ [key: number]: boolean }>(
-    {}
+    () => {
+      const initial: { [key: number]: boolean } = {};
+      payload.agreements?.forEach((a) => {
+        initial[a.termsId] = a.agreed;
+      });
+      return initial;
+    }
   );
   const [selectedTerm, setSelectedTerm] = useState<Term | null>(null);
 
@@ -68,7 +77,7 @@ export default function OwnerTermsStep() {
 
     updatePayload({ agreements: agreementsPayload });
 
-    nextStep();
+    onNext();
   };
 
   if (isLoading) {
