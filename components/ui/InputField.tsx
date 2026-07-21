@@ -60,16 +60,16 @@ export default function InputField({
           onBlur?.(e);
         }}
         className={`w-full h-11 pl-4 pr-3 py-3 rounded-lg font-pretendard font-normal text-body placeholder:text-text-placeholder placeholder:font-normal transition-colors border outline-none 
-        [&:-webkit-autofill]:[transition:background-color_9999s_ease-in-out_0s]
-        [&:-webkit-autofill]:[-webkit-text-fill-color:theme(colors.text-default)]
-        ${disabled ? 'text-text-placeholder' : 'text-text-default'} 
-        ${
-          isError
-            ? 'border-status-danger focus:border-status-danger'
-            : isFilled && !disableFillStyle && !isFocused
-              ? 'bg-background-subtle border-transparent'
-              : 'bg-white border-border-strong focus:border-border-active'
-        } ${
+[&:-webkit-autofill]:[-webkit-text-fill-color:var(--color-text-default)]
+[&:-webkit-autofill]:
+${disabled ? 'text-text-placeholder' : 'text-text-default'} 
+${
+  isError
+    ? 'border-status-danger focus:border-status-danger'
+    : isFilled && !disableFillStyle && !isFocused
+      ? 'bg-background-subtle border-transparent [&:-webkit-autofill]:[box-shadow:0_0_0px_1000px_var(--color-background-subtle)_inset]'
+      : 'bg-white border-border-strong focus:border-border-active [&:-webkit-autofill]:[box-shadow:0_0_0px_1000px_white_inset]'
+} ${
           type === 'number'
             ? '[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
             : ''
