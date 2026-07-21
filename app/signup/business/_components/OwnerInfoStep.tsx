@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import DefaultButton from '@/components/ui/ButtonDefault';
 import { useBusinessSignupStore } from '@/store/useBusinessSignupStore';
@@ -8,16 +10,16 @@ interface OwnerInfoStepProps {
 }
 
 export default function OwnerInfoStep({ onNext }: OwnerInfoStepProps) {
-  const { updatePayload } = useBusinessSignupStore();
+  const { payload, updatePayload } = useBusinessSignupStore();
 
   const [formData, setFormData] = useState({
-    businessType: null as 'INDIVIDUAL' | 'CORPORATION' | null,
-    representativeName: '',
-    businessName: '',
-    openedDate: '',
-    birthDate: '', // 변경됨
-    email: '',
-    gender: null as 'MALE' | 'FEMALE' | null,
+    businessType: payload.businessType as 'INDIVIDUAL' | 'CORPORATION' | null,
+    representativeName: payload.representativeName || '',
+    businessName: payload.businessName || '',
+    openedDate: payload.openedDate || '',
+    birthDate: payload.birthDate || '',
+    email: payload.email || '',
+    gender: payload.gender as 'MALE' | 'FEMALE' | null,
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
