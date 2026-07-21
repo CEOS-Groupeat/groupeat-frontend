@@ -33,6 +33,8 @@ export interface PickupTimeInfo {
   date: string;
   dailyAvailableQuantity: number;
   dailyMinOrderQuantity: number;
+  dailyAcceptedQuantity?: number;
+  dailyRemainingQuantity?: number;
   openTime: string;
   closeTime: string;
   intervalMinutes: number;
