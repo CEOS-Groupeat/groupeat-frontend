@@ -2850,6 +2850,18 @@ export interface components {
              * @example 200
              */
             maxOrderQuantity?: number;
+            /**
+             * Format: date
+             * @description 운영 일정 시작일
+             * @example 2026-05-20
+             */
+            scheduleStartDate?: string;
+            /**
+             * Format: date
+             * @description 운영 일정 종료일
+             * @example 2027-05-20
+             */
+            scheduleEndDate?: string;
         };
         ApiResponseReviewListResponse: {
             isSuccess?: boolean;
@@ -3040,10 +3052,28 @@ export interface components {
             date?: string;
             /**
              * Format: int32
+             * @description 최소 주문 가능 수량
+             * @example 10
+             */
+            dailyMinOrderQuantity?: number;
+            /**
+             * Format: int32
              * @description 총 주문 가능 수량
              * @example 100
              */
             dailyAvailableQuantity?: number;
+            /**
+             * Format: int32
+             * @description 해당 날짜에 이미 승인된 주문 수량
+             * @example 80
+             */
+            dailyAcceptedQuantity?: number;
+            /**
+             * Format: int32
+             * @description 해당 날짜의 잔여 주문 가능 수량
+             * @example 20
+             */
+            dailyRemainingQuantity?: number;
             /**
              * Format: int32
              * @description 시간 간격(분)

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSearchStore } from '@/store/useSearchStore';
+import { useSearchStores } from '@/hooks/useSearchStores';
 
 import HomeSearchBar from './HomeSearchBar';
 import IconDownArrow from '@/public/icons/icon_arrow_down.svg';
@@ -15,11 +16,13 @@ import { StoreSearchParams } from '@/app/customer/search/_types/store.type';
 export default function FiltersContainer() {
   const router = useRouter();
   const { setResults, appliedFilters } = useSearchStore();
+  const { search } = useSearchStores();
   const [filterKey, setFilterKey] = useState(0);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [initialOpenFilter, setInitialOpenFilter] = useState<
     keyof StoreSearchParams | undefined
   >();
+  const [showError, setShowError] = useState(false);
 
   const handleOpenFilter = (filter: keyof StoreSearchParams) => {
     setInitialOpenFilter(filter);
@@ -56,11 +59,22 @@ export default function FiltersContainer() {
           카테고리별 탐색
         </span>
         <CategorySection
-          onCategoryClick={() => handleOpenFilter('category')}
-          appliedFilters={appliedFilters}
+          onCategoryClick={async (category) => {
+            const filters = { category };
+            const result = await search(filters);
+
+            if (!result) {
+              setShowError(true);
+              setTimeout(() => setShowError(false), 2000);
+              return;
+            }
+
+            setResults(result, filters);
+            router.push(`/customer/search`);
+          }}
+          appliedFilters={{}}
         />
       </div>
-
       <FilterBottomSheet
         key={filterKey}
         isOpen={isFilterOpen}

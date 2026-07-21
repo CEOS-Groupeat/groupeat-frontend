@@ -29,7 +29,7 @@ export default function WeekdayTabButton({
     <button
       type="button"
       onClick={onClick}
-      className={`self-stretch h-10 px-6 py-3 rounded-lg outline outline-1 outline-offset-[-1px] flex justify-center items-center overflow-hidden ${stateClass}`}
+      className={`flex-1 h-10 px-1 py-3 rounded-lg outline outline-1 outline-offset-[-1px] flex justify-center items-center overflow-hidden ${stateClass}`}
     >
       <span
         className={`text-center text-label2 font-['Pretendard'] ${textClass}`}

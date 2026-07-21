@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { Suspense, useState, useRef, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import OwnerOrderHeader from '@/app/owner/orders/_components/OwnerOrderHeader';
 import SegmentedControl from '@/app/owner/orders/_components/SegmentedControl';
 import OrderEmptyState from '@/app/owner/orders/_components/OrderEmptyState';
@@ -18,9 +19,13 @@ import { useApproveOrder } from './_hooks/useApproveOrder';
 import { useRejectOrder } from './_hooks/useRejectOrder';
 import { usePickupComplete } from './_hooks/usePickupComplete';
 
-export default function Orders() {
+function OrdersContent() {
+  const searchParams = useSearchParams();
+  const initialTab =
+    (searchParams.get('tab') as 'WAITING' | 'CONFIRMED' | 'PAST') ?? 'WAITING';
+
   const [activeTab, setActiveTab] = useState<'WAITING' | 'CONFIRMED' | 'PAST'>(
-    'WAITING'
+    initialTab
   );
 
   const { data: waitingData } = useOwnerOrders({ tab: 'WAITING', size: 1 });
@@ -205,5 +210,19 @@ export default function Orders() {
 
       <OwnerNavbar />
     </div>
+  );
+}
+
+export default function Orders() {
+  return (
+    <Suspense
+      fallback={
+        <div className="w-full min-h-screen flex items-center justify-center bg-background-default">
+          <span className="text-sm text-text-subtle">로딩 중...</span>
+        </div>
+      }
+    >
+      <OrdersContent />
+    </Suspense>
   );
 }

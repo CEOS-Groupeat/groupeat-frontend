@@ -22,6 +22,7 @@ import DateFilter, {
 } from '../_components/filters/DateFilter';
 import BudgetFilter from '../_components/filters/BudgetFilter';
 import CategoryFilter from '../_components/filters/CategoryFilter';
+import { CATEGORIES } from '../_constants/category';
 
 // ─── Props ──────────────────────────────────────────
 interface FilterBottomSheetProps {
@@ -141,7 +142,7 @@ export default function FilterBottomSheet({
 
   return (
     <div
-      className={`fixed inset-0 z-modal transition-all duration-300 ${isOpen ? 'visible' : 'invisible'}`}
+      className={`app-container inset-0 z-modal transition-all duration-300 ${isOpen ? 'visible' : 'invisible'}`}
     >
       {/* 오버레이 */}
       <button
@@ -210,7 +211,7 @@ export default function FilterBottomSheet({
               return (
                 <div
                   key={item.key}
-                  className={`flex flex-col ${isExpanded ? 'pb-6 border-b border-border-subtle' : ''}`}
+                  className={`flex flex-col ${isExpanded && item.key !== 'category' ? 'pb-6 border-b border-border-subtle' : ''}`}
                 >
                   {/* 필터 행 */}
                   <button

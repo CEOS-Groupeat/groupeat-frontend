@@ -44,7 +44,7 @@ export default function OrderPrice({
               </p>
             </div>
             {discountRate > 0 && (
-              <p className="text-text-subtlest text-caption1 font-medium">
+              <p className="text-text-subtlest text-caption1 font-medium line-through">
                 {originalPrice.toLocaleString()}원
               </p>
             )}

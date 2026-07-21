@@ -30,6 +30,16 @@ const ALL_WEEKDAYS: DayOfWeek[] = [
   'SUNDAY',
 ];
 
+const WEEKDAY_LABELS: Record<DayOfWeek, string> = {
+  MONDAY: '월요일',
+  TUESDAY: '화요일',
+  WEDNESDAY: '수요일',
+  THURSDAY: '목요일',
+  FRIDAY: '금요일',
+  SATURDAY: '토요일',
+  SUNDAY: '일요일',
+};
+
 const DEFAULT_DAY_SCHEDULE: DayScheduleFormFields = {
   available: false,
   minOrderQuantity: null,
@@ -169,6 +179,12 @@ function OperationForm({
       return;
     }
 
+    // 1단계: 운영 기간 순서 검증
+    if (new Date(periodDates.startDate) > new Date(periodDates.endDate)) {
+      showError('운영 시작일은 종료일보다 이전이어야 해요.');
+      return;
+    }
+
     if (!minOrderDays.trim()) {
       showError('최소 주문 가능 기한을 설정해주세요.');
       return;
@@ -178,6 +194,53 @@ function OperationForm({
     if (!hasAvailableDay) {
       showError('요일별 주문 관리를 등록해주세요.');
       return;
+    }
+
+    // 3~5단계: 영업일로 설정된 각 요일의 세부값 검증
+    for (const day of ALL_WEEKDAYS) {
+      const d = daysMap[day];
+      if (!d.available) continue;
+
+      if (d.minOrderQuantity == null || d.maxOrderQuantity == null) {
+        showError(
+          `${WEEKDAY_LABELS[day]}의 최소/최대 주문 수량을 입력해주세요.`
+        );
+        return;
+      }
+
+      if (d.minOrderQuantity > d.maxOrderQuantity) {
+        showError(
+          `${WEEKDAY_LABELS[day]}의 최소 수량이 최대 수량보다 클 수 없어요.`
+        );
+        return;
+      }
+
+      if (!d.pickupTimeRange) {
+        showError(`${WEEKDAY_LABELS[day]}의 픽업 시간을 설정해주세요.`);
+        return;
+      }
+
+      if (d.pickupTimeRange.startTime >= d.pickupTimeRange.endTime) {
+        showError(`${WEEKDAY_LABELS[day]}의 픽업 시간 순서를 확인해주세요.`);
+        return;
+      }
+
+      if (d.breakTimeRange) {
+        if (d.breakTimeRange.startTime >= d.breakTimeRange.endTime) {
+          showError(`${WEEKDAY_LABELS[day]}의 휴게 시간 순서를 확인해주세요.`);
+          return;
+        }
+
+        if (
+          d.breakTimeRange.startTime < d.pickupTimeRange.startTime ||
+          d.breakTimeRange.endTime > d.pickupTimeRange.endTime
+        ) {
+          showError(
+            `${WEEKDAY_LABELS[day]}의 휴게 시간이 픽업 시간 안에 있어야 해요.`
+          );
+          return;
+        }
+      }
     }
 
     try {
@@ -421,8 +484,10 @@ function OperationForm({
         {isSaving ? '저장 중...' : '저장하기'}
       </DefaultButton>
 
-      {showErrorToast && <ToastError text={errorMessage} />}
-      {showSuccessToast && <SuccessToast text="저장이 완료되었습니다" />}
+      {showErrorToast && <ToastError text={errorMessage} bottom={182} />}
+      {showSuccessToast && (
+        <SuccessToast text="저장이 완료되었습니다" bottom={182} />
+      )}
     </main>
   );
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 import Ticket from '@/public/icons/icon_ticket.svg';
 import Star from '@/public/icons/icon_star.svg';
@@ -9,8 +9,7 @@ import BellIcon from '@/public/icons/icon_bell_active.svg';
 import AlertIcon from '@/public/icons/icon_alert.svg';
 import Place from '@/public/icons/icon_place.svg';
 import Phone from '@/public/icons/icon_phone.svg';
-import Calendar from '@/public/icons/icon_calendar.svg';
-import Notice from '@/public/icons/icon_notice.svg';
+import Calendar from '@/public/icons/icon-calendar-storeDetail.svg';
 import ArrowUp from '@/public/icons/icon_arrow_up.svg';
 import ArrowDown from '@/public/icons/icon_arrow_down.svg';
 import { useStoreDetail } from '@/app/customer/store/_hooks/useStoreDetail';
@@ -35,9 +34,10 @@ const formatClosedDays = (daysString?: string | null) => {
 };
 
 export default function StoreDetail() {
+  const router = useRouter();
   const params = useParams();
   const storeId = params.storeId as string;
-  const [isProcessExpanded, setIsProcessExpanded] = useState<boolean>(false);
+  const [isProcessExpanded, setIsProcessExpanded] = useState<boolean>(true);
 
   const { data: store, isLoading, isError } = useStoreDetail(storeId);
 
@@ -65,8 +65,8 @@ export default function StoreDetail() {
                   <div className="flex items-center gap-4.5 self-stretch">
                     <div className="flex items-center gap-1">
                       <Ticket className="w-3.5 h-3.5" />
-                      <p className="text-caption1 text-status-info font-semibold">
-                        {store.discountConditionQuantity}개 이상 주문 시{' '}
+                      <p className="text-caption1 text-status-info font-semibold tracking-normal">
+                        {store.discountConditionQuantity}개 이상 주문시{' '}
                         {store.discountRate}% 할인
                       </p>
                     </div>
@@ -91,16 +91,24 @@ export default function StoreDetail() {
 
               <div className="flex items-center gap-0.5">
                 <Star className="w-3.5 h-3.5 text-icon-star" />
-                <p className="text-label2 text-text-default">
+                <p className="text-label2 font-medium text-text-default">
                   {store.reviewRating.toFixed(1)}
                 </p>
-                <p className="text-label2 text-text-default">
+                <p className="text-label2 font-medium text-text-default">
                   ({store.reviewCount})
                 </p>
-                <p className="text-label2 text-text-default">&gt;</p>
+                <button
+                  type="button"
+                  onClick={() =>
+                    router.push(`/customer/store/${store.storeId}/review`)
+                  }
+                  className="text-label2 font-medium text-text-default"
+                >
+                  &gt;
+                </button>
               </div>
 
-              <h3 className="text-label1 self-stretch mt-2 text-text-default whitespace-pre-line">
+              <h3 className="text-label1 self-stretch mt-1 text-text-default whitespace-pre-line">
                 {store.description}
               </h3>
             </div>
@@ -111,7 +119,7 @@ export default function StoreDetail() {
             <div className="flex flex-col items-start gap-1.5">
               <div className="flex items-start gap-1">
                 <div className="flex pt-0.5 items-center gap-2.5">
-                  <BellIcon className="text-brand-default w-4 h-4" />
+                  <BellIcon className="text-brand-default size-4" />
                 </div>
                 <p className="text-brand-default text-label2 font-semibold leading-4.5">
                   최소 {store.minOrderDays}일 전 주문
@@ -120,16 +128,17 @@ export default function StoreDetail() {
 
               <div className="flex items-start gap-1">
                 <div className="flex pt-0.5 items-center gap-2.5">
-                  <AlertIcon className="text-brand-default w-4 h-4" />
+                  <AlertIcon className="text-brand-default size-4" />
                 </div>
                 <p className="text-brand-default text-label2 font-semibold leading-4.5">
-                  주문 가능 수량 최소 {store.minOrderQuantity ?? 0}개 ~ 최대 {store.maxOrderQuantity ?? 99}개
+                  주문 가능 수량 최소 {store.minOrderQuantity ?? 0}개 ~ 최대{' '}
+                  {store.maxOrderQuantity ?? 99}개
                 </p>
               </div>
 
               <div className="flex items-start gap-1">
                 <div className="flex pt-0.5 items-center gap-2.5">
-                  <Place className="text-icon-subtlest w-4 h-4" />
+                  <Place className="text-icon-subtlest size-4" />
                 </div>
                 <p className="text-text-subtle text-label2 leading-4.5">
                   {store.address}
@@ -138,7 +147,7 @@ export default function StoreDetail() {
 
               <div className="flex items-start gap-1">
                 <div className="flex pt-0.5 items-center gap-2.5">
-                  <Phone className="text-icon-subtlest" />
+                  <Phone className="text-icon-subtlest size-4" />
                 </div>
                 <p className="text-text-subtle text-label2 leading-4.5">
                   Tel. {store.phoneNumber}
@@ -147,7 +156,7 @@ export default function StoreDetail() {
 
               <div className="flex items-start gap-1">
                 <div className="flex pt-0.5 items-center gap-2.5">
-                  <Calendar className="text-icon-subtlest" />
+                  <Calendar className="text-icon-subtlest size-4" />
                 </div>
                 <p className="text-text-subtle text-label2 leading-4.5">
                   {formatClosedDays(store.closedDays)}
@@ -161,7 +170,6 @@ export default function StoreDetail() {
                 onClick={() => setIsProcessExpanded((prev) => !prev)}
               >
                 <div className="flex justify-center items-center gap-1.5">
-                  <Notice className="text-icon-subtlest w-4 h-4" />
                   <p className="text-text-default text-label2 font-medium">
                     주문 프로세스 안내
                   </p>

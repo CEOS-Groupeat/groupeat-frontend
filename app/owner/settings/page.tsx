@@ -10,6 +10,7 @@ import IllustClient from '@/public/illust/illust_Client.svg';
 import DialogModal from '@/components/ui/DialogModal';
 import { fetchClient } from '@/lib/fetchClient';
 import SuccessToast from '@/components/ui/SuccessToast';
+import { useFCMToken } from '@/lib/firebase/_hooks/useFCMToken';
 
 // 승연: useSearchParams를 쓰는 부분만 별도 컴포넌트로 분리하여 Suspense로 감쌈.
 function ProfileUpdateToast() {
@@ -28,15 +29,19 @@ function ProfileUpdateToast() {
   }, [showToast, router]);
 
   if (!showToast) return null;
-  return <SuccessToast text="수정이 완료되었습니다" />;
+  return <SuccessToast text="수정이 완료되었습니다" bottom={102} />;
 }
 
 export default function OwnerMyPage() {
   const router = useRouter();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const { disableNotification } = useFCMToken();
 
   const executeLogout = async () => {
     try {
+      // FCM 토큰 먼저 비활성화 (알림 오발송 방지)
+      await disableNotification();
+
       const response = (await fetchClient('/api/auth/logout', {
         method: 'POST',
       })) as { isSuccess?: boolean; message?: string };
@@ -85,7 +90,7 @@ export default function OwnerMyPage() {
               <Link href="/owner/info" className="w-full">
                 <SettingOption text="사업자 정보" icon="bag" />
               </Link>
-              <Link href="/alert" className="w-full">
+              <Link href="/owner/settings/alert" className="w-full">
                 <SettingOption text="알림 설정" icon="alarm" />
               </Link>
               <Link href="/owner/terms?targetType=BUSINESS" className="w-full">
@@ -96,7 +101,7 @@ export default function OwnerMyPage() {
         </div>
       </section>
 
-      <div className="fixed bottom-0 w-full">
+      <div className="app-container bottom-0">
         <div className="w-full flex flex-col justify-center items-center relative">
           <button
             type="button"

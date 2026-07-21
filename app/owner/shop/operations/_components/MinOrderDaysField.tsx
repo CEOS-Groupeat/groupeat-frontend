@@ -23,7 +23,7 @@ export default function MinOrderDaysField({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={'0'}
-          className="size-11 p-3 bg-background-default rounded-lg outline outline-1 outline-offset-[-1px] outline-border-strong text-center text-text-default text-body font-medium placeholder:text-text-placeholder placeholder:font-normal placeholder:text-body placeholder:leading-6"
+          className="size-11 p-3 bg-background-default rounded-lg outline outline-1 outline-offset-[-1px] outline-border-strong text-center text-text-default text-body font-medium placeholder:text-text-placeholder placeholder:font-normal placeholder:text-body placeholder:leading-6 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
         />
         <span className="text-text-default text-label1 font-normal">
           일 전까지 주문 가능

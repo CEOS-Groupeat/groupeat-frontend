@@ -84,9 +84,12 @@ export default function PeriodSettingField({
           className="w-full pl-3.5 pr-4 py-3 bg-background-subtle rounded-xl flex justify-between items-center"
         >
           {hasDate ? (
-            <span className="text-text-subtle text-label1 font-normal">
-              {formatDateWithDots(startDate)} - {formatDateWithDots(endDate)}
-            </span>
+            <div className="flex items-center gap-2">
+              <CalendarIcon />
+              <span className="text-text-subtle text-label1 font-normal">
+                {formatDateWithDots(startDate)} - {formatDateWithDots(endDate)}
+              </span>
+            </div>
           ) : (
             <div className="flex items-center gap-2">
               <CalendarIcon />

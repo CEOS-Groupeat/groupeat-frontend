@@ -44,7 +44,7 @@ export default function MenuSection() {
   }
 
   return (
-    <div className="w-full flex flex-col px-4">
+    <div className="w-full min-h-screen flex flex-col bg-background-default px-4">
       {menuData.map((menu) => (
         <MenuItem
           key={menu.menuId}

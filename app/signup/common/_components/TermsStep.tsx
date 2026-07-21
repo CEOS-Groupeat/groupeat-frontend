@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import TermsContentModal from '@/app/signup/_components/TermsContentModal';
 import CheckboxFalse from '@/public/icons/icon_checkboxFalse.svg';
 import CheckboxTrue from '@/public/icons/icon_checkboxTrue.svg';
 import { useSignupStore } from '@/store/useSignupStore';
@@ -11,10 +12,10 @@ import { Term } from '@/types/term';
 
 export default function TermsStep() {
   const { setAgreements, nextStep } = useSignupStore();
-
   const [checkedTerms, setCheckedTerms] = useState<{ [key: number]: boolean }>(
     {}
   );
+  const [selectedTerm, setSelectedTerm] = useState<Term | null>(null);
 
   // 3. 서버에서 COMMON 약관 불러오기
   const { data: terms = [], isLoading } = useQuery<Term[]>({
@@ -129,7 +130,7 @@ export default function TermsStep() {
               <button
                 type="button"
                 className="flex items-center gap-1"
-                onClick={() => alert(term.content)}
+                onClick={() => setSelectedTerm(term)}
               >
                 <p className="text-text-subtlest text-caption1 underline">
                   보기
@@ -140,11 +141,19 @@ export default function TermsStep() {
         </div>
       </div>
 
-      <div className="fixed bottom-6 left-0 w-full flex justify-center px-4">
+      <div className="app-container bottom-6 flex justify-center px-4">
         <DefaultButton onClick={handleNext} disabled={!isAllRequiredChecked}>
           다음
         </DefaultButton>
       </div>
+
+      {selectedTerm && (
+        <TermsContentModal
+          title={selectedTerm.title}
+          content={selectedTerm.content}
+          onClose={() => setSelectedTerm(null)}
+        />
+      )}
     </div>
   );
 }

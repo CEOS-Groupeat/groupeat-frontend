@@ -23,12 +23,12 @@ function MenuSavedToast() {
   }, [showToast, router]);
 
   if (!showToast) return null;
-  return <SuccessToast text="저장되었습니다." />;
+  return <SuccessToast text="저장되었습니다." bottom={102} />;
 }
 
 export default function StoreMenusPage() {
   return (
-    <div className="w-full min-dvh flex flex-col items-start pt-16 pb-24.5">
+    <div className="w-full min-h-screen flex flex-col bg-background-default items-start pt-16 pb-24.5">
       <ShopHeader />
 
       <MenuSection />

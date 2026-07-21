@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import CheckboxFalse from '@/public/icons/icon_checkboxFalse.svg';
 import CheckboxTrue from '@/public/icons/icon_checkboxTrue.svg';
+import TermsContentModal from '@/app/signup/_components/TermsContentModal';
 import DefaultButton from '@/components/ui/ButtonDefault';
 import { fetchClient } from '@/lib/fetchClient';
 import { useBusinessSignupStore } from '@/store/useBusinessSignupStore';
@@ -17,17 +18,19 @@ export default function OwnerTermsStep() {
   const [checkedTerms, setCheckedTerms] = useState<{ [key: number]: boolean }>(
     {}
   );
+  const [selectedTerm, setSelectedTerm] = useState<Term | null>(null);
 
   const { data: terms = [], isLoading } = useQuery<Term[]>({
     queryKey: ['terms', 'BUSINESS'],
     queryFn: async () => {
       const response = (await fetchClient(
         '/api/terms?targetType=BUSINESS'
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       )) as any;
-      
+
       // (혹시 모를 이중 래핑 방어 코드 포함)
-      const payload = response.isSuccess !== undefined ? response : response.data;
+      const payload =
+        response.isSuccess !== undefined ? response : response.data;
       return payload.data || [];
     },
   });
@@ -131,7 +134,7 @@ export default function OwnerTermsStep() {
               <button
                 type="button"
                 className="flex items-center gap-1"
-                onClick={() => alert(term.content)}
+                onClick={() => setSelectedTerm(term)}
               >
                 <p className="text-text-subtlest text-caption1 underline">
                   보기
@@ -142,11 +145,19 @@ export default function OwnerTermsStep() {
         </div>
       </div>
 
-      <div className="fixed bottom-6 left-0 w-full flex justify-center px-4">
+      <div className="app-container bottom-6 flex justify-center px-4">
         <DefaultButton onClick={handleNext} disabled={!isAllRequiredChecked}>
           다음
         </DefaultButton>
       </div>
+
+      {selectedTerm && (
+        <TermsContentModal
+          title={selectedTerm.title}
+          content={selectedTerm.content}
+          onClose={() => setSelectedTerm(null)}
+        />
+      )}
     </div>
   );
 }

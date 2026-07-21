@@ -7,7 +7,7 @@ export default function OwnerHeader() {
       <div className="flex flex-col justify-center items-center gap-2.5 self-stretch px-4">
         <div className="flex justify-between items-center self-stretch">
           <div className="flex items-center gap-2">
-            <header className="text-headline2 text-brand-default font-poppins font-medium">
+            <header className="text-headline2 text-brand-default !font-['Poppins'] font-medium">
               Groupeat
             </header>
             <div className="flex rounded-full bg-brand-default px-3 py-1 items-center justify-center">

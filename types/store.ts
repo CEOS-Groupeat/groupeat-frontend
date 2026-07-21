@@ -25,11 +25,16 @@ export interface StoreDetail {
   discountRate: number;
   minOrderQuantity?: number | undefined;
   maxOrderQuantity?: number | undefined;
+  scheduleStartDate?: string | undefined;
+  scheduleEndDate?: string | undefined;
 }
 
 export interface PickupTimeInfo {
   date: string;
   dailyAvailableQuantity: number;
+  dailyMinOrderQuantity: number;
+  dailyAcceptedQuantity?: number;
+  dailyRemainingQuantity?: number;
   openTime: string;
   closeTime: string;
   intervalMinutes: number;

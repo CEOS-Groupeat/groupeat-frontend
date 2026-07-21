@@ -47,6 +47,8 @@ function ShopInfoForm({ shopInfo }: ShopInfoFormProps) {
   const successTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const errorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [successMessage, setSuccessMessage] = useState('');
+  const [isConditionFocused, setIsConditionFocused] = useState(false);
+  const [isRateFocused, setIsRateFocused] = useState(false);
 
   const [phoneError, setPhoneError] = useState(false);
 
@@ -144,7 +146,7 @@ function ShopInfoForm({ shopInfo }: ShopInfoFormProps) {
   };
 
   return (
-    <main className="w-full flex flex-col px-4 items-start gap-4.5 font-['Pretendard']">
+    <main className="w-full flex flex-col px-4 items-start gap-6 mb-[36px] font-['Pretendard']">
       <div className="flex flex-col items-start gap-[18px] self-stretch">
         <div className="flex flex-col items-start gap-5 self-stretch">
           <div className="flex flex-col items-start gap-2 self-stretch">
@@ -253,24 +255,29 @@ function ShopInfoForm({ shopInfo }: ShopInfoFormProps) {
                       discountConditionQuantity: e.target.value,
                     })
                   }
+                  onFocus={() => setIsConditionFocused(true)}
+                  onBlur={() => setIsConditionFocused(false)}
                   className={`w-25 h-11 pl-4 pr-3 py-3 rounded-lg font-pretendard font-normal text-body text-text-default outline-none transition-colors border ${
-                    values.discountConditionQuantity.trim().length > 0
+                    values.discountConditionQuantity.trim().length > 0 &&
+                    !isConditionFocused
                       ? 'bg-background-subtle border-transparent'
-                      : 'bg-white border-border-strong'
+                      : 'bg-white border-border-strong focus:border-border-active'
                   }`}
                 />
                 <p className="text-text-default text-body">개 이상</p>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 mb-1">
                 <input
                   value={values.discountRate}
                   onChange={(e) =>
                     setValues({ ...values, discountRate: e.target.value })
                   }
+                  onFocus={() => setIsRateFocused(true)}
+                  onBlur={() => setIsRateFocused(false)}
                   className={`w-25 h-11 pl-4 pr-3 py-3 rounded-lg font-pretendard font-normal text-body text-text-default outline-none transition-colors border ${
-                    values.discountRate.trim().length > 0
+                    values.discountRate.trim().length > 0 && !isRateFocused
                       ? 'bg-background-subtle border-transparent'
-                      : 'bg-white border-border-strong'
+                      : 'bg-white border-border-strong focus:border-border-active'
                   }`}
                 />
                 <p className="text-text-default font-normal text-body">
@@ -293,7 +300,7 @@ function ShopInfoForm({ shopInfo }: ShopInfoFormProps) {
         {isSaving ? '저장 중...' : '저장하기'}
       </DefaultButton>
 
-      {showSuccessToast && <SuccessToast text={successMessage} />}
+      {showSuccessToast && <SuccessToast text={successMessage} bottom={182} />}
       {showErrorToast && <ToastError text={errorMessage} />}
     </main>
   );

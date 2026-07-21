@@ -15,6 +15,9 @@ interface DateFilterProps {
   times: string[];
   availableTimes?: string[];
   minOrderDays?: number;
+  closedDays?: string;
+  scheduleStartDate?: string;
+  scheduleEndDate?: string;
   onDateChange: (date: string) => void;
   onTimeChange: (times: string[]) => void;
 }
@@ -24,6 +27,9 @@ export default function StoreDateFilter({
   times,
   availableTimes = [],
   minOrderDays,
+  closedDays,
+  scheduleStartDate,
+  scheduleEndDate,
   onDateChange,
   onTimeChange,
 }: DateFilterProps) {
@@ -31,6 +37,39 @@ export default function StoreDateFilter({
 
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  const closedDaySet = useMemo(() => {
+    return new Set((closedDays ?? '').split(',').filter(Boolean));
+  }, [closedDays]);
+
+  const dayOfWeekMap = [
+    'SUNDAY',
+    'MONDAY',
+    'TUESDAY',
+    'WEDNESDAY',
+    'THURSDAY',
+    'FRIDAY',
+    'SATURDAY',
+  ];
+
+  const isClosedDay = (day: Date): boolean => {
+    const dayName = dayOfWeekMap[day.getDay()];
+    return closedDaySet.has(dayName);
+  };
+
+  const isOutOfSchedule = (day: Date): boolean => {
+    if (scheduleStartDate) {
+      const start = new Date(scheduleStartDate);
+      start.setHours(0, 0, 0, 0);
+      if (day < start) return true;
+    }
+    if (scheduleEndDate) {
+      const end = new Date(scheduleEndDate);
+      end.setHours(0, 0, 0, 0);
+      if (day > end) return true;
+    }
+    return false;
+  };
 
   const today = useMemo(() => {
     const d = new Date();
@@ -55,6 +94,20 @@ export default function StoreDateFilter({
 
   const handleDaySelect = (day: Date | undefined) => {
     if (!day) return;
+
+    if (isClosedDay(day)) {
+      setErrorMessage('휴무일에는 주문할 수 없어요');
+      setShowError(true);
+      setTimeout(() => setShowError(false), 2000);
+      return;
+    }
+
+    if (isOutOfSchedule(day)) {
+      setErrorMessage('운영 기간이 아니에요');
+      setShowError(true);
+      setTimeout(() => setShowError(false), 2000);
+      return;
+    }
 
     const minAllowedDate = new Date(today);
     minAllowedDate.setDate(today.getDate() + minOrderDays!);
@@ -105,12 +158,12 @@ export default function StoreDateFilter({
             : [...times, slot];
           onTimeChange(updatedTimes);
         }}
-        className={`h-10 rounded-lg text-xs transition-colors ${
+        className={`h-10 rounded-lg text-label2 tracking-normal transition-colors ${
           active
-            ? 'bg-brand-default text-text-inverse'
+            ? 'bg-brand-default text-text-inverse font-semibold'
             : disabled || !date
-              ? 'bg-background-subtlest text-text-subtlest cursor-not-allowed outline outline-1'
-              : 'bg-background-default outline outline-1 outline-border-default text-text-default hover:bg-background-subtle'
+              ? 'bg-background-subtlest text-text-subtlest cursor-not-allowed outline outline-1 font-normal'
+              : 'bg-background-default outline outline-1 outline-border-default text-text-default hover:bg-background-subtle font-normal'
         }`}
       >
         {label}
@@ -179,7 +232,7 @@ export default function StoreDateFilter({
             mode="single"
             selected={selectedDate}
             onSelect={handleDaySelect}
-            disabled={{ before: today }}
+            disabled={[{ before: today }, isClosedDay, isOutOfSchedule]}
             month={viewMonth}
             onMonthChange={setViewMonth}
             hideNavigation
@@ -209,7 +262,7 @@ export default function StoreDateFilter({
           />
         </div>
 
-        <div className="flex items-center gap-1 pt-1">
+        <div className="flex items-center gap-1 mt-1">
           <AlertIcon className="w-4 h-4 text-icon-subtlest" />
           <p className="text-label2 text-text-subtlest">
             최소 {minOrderDays}일 전부터 주문 가능해요

@@ -4,7 +4,7 @@
 import DefaultButton from '@/components/ui/ButtonDefault';
 import { useSignupStore } from '@/store/useSignupStore';
 
-import CustomerIllust from '@/public/illust/illust_Customer.svg';
+import CustomerIllust from '@/public/illust/illust_signup_customerType.svg';
 import ClientIllust from '@/public/illust/illust_Client.svg';
 
 export default function UserTypeStep() {
@@ -22,7 +22,7 @@ export default function UserTypeStep() {
             className={`flex w-41.5 h-38.5 px-2.5 py-5.5 flex-col justify-center items-center gap-2.5 flex-1 border rounded-2xl transition-all duration-200 ${
               memberType === 'CUSTOMER'
                 ? 'bg-brand-background border-transparent'
-                : 'border-border-default bg-background-default hover:bg-gray-50'
+                : 'border-border-default bg-background-default hover:bg-hover'
             }`}
           >
             <div className="w-18.5 h-18.5">
@@ -41,7 +41,7 @@ export default function UserTypeStep() {
             className={`flex h-38.5 px-2.5 py-5.5 flex-col justify-center items-center gap-2.5 flex-1 border rounded-2xl transition-all duration-200 ${
               memberType === 'BUSINESS'
                 ? 'bg-brand-background border-transparent'
-                : 'border-border-default bg-background-default hover:bg-gray-50'
+                : 'border-border-default bg-background-default hover:bg-hover'
             }`}
           >
             <div className="w-18.5 h-18.5">
@@ -59,7 +59,7 @@ export default function UserTypeStep() {
       <div className="flex-1" />
 
       {/* 다음 버튼 영역 */}
-      <div className="fixed bottom-6 left-0 w-full flex justify-center px-4">
+      <div className="app-container bottom-6 flex justify-center px-4">
         <DefaultButton onClick={nextStep} disabled={!memberType}>
           다음
         </DefaultButton>

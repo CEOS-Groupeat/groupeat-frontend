@@ -23,7 +23,7 @@ export default function OrderSummaryBar({
   onButtonClick,
 }: SharedCartBarProps) {
   return (
-    <div className="fixed bottom-0 left-0 w-full z-sticky animate-in slide-in-from-bottom-full duration-300 font-['Pretendard']">
+    <div className="app-container bottom-0 z-sticky animate-in slide-in-from-bottom-full duration-300 font-['Pretendard']">
       {pickupDateTime && (
         <div className="flex items-center bg-background-subtlest gap-2 pl-4 pt-2 pb-6 -mb-4 rounded-t-3xl">
           <CalendarIcon className="text-icon-subtlest shrink-0" />

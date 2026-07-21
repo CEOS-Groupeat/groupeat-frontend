@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import type { KeyboardEvent } from 'react';
 import RightChevronIcon from '@/public/icons/icon-right_chevron.svg';
 import type { OwnerOrderStatus } from '@/src/types/api';
 
@@ -45,8 +46,27 @@ export default function OrderCard({
     orderStatus === 'REJECTED' ||
     orderStatus === 'CANCELLED';
 
+  const handleCardClick = () => {
+    router.push(`/owner/orders/${orderId}`);
+  };
+
+  const handleCardKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.target !== e.currentTarget) return;
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleCardClick();
+    }
+  };
+
   return (
-    <div className="w-full px-3 bg-background-default rounded-xl shadow-[6px_6px_54px_0px_rgba(0,0,0,0.05)] outline outline-1 outline-offset-[-1px] outline-border-subtle flex flex-col overflow-hidden font-['Pretendard'] py-[14px]">
+    <div
+      onClick={handleCardClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={handleCardKeyDown}
+      aria-label="사장님 페이지에서 주문 상세 보기"
+      className="w-full px-3 bg-background-default rounded-xl shadow-[6px_6px_54px_0px_rgba(0,0,0,0.05)] outline outline-1 outline-offset-[-1px] outline-border-subtle flex flex-col overflow-hidden font-['Pretendard'] py-[14px]"
+    >
       {/* 뱃지 영역 */}
       <div className="flex items-center gap-2">
         {isReorder && (
@@ -65,20 +85,18 @@ export default function OrderCard({
       <div className="flex flex-col gap-1.5 mt-2">
         <div className="flex flex-col">
           <div className="flex justify-between items-center">
-            <span className="text-caption1 font-normal text-text-subtlest">
-              {groupName}
-            </span>
-            <button
-              type="button"
-              onClick={() => router.push(`/owner/orders/${orderId}`)}
-              aria-label="주문 상세 보기"
-            >
-              <RightChevronIcon className="size-5 text-icon-subtlest pl-2.5" />
-            </button>
+            <div className="flex flex-col items-start">
+              {groupName && (
+                <span className="text-caption1 font-normal text-text-subtlest">
+                  {groupName}
+                </span>
+              )}
+              <span className="text-body font-semibold text-text-default">
+                {customerName}
+              </span>
+            </div>
+            <RightChevronIcon className="size-5 text-icon-subtlest pl-2.5" />
           </div>
-          <span className="text-body font-semibold text-text-default">
-            {customerName}
-          </span>
         </div>
 
         <div className="w-full h-px bg-border-subtle" />
@@ -129,14 +147,20 @@ export default function OrderCard({
           <>
             <button
               type="button"
-              onClick={onReject}
+              onClick={(e) => {
+                e.stopPropagation();
+                onReject?.();
+              }}
               className="flex-1 h-[38px] rounded-lg outline outline-1 outline-offset-[-1px] outline-border-default text-label2 font-semibold text-text-default"
             >
               거절
             </button>
             <button
               type="button"
-              onClick={onApprove}
+              onClick={(e) => {
+                e.stopPropagation();
+                onApprove?.();
+              }}
               className="flex-[1.68] h-[38px] rounded-lg bg-brand-default text-label2 font-semibold text-text-inverse"
             >
               승인
@@ -146,7 +170,10 @@ export default function OrderCard({
         {isConfirmed && (
           <button
             type="button"
-            onClick={onPickupComplete}
+            onClick={(e) => {
+              e.stopPropagation();
+              onPickupComplete?.();
+            }}
             className="flex-1 h-[38px] rounded-lg bg-brand-default text-label2 font-semibold text-text-inverse"
           >
             픽업 완료

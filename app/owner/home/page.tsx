@@ -3,6 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchClient } from '@/lib/fetchClient';
 import Link from 'next/link';
+import type { GetResponse } from '@/src/types/api';
 
 import AlertCard from '@/components/owner/AlertCard';
 import DashboardCardA from '@/components/owner/DashboardCardA';
@@ -27,45 +28,37 @@ interface ApiResponseDashboard {
   data: DashboardSummaryData;
 }
 
-interface OrderSummaryDTO {
-  orderId: number;
-  isReorder: boolean;
-  eventName: string;
-  customerName: string;
-  pickupTime: string;
-  menu: string;
-  quantity: string;
-}
-
-interface ApiResponseOrderList {
-  isSuccess: boolean;
-  code: string;
-  message: string;
-  data: {
-    orders: OrderSummaryDTO[];
-  };
-}
+type OwnerOrderListResponse = GetResponse<'/api/owner/orders'>;
+type OwnerOrderListData = NonNullable<OwnerOrderListResponse['data']>;
+type OwnerOrderSummary = NonNullable<OwnerOrderListData['orderList']>[number];
 
 export default function OwnerHomePage() {
-  const { data: dashboardData, isLoading: isDashboardLoading } = useQuery<DashboardSummaryData>({
-    queryKey: ['ownerDashboardSummary'],
-    queryFn: async () => {
-      const res = await fetchClient<ApiResponseDashboard>(
-        '/api/owner/dashboard/summary'
-      );
-      if (!res.isSuccess) throw new Error(res.message || '대시보드 요약을 불러오지 못했습니다.');
-      return res.data;
-    },
-  });
+  const { data: dashboardData, isLoading: isDashboardLoading } =
+    useQuery<DashboardSummaryData>({
+      queryKey: ['ownerDashboardSummary'],
+      queryFn: async () => {
+        const res = await fetchClient<ApiResponseDashboard>(
+          '/api/owner/dashboard/summary'
+        );
+        if (!res.isSuccess)
+          throw new Error(
+            res.message || '대시보드 요약을 불러오지 못했습니다.'
+          );
+        return res.data;
+      },
+    });
 
-  const { data: todaysOrders, isLoading: isOrdersLoading } = useQuery<OrderSummaryDTO[]>({
-    queryKey: ['ownerOrders', 'today'],
+  const todayDate = new Date().toISOString().split('T')[0];
+
+  const { data: todaysOrders, isLoading: isOrdersLoading } = useQuery({
+    queryKey: ['ownerOrders', 'todayDate'],
     queryFn: async () => {
-      const res = await fetchClient<ApiResponseOrderList>(
-        '/api/owner/orders?filter=today'
+      const res = await fetchClient<OwnerOrderListResponse>(
+        `/api/owner/orders?tab=CONFIRMED&filterDate=${todayDate}`
       );
-      if (!res.isSuccess) throw new Error(res.message || '주문 목록을 불러오지 못했습니다.');
-      return res.data?.orders || [];
+      if (!res.isSuccess)
+        throw new Error(res.message || '주문 목록을 불러오지 못했습니다.');
+      return res.data?.orderList ?? [];
     },
   });
 
@@ -87,7 +80,7 @@ export default function OwnerHomePage() {
   const increasedOrderCount = 3;
   const increasedSalesAmount = 5;
 
-  const orderList = todaysOrders || [];
+  const orderList: OwnerOrderSummary[] = todaysOrders ?? [];
 
   return (
     <div className="flex flex-col items-center w-full min-h-screen pb-23 bg-background-default">
@@ -96,10 +89,10 @@ export default function OwnerHomePage() {
       <section className="flex flex-col items-start w-full gap-2.5 px-4 mt-5">
         <div className="flex items-center justify-between w-full">
           <div className="flex flex-col items-start gap-1">
-            <h2 className="text-[20px] font-bold text-headline2 text-text-default">
+            <h2 className="text-xl font-bold leading-[26px] tracking-[-0.5%] flex items-center">
               {storeName} 사장님
             </h2>
-            <p className="text-label2 text-text-subtlest">
+            <p className="text-label2 font-normal text-text-default">
               오늘의 단체주문 현황을 확인하세요
             </p>
           </div>
@@ -113,16 +106,20 @@ export default function OwnerHomePage() {
       )}
 
       <section className="flex w-full gap-2 px-4 mt-2">
-        <DashboardCardA
-          text="픽업 예정 건"
-          icon="box"
-          count={confirmedCount}
-        />
-        <DashboardCardA
-          text="픽업 완료"
-          icon="terminated"
-          count={completedCount}
-        />
+        <Link href="/owner/orders?tab=CONFIRMED" className="flex-1">
+          <DashboardCardA
+            text="픽업 예정 건"
+            icon="box"
+            count={confirmedCount}
+          />
+        </Link>
+        <Link href="/owner/orders?tab=PAST" className="flex-1">
+          <DashboardCardA
+            text="픽업 완료"
+            icon="terminated"
+            count={completedCount}
+          />
+        </Link>
       </section>
 
       <section className="flex flex-col w-full px-4 mt-7">
@@ -130,19 +127,28 @@ export default function OwnerHomePage() {
           <h2 className="font-semibold text-headline3 text-text-default">
             오늘 픽업 건
           </h2>
-          <Link href="/owner/orders">
+          <Link href="/owner/orders?tab=CONFIRMED">
             <ArrowRight className="w-5 h-5 text-icon-subtlest" />
           </Link>
         </div>
         <div className="flex flex-col w-full gap-2 mt-2">
           {orderList.length > 0 ? (
-            orderList.map((order) => (
-              <OrderList key={order.orderId} {...order} />
+            orderList.map((order: OwnerOrderSummary) => (
+              <OrderList
+                key={order.orderId}
+                orderId={order.orderId ?? 0}
+                isReorder={order.isReorder ?? false}
+                eventName={order.groupName ?? ''}
+                customerName={order.customerName ?? ''}
+                pickupTime={order.pickupTime ?? ''}
+                menu={order.items?.[0]?.menuName ?? ''}
+                quantity={String(order.items?.[0]?.quantity ?? '')}
+              />
             ))
           ) : (
             <div className="w-full h-32 flex p-3 flex-col justify-center items-center gap-5 rounded-lg border border-border-subtle bg-static-white shadow-[6px_6px_54px_0_rgba(0,0,0,0.05)]">
-              <div className="flex pb-2 flex-col items-center gap-2.5">
-                <NoOrderIllust className="w-15 h-15" />
+              <div className="flex pb-2 flex-col items-center gap-0.5">
+                <NoOrderIllust className="size-[70px]" />
                 <p className="text-text-placeholder text-caption2 font-medium">
                   대기 중인 픽업 주문이 없습니다
                 </p>
@@ -157,11 +163,20 @@ export default function OwnerHomePage() {
           <h2 className="font-semibold text-headline3 text-text-default">
             매출 요약
           </h2>
-          <Link href="/owner/order/summary">
+          <Link href="/owner/orders/summary">
             <ArrowRight className="w-5 h-5 text-icon-subtlest" />
           </Link>
         </div>
-        <div className="flex w-full gap-2 mt-4">
+        <div className="w-full mt-2 h-32 flex p-3 flex-col justify-center items-center gap-5 rounded-lg border border-border-subtle bg-static-white shadow-[6px_6px_54px_0_rgba(0,0,0,0.05)]">
+          <div className="flex pb-2 flex-col items-center gap-0.5">
+            <NoOrderIllust className="size-[70px]" />
+            <p className="text-text-placeholder text-caption2 font-medium">
+              준비 중인 서비스입니다.
+            </p>
+          </div>
+        </div>
+        {/* 준비 중인 서비스 ui 임시 변경 
+        <div className="flex w-full gap-2 mt-2">
           <DashBoardCardB
             text="이번 주 주문 수"
             icon="people"
@@ -174,7 +189,7 @@ export default function OwnerHomePage() {
             count={weeklySalesAmount}
             increasedCount={increasedSalesAmount}
           />
-        </div>
+        </div> */}
 
         <OwnerNavbar />
       </section>

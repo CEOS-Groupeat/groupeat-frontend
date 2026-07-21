@@ -83,7 +83,10 @@ export default function BudgetFilter({ value, onChange }: BudgetFilterProps) {
         max={MAX}
         step={1}
         value={[current]}
-        onValueChange={([v]) => onChange(v)}
+        onValueChange={([v]) => {
+          const rounded = Math.round(v / STEP) * STEP;
+          onChange(rounded);
+        }}
       >
         <Slider.Track className="relative h-2 w-full rounded-full bg-background-subtlest">
           <Slider.Range className="absolute h-full rounded-full bg-brand-default" />

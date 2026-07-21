@@ -58,7 +58,7 @@ export default function OrderCard({
             <p className="text-text-subtlest text-label1">
               {formatPickupDate(pickupDate)}
             </p>
-            <Ellipse />
+            <Ellipse className="size-0.5 text-text-subtlest" />
             <p className="text-text-subtlest text-label1">
               {formatPickupTime(pickupTime)}
             </p>

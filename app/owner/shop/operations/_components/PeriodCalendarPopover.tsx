@@ -103,7 +103,7 @@ export default function PeriodCalendarPopover({
           </div>
         </div>
 
-        <div className="px-3 flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto">
           <DayPicker
             mode="single"
             selected={step === 1 ? startDate : endDate}
@@ -119,7 +119,9 @@ export default function PeriodCalendarPopover({
                   (weekday.getDay() + 6) % 7
                 ],
             }}
-            components={{ DayButton: CustomDayButton }}
+            components={{
+              DayButton: (props) => <CustomDayButton {...props} step={step} />,
+            }}
             classNames={{
               root: 'w-full',
               months: 'w-full',

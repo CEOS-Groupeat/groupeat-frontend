@@ -18,6 +18,8 @@ interface MenuBottomSheetProps {
   menu: Menu;
   pickupDate?: string;
   pickupTime?: string;
+  dailyMinOrderQuantity?: number;
+  dailyRemainingQuantity?: number;
   onClose: () => void;
 }
 
@@ -32,6 +34,8 @@ export default function MenuBottomSheet({
   menu,
   pickupDate,
   pickupTime,
+  dailyMinOrderQuantity,
+  dailyRemainingQuantity,
   onClose,
 }: MenuBottomSheetProps) {
   const queryClient = useQueryClient();
@@ -50,18 +54,15 @@ export default function MenuBottomSheet({
   const discountRate = storeDetail?.discountRate || 0;
   const discountCondition = storeDetail?.discountConditionQuantity || 0;
 
-  // 최소/최대 주문 수량 기준값 설정 (타입에 없어도 목데이터로 동작하도록 fallback)
-  const minQ =
-    (menu as Menu & { minOrderQuantity?: number }).minOrderQuantity ?? 10;
-  const maxQ =
-    (menu as Menu & { maxOrderQuantity?: number }).maxOrderQuantity ?? 99;
+  // 최소 주문 수량 기준값 수정 필요 (백엔드 필드 추가 대기 중)
+  const minQ = dailyMinOrderQuantity ?? storeDetail?.minOrderQuantity ?? 1;
+  const maxQ = dailyRemainingQuantity ?? storeDetail?.maxOrderQuantity ?? 999;
 
   const [cards, setCards] = useState<MenuCard[]>([]);
   const [mode, setMode] = useState<'CREATE' | 'LIST' | 'EDIT'>('CREATE');
   const [editingCardId, setEditingCardId] = useState<string | null>(null);
 
   const [quantity, setQuantity] = useState<number | ''>('');
-  const [quantityError, setQuantityError] = useState<string | null>(null); // 에러 상태 추가
   const [selectedOptions, setSelectedOptions] = useState<
     Record<number, number[]>
   >({});
@@ -69,21 +70,28 @@ export default function MenuBottomSheet({
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
+  const showToastError = (message: string) => {
+    setErrorMessage(message);
+    setShowError(true);
+    setTimeout(() => setShowError(false), 2000);
+  };
+
   // 수량 검증 로직 추가
   const handleQuantityChange = (val: string) => {
     if (val === '') {
       setQuantity('');
-      setQuantityError('수량을 입력해주세요.');
       return;
     }
-    const num = Number(val);
-    setQuantity(num);
-    if (num < minQ) {
-      setQuantityError(`최소 ${minQ}개 이상 주문해주세요`);
-    } else if (num > maxQ) {
-      setQuantityError(`최대 ${maxQ}개까지 주문 가능합니다`);
-    } else {
-      setQuantityError(null);
+    setQuantity(Number(val));
+  };
+
+  const handleQuantityBlur = () => {
+    if (typeof quantity !== 'number') return;
+
+    if (quantity < minQ) {
+      showToastError(`최소 ${minQ}개 이상 주문해주세요`);
+    } else if (quantity > maxQ) {
+      showToastError(`최대 ${maxQ}개까지 주문 가능합니다`);
     }
   };
 
@@ -103,10 +111,12 @@ export default function MenuBottomSheet({
         }
         return { ...prev, [groupId]: [...currentGroupOptions, optionId] };
       } else {
+        if (currentGroupOptions.includes(optionId)) {
+          return { ...prev, [groupId]: [] };
+        }
         return { ...prev, [groupId]: [optionId] };
       }
     });
-    if (!isMultiple) setExpandedGroupId(null);
   };
 
   const getSelectedOptionText = (groupId: number) => {
@@ -135,14 +145,12 @@ export default function MenuBottomSheet({
       hasAllRequired &&
       typeof quantity === 'number' &&
       quantity >= minQ &&
-      quantity <= maxQ &&
-      !quantityError
+      quantity <= maxQ
     );
   };
 
   const handleAddNewItem = () => {
     setQuantity('');
-    setQuantityError(null); // 초기화 추가
     setSelectedOptions({});
     setExpandedGroupId(null);
     setMode('CREATE');
@@ -150,7 +158,6 @@ export default function MenuBottomSheet({
 
   const handleEditCard = (card: MenuCard) => {
     setQuantity(card.quantity);
-    setQuantityError(null); // 초기화 추가
     setSelectedOptions(card.selectedOptions);
     setExpandedGroupId(null);
     setEditingCardId(card.id);
@@ -201,17 +208,13 @@ export default function MenuBottomSheet({
       onClose();
     },
     onError: (error: Error) => {
-      setErrorMessage(error.message || '장바구니 담기에 실패했습니다.');
-      setShowError(true);
-      setTimeout(() => setShowError(false), 2000);
+      showToastError(error.message || '장바구니 담기에 실패했습니다.');
     },
   });
 
   const handleSubmitCart = () => {
     if (!pickupDate || !pickupTime) {
-      setErrorMessage('픽업 날짜를 먼저 선택해주세요.');
-      setShowError(true);
-      setTimeout(() => setShowError(false), 2000);
+      showToastError('픽업 날짜를 먼저 선택해주세요.');
       return;
     }
     if (cards.length === 0) return;
@@ -245,17 +248,19 @@ export default function MenuBottomSheet({
                 >
                   <div className="flex items-center gap-2">
                     <span
-                      className={`text-body font-semibold ${
-                        selectedText
-                          ? 'text-text-default'
-                          : 'text-text-placeholder'
+                      className={`text-body  ${
+                        isExpanded
+                          ? 'font-semibold text-text-default'
+                          : selectedText
+                            ? 'font-normal text-text-default'
+                            : 'font-normal text-text-placeholder'
                       }`}
                     >
                       {group.name}
                     </span>
                     {selectedText && !isExpanded && (
                       <div className="flex h-full items-center justify-center gap-2">
-                        <Ellipse className="text-text-subtlest w-0.5 h-0.5 shrink-0" />
+                        <Ellipse className="size-0.5 text-text-subtlest shrink-0" />
                         <p className="text-text-subtlest text-label1">
                           {selectedText}
                         </p>
@@ -270,8 +275,12 @@ export default function MenuBottomSheet({
                 </button>
 
                 {isExpanded && (
-                  <div className="w-full flex flex-col items-start justify-between border-t border-border-strong">
+                  <div className="w-full flex flex-col items-start justify-between">
                     {group.options?.map((option) => {
+                      const isSelected = (
+                        selectedOptions[group.optionGroupId!] ?? []
+                      ).includes(option.optionId!);
+
                       return (
                         <div
                           key={option.optionId!}
@@ -282,10 +291,16 @@ export default function MenuBottomSheet({
                               group.isMultiple || false
                             )
                           }
-                          className="w-full h-11 flex justify-between items-center pl-4 pr-3 py-3 cursor-pointer transition-colors bg-white text-text-default"
+                          className={`w-full h-11 flex justify-between items-center pl-4 pr-3 py-3 cursor-pointer bg-white transition-colors ${
+                            isSelected
+                              ? 'text-brand-default'
+                              : 'text-text-default'
+                          }`}
                         >
-                          <span className="text-label1">{option.name}</span>
-                          <span className="text-label1">
+                          <span className="text-label1 font-medium">
+                            {option.name}
+                          </span>
+                          <span className="text-label1 font-medium">
                             +{(option.additionalPrice || 0).toLocaleString()}원
                           </span>
                         </div>
@@ -305,8 +320,7 @@ export default function MenuBottomSheet({
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 handleQuantityChange(e.target.value)
               }
-              isError={!!quantityError}
-              errorMessage={quantityError ?? undefined}
+              onBlur={handleQuantityBlur}
               disableFillStyle={true}
               helperText={
                 discountRate > 0 && discountCondition > 0 ? (
@@ -320,7 +334,7 @@ export default function MenuBottomSheet({
         </div>
 
         {/* 하단 버튼 영역 (높이 고정, 스크롤 안 됨) */}
-        <div className="flex items-center justify-center px-4 pb-6 pt-2 shrink-0 bg-background-default border-t border-border-subtle">
+        <div className="flex items-center justify-center px-4 pb-6 pt-2 shrink-0 bg-background-default">
           <ButtonDefault onClick={handleSaveForm} disabled={!isFormValid()}>
             {mode === 'EDIT' ? '옵션 수정하기' : '메뉴 담기'}
           </ButtonDefault>
@@ -340,7 +354,7 @@ export default function MenuBottomSheet({
         </div>
 
         {/* 카드가 많아지면 스크롤 되는 영역 */}
-        <div className="flex-1 overflow-y-auto px-4 pt-4 pb-4 flex flex-col gap-4 min-h-0 bg-background-default">
+        <div className="flex-1 overflow-y-auto px-4 pt-4 pb-4 flex flex-col gap-3 min-h-0 bg-background-default">
           {cards.map((card) => {
             let optionsPrice = 0;
             const optionTexts: string[] = [];
@@ -378,7 +392,7 @@ export default function MenuBottomSheet({
               >
                 <div className="flex justify-between items-start">
                   <p className="text-body font-medium text-text-default">
-                    옵션 요약
+                    {menu.name}
                   </p>
                   <button
                     onClick={(e) => {
@@ -395,12 +409,10 @@ export default function MenuBottomSheet({
                   ) : (
                     <p>선택된 추가 옵션 없음</p>
                   )}
-                  <p className="mt-1">
-                    개당 가격: {unitPrice.toLocaleString()}원
-                  </p>
+                  <p>개당 가격: {unitPrice.toLocaleString()}원</p>
                   <p>수량: {card.quantity}개</p>
                 </div>
-                <div className="flex items-center justify-start w-full mt-2">
+                <div className="flex items-center justify-start w-full">
                   <p className="text-body text-text-default font-semibold">
                     {totalPrice.toLocaleString()}원
                   </p>
@@ -418,7 +430,7 @@ export default function MenuBottomSheet({
         </div>
 
         {/* 하단 버튼 영역 */}
-        <div className="px-4 pb-6 pt-2 shrink-0 bg-background-default border-t border-border-subtle">
+        <div className="px-4 pb-6 pt-2 shrink-0 bg-background-default">
           <ButtonDefault
             onClick={handleSubmitCart}
             disabled={addCartMutation.isPending || cards.length === 0}
@@ -432,11 +444,11 @@ export default function MenuBottomSheet({
 
   return (
     <div className="fixed inset-0 z-modal flex items-end justify-center bg-background-dim/40">
-      {showError && <ToastError text={errorMessage} />}
+      {showError && <ToastError text={errorMessage} bottom={96} />}
 
       <div className="absolute inset-0" onClick={onClose} />
 
-      <div className="relative w-full h-109 bg-background-default rounded-t-[35px] flex flex-col overflow-hidden animate-in slide-in-from-bottom-full duration-200">
+      <div className="relative w-full  max-w-[375px] h-109 bg-background-default rounded-t-[35px] flex flex-col overflow-hidden animate-in slide-in-from-bottom-full duration-200">
         {mode === 'LIST' ? renderCardList() : renderOptionForm()}
       </div>
     </div>

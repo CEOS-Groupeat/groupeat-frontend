@@ -60,7 +60,7 @@ export default function IllustDialogModal({
 
   return (
     <div
-      className="fixed inset-0 bg-background-dim z-modal flex items-center justify-center font-['Pretendard']"
+      className="app-container inset-0 bg-background-dim z-modal flex items-center justify-center font-['Pretendard']"
       onClick={handleClose}
       role="presentation"
     >

@@ -5,7 +5,7 @@ import StoreOptions from './_components/StoreOptions';
 
 export default function CustomerStoreDetailPage() {
   return (
-    <div className="flex flex-col w-full relative pb-16">
+    <div className="flex flex-col bg-background-default w-full relative pb-16 min-h-screen">
       <StoreHeader />
 
       <div className="relative z-20 -mt-6 w-full bg-white rounded-t-[30px] overflow-hidden">

@@ -42,7 +42,7 @@ export default function CartSummaryBar({
 
   if (!hasItems) {
     return (
-      <div className="fixed bottom-0 left-0 w-full z-sticky px-4 pt-3 pb-6 bg-background-default rounded-t-3xl flex flex-col items-center animate-in slide-in-from-bottom-full duration-300 overflow-hidden">
+      <div className="app-container bottom-0 z-sticky px-4 pt-3 pb-6 bg-background-default rounded-t-3xl flex flex-col items-center animate-in slide-in-from-bottom-full duration-300 overflow-hidden">
         <button
           type="button"
           disabled

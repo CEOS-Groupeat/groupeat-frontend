@@ -1,11 +1,44 @@
 'use client';
 
-import { useState } from 'react';
 import BackButton from '@/components/ui/BackButton';
+import { useNotificationSettings } from './_hooks/useNotificationSettings';
+import { useUpdateNotificationSettings } from './_hooks/useUpdateNotificationSettings';
+import { useFCMToken } from '@/lib/firebase/_hooks/useFCMToken';
 
-export default function CommonAlertPage() {
-  const [isOrderAlertOn, setIsOrderAlertOn] = useState(false);
-  const [isMarketingOn, setIsMarketingOn] = useState(false);
+export default function CustomerAlertPage() {
+  const { data: settings, isLoading } = useNotificationSettings();
+  const { mutate: updateSettings, isPending } = useUpdateNotificationSettings();
+  const { enableNotification, disableNotification } = useFCMToken();
+
+  const isOrderAlertOn = settings?.orderStatusNotificationAgreed ?? false;
+  const isMarketingOn = settings?.marketingAgreed ?? false;
+
+  const handleToggleOrderAlert = async () => {
+    const next = !isOrderAlertOn;
+
+    if (next) {
+      const success = await enableNotification();
+      if (!success) {
+        return; // 브라우저 권한 거부 시, 서버 값도 바꾸지 않음
+      }
+    } else {
+      await disableNotification();
+    }
+
+    updateSettings({ orderStatusNotificationAgreed: next });
+  };
+
+  const handleToggleMarketing = () => {
+    updateSettings({ marketingAgreed: !isMarketingOn });
+  };
+
+  if (isLoading) {
+    return (
+      <div className="w-full h-dvh flex items-center justify-center bg-background-default">
+        <span className="text-sm text-text-subtle">로딩 중...</span>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full h-dvh flex justify-center items-start bg-background-default">
@@ -27,12 +60,13 @@ export default function CommonAlertPage() {
                   <p className="text-text-default text-body font-medium">
                     주문 현황 알림
                   </p>
-                  
+
                   <button
                     type="button"
                     role="switch"
                     aria-checked={isOrderAlertOn}
-                    onClick={() => setIsOrderAlertOn(!isOrderAlertOn)}
+                    onClick={handleToggleOrderAlert}
+                    disabled={isPending}
                     className={`relative w-10 h-5.5 rounded-full transition-colors duration-300 ease-in-out cursor-pointer ${
                       isOrderAlertOn ? 'bg-brand-default' : 'bg-[#C2C3C8]/70'
                     }`}
@@ -43,7 +77,6 @@ export default function CommonAlertPage() {
                       }`}
                     />
                   </button>
-                  
                 </div>
               </div>
             </div>
@@ -54,12 +87,13 @@ export default function CommonAlertPage() {
                   <p className="text-text-default text-body font-medium">
                     마케팅 정보 수신 동의
                   </p>
-                  
+
                   <button
                     type="button"
                     role="switch"
                     aria-checked={isMarketingOn}
-                    onClick={() => setIsMarketingOn(!isMarketingOn)}
+                    onClick={handleToggleMarketing}
+                    disabled={isPending}
                     className={`relative w-10 h-5.5 rounded-full transition-colors duration-300 ease-in-out cursor-pointer ${
                       isMarketingOn ? 'bg-brand-default' : 'bg-[#C2C3C8]/70'
                     }`}

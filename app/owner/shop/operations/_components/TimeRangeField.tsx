@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react';
 import TimeScrollDropdown from './TimeScrollDropdown';
+import { useTimeDropdownStore } from '@/store/useTimeDropdownStore';
 
 interface TimeRangeFieldProps {
   label: string;
@@ -20,6 +21,8 @@ export default function TimeRangeField({
   onAdd,
   onRemove,
 }: TimeRangeFieldProps) {
+  const setIsDropdownOpen = useTimeDropdownStore((state) => state.setIsOpen);
+
   const hasTimeRange = timeRange !== null;
   const [openDropdown, setOpenDropdown] = useState<'start' | 'end' | null>(
     null
@@ -30,9 +33,13 @@ export default function TimeRangeField({
   const handleOpenDropdown = (which: 'start' | 'end') => {
     if (containerRef.current) {
       const rect = containerRef.current.getBoundingClientRect();
-      setDropdownTop(rect.bottom + 16); 
+      setDropdownTop(rect.bottom + 16);
     }
-    setOpenDropdown((prev) => (prev === which ? null : which));
+    setOpenDropdown((prev) => {
+      const next = prev === which ? null : which;
+      setIsDropdownOpen(next !== null);
+      return next;
+    });
   };
 
   return (
@@ -53,17 +60,22 @@ export default function TimeRangeField({
                       onClick={() => handleOpenDropdown('start')}
                       className="w-full text-center text-text-default text-body font-medium font-['Pretendard'] leading-6"
                     >
-                      {timeRange.startTime}
+                      {timeRange.startTime.slice(0, 5)}
                     </button>
                     {openDropdown === 'start' && (
                       <TimeScrollDropdown
+                        key="start"
                         value={timeRange.startTime}
                         top={dropdownTop}
                         onApply={(value) => {
                           onStartChange(value);
                           setOpenDropdown(null);
+                          setIsDropdownOpen(false);
                         }}
-                        onClose={() => setOpenDropdown(null)}
+                        onClose={() => {
+                          setOpenDropdown(null);
+                          setIsDropdownOpen(false);
+                        }}
                       />
                     )}
                   </div>
@@ -76,17 +88,22 @@ export default function TimeRangeField({
                       onClick={() => handleOpenDropdown('end')}
                       className="w-full text-center text-text-default text-base font-medium font-['Pretendard'] leading-6"
                     >
-                      {timeRange.endTime}
+                      {timeRange.endTime.slice(0, 5)}
                     </button>
                     {openDropdown === 'end' && (
                       <TimeScrollDropdown
+                        key="end"
                         value={timeRange.endTime}
                         top={dropdownTop}
                         onApply={(value) => {
                           onEndChange(value);
                           setOpenDropdown(null);
+                          setIsDropdownOpen(false);
                         }}
-                        onClose={() => setOpenDropdown(null)}
+                        onClose={() => {
+                          setOpenDropdown(null);
+                          setIsDropdownOpen(false);
+                        }}
                       />
                     )}
                   </div>

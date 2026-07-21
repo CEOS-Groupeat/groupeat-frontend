@@ -90,14 +90,20 @@ export default function CustomerOrderRequestPage() {
   const [widgets, setWidgets] = useState<any>(null);
   const isWidgetRendered = useRef(false);
 
+  const historyPushCountRef = useRef(0);
+  const handlePopStateRef = useRef<() => void>(() => {});
+
   useEffect(() => {
     history.pushState(null, '', location.href);
+    historyPushCountRef.current += 1;
 
     const handlePopState = () => {
       history.pushState(null, '', location.href);
+      historyPushCountRef.current += 1;
       setIsModalOpen(true);
     };
 
+    handlePopStateRef.current = handlePopState;
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
@@ -105,11 +111,19 @@ export default function CustomerOrderRequestPage() {
   const handleCancelOrder = () => {
     setIsModalOpen(false);
 
-    if (currentCart?.storeId) {
-      router.push(`/customer/store/${currentCart.storeId}`);
-    } else {
-      router.push('/customer/cart');
-    }
+    const target = currentCart?.storeId
+      ? `/customer/store/${currentCart.storeId}`
+      : '/customer/cart';
+
+    window.removeEventListener('popstate', handlePopStateRef.current);
+
+    const onceListener = () => {
+      window.removeEventListener('popstate', onceListener);
+      router.replace(target);
+    };
+    window.addEventListener('popstate', onceListener);
+
+    window.history.go(-historyPushCountRef.current);
   };
 
   useEffect(() => {
@@ -215,7 +229,7 @@ export default function CustomerOrderRequestPage() {
 
   return (
     <>
-      <main className="w-full min-h-dvh pt-10 pb-22 relative">
+      <main className="w-full min-h-dvh pt-10 pb-22 relative bg-background-default">
         <OrderRequestHeader onBack={() => setIsModalOpen(true)} />
 
         <section className="w-full flex flex-col items-start gap-3 mt-4 px-4">
@@ -268,7 +282,7 @@ export default function CustomerOrderRequestPage() {
           />
         </div>
 
-        <div className="fixed left-0 w-full bottom-6 px-4 z-dropdown">
+        <div className="fixed left-1/2 -translate-x-1/2 w-full max-w-[375px] bottom-6 px-4 z-dropdown">
           {showError && (
             <div className="absolute left-1/2 -translate-x-1/2 bottom-[calc(100%+24px)] flex w-fit pl-3 pr-4 py-1.5 justify-center items-center gap-1 rounded-full bg-background-toast/52 backdrop-blur-[32px] animate-in fade-in slide-in-from-bottom-5 duration-300">
               <StatusError className="shrink-0" />
