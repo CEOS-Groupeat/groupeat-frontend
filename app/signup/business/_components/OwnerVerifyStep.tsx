@@ -200,7 +200,103 @@ export default function OwnerVerifyStep() {
 
   return (
     <div className="flex flex-col items-start gap-3 self-stretch mt-3 pb-24">
-      {/* ... 기존 JSX 그대로 (변경 없음) ... */}
+      <div className="flex flex-col justify-center items-start gap-2 self-stretch">
+        <div className="flex w-full flex-col items-start gap-3">
+          <h2 className="text-body font-semibold">사업자 인증</h2>
+
+          <div className="flex flex-col items-start gap-4.5 self-stretch w-full">
+            <div className="flex flex-col items-start w-full gap-2">
+              <p className="text-label1 text-text-default">사업자등록번호</p>
+              <div className="flex items-start gap-2 w-full">
+                <input
+                  type="text"
+                  pattern="\d*"
+                  maxLength={10}
+                  value={inputValue}
+                  onChange={handleBusinessNumberChange}
+                  className={`flex-1 min-w-0 h-11 pl-4 pr-3 py-3 rounded-lg border border-px transition-colors focus:outline-none ${
+                    isError
+                      ? 'border-status-danger focus:border-status-danger'
+                      : 'border-border-default bg-background-default focus:border-border-active'
+                  }`}
+                  placeholder="사업자등록번호 입력"
+                />
+                <button
+                  onClick={handleValidateClick}
+                  disabled={
+                    validateMutation.isPending || !inputValue || isValidated
+                  }
+                  className={`w-31 h-11 px-6 py-3 flex items-center justify-center rounded-lg transition-all ${
+                    isValidated ? 'bg-background-subtlest' : 'bg-brand-default'
+                  }`}
+                >
+                  <p
+                    className={`text-label1 whitespace-nowrap font-semibold ${isValidated ? 'text-text-subtlest' : 'text-text-inverse'}`}
+                  >
+                    {validateMutation.isPending
+                      ? '조회 중...'
+                      : isValidated
+                        ? '인증 완료'
+                        : '사업자 조회'}
+                  </p>
+                </button>
+              </div>
+              {isError && (
+                <p className="text-status-danger text-caption1">
+                  유효하지 않은 사업자등록번호입니다
+                </p>
+              )}
+            </div>
+
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              accept="image/png, image/jpeg, image/jpg"
+              className="hidden"
+            />
+
+            <div className="flex flex-col h-29.5 items-start gap-2 self-stretch">
+              <p className="text-label1 text-text-default">사업자등록증 첨부</p>
+              {uploadedFile ? (
+                <div className="w-full h-22.5 px-6 py-3 flex flex-col justify-center items-start flex-1 self-stretch border border-px border-border-default rounded-lg bg-background-subtle">
+                  <div className="flex justify-between items-center self-stretch w-full">
+                    <div className="flex flex-col justify-center items-start gap-1 text-left">
+                      <p className="text-text-subtle text-label1 font-semibold truncate max-w-56">
+                        {uploadedFile.name}
+                      </p>
+                      <p className="text-text-subtlest text-[13px]">
+                        {uploadedFile.size}
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleRemoveFile}
+                      className="p-1 -mr-1"
+                    >
+                      <Close className="size-6 text-icon-subtle" />
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleFileAreaClick}
+                  disabled={isUploading}
+                  className="w-full h-22.5 px-6 py-3 flex flex-col justify-center items-start flex-1 self-stretch border border-px border-border-default rounded-lg bg-background-default hover:bg-neutral-1 transition-colors"
+                >
+                  <div className="flex flex-col justify-center items-start gap-1">
+                    <p className="text-text-subtle text-label1">
+                      {isUploading ? '업로드 중...' : '파일 선택'}
+                    </p>
+                    <p className="text-text-subtlest">PNG, JPG, 5MB 이하</p>
+                  </div>
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div className="app-container bottom-6 flex justify-center px-4">
         <DefaultButton
