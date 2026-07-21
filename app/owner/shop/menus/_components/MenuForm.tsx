@@ -190,7 +190,7 @@ export default function MenuForm({
     <>
       <main className="flex pb-6 flex-col items-start gap-5 self-stretch px-4 bg-background-default">
         <div className="flex flex-col items-start gap-6 self-stretch">
-          <div className="flex pt-3 flex-col justify-center items-start gap-11 self-stretch">
+          <div className="flex pt-3 flex-col justify-center items-start gap-5 self-stretch">
             <div className="flex flex-col items-start gap-5 self-stretch">
               <label className="text-text-subtlest text-label1 font-medium font-['Pretendard']">
                 메뉴 사진
@@ -206,7 +206,7 @@ export default function MenuForm({
 
               <div
                 onClick={() => !isUploading && fileInputRef.current?.click()}
-                className={`flex w-21 h-21 justify-center items-center rounded-xl relative cursor-pointer overflow-hidden ${
+                className={`flex w-21 h-21 justify-center items-center rounded-xl relative cursor-pointer overflow-hidden -mt-3 ${
                   imageUrl ? 'bg-neutral-20 bg-cover bg-center' : ''
                 }`}
                 style={
@@ -256,13 +256,13 @@ export default function MenuForm({
               />
 
               {optionGroups.length === 0 ? (
-                <div className="w-full flex flex-col items-start font-['Pretendard']">
+                <div className="w-full flex flex-col items-start gap-3 font-['Pretendard']">
                   <h2 className="text-text-subtlest text-label1 font-medium">
                     옵션 그룹
                   </h2>
                   <button
                     onClick={handleAddGroup}
-                    className="mt-3 w-full flex h-11 px-4 py-3 justify-center items-center rounded-lg bg-brand-background hover:bg-brand-background/80 transition-colors"
+                    className="w-full flex h-11 px-4 py-3 justify-center items-center rounded-lg bg-brand-background hover:bg-brand-background/80 transition-colors"
                   >
                     <div className="flex pb-px justify-center items-center gap-1">
                       <AddIcon className="w-3.5 h-3.5" />
@@ -273,99 +273,106 @@ export default function MenuForm({
                   </button>
                 </div>
               ) : (
-                <div className="w-full flex flex-col items-start font-['Pretendard']">
+                <div className="w-full flex flex-col items-start gap-5 font-['Pretendard']">
                   <h2 className="text-text-subtlest text-label1 font-medium">
                     메뉴 옵션
                   </h2>
-                  <div className="w-full flex flex-col">
+                  <div className="w-full flex flex-col gap-5">
                     {optionGroups.map((group) => (
                       <div
                         key={group.id}
-                        className="flex flex-col items-start self-stretch mt-5"
+                        className="flex flex-col items-start gap-5 self-stretch"
                       >
-                        <div className="flex justify-between items-start self-stretch">
-                          <span className="text-text-default text-label2 font-normal">
-                            그룹명
-                          </span>
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveGroup(group.id)}
-                            className="text-text-placeholder text-caption1 font-semibold"
-                          >
-                            삭제
-                          </button>
-                        </div>
-                        <InputField
-                          label=""
-                          labelClassName="text-label2 font-normal text-text-default"
-                          value={group.name}
-                          onChange={(e) =>
-                            handleGroupChange(group.id, e.target.value)
-                          }
-                          placeholder="ex. 시그니쳐 세트"
-                        />
-                        <div className="flex justify-between self-stretch mt-5">
-                          <p className="text-text-default text-label2 font-normal">
-                            세부 옵션
-                          </p>
-                          <button
-                            onClick={() => handleAddOption(group.id)}
-                            className="text-brand-default text-caption1 font-semibold font-['Pretendard'] hover:underline"
-                          >
-                            추가하기
-                          </button>
-                        </div>
-                        {group.options.map((opt) => (
-                          <div
-                            key={opt.id}
-                            className="flex items-start self-stretch gap-2"
-                          >
-                            <InputField
-                              label=""
-                              placeholder="ex. 에그마요 추가"
-                              value={opt.name}
-                              onChange={(e) =>
-                                handleOptionChange(
-                                  group.id,
-                                  opt.id,
-                                  'name',
-                                  e.target.value
-                                )
-                              }
-                            />
-                            <InputField
-                              label=""
-                              placeholder="추가 금액"
-                              type="number"
-                              value={opt.additionalPrice}
-                              onChange={(e) =>
-                                handleOptionChange(
-                                  group.id,
-                                  opt.id,
-                                  'additionalPrice',
-                                  e.target.value
-                                )
-                              }
-                            />
+                        <div className="flex flex-col items-start gap-2 self-stretch">
+                          <div className="flex justify-between items-start self-stretch">
+                            <span className="text-text-default text-label2 font-normal">
+                              그룹명
+                            </span>
                             <button
                               type="button"
-                              onClick={() =>
-                                handleRemoveOption(group.id, opt.id)
-                              }
-                              className="w-14 h-11 bg-background-default rounded-lg outline outline-1 outline-offset-[-1px] outline-border-default flex justify-center items-center shrink-0"
+                              onClick={() => handleRemoveGroup(group.id)}
+                              className="text-text-placeholder text-caption1 font-semibold"
                             >
-                              <span className="text-text-default text-label1 font-medium">
-                                삭제
-                              </span>
+                              삭제
                             </button>
                           </div>
-                        ))}
+                          <InputField
+                            label=""
+                            labelClassName="text-label2 font-normal text-text-default"
+                            value={group.name}
+                            onChange={(e) =>
+                              handleGroupChange(group.id, e.target.value)
+                            }
+                            placeholder="ex. 시그니쳐 세트"
+                          />
+                        </div>
+
+                        <div className="flex flex-col items-start gap-2 self-stretch">
+                          <div className="flex justify-between self-stretch">
+                            <p className="text-text-default text-label2 font-normal">
+                              세부 옵션
+                            </p>
+                            <button
+                              onClick={() => handleAddOption(group.id)}
+                              className="text-brand-default text-caption1 font-semibold font-['Pretendard'] hover:underline"
+                            >
+                              추가하기
+                            </button>
+                          </div>
+                          <div className="flex flex-col items-start gap-2 self-stretch">
+                            {group.options.map((opt) => (
+                              <div
+                                key={opt.id}
+                                className="flex items-start self-stretch gap-2"
+                              >
+                                <InputField
+                                  label=""
+                                  placeholder="ex. 에그마요 추가"
+                                  value={opt.name}
+                                  onChange={(e) =>
+                                    handleOptionChange(
+                                      group.id,
+                                      opt.id,
+                                      'name',
+                                      e.target.value
+                                    )
+                                  }
+                                />
+                                <InputField
+                                  label=""
+                                  placeholder="추가 금액"
+                                  type="number"
+                                  value={opt.additionalPrice}
+                                  onChange={(e) =>
+                                    handleOptionChange(
+                                      group.id,
+                                      opt.id,
+                                      'additionalPrice',
+                                      e.target.value
+                                    )
+                                  }
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    handleRemoveOption(group.id, opt.id)
+                                  }
+                                  className="w-14 h-11 bg-background-default rounded-lg outline outline-1 outline-offset-[-1px] outline-border-default flex justify-center items-center shrink-0"
+                                >
+                                  <span className="text-text-default text-label1 font-medium">
+                                    삭제
+                                  </span>
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
                       </div>
                     ))}
                   </div>
                   <button
                     onClick={handleAddGroup}
-                    className="mt-3 w-full flex h-11 px-4 py-3 justify-center items-center rounded-lg bg-brand-background hover:bg-brand-background/80 transition-colors"
+                    className="w-full flex h-11 px-4 py-3 justify-center items-center rounded-lg bg-brand-background hover:bg-brand-background/80 transition-colors"
                   >
                     <div className="flex pb-px justify-center items-center gap-1">
                       <AddIcon className="w-3.5 h-3.5" />
