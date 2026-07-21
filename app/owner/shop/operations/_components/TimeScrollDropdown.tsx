@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { useTimeDropdownStore } from '@/store/useTimeDropdownStore';
 
 interface TimeScrollDropdownProps {
   value: string;
@@ -10,7 +11,7 @@ interface TimeScrollDropdownProps {
 }
 
 const HOURS = Array.from({ length: 24 }, (_, i) => i);
-const MINUTES = Array.from({ length: 12 }, (_, i) => i * 5);
+const MINUTES = Array.from({ length: 2 }, (_, i) => i * 30);
 
 export default function TimeScrollDropdown({
   value,
@@ -18,6 +19,8 @@ export default function TimeScrollDropdown({
   onApply,
   onClose,
 }: TimeScrollDropdownProps) {
+  const setIsDropdownOpen = useTimeDropdownStore((state) => state.setIsOpen);
+
   const [initialHour, initialMinute] = value
     ? value.split(':').map(Number)
     : [0, 0];
@@ -27,6 +30,12 @@ export default function TimeScrollDropdown({
 
   const hourRef = useRef<HTMLDivElement>(null);
   const minuteRef = useRef<HTMLDivElement>(null);
+
+  // 드롭다운이 마운트되면 열림, 언마운트되면 닫힘
+  useEffect(() => {
+    setIsDropdownOpen(true);
+    return () => setIsDropdownOpen(false);
+  }, [setIsDropdownOpen]);
 
   useEffect(() => {
     hourRef.current
@@ -61,9 +70,7 @@ export default function TimeScrollDropdown({
   return (
     <>
       <div className="fixed inset-0 z-0" onClick={onClose} />
-      <div
-        className="absolute left-0 top-[60px] z-10 w-32 h-80 max-w-32 min-w-32 max-h-80 min-h-80 bg-background-default rounded-lg shadow-[6px_6px_54px_0px_rgba(0,0,0,0.05)] outline outline-1 outline-offset-[-1px] outline-border-subtle flex flex-col font-['Pretendard']"
-      >
+      <div className="absolute left-0 top-[60px] z-10 w-32 h-80 max-w-32 min-w-32 max-h-80 min-h-80 bg-background-default rounded-lg shadow-[6px_6px_54px_0px_rgba(0,0,0,0.05)] outline outline-1 outline-offset-[-1px] outline-border-subtle flex flex-col font-['Pretendard']">
         <div className="flex-1 px-2 flex min-h-0">
           {/* 시(Hour) */}
           <div
