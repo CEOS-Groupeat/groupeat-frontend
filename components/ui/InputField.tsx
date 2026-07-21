@@ -27,6 +27,7 @@ export default function InputField({
   errorMessage,
   helperText,
   disableFillStyle = false,
+  type,
   ...props
 }: InputFieldProps) {
   const isFilled =
@@ -44,6 +45,7 @@ export default function InputField({
       )}
 
       <input
+        type={type}
         value={value}
         disabled={disabled}
         className={`w-full h-11 pl-4 pr-3 py-3 rounded-lg font-pretendard font-normal text-body placeholder:text-text-placeholder placeholder:font-normal transition-colors border outline-none 
@@ -54,6 +56,10 @@ export default function InputField({
             : isFilled && !disableFillStyle
               ? 'bg-background-subtle border-transparent focus:border-border-active'
               : 'bg-white border-border-strong focus:border-border-active'
+        } ${
+          type === 'number'
+            ? '[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
+            : ''
         } ${inputClassName ?? ''}`}
         {...props}
       />
