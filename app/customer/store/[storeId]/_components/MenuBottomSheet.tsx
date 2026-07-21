@@ -18,8 +18,8 @@ interface MenuBottomSheetProps {
   menu: Menu;
   pickupDate?: string;
   pickupTime?: string;
-  dailyAvailableQuantity?: number;
   dailyMinOrderQuantity?: number;
+  dailyRemainingQuantity?: number;
   onClose: () => void;
 }
 
@@ -34,8 +34,8 @@ export default function MenuBottomSheet({
   menu,
   pickupDate,
   pickupTime,
-  dailyAvailableQuantity,
   dailyMinOrderQuantity,
+  dailyRemainingQuantity,
   onClose,
 }: MenuBottomSheetProps) {
   const queryClient = useQueryClient();
@@ -56,7 +56,7 @@ export default function MenuBottomSheet({
 
   // 최소 주문 수량 기준값 수정 필요 (백엔드 필드 추가 대기 중)
   const minQ = dailyMinOrderQuantity ?? storeDetail?.minOrderQuantity ?? 1;
-  const maxQ = dailyAvailableQuantity ?? storeDetail?.maxOrderQuantity ?? 999;
+  const maxQ = dailyRemainingQuantity ?? storeDetail?.maxOrderQuantity ?? 999;
 
   const [cards, setCards] = useState<MenuCard[]>([]);
   const [mode, setMode] = useState<'CREATE' | 'LIST' | 'EDIT'>('CREATE');

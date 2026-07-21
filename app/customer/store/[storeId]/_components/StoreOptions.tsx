@@ -219,7 +219,7 @@ export default function StoreOptions() {
                       <p className="text-brand-default text-label1 font-semibold">
                         {isPickupLoading
                           ? '확인 중...'
-                          : `${pickupData?.dailyAvailableQuantity ?? 0}개`}
+                          : `${pickupData?.dailyRemainingQuantity ?? 0}개`}
                       </p>
                     </div>
                   </div>
@@ -296,7 +296,9 @@ export default function StoreOptions() {
                               priority={false}
                             />
                           ) : (
-                            <div className="absolute inset-0 bg-brand-background"><Logo /></div>
+                            <div className="absolute inset-0 bg-brand-background">
+                              <Logo />
+                            </div>
                           )}
 
                           {quantityInCart > 0 ? (
@@ -343,7 +345,7 @@ export default function StoreOptions() {
           menu={selectedMenu}
           pickupDate={activeDate}
           pickupTime={activeTime}
-          dailyAvailableQuantity={pickupData?.dailyAvailableQuantity}
+          dailyRemainingQuantity={pickupData?.dailyRemainingQuantity}
           dailyMinOrderQuantity={pickupData?.dailyMinOrderQuantity}
           onClose={() => setSelectedMenu(null)}
         />
