@@ -18,7 +18,13 @@ export default function OwnerVerifyStep() {
     ? Number(searchParams.get('memberId'))
     : null;
 
-  const [inputValue, setInputValue] = useState('');
+  const payload = useBusinessSignupStore((state) => state.payload);
+  const updatePayload = useBusinessSignupStore((state) => state.updatePayload);
+  const resetPayload = useBusinessSignupStore((state) => state.resetPayload);
+
+  const [inputValue, setInputValue] = useState(
+    payload.businessRegistrationNumber || ''
+  );
   const [isError, setIsError] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<{
     name: string;
@@ -61,10 +67,6 @@ export default function OwnerVerifyStep() {
 
   const validateMutation = useValidateBusiness();
   const signupBusinessMutation = useSignupBusiness();
-
-  const payload = useBusinessSignupStore((state) => state.payload);
-  const updatePayload = useBusinessSignupStore((state) => state.updatePayload);
-  const resetPayload = useBusinessSignupStore((state) => state.resetPayload);
 
   const isValidated = !!payload.businessValidationToken;
 
@@ -265,9 +267,11 @@ export default function OwnerVerifyStep() {
                       <p className="text-text-subtle text-label1 font-semibold truncate max-w-56">
                         {uploadedFile.name}
                       </p>
-                      <p className="text-text-subtlest text-[13px]">
-                        {uploadedFile.size}
-                      </p>
+                      {uploadedFile.size && (
+                        <p className="text-text-subtlest text-[13px]">
+                          {uploadedFile.size}
+                        </p>
+                      )}
                     </div>
                     <button
                       type="button"
