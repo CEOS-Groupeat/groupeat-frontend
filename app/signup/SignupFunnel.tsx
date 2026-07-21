@@ -2,6 +2,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import { useSignupStore } from '@/store/useSignupStore';
 import { useBusinessSignupStore } from '@/store/useBusinessSignupStore';
 
@@ -15,7 +16,8 @@ export default function SignupFunnel({
 }: {
   initialToken: string;
 }) {
-  const { setSignupToken, step } = useSignupStore();
+  const router = useRouter();
+  const { setSignupToken, step, prevStep } = useSignupStore();
   const resetBusinessPayload = useBusinessSignupStore(
     (state) => state.resetPayload
   );
@@ -30,9 +32,17 @@ export default function SignupFunnel({
     }
   }, [initialToken, setSignupToken]);
 
+  const handleBack = () => {
+    if (step === 1) {
+      router.replace('/login');
+    } else {
+      prevStep();
+    }
+  };
+
   return (
     <div className="flex flex-col w-full bg-white px-4 min-h-screen">
-      <SignupHeader />
+      <SignupHeader onBack={handleBack} />
 
       <div className="flex-1 flex flex-col">
         {step === 1 && <UserTypeStep />}
