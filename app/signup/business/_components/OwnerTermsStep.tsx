@@ -15,10 +15,17 @@ interface OwnerTermsStepProps {
 }
 
 export default function OwnerTermsStep({ onNext }: OwnerTermsStepProps) {
-  const { updatePayload } = useBusinessSignupStore();
+  const { payload, updatePayload } = useBusinessSignupStore();
 
+  // 스토어에 저장된 agreements로부터 복원
   const [checkedTerms, setCheckedTerms] = useState<{ [key: number]: boolean }>(
-    {}
+    () => {
+      const initial: { [key: number]: boolean } = {};
+      payload.agreements?.forEach((a) => {
+        initial[a.termsId] = a.agreed;
+      });
+      return initial;
+    }
   );
   const [selectedTerm, setSelectedTerm] = useState<Term | null>(null);
 
