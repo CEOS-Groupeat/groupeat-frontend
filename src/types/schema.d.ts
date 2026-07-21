@@ -3064,6 +3064,18 @@ export interface components {
             dailyAvailableQuantity?: number;
             /**
              * Format: int32
+             * @description 해당 날짜에 이미 승인된 주문 수량
+             * @example 80
+             */
+            dailyAcceptedQuantity?: number;
+            /**
+             * Format: int32
+             * @description 해당 날짜의 잔여 주문 가능 수량
+             * @example 20
+             */
+            dailyRemainingQuantity?: number;
+            /**
+             * Format: int32
              * @description 시간 간격(분)
              * @example 30
              */
