@@ -299,10 +299,8 @@ export default function MenuBottomSheet({
                               group.isMultiple || false
                             )
                           }
-                          className={`w-full h-11 flex justify-between items-center pl-4 pr-3 py-3 cursor-pointer bg-white transition-colors ${
-                            isSelected
-                              ? 'text-brand-default'
-                              : 'text-text-default'
+                          className={`w-full h-11 flex justify-between items-center pl-4 pr-3 py-3 cursor-pointer text-text-default transition-colors ${
+                            isSelected ? 'bg-hover' : 'bg-background-default'
                           }`}
                         >
                           <span className="text-label1 font-medium">
