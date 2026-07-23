@@ -123,6 +123,8 @@ export default function MenuBottomSheet({
         return { ...prev, [groupId]: [optionId] };
       }
     });
+
+    setExpandedGroupId(null);
   };
 
   const getSelectedOptionText = (groupId: number) => {
