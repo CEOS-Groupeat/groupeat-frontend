@@ -90,6 +90,11 @@ export default function MenuBottomSheet({
   const handleQuantityConfirm = () => {
     if (typeof quantity !== 'number') return;
 
+    if (!pickupDate || !pickupTime) {
+      showToastError('픽업 날짜를 먼저 선택해주세요.');
+      return;
+    }
+
     if (quantity < minQ) {
       showToastError(`최소 ${minQ}개 이상 주문해주세요`);
       return;
@@ -99,6 +104,34 @@ export default function MenuBottomSheet({
       return;
     }
     setIsQuantityEditing(false);
+
+    // 필수 옵션(추후 사장님 페이지 코드 추가예정)까지 다 선택된 상태라면, 자동으로 카드 생성
+    const requiredGroups =
+      menu.optionGroups?.filter((group) => group.isRequired) || [];
+    const hasAllRequired = requiredGroups.every(
+      (group) => (selectedOptions[group.optionGroupId!] ?? []).length > 0
+    );
+
+    if (!hasAllRequired) return; // 필수 옵션 미선택 시 자동 생성 안 함
+
+    if (mode === 'CREATE') {
+      const newCard: MenuCard = {
+        id: Date.now().toString(),
+        selectedOptions,
+        quantity: Number(quantity),
+      };
+      setCards((prev) => [...prev, newCard]);
+    } else if (mode === 'EDIT' && editingCardId) {
+      setCards((prev) =>
+        prev.map((card) =>
+          card.id === editingCardId
+            ? { ...card, selectedOptions, quantity: Number(quantity) }
+            : card
+        )
+      );
+      setEditingCardId(null);
+    }
+    setMode('LIST');
   };
 
   const toggleOption = (
