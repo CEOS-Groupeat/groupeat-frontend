@@ -18,7 +18,10 @@ export default function HomeHero() {
 
           <div className="flex items-center gap-3 text-icon-inverse">
             <Bell />
-            <CartIconButton />
+            <CartIconButton
+              badgeColor="bg-icon-inverse"
+              badgeTextColor="text-brand-default"
+            />
           </div>
         </div>
       </div>
