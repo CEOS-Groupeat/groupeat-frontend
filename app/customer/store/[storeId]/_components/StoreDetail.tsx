@@ -82,7 +82,7 @@ export default function StoreDetail() {
                         {store.storeName}
                       </h1>
                       <p className="text-label2 text-text-subtlest">
-                        샌드위치·김밥
+                        {store.category?.replace(/&/g, '·')}
                       </p>
                     </div>
                   </div>
