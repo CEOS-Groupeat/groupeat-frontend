@@ -20,7 +20,7 @@ export const useAuthQuery = () => {
     queryKey: ['me'],
     queryFn: fetchMe,
     retry: false,
-    staleTime: 1000 * 60 * 30, // 30분 동안은 캐시된 정보 사용
+    staleTime: 1000 * 60 * 60, // 60분 동안은 캐시된 정보 사용
   });
 
   // Query 결과가 바뀌면 Zustand 스토어 업데이트
