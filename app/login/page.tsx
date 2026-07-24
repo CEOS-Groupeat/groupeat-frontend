@@ -21,7 +21,7 @@ function SignupCompleteToast() {
   useEffect(() => {
     if (showToast) {
       router.replace('/login');
-      const timer = setTimeout(() => setShowToast(false), 3000);
+      const timer = setTimeout(() => setShowToast(false), 5000);
       return () => clearTimeout(timer);
     }
   }, [showToast, router]);
@@ -29,7 +29,7 @@ function SignupCompleteToast() {
   if (!showToast) return null;
   return (
     <SuccessToast
-      text="사업자 등록증 확인까지 1~2일 소요됩니다."
+      text="사업자 등록증 확인까지 0~2일 소요됩니다."
       bottom={102}
     />
   );
