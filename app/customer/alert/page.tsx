@@ -4,6 +4,7 @@ import AlertComponent from '@/components/ui/Alert';
 import BackButton from '@/components/ui/BackButton';
 import NoAlarmIllust from '@/public/illust/ilust_NoAlarm.svg';
 import { useRouter } from 'next/navigation';
+import ReadyStatusModal from './_components/ReadyStatusModal';
 
 const alerts_mock = [
   {
@@ -43,7 +44,7 @@ export default function CustomerAlertPage() {
   const handleReadAllButton = () => {};
 
   return (
-    <div className="flex w-full items-center flex-col">
+    <div className="flex min-h-screen w-full items-center flex-col bg-background-default">
       <div className="w-full flex px-4 pt-16 flex-col justify-end items-center self-stretch">
         <div className="w-full flex h-11 items-center gap-2">
           <div className="flex items-center gap-1 flex-1">
@@ -52,7 +53,7 @@ export default function CustomerAlertPage() {
         </div>
       </div>
 
-      {alerts_mock.length > 0 ? (
+      {alerts_mock.length > 2 ? (
         <>
           <main className="flex pt-2 flex-col items-end gap-1 self-stretch">
             <div className="flex px-4 justify-between items-center self-stretch">
@@ -83,13 +84,25 @@ export default function CustomerAlertPage() {
           })}
         </>
       ) : (
-        <div className="w-full h-dvh flex justify-center pt-40">
-          <div className="flex flex-col items-center gap-3">
-            <NoAlarmIllust />
-            <p className='text-text-subtle text-body font-medium'>알림이 없습니다</p>
+        <>
+          <main className="flex pt-2 flex-col items-end gap-1 self-stretch">
+            <div className="flex px-4 justify-between items-center self-stretch">
+              <h1 className="text-text-default text-headline2 font-semibold">
+                알림 목록
+              </h1>
+            </div>
+          </main>
+          <div className="w-full h-dvh flex justify-center pt-40">
+            <div className="flex flex-col items-center gap-3">
+              <NoAlarmIllust />
+              <p className="text-text-subtle text-body font-medium">
+                알림이 없습니다
+              </p>
+            </div>
           </div>
-        </div>
+        </>
       )}
+      <ReadyStatusModal />
     </div>
   );
 }
