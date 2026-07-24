@@ -5,6 +5,9 @@ import { ApiResponse, StoreDetail as StoreDetailType } from '@/types/store';
 import { useState } from 'react';
 import { fetchClient } from '@/lib/fetchClient';
 import { Menu } from '@/src/types/api';
+import { useIsLoggedIn } from '@/hooks/useIsLoggedIn';
+
+import CustomerInfoModal from '@/app/login/_components/CustomerInfoModal';
 import ToastError from '@/components/ui/ToastError';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import InputField from '@/components/ui/InputField';
@@ -39,6 +42,9 @@ export default function MenuBottomSheet({
   onClose,
 }: MenuBottomSheetProps) {
   const queryClient = useQueryClient();
+
+  const { isLoggedIn } = useIsLoggedIn();
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const { data: storeDetail } = useQuery<StoreDetailType>({
     queryKey: ['storeDetail', storeId],
@@ -261,6 +267,12 @@ export default function MenuBottomSheet({
       return;
     }
     if (cards.length === 0) return;
+
+    if (!isLoggedIn) {
+      setShowLoginModal(true);
+      return;
+    }
+
     addCartMutation.mutate(cards);
   };
 
@@ -509,6 +521,10 @@ export default function MenuBottomSheet({
       <div className="relative w-full  max-w-[375px] h-109 bg-background-default rounded-t-[35px] flex flex-col overflow-hidden animate-in slide-in-from-bottom-full duration-200">
         {mode === 'LIST' ? renderCardList() : renderOptionForm()}
       </div>
+
+      {showLoginModal && (
+        <CustomerInfoModal onClose={() => setShowLoginModal(false)} />
+      )}
     </div>
   );
 }
