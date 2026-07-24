@@ -11,6 +11,7 @@ import { useTopRatedStores } from './_hooks/useTopRatedStores';
 import { useHighDiscountStores } from './_hooks/useHighDiscountStores';
 import { toHomeStore } from './_types/recommendation.type';
 import CustomerInfoModal from '@/app/login/_components/CustomerInfoModal';
+import { useCustomerAccount } from '../profile/_hooks/useCustomerAccount';
 
 function CustomerIntroModalTrigger() {
   const router = useRouter();
@@ -31,6 +32,7 @@ function CustomerIntroModalTrigger() {
 export default function CustomerHomePage() {
   const { data: topRatedData } = useTopRatedStores();
   const { data: highDiscountData } = useHighDiscountStores();
+  const { data: account } = useCustomerAccount();
 
   const popularStores = (topRatedData?.stores ?? []).map(toHomeStore);
   const discountStores = (highDiscountData?.stores ?? []).map(toHomeStore);
@@ -56,7 +58,9 @@ export default function CustomerHomePage() {
   const section2 = [
     {
       id: 'recommended',
-      title: '세빈님을 위한 맞춤 가게',
+      title: account?.name
+        ? `${account.name}님을 위한 맞춤 가게`
+        : '맞춤 가게 추천',
       description: '최근 주문 내역과 알맞는 새로운 가게를 추천드려요',
       stores: recommendedStores,
     },

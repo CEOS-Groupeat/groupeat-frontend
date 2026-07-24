@@ -147,7 +147,7 @@ export default function OwnerProfilePage() {
 
   if (isLoading) {
     return (
-      <div className="flex-1 flex items-center justify-center min-h-screen">
+      <div className="flex-1 flex items-center justify-center bg-background-default min-h-screen">
         <span className="text-sm text-text-subtle">로딩 중...</span>
       </div>
     );
@@ -155,7 +155,7 @@ export default function OwnerProfilePage() {
 
   if (isError || !account) {
     return (
-      <div className="flex-1 flex flex-col gap-3 items-center justify-center min-h-screen">
+      <div className="flex-1 flex flex-col gap-3 items-center justify-center bg-background-default min-h-screen">
         <span className="text-sm text-text-subtle">계정 정보가 없어요.</span>
         <button
           type="button"

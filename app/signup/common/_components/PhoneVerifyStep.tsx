@@ -241,7 +241,7 @@ export default function PhoneVerifyStep() {
               )}
               {devCode && (
                 <p className="text-caption1 text-brand-default font-semibold">
-                  (개발용) 인증번호: {devCode}
+                  전송된 인증번호: {devCode}
                 </p>
               )}
             </div>

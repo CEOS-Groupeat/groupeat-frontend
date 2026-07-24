@@ -187,7 +187,7 @@ export default function OwnerVerifyStep() {
         resetPayload();
         if (data?.businessVerificationStatus === 'PENDING') {
           setTimeout(() => {
-            router.replace('/signup/complete-pending');
+            router.replace('/login?toast=business-pending');
           }, 2000);
         }
       },

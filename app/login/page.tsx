@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import LogoText from '@/public/images/image_logo_text_brand.svg';
@@ -8,6 +9,31 @@ import NaverLoginButton from '@/public/components/loginbutton_naver.svg';
 import KakaoLoginButton from '@/public/components/loginbutton_kakao.svg';
 import GoogleLoginButton from '@/public/components/loginbutton_google.svg';
 import OwnerInfoModal from './_components/OwnerInfoModal';
+import SuccessToast from '@/components/ui/SuccessToast';
+
+function SignupCompleteToast() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [showToast, setShowToast] = useState(
+    () => searchParams.get('toast') === 'business-pending'
+  );
+
+  useEffect(() => {
+    if (showToast) {
+      router.replace('/login');
+      const timer = setTimeout(() => setShowToast(false), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [showToast, router]);
+
+  if (!showToast) return null;
+  return (
+    <SuccessToast
+      text="사업자 등록증 확인까지 0~2일 소요됩니다."
+      bottom={102}
+    />
+  );
+}
 
 export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -103,6 +129,9 @@ export default function HomePage() {
       </div>
 
       {isModalOpen && <OwnerInfoModal onClose={() => setIsModalOpen(false)} />}
+      <Suspense fallback={null}>
+        <SignupCompleteToast />
+      </Suspense>
     </div>
   );
 }
