@@ -5,6 +5,9 @@ import { ApiResponse, StoreDetail as StoreDetailType } from '@/types/store';
 import { useState } from 'react';
 import { fetchClient } from '@/lib/fetchClient';
 import { Menu } from '@/src/types/api';
+import { useIsLoggedIn } from '@/hooks/useIsLoggedIn';
+
+import CustomerInfoModal from '@/app/login/_components/CustomerInfoModal';
 import ToastError from '@/components/ui/ToastError';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import InputField from '@/components/ui/InputField';
@@ -40,6 +43,9 @@ export default function MenuBottomSheet({
 }: MenuBottomSheetProps) {
   const queryClient = useQueryClient();
 
+  const { isLoggedIn } = useIsLoggedIn();
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
   const { data: storeDetail } = useQuery<StoreDetailType>({
     queryKey: ['storeDetail', storeId],
     queryFn: async () => {
@@ -54,7 +60,7 @@ export default function MenuBottomSheet({
   const discountRate = storeDetail?.discountRate || 0;
   const discountCondition = storeDetail?.discountConditionQuantity || 0;
 
-  // 최소 주문 수량 기준값 수정 필요 (백엔드 필드 추가 대기 중)
+  // 최소 주문 수량 기준값
   const minQ = dailyMinOrderQuantity ?? storeDetail?.minOrderQuantity ?? 1;
   const maxQ = dailyRemainingQuantity ?? storeDetail?.maxOrderQuantity ?? 999;
 
@@ -63,6 +69,8 @@ export default function MenuBottomSheet({
   const [editingCardId, setEditingCardId] = useState<string | null>(null);
 
   const [quantity, setQuantity] = useState<number | ''>('');
+  const [isQuantityEditing, setIsQuantityEditing] = useState(true);
+
   const [selectedOptions, setSelectedOptions] = useState<
     Record<number, number[]>
   >({});
@@ -85,14 +93,51 @@ export default function MenuBottomSheet({
     setQuantity(Number(val));
   };
 
-  const handleQuantityBlur = () => {
+  const handleQuantityConfirm = () => {
     if (typeof quantity !== 'number') return;
+
+    if (!pickupDate || !pickupTime) {
+      showToastError('픽업 날짜를 먼저 선택해주세요.');
+      return;
+    }
 
     if (quantity < minQ) {
       showToastError(`최소 ${minQ}개 이상 주문해주세요`);
-    } else if (quantity > maxQ) {
-      showToastError(`최대 ${maxQ}개까지 주문 가능합니다`);
+      return;
     }
+    if (quantity > maxQ) {
+      showToastError(`최대 ${maxQ}개까지 주문 가능합니다`);
+      return;
+    }
+    setIsQuantityEditing(false);
+
+    // 필수 옵션(추후 사장님 페이지 코드 추가예정)까지 다 선택된 상태라면, 자동으로 카드 생성
+    const requiredGroups =
+      menu.optionGroups?.filter((group) => group.isRequired) || [];
+    const hasAllRequired = requiredGroups.every(
+      (group) => (selectedOptions[group.optionGroupId!] ?? []).length > 0
+    );
+
+    if (!hasAllRequired) return; // 필수 옵션 미선택 시 자동 생성 안 함
+
+    if (mode === 'CREATE') {
+      const newCard: MenuCard = {
+        id: Date.now().toString(),
+        selectedOptions,
+        quantity: Number(quantity),
+      };
+      setCards((prev) => [...prev, newCard]);
+    } else if (mode === 'EDIT' && editingCardId) {
+      setCards((prev) =>
+        prev.map((card) =>
+          card.id === editingCardId
+            ? { ...card, selectedOptions, quantity: Number(quantity) }
+            : card
+        )
+      );
+      setEditingCardId(null);
+    }
+    setMode('LIST');
   };
 
   const toggleOption = (
@@ -117,6 +162,8 @@ export default function MenuBottomSheet({
         return { ...prev, [groupId]: [optionId] };
       }
     });
+
+    setExpandedGroupId(null);
   };
 
   const getSelectedOptionText = (groupId: number) => {
@@ -151,6 +198,7 @@ export default function MenuBottomSheet({
 
   const handleAddNewItem = () => {
     setQuantity('');
+    setIsQuantityEditing(true);
     setSelectedOptions({});
     setExpandedGroupId(null);
     setMode('CREATE');
@@ -158,6 +206,7 @@ export default function MenuBottomSheet({
 
   const handleEditCard = (card: MenuCard) => {
     setQuantity(card.quantity);
+    setIsQuantityEditing(false);
     setSelectedOptions(card.selectedOptions);
     setExpandedGroupId(null);
     setEditingCardId(card.id);
@@ -218,6 +267,12 @@ export default function MenuBottomSheet({
       return;
     }
     if (cards.length === 0) return;
+
+    if (!isLoggedIn) {
+      setShowLoginModal(true);
+      return;
+    }
+
     addCartMutation.mutate(cards);
   };
 
@@ -291,10 +346,8 @@ export default function MenuBottomSheet({
                               group.isMultiple || false
                             )
                           }
-                          className={`w-full h-11 flex justify-between items-center pl-4 pr-3 py-3 cursor-pointer bg-white transition-colors ${
-                            isSelected
-                              ? 'text-brand-default'
-                              : 'text-text-default'
+                          className={`w-full h-11 flex justify-between items-center pl-4 pr-3 py-3 cursor-pointer text-text-default transition-colors ${
+                            isSelected ? 'bg-hover' : 'bg-background-default'
                           }`}
                         >
                           <span className="text-label1 font-medium">
@@ -313,23 +366,40 @@ export default function MenuBottomSheet({
           })}
 
           <div className="flex flex-col items-start w-full gap-2 shrink-0">
-            <InputField
-              type="number"
-              placeholder="수량을 입력하세요"
-              value={quantity}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                handleQuantityChange(e.target.value)
-              }
-              onBlur={handleQuantityBlur}
-              disableFillStyle={true}
-              helperText={
-                discountRate > 0 && discountCondition > 0 ? (
-                  <p className="text-brand-default text-caption2 font-medium animate-in fade-in">
-                    {discountCondition}개 이상 주문 시 {discountRate}% 할인
-                  </p>
-                ) : undefined
-              }
-            />
+            {!isQuantityEditing && quantity !== '' ? (
+              <button
+                type="button"
+                onClick={() => setIsQuantityEditing(true)}
+                className="w-full h-11 pl-4 pr-3 py-3 rounded-lg border border-border-strong flex items-center gap-0.5 bg-background-default text-left"
+              >
+                <span className="text-body font-semibold text-text-default">
+                  {quantity}
+                </span>
+                <span className="text-body font-medium text-text-default">
+                  개
+                </span>
+              </button>
+            ) : (
+              <InputField
+                type="number"
+                placeholder="수량을 입력하세요"
+                value={quantity}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  handleQuantityChange(e.target.value)
+                }
+                onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                  if (e.key === 'Enter') handleQuantityConfirm();
+                }}
+                onBlur={handleQuantityConfirm}
+                disableFillStyle={true}
+                autoFocus
+              />
+            )}
+            {discountRate > 0 && discountCondition > 0 && (
+              <p className="text-brand-default text-caption2 font-medium animate-in fade-in">
+                {discountCondition}개 이상 주문 시 {discountRate}% 할인
+              </p>
+            )}
           </div>
         </div>
 
@@ -451,6 +521,10 @@ export default function MenuBottomSheet({
       <div className="relative w-full  max-w-[375px] h-109 bg-background-default rounded-t-[35px] flex flex-col overflow-hidden animate-in slide-in-from-bottom-full duration-200">
         {mode === 'LIST' ? renderCardList() : renderOptionForm()}
       </div>
+
+      {showLoginModal && (
+        <CustomerInfoModal onClose={() => setShowLoginModal(false)} />
+      )}
     </div>
   );
 }

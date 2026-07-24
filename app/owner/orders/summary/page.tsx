@@ -7,7 +7,7 @@ import ReadyStatusModal from './_components/ReadyStatusModal';
 
 export default function OwnerOrdersSummaryPage() {
   return (
-    <div className="w-full flex flex-col">
+    <div className="w-full min-h-screen flex flex-col bg-background-default">
       <OwnerOrdersSummaryHeader />
       <div className="flex flex-col items-center justify-center px-4">
         <div className="w-full flex flex-col gap-10">

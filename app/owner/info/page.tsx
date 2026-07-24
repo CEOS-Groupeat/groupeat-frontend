@@ -1,65 +1,28 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
 import BackButton from '@/components/ui/BackButton';
 import InputField from '@/components/ui/InputField';
 import AlertIcon from '@/public/icons/icon_alert.svg';
-// import { fetchClient } from '@/lib/fetchClient'; // TODO: 실제 API 연동 시 주석 해제
+//import UploadIcon from '@/public/icons/icon-upload.svg';
+import { useOwnerBusinessProfile } from './_hooks/useOwnerBusinessProfile';
 
-// 💡 1. 향후 백엔드에서 내려줄 데이터 스키마 타입 정의
-// TODO: schema.d.ts에 실제 API 타입이 추가되면 교체해 주세요.
-interface OwnerInfoData {
-  representativeName: string;
-  businessName: string;
-  openingDate: string;
-  businessType: string;
-  businessNumber: string;
-  certificateFileName: string;
-  certificateFileUrl: string;
-}
-
-// 💡 2. API가 없을 때 사용할 가짜 데이터 패칭 함수 (0.5초 딜레이 시뮬레이션)
-// TODO: 백엔드 API가 개발되면 이 함수를 지우고 fetchClient 로직으로 교체해 주세요.
-const fetchMockOwnerInfo = async (): Promise<OwnerInfoData> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        representativeName: '안세빈',
-        businessName: 'Groupeat',
-        openingDate: '2003.09.30',
-        businessType: '개인 사업자',
-        businessNumber: '0012345678',
-        certificateFileName: '파일명.pdf',
-        certificateFileUrl:
-          'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', // 임시 PDF 링크
-      });
-    }, 500);
-  });
+const BUSINESS_TYPE_LABEL: Record<'INDIVIDUAL' | 'CORPORATION', string> = {
+  INDIVIDUAL: '개인 사업자',
+  CORPORATION: '법인 사업자',
 };
 
 export default function OwnerInfoPage() {
-  // 💡 3. React Query를 이용한 데이터 패칭
-  const { data: ownerInfo, isLoading } = useQuery<OwnerInfoData>({
-    queryKey: ['ownerInfo'],
-    queryFn: fetchMockOwnerInfo,
-    /* TODO: 실제 API 연동 시 queryFn을 아래와 같이 변경해 주세요.
-    queryFn: async () => {
-      const res = await fetchClient('/api/owner/info');
-      if (!res.isSuccess) throw new Error(res.message);
-      return res.data;
-    }
-    */
-  });
+  const { data: ownerInfo, isLoading } = useOwnerBusinessProfile();
 
-  // 💡 4. 사업자등록증 클릭 핸들러
-  const handleCertificateClick = () => {
-    if (ownerInfo?.certificateFileUrl) {
-      // 새 창에서 PDF 띄우기 (모바일 환경 등에서는 다운로드로 동작할 수 있음)
-      window.open(ownerInfo.certificateFileUrl, '_blank');
-    } else {
-      alert('등록된 사업자등록증 파일이 없습니다.');
-    }
-  };
+  // 추후 기능 추가 예정
+  // const handleCertificateClick = () => {
+  //   if (ownerInfo?.businessRegistrationCertificateUrl) {
+  //     //새 창에서 PDF 띄우기 (모바일 환경 등에서는 다운로드로 동작할 수 있음)
+  //     window.open(ownerInfo.businessRegistrationCertificateUrl, '_blank');
+  //   } else {
+  //     alert('등록된 사업자등록증 파일이 없습니다.');
+  //   }
+  // };
 
   if (isLoading || !ownerInfo) {
     return (
@@ -88,7 +51,6 @@ export default function OwnerInfoPage() {
                   label="대표자명"
                   value={ownerInfo.representativeName}
                   disabled
-                  
                 />
                 <InputField
                   label="상호명"
@@ -97,29 +59,37 @@ export default function OwnerInfoPage() {
                 />
                 <InputField
                   label="개업연월일"
-                  value={ownerInfo.openingDate}
+                  value={ownerInfo.openedDate}
                   disabled
                 />
                 <InputField
                   label="사업자 유형"
-                  value={ownerInfo.businessType}
+                  value={
+                    ownerInfo.businessType
+                      ? BUSINESS_TYPE_LABEL[ownerInfo.businessType]
+                      : ''
+                  }
                   disabled
                 />
                 <InputField
                   label="사업자등록번호"
-                  value={ownerInfo.businessNumber}
+                  value={ownerInfo.businessRegistrationNumber}
                   disabled
                 />
 
-                {/* 사업자등록증 조회 기능 (클릭 이벤트 추가) */}
+                {/* 사업자등록증 조회 기능 (클릭 이벤트 추가 예정) */}
                 <div
                   className="w-full cursor-pointer relative"
-                  onClick={handleCertificateClick}
+                  //onClick={handleCertificateClick}
                   title="클릭하여 사업자등록증 보기"
                 >
                   <InputField
                     label="사업자등록증"
-                    value={ownerInfo.certificateFileName}
+                    value={
+                      ownerInfo.businessRegistrationCertificateUrl
+                        ? '제출 완료'
+                        : '등록된 사업자등록증이 없습니다'
+                    }
                     disabled
                   />
                   <div className="absolute inset-0 z-10" />

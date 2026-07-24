@@ -11,6 +11,7 @@ import DialogModal from '@/components/ui/DialogModal';
 import { fetchClient } from '@/lib/fetchClient';
 import SuccessToast from '@/components/ui/SuccessToast';
 import { useFCMToken } from '@/lib/firebase/_hooks/useFCMToken';
+import { useOwnerProfile } from '../profile/_hooks/useOwnerProfile';
 
 // 승연: useSearchParams를 쓰는 부분만 별도 컴포넌트로 분리하여 Suspense로 감쌈.
 function ProfileUpdateToast() {
@@ -34,6 +35,7 @@ function ProfileUpdateToast() {
 
 export default function OwnerMyPage() {
   const router = useRouter();
+  const { data: account } = useOwnerProfile();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const { disableNotification } = useFCMToken();
 
@@ -78,7 +80,7 @@ export default function OwnerMyPage() {
               <div className="flex flex-col items-center gap-4">
                 <ProfileIcon className="w-21 h-21" />
                 <p className="text-text-default text-headline2 font-semibold">
-                  안세빈
+                  {account?.name ?? ''}
                 </p>
               </div>
             </section>

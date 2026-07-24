@@ -3,25 +3,22 @@
 import { useRouter } from 'next/navigation';
 import CartIcon from '@/public/icons/icon-shopping_cart.svg';
 import { useCart } from '@/app/customer/cart/_hooks/useCart';
-import { useCartStore } from '@/store/useCartStore';
 
 interface CartIconButtonProps {
   iconColor?: string;
+  badgeColor?: string;
+  badgeTextColor?: string;
 }
 
 export default function CartIconButton({
   iconColor = 'text-icon-inverse',
+  badgeColor = 'bg-brand-default',
+  badgeTextColor = 'text-text-inverse',
 }: CartIconButtonProps) {
   const router = useRouter();
-  useCart();
-  const storeCarts = useCartStore((state) => state.storeCarts);
+  const { data: cart } = useCart();
 
-  const totalCount = Array.isArray(storeCarts)
-    ? storeCarts?.reduce(
-        (acc, store) => acc + (store.cartItems ?? []).length,
-        0
-      )
-    : 0;
+  const totalCount = cart?.totalItemCount ?? 0;
 
   return (
     <button
@@ -38,9 +35,9 @@ export default function CartIconButton({
       {totalCount > 0 && (
         <div
           aria-hidden="true"
-          className="absolute left-[13px] top-[-6px] min-w-[16px] h-4 px-0.5 bg-brand-default rounded-full flex items-center justify-center"
+          className={`absolute left-[13px] top-[-6px] min-w-[16px] h-4 px-0.5 ${badgeColor} rounded-full flex items-center justify-center`}
         >
-          <span className="text-caption2 font-semibold text-text-inverse font-['Pretendard']">
+          <span className={`text-caption2 font-semibold ${badgeTextColor}`}>
             {totalCount}
           </span>
         </div>

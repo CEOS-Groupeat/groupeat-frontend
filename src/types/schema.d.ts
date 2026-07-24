@@ -2244,6 +2244,12 @@ export interface components {
         };
         CartListResponse: {
             /**
+             * Format: int32
+             * @description 장바구니에 담긴 메뉴 종류(항목) 개수
+             * @example 3
+             */
+            totalItemCount?: number;
+            /**
              * Format: date
              * @description 장바구니 픽업 날짜
              * @example 2026-07-02
@@ -2773,6 +2779,11 @@ export interface components {
              * @example 데이브런치
              */
             storeName?: string;
+            /**
+             * @description 가게 카테고리
+             * @example 샌드위치&김밥
+             */
+            category?: string;
             /**
              * @description 가게 주소
              * @example 마포구 00로 00길

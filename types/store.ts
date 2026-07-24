@@ -27,6 +27,7 @@ export interface StoreDetail {
   maxOrderQuantity?: number | undefined;
   scheduleStartDate?: string | undefined;
   scheduleEndDate?: string | undefined;
+  category?: string;
 }
 
 export interface PickupTimeInfo {
