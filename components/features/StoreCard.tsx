@@ -51,7 +51,7 @@ export default function StoreCard({ store, onClick }: StoreCardProps) {
             <div className="flex items-center gap-0.5">
               <Star className="size-3.5 text-icon-star" />
               <span className="text-caption2 font-normal text-text-subtle">
-                {store.rating}
+                {store.rating?.toFixed(1) ?? '0.0'}
               </span>
               <span className="text-caption2 font-normal text-text-subtle">
                 ({store.reviewCount})
