@@ -58,7 +58,7 @@ export default function StoreCard({
           <div className="flex items-center h-[18px] gap-0.5">
             <Star className="size-3.5 text-icon-star" />
             <span className="text-caption1 font-normal text-text-subtle">
-              {store.rating} ({store.reviewCount})
+              {store.rating?.toFixed(1) ?? '0.0'} ({store.reviewCount})
             </span>
           </div>
 
