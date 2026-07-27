@@ -36,7 +36,7 @@ export default function StoreSection({
   return (
     <section className="w-full flex flex-col gap-3">
       <div className="flex flex-col gap-0.5 font-['Pretendard']">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mr-4">
           <h2 className="text-headline3 text-text-default font-bold">
             {title}
           </h2>
