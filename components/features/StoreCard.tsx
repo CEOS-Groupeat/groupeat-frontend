@@ -39,7 +39,7 @@ export default function StoreCard({ store, onClick }: StoreCardProps) {
             <BadgeCategory label={store.category ?? ''} />
             <div className="pl-0.5 flex flex-col text-text-default">
               <span className="text-body font-semibold">{store.name}</span>
-              <span className="text-label2 font-medium">
+              <span className="text-label2 font-medium leading-[18px]">
                 {(store.minPrice ?? 0).toLocaleString()}원 ~{' '}
                 {(store.maxPrice ?? 0).toLocaleString()}원/개
               </span>
