@@ -359,8 +359,8 @@ export default function CustomerOrderDetail() {
                 주문 취소하기
               </button>
 
-              <div className="flex items-start gap-1">
-                <Alert className="text-icon-disable w-4 h-4 shrink-0 mt-0.5" />
+              <div className="flex items-center gap-1">
+                <Alert className="text-icon-disable size-4 shrink-0 mt-0.5" />
                 <p className="text-text-subtlest text-label2 font-medium">
                   주문 정보 변경을 원하시면 취소 후 재주문해 주세요.
                 </p>
