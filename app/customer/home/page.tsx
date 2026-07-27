@@ -73,11 +73,11 @@ export default function CustomerHomePage() {
         <FiltersContainer />
 
         {section1.map((section) => (
-          <div key={section.id} className="mb-11 px-4">
+          <div key={section.id} className="mb-11 pl-4">
             <StoreSection {...section} />
           </div>
         ))}
-        <div className="mb-11 px-4">
+        <div className="mb-11 pl-4">
           <StoreSection {...section2[0]} variant="large" isComingSoon />
         </div>
 
