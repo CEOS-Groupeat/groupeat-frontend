@@ -26,7 +26,7 @@ export default function CustomerInfoModal({ onClose }: CustomerInfoModalProps) {
             onClick={onClose}
             className="text-icon-default hover:text-icon-active transition-colors"
           >
-            <Close className="text-text-placeholder w-6 h-6" />
+            <Close className="text-text-placeholder size-6" />
           </button>
         </div>
 

@@ -19,8 +19,8 @@ export default function OwnerInfoModal({ onClose }: OwnerInfoModalProps) {
         className="absolute inset-0 bg-background-dim/50 animate-in fade-in duration-200 cursor-default"
       />
 
-      <div className="relative w-82 max-w-sm bg-white rounded-xl p-4 shadow-[0_0_15.2px_0_rgba(0,0,0,0.05)] min-h-80 flex flex-col animate-in fade-in zoom-in-95 duration-200">
-        <div className="w-full flex justify-end">
+      <div className="relative w-[327px] h-[322px] max-w-sm bg-white rounded-xl p-4 shadow-[0_0_15.2px_0_rgba(0,0,0,0.05)] min-h-80 flex flex-col animate-in fade-in zoom-in-95 duration-200">
+        <div className="w-full h-5 flex justify-end">
           <button
             type="button"
             onClick={onClose}
@@ -41,21 +41,21 @@ export default function OwnerInfoModal({ onClose }: OwnerInfoModalProps) {
 
             <div className="flex px-4 py-3 flex-col items-start gap-2.5 self-stretch rounded-lg bg-background-transparent">
               <div className="flex flex-col items-start gap-1">
-                <div className="flex items-center justify-center gap-1">
-                  <CheckLinear className="size-5 text-[#42BE65]" />
-                  <p className="text-label2 text-text-subtlest font-medium">
+                <div className="flex items-center justify-center gap-1.5">
+                  <CheckLinear className="size-4 text-[#42BE65]" />
+                  <p className="text-label2 text-text-subtlest font-normal leading-[18px] tracking-normal">
                     플랫폼 입점 시 단체주문 고객에게 자동 노출
                   </p>
                 </div>
-                <div className="flex items-center justify-center gap-1">
-                  <CheckLinear className="size-5 text-[#42BE65]" />
-                  <p className="text-label2 text-text-subtlest font-medium">
+                <div className="flex items-center justify-center gap-1.5">
+                  <CheckLinear className="size-4 text-[#42BE65]" />
+                  <p className="text-label2 text-text-subtlest font-normal leading-[18px] tracking-normal">
                     날짜별 픽업 가능 시간 및 수량 사전 설정 가능
                   </p>
                 </div>
-                <div className="flex items-center justify-center gap-1">
-                  <CheckLinear className="size-5 text-[#42BE65]" />
-                  <p className="text-label2 text-text-subtlest font-medium">
+                <div className="flex items-center justify-center gap-1.5">
+                  <CheckLinear className="size-4 text-[#42BE65]" />
+                  <p className="text-label2 text-text-subtlest font-normal leading-[18px] tracking-normal">
                     주문 승인/거절 선택 및 상세 주문 관리 가능
                   </p>
                 </div>
@@ -64,7 +64,7 @@ export default function OwnerInfoModal({ onClose }: OwnerInfoModalProps) {
           </div>
         </div>
 
-        <div className="w-full flex items-center justify-center h-11 bg-brand-default mt-5 rounded-lg">
+        <div className="w-full flex items-center justify-center h-11 bg-brand-default mt-4 px-6 py-3 rounded-lg">
           <Link
             className="text-text-inverse text-label1 font-semibold"
             href="/signup"
