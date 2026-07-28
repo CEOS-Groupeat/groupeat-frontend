@@ -14,6 +14,7 @@ interface DateFilterProps {
   date: string | undefined;
   times: string[];
   availableTimes?: string[];
+  breakTimeRanges?: { startTime: string; endTime: string }[];
   minOrderDays?: number;
   closedDays?: string;
   scheduleStartDate?: string;
@@ -26,6 +27,7 @@ export default function StoreDateFilter({
   date,
   times,
   availableTimes = [],
+  breakTimeRanges = [],
   minOrderDays,
   closedDays,
   scheduleStartDate,
@@ -129,7 +131,16 @@ export default function StoreDateFilter({
     }, 100);
   };
 
+  const isBreakTime = (slot: string): boolean => {
+    return breakTimeRanges.some(
+      (range) =>
+        slot >= range.startTime.slice(0, 5) && slot < range.endTime.slice(0, 5)
+    );
+  };
+
   const isSlotDisabled = (slot: string): boolean => {
+    if (isBreakTime(slot)) return true;
+
     if (!date) return false;
     const selected = new Date(date);
     if (selected.getTime() > today.getTime()) return false;
@@ -162,7 +173,7 @@ export default function StoreDateFilter({
           active
             ? 'bg-brand-default text-text-inverse font-semibold'
             : disabled || !date
-              ? 'bg-background-subtlest text-text-subtlest cursor-not-allowed outline outline-1 font-normal'
+              ? 'bg-background-subtlest text-text-subtlest cursor-not-allowed font-normal'
               : 'bg-background-default outline outline-1 outline-border-default text-text-default hover:bg-background-subtle font-normal'
         }`}
       >
