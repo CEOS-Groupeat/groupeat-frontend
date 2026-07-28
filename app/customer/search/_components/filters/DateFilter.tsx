@@ -176,7 +176,7 @@ export default function DateFilter({
               month_caption: 'hidden',
               month_grid: 'w-full',
               weekdays: 'flex',
-              weekday: 'flex-1 text-center text-xs text-text-subtlest py-1',
+              weekday: 'flex-1 text-center text-xs text-text-subtlest py-1 font-normal',
               weeks: 'flex flex-col gap-px',
               week: 'flex gap-0.5',
               day: 'flex-1 flex justify-center',
