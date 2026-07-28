@@ -36,9 +36,9 @@ export default function CartListItem({
             aria-label={`${menuTitle} 선택`}
           >
             {isSelected ? (
-              <CheckboxTrueIcon className="text-icon-default" />
+              <CheckboxTrueIcon className="size-6 text-icon-default" />
             ) : (
-              <CheckboxFalseIcon className="text-icon-disable" />
+              <CheckboxFalseIcon className="size-6 text-icon-disable" />
             )}
           </button>
 
