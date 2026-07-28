@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://groupeat.co.kr'),
   title: {
     template: '%s | 그루핏(Groupeat)',
-    default: '단체 주문의 고민이 멈추는 곳 - 그루핏(Groupeat)',
+    default: 'Groupeat - 단체주문의 고민이 멈추는 곳',
   },
   description: '행사에 딱 맞는 음식을 가장 쉽고 빠르게',
   icons: {
@@ -60,6 +60,7 @@ export const metadata: Metadata = {
       { url: '/apple-touch-icon-180x180.png', sizes: '180x180' },
     ],
   },
+  manifest: '/site.webmanifest',
   other: {
     'msapplication-TileColor': '#F35C32',
     'msapplication-TileImage': '/mstile-144x144.png',
