@@ -207,7 +207,7 @@ export default function DateFilter({
 
         {date && (
           <>
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1.5">
               <span className="text-sm font-medium text-text-default">
                 오전
               </span>
@@ -217,7 +217,7 @@ export default function DateFilter({
               </div>
             </div>
 
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1.5">
               <span className="text-sm font-medium text-text-default">
                 오후
               </span>
