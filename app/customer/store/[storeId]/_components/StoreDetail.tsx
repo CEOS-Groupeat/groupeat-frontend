@@ -77,7 +77,7 @@ export default function StoreDetail() {
               <div className="flex flex-col items-start gap-2 self-stretch">
                 <div className="flex flex-col items-start gap-1 self-stretch">
                   <div className="flex justify-between items-center self-stretch">
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-2">
                       <h1 className="text-headline1 font-bold text-text-default">
                         {store.storeName}
                       </h1>
