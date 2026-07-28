@@ -197,6 +197,7 @@ function CustomerSignupForm() {
             <InputField
               id="userName"
               label="이름"
+              isFontWeightNormal={true}
               required
               type="text"
               value={name}
@@ -215,6 +216,7 @@ function CustomerSignupForm() {
           <div className="flex flex-col">
             <InputField
               label="생년월일"
+              isFontWeightNormal={true}
               id="userBirth"
               type="text"
               value={birthDate}
@@ -241,6 +243,7 @@ function CustomerSignupForm() {
           <div className="flex flex-col gap-2">
             <InputField
               label="이메일"
+              isFontWeightNormal={true}
               id="userEmail"
               type="email"
               value={email}
@@ -251,7 +254,7 @@ function CustomerSignupForm() {
 
           {/* 4. 성별 선택 (이 부분은 버튼이므로 유지) */}
           <div className="flex flex-col gap-2">
-            <label className="text-label1 text-text-default font-medium">
+            <label className="text-label1 text-text-default font-normal">
               성별
             </label>
             <div className="flex w-full items-center gap-3">
