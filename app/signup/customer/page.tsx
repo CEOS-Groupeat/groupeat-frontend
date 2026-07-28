@@ -280,7 +280,7 @@ function CustomerSignupForm() {
 
           {/* 5. 약관 동의 영역 */}
           <div className="flex flex-col gap-3 mt-4">
-            <p className="text-label1 text-text-default font-medium">
+            <p className="text-body text-text-default font-semibold">
               고객 약관 동의 <span className="text-brand-default">*</span>
             </p>
             {terms.map((term) => (
@@ -294,11 +294,11 @@ function CustomerSignupForm() {
                   onClick={() => toggleTerm(term.termsId)}
                 >
                   {checkedTerms[term.termsId] ? (
-                    <CheckboxTrue width={24} height={24} />
+                    <CheckboxTrue className="size-6" />
                   ) : (
-                    <CheckboxFalse width={24} height={24} />
+                    <CheckboxFalse className="size-6 text-[#D9D9D9]" />
                   )}
-                  <span className="text-label1">
+                  <span className="text-label1 font-normal">
                     {term.title}
                     {term.required ? (
                       <span className="text-label1 text-text-strong ml-1 mr-2">
