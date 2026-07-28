@@ -96,7 +96,7 @@ export default function RootLayout({
     >
       <body className="min-h-full font-['Pretendard'] bg-[#F0F0F1]">
         <div className="w-full min-h-full flex justify-center">
-          <div className="w-[375px] min-h-full relative shadow-xl">
+          <div className="w-[393px] min-h-full relative shadow-xl">
             <Providers>{children}</Providers>
           </div>
         </div>
