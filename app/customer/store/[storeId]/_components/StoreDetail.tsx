@@ -181,7 +181,7 @@ export default function StoreDetail() {
 
               {isProcessExpanded && (
                 <div className="w-full flex p-2.5 flex-col items-start gap-2.5 self-stretch animate-in fade-in slide-in-from-top-1 duration-200 rounded-lg bg-hover">
-                  <div className="flex flex-col items-start gap-0.5 self-stretch">
+                  <div className="flex flex-col items-start gap-1 self-stretch">
                     <p className="text-label2 text-text-default whitespace-pre-line">
                       1. 주문 요청서 제출 및 결제 (선결제 / 현장결제 예약금)
                     </p>
