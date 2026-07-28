@@ -7,6 +7,7 @@ import { fetchClient } from '@/lib/fetchClient';
 import { Menu } from '@/src/types/api';
 import { useIsLoggedIn } from '@/hooks/useIsLoggedIn';
 
+import CartMismatchModal from './CartMismatchModal';
 import CustomerInfoModal from '@/app/login/_components/CustomerInfoModal';
 import ToastError from '@/components/ui/ToastError';
 import ButtonDefault from '@/components/ui/ButtonDefault';
@@ -77,6 +78,7 @@ export default function MenuBottomSheet({
   const [expandedGroupId, setExpandedGroupId] = useState<number | null>(null);
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [showMismatchModal, setShowMismatchModal] = useState(false);
 
   const showToastError = (message: string) => {
     setErrorMessage(message);
@@ -257,6 +259,10 @@ export default function MenuBottomSheet({
       onClose();
     },
     onError: (error: Error) => {
+      if (error.message?.includes('픽업 날짜 및 시간이 일치하지 않습니다')) {
+        setShowMismatchModal(true);
+        return;
+      }
       showToastError(error.message || '장바구니 담기에 실패했습니다.');
     },
   });
@@ -524,6 +530,10 @@ export default function MenuBottomSheet({
 
       {showLoginModal && (
         <CustomerInfoModal onClose={() => setShowLoginModal(false)} />
+      )}
+
+      {showMismatchModal && (
+        <CartMismatchModal onClose={() => setShowMismatchModal(false)} />
       )}
     </div>
   );
