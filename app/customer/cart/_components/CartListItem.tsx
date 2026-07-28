@@ -117,11 +117,11 @@ export default function CartListItem({
             총 금액
           </span>
           <div className="flex items-center gap-1.5">
-            <span className="text-xs font-medium leading-4.5 text-text-subtlest line-through font-['Pretendard']">
+            <span className="pt-0.5 text-xs font-medium leading-[18px] text-text-subtlest line-through">
               {((item.unitPrice ?? 0) * (item.quantity ?? 0)).toLocaleString()}
               원
             </span>
-            <span className="text-body font-semibold text-text-default font-['Pretendard']">
+            <span className="text-body font-semibold text-text-default">
               {(item.finalPrice ?? 0).toLocaleString()}원
             </span>
           </div>
