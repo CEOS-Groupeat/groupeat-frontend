@@ -62,11 +62,10 @@ export default function CartListItem({
                 {menuTitle}
               </span>
               {/* 💡 수정됨: 백엔드에서 주는 문자열 배열을 그대로 줄바꿈으로 렌더링 */}
-              {options.length > 0 && (
-                <span className="text-label2 leading-[18px] text-text-subtle font-normal whitespace-pre-line">
-                  {options.join('\n')}
-                </span>
-              )}
+
+              <span className="text-label2 leading-[18px] text-text-subtle font-normal whitespace-pre-line">
+                {options.length > 0 ? options.join('\n') : '옵션 없음'}
+              </span>
             </div>
           </div>
         </div>
