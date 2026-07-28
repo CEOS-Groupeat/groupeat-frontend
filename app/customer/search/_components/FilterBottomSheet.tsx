@@ -265,7 +265,7 @@ export default function FilterBottomSheet({
                     />
                   )}
                   {isExpanded && item.key === 'pickupDate' && (
-                    <div className="mt-3">
+                    <div>
                       <DateFilter
                         date={filters.pickupDate}
                         times={filters.pickupTimes ?? []}

@@ -44,7 +44,7 @@ export default function OrderSummaryBar({
             </p>
           </div>
           <div className="flex flex-col items-end gap-0.5">
-            <p className="text-label2 font-normal text-text-subtlest line-through">
+            <p className="opacity-80 text-label2 font-normal text-text-subtlest line-through">
               {originalPrice.toLocaleString()}원
             </p>
             <p className="text-headline3 font-semibold text-text-default">

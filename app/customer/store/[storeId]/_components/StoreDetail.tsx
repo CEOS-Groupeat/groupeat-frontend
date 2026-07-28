@@ -15,13 +15,13 @@ import ArrowDown from '@/public/icons/icon_arrow_down.svg';
 import { useStoreDetail } from '@/app/customer/store/_hooks/useStoreDetail';
 
 const DAY_MAP: Record<string, string> = {
-  MONDAY: '월',
-  TUESDAY: '화',
-  WEDNESDAY: '수',
-  THURSDAY: '목',
-  FRIDAY: '금',
-  SATURDAY: '토',
-  SUNDAY: '일',
+  MONDAY: '월요일',
+  TUESDAY: '화요일',
+  WEDNESDAY: '수요일',
+  THURSDAY: '목요일',
+  FRIDAY: '금요일',
+  SATURDAY: '토요일',
+  SUNDAY: '일요일',
 };
 
 const formatClosedDays = (daysString?: string | null) => {
@@ -77,7 +77,7 @@ export default function StoreDetail() {
               <div className="flex flex-col items-start gap-2 self-stretch">
                 <div className="flex flex-col items-start gap-1 self-stretch">
                   <div className="flex justify-between items-center self-stretch">
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-2">
                       <h1 className="text-headline1 font-bold text-text-default">
                         {store.storeName}
                       </h1>
@@ -117,47 +117,37 @@ export default function StoreDetail() {
 
           <div className="flex flex-col items-start gap-3 self-stretch">
             <div className="flex flex-col items-start gap-1.5">
-              <div className="flex items-start gap-1">
-                <div className="flex pt-0.5 items-center gap-2.5">
-                  <BellIcon className="text-brand-default size-4" />
-                </div>
-                <p className="text-brand-default text-label2 font-semibold leading-4.5">
+              <div className="flex items-center gap-1">
+                  <BellIcon className="mt-0.5 text-brand-default size-4 shrink-0" />
+                <p className="text-brand-default text-label2 font-semibold leading-4">
                   최소 {store.minOrderDays}일 전 주문
                 </p>
               </div>
 
-              <div className="flex items-start gap-1">
-                <div className="flex pt-0.5 items-center gap-2.5">
-                  <AlertIcon className="text-brand-default size-4" />
-                </div>
-                <p className="text-brand-default text-label2 font-semibold leading-4.5">
+              <div className="flex items-center gap-1">
+                  <AlertIcon className="mt-0.5 text-brand-default size-4 shrink-0" />
+                <p className="text-brand-default text-label2 font-semibold leading-4">
                   주문 가능 수량 최소 {store.minOrderQuantity ?? 0}개 ~ 최대{' '}
                   {store.maxOrderQuantity ?? 99}개
                 </p>
               </div>
 
-              <div className="flex items-start gap-1">
-                <div className="flex pt-0.5 items-center gap-2.5">
-                  <Place className="text-icon-subtlest size-4" />
-                </div>
-                <p className="text-text-subtle text-label2 leading-4.5">
+              <div className="flex items-center gap-1">
+                  <Place className="mt-0.5 text-icon-subtlest size-4 shrink-0" />
+                <p className="text-text-subtle text-label2 leading-4">
                   {store.address}
                 </p>
               </div>
 
-              <div className="flex items-start gap-1">
-                <div className="flex pt-0.5 items-center gap-2.5">
-                  <Phone className="text-icon-subtlest size-4" />
-                </div>
-                <p className="text-text-subtle text-label2 leading-4.5">
+              <div className="flex items-center gap-1">
+                  <Phone className="mt-0.5 text-icon-subtlest size-4 shrink-0" />
+                <p className="text-text-subtle text-label2 leading-4">
                   Tel. {store.phoneNumber}
                 </p>
               </div>
 
               <div className="flex items-start gap-1">
-                <div className="flex pt-0.5 items-center gap-2.5">
-                  <Calendar className="text-icon-subtlest size-4" />
-                </div>
+                  <Calendar className="mt-0.5 text-icon-subtlest size-4 shrink-0" />
                 <p className="text-text-subtle text-label2 leading-4.5">
                   {formatClosedDays(store.closedDays)}
                 </p>
@@ -191,7 +181,7 @@ export default function StoreDetail() {
 
               {isProcessExpanded && (
                 <div className="w-full flex p-2.5 flex-col items-start gap-2.5 self-stretch animate-in fade-in slide-in-from-top-1 duration-200 rounded-lg bg-hover">
-                  <div className="flex flex-col items-start gap-0.5 self-stretch">
+                  <div className="flex flex-col items-start gap-1 self-stretch">
                     <p className="text-label2 text-text-default whitespace-pre-line">
                       1. 주문 요청서 제출 및 결제 (선결제 / 현장결제 예약금)
                     </p>
