@@ -307,7 +307,7 @@ export default function MenuBottomSheet({
                         isExpanded
                           ? 'font-semibold text-text-default'
                           : selectedText
-                            ? 'font-normal text-text-default'
+                            ? 'font-semibold text-text-default'
                             : 'font-normal text-text-placeholder'
                       }`}
                     >
@@ -315,8 +315,8 @@ export default function MenuBottomSheet({
                     </span>
                     {selectedText && !isExpanded && (
                       <div className="flex h-full items-center justify-center gap-2">
-                        <Ellipse className="size-0.5 text-text-subtlest shrink-0" />
-                        <p className="text-text-subtlest text-label1">
+                        <Ellipse className="size-[3px] text-[#D9D9D9] shrink-0" />
+                        <p className="text-text-subtlest text-label1 font-normal">
                           {selectedText}
                         </p>
                       </div>

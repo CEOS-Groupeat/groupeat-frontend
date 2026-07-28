@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import RadioOn from '@/public/icons/icon_raidoOn.svg';
 import RadioOff from '@/public/icons/icon_raidoOff.svg';
-import ToStoreIcon from '@/public/icons/icon_arrow_right.svg';
+import ToStoreIcon from '@/public/icons/icon-cart-toStore.svg';
 
 interface CartStoreHeaderProps {
   storeId: number;

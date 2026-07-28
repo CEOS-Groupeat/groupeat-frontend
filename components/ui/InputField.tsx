@@ -41,7 +41,7 @@ export default function InputField({
       {/* 라벨 영역 */}
       {label && (
         <label
-          className={`text-label1 ${isFontWeightNormal ? '' : 'font-medium'} ${labelClassName ?? 'text-text-default'}`}
+          className={`text-label1 ${isFontWeightNormal ? 'font-normal' : 'font-medium'} ${labelClassName ?? 'text-text-default'}`}
         >
           {label} {required && <span className="text-brand-default">*</span>}
         </label>

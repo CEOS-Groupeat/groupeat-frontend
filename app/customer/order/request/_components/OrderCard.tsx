@@ -45,7 +45,7 @@ export default function OrderCard({
 
   return (
     <div
-      className={`w-full flex flex-col items-start gap-3 bg-background-default ${
+      className={`w-full flex flex-col items-start gap-2 bg-background-default ${
         noBorder ? '' : 'p-4 border border-px rounded-xl border-border-default'
       }`}
     >

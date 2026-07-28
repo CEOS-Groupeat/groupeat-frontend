@@ -70,19 +70,19 @@ export default function OrderCard({
       {/* 뱃지 영역 */}
       <div className="flex items-center gap-2">
         {isReorder && (
-          <span className="px-1.5 py-0.5 bg-brand-background rounded-sm text-caption1 font-semibold text-brand-default">
+          <span className="mb-2 px-1.5 py-0.5 bg-brand-background rounded-sm text-caption1 font-semibold text-brand-default">
             재주문
           </span>
         )}
         {isWaiting && remainingHours !== null && (
-          <span className="px-1.5 py-0.5 bg-background-subtlest rounded-sm text-caption2 font-medium text-text-subtle">
+          <span className="mb-2 px-1.5 py-0.5 bg-background-subtlest rounded-sm text-caption2 font-medium text-text-subtle">
             {remainingHours}시간 이내 승인 필요
           </span>
         )}
       </div>
 
       {/* 주문 정보 영역 */}
-      <div className="flex flex-col gap-1.5 mt-2">
+      <div className="flex flex-col gap-1.5 mt-0">
         <div className="flex flex-col">
           <div className="flex justify-between items-center">
             <div className="flex flex-col items-start">

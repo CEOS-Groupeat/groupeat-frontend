@@ -36,9 +36,9 @@ export default function CartListItem({
             aria-label={`${menuTitle} 선택`}
           >
             {isSelected ? (
-              <CheckboxTrueIcon className="text-icon-default" />
+              <CheckboxTrueIcon className="size-6 text-icon-default" />
             ) : (
-              <CheckboxFalseIcon className="text-icon-disable" />
+              <CheckboxFalseIcon className="size-6 text-icon-disable" />
             )}
           </button>
 
@@ -62,11 +62,10 @@ export default function CartListItem({
                 {menuTitle}
               </span>
               {/* 💡 수정됨: 백엔드에서 주는 문자열 배열을 그대로 줄바꿈으로 렌더링 */}
-              {options.length > 0 && (
-                <span className="text-label2 leading-[18px] text-text-subtle font-normal whitespace-pre-line">
-                  {options.join('\n')}
-                </span>
-              )}
+
+              <span className="text-label2 leading-[18px] text-text-subtle font-normal whitespace-pre-line">
+                {options.length > 0 ? options.join('\n') : '옵션 없음'}
+              </span>
             </div>
           </div>
         </div>
@@ -117,11 +116,11 @@ export default function CartListItem({
             총 금액
           </span>
           <div className="flex items-center gap-1.5">
-            <span className="text-xs font-medium leading-4.5 text-text-subtlest line-through font-['Pretendard']">
+            <span className="pt-0.5 text-xs font-medium leading-[18px] text-text-subtlest line-through">
               {((item.unitPrice ?? 0) * (item.quantity ?? 0)).toLocaleString()}
               원
             </span>
-            <span className="text-body font-semibold text-text-default font-['Pretendard']">
+            <span className="text-body font-semibold text-text-default">
               {(item.finalPrice ?? 0).toLocaleString()}원
             </span>
           </div>

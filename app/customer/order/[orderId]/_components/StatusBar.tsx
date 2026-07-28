@@ -78,7 +78,7 @@ export default function StatusBar({ currentStep }: StatusBarProps) {
 
                 {/* 텍스트 스타일링 */}
                 <div
-                  className={`self-stretch text-center text-xs leading-4 font-pretendard transition-colors duration-300 ${
+                  className={`self-stretch text-center text-label2 transition-colors duration-300 whitespace-nowrap ${
                     isCurrent
                       ? 'text-text-default font-bold'
                       : isPassed

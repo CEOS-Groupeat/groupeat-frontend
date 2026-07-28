@@ -76,7 +76,7 @@ export default function CustomerSettingsPage() {
             </div>
           </header>
 
-          <main className="w-full flex flex-col items-center gap-5 px-4">
+          <main className="w-full flex flex-col items-center gap-5 px-4 bg-background-default">
             <section className="w-full flex flex-col items-center gap-3">
               <div className="flex flex-col items-center gap-4">
                 <ProfileIcon className="w-21 h-21" />
@@ -110,7 +110,7 @@ export default function CustomerSettingsPage() {
               </div>
             </section>
 
-            <section className="flex pb-8 flex-col items-start gap-3 self-stretch w-full">
+            <section className="flex pb-[82px] flex-col items-start gap-3 self-stretch w-full">
               <Link href="/customer/profile" className="w-full">
                 <SettingOption text="프로필" icon="profile" />
               </Link>
@@ -127,21 +127,20 @@ export default function CustomerSettingsPage() {
                 <SettingOption text="알림 설정" icon="alarm" />
               </Link>
             </section>
+
+            <button
+              type="button"
+              onClick={() => setIsLogoutModalOpen(true)}
+              className="w-full text-text-subtlest text-label2 underline pb-[109px]"
+            >
+              로그아웃
+            </button>
           </main>
         </div>
       </section>
 
       <div className="app-container bottom-0">
-        <div className="w-full flex flex-col justify-center items-center relative">
-          <button
-            type="button"
-            onClick={() => setIsLogoutModalOpen(true)}
-            className="w-full text-text-subtlest text-label2 underline absolute bottom-24.5 left-1/2 -translate-x-1/2"
-          >
-            로그아웃
-          </button>
-          <CustomerNavbar />
-        </div>
+        <CustomerNavbar />
       </div>
 
       {isLogoutModalOpen && (

@@ -44,7 +44,7 @@ export default function CustomDayButton({
       </button>
       {label && (
         <span
-          className={`absolute bottom-0 left-1/2 -translate-x-1/2 text-[8px] font-normal leading-4 whitespace-nowrap ${isToday ? 'text-brand-default' : 'text-text-inverse'}`}
+          className={`absolute -bottom-0.5 left-1/2 -translate-x-1/2 text-[8px] font-normal leading-4 whitespace-nowrap ${isToday ? 'text-brand-default' : 'text-text-inverse'}`}
         >
           {label}
         </span>
