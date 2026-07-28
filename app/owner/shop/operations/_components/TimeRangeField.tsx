@@ -35,11 +35,9 @@ export default function TimeRangeField({
       const rect = containerRef.current.getBoundingClientRect();
       setDropdownTop(rect.bottom + 16);
     }
-    setOpenDropdown((prev) => {
-      const next = prev === which ? null : which;
-      setIsDropdownOpen(next !== null);
-      return next;
-    });
+    const next = openDropdown === which ? null : which;
+    setOpenDropdown(next);
+    setIsDropdownOpen(next !== null);
   };
 
   return (
@@ -110,15 +108,33 @@ export default function TimeRangeField({
                 </>
               ) : (
                 <>
-                  <span className="w-20 text-center text-text-placeholder text-body font-normal">
-                    시간 : 분
-                  </span>
+                  <div className="w-20 text-center">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        onAdd();
+                        setTimeout(() => handleOpenDropdown('start'), 0);
+                      }}
+                      className="w-full text-center text-text-placeholder text-body font-normal"
+                    >
+                      시간 : 분
+                    </button>
+                  </div>
                   <span className="text-text-subtlest text-body font-normal">
                     -
                   </span>
-                  <span className="w-20 text-center text-text-placeholder text-body font-normal">
-                    시간 : 분
-                  </span>
+                  <div className="w-20 text-center">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        onAdd();
+                        setTimeout(() => handleOpenDropdown('end'), 0);
+                      }}
+                      className="w-full text-center text-text-placeholder text-body font-normal"
+                    >
+                      시간 : 분
+                    </button>
+                  </div>
                 </>
               )}
             </div>

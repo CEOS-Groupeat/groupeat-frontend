@@ -39,6 +39,7 @@ export interface PickupTimeInfo {
   openTime: string;
   closeTime: string;
   intervalMinutes: number;
+  breakTimeRanges?: { startTime: string; endTime: string }[];
 }
 
 export interface MenuOption {

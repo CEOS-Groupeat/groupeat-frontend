@@ -107,7 +107,7 @@ export default function HomePage() {
             </div>
 
             <Link
-              href="/customer/home?modal=intro"
+              href="/customer/home"
               className="flex mt-9 pl-4.5 pr-4 py-2 justify-center items-center gap-1 transition-opacity cursor-pointer border border-border-default bg-background-default shadow-[6px_6px_54px_0_rgba(0,0,0,0.03)] rounded-full"
             >
               <p className="text-text-subtle text-label1 font-semibold">

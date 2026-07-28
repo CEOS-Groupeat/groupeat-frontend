@@ -205,6 +205,7 @@ export default function StoreOptions() {
                   onDateChange={handleDateChange}
                   onTimeChange={handleTimeChange}
                   availableTimes={availableTimes}
+                  breakTimeRanges={pickupData?.breakTimeRanges}
                 />
 
                 {activeDate && (
