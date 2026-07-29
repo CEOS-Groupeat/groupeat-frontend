@@ -1,6 +1,6 @@
 'use client';
 
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchClient } from '@/lib/fetchClient';
 import { useState } from 'react';
@@ -77,6 +77,7 @@ const CANCEL_REASONS = [
 ];
 
 export default function CustomerOrderDetail() {
+  const router = useRouter();
   const params = useParams();
   const orderId = params.orderId as string;
   const queryClient = useQueryClient();
@@ -166,9 +167,9 @@ export default function CustomerOrderDetail() {
     <div className="w-full flex pb-16 flex-col items-center gap-5 bg-white">
       <header className="w-full flex pt-10 items-start gap-2.5 self-stretch pb-1">
         <div className="w-full flex p-4 items-center justify-between self-stretch">
-          <Link href="/customer/order/status">
+          <button type="button" onClick={() => router.back()}>
             <ArrowLeft className="w-5 h-5 cursor-pointer" />
-          </Link>
+          </button>
           <h1 className="text-text-default text-headline3 font-semibold">
             주문 상세
           </h1>

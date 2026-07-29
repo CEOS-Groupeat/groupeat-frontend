@@ -1,108 +1,47 @@
 'use client';
 
-import AlertComponent from '@/components/ui/Alert';
-import BackButton from '@/components/ui/BackButton';
-import NoAlarmIllust from '@/public/illust/ilust_NoAlarm.svg';
 import { useRouter } from 'next/navigation';
-import ReadyStatusModal from './_components/ReadyStatusModal';
+import { useNotificationList } from '@/hooks/notifications/useNotificationList';
+import { useMarkAllAsRead } from '@/hooks/notifications/useMarkAllAsRead';
+import { useMarkAsRead } from '@/hooks/notifications/useMarkAsRead';
+import AlertHeader from './_components/AlertHeader';
+import AlertListSection from './_components/AlertListSection';
 
-const alerts_mock = [
-  {
-    id: 1,
-    isSucceded: true,
-    message: '데이브런치 | 반반세트 56개 26.04.23(목) 10:00',
-    storeName: '데이브런치',
-    menus: '반반세트',
-    menuQuantity: 70,
-    pickupDate: '26.04.23 (목) 10:00',
-    isRead: false,
-  },
-  {
-    id: 2,
-    isSucceded: false,
-    message: '데이브런치 | 반반세트 56개 26.04.23(목) 10:00',
-    storeName: '데이브런치',
-    menus: '반반세트',
-    menuQuantity: 56,
-    pickupDate: '26.04.23 (목) 10:00',
-    isRead: false,
-  },
-  {
-    id: 3,
-    isSucceded: false,
-    message: '데이브런치 | 반반세트 56개 26.04.23(목) 10:00',
-    storeName: '데이브런치',
-    menus: '반반세트',
-    menuQuantity: 56,
-    pickupDate: '26.04.23 (목) 10:00',
-    isRead: true,
-  },
-];
 export default function CustomerAlertPage() {
   const router = useRouter();
+  const { data, isLoading } = useNotificationList();
+  const { mutate: markAllAsRead, isPending: isMarkingAll } = useMarkAllAsRead();
+  const { mutate: markAsRead } = useMarkAsRead();
 
-  const handleReadAllButton = () => {};
+  const notifications =
+    data?.pages.flatMap((page) => page?.notificationList ?? []) ?? [];
+
+  const handleNotificationClick = (
+    notificationId?: number,
+    referenceId?: number
+  ) => {
+    if (notificationId) markAsRead(notificationId);
+    if (referenceId) router.push(`/customer/order/${referenceId}`);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen w-full items-center justify-center bg-background-default">
+        <span className="text-sm text-text-subtle">불러오는 중...</span>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen w-full items-center flex-col bg-background-default">
-      <div className="w-full flex px-4 pt-16 flex-col justify-end items-center self-stretch">
-        <div className="w-full flex h-11 items-center gap-2">
-          <div className="flex items-center gap-1 flex-1">
-            <BackButton />
-          </div>
-        </div>
-      </div>
+      <AlertHeader />
 
-      {alerts_mock.length > 2 ? (
-        <>
-          <main className="flex pt-2 flex-col items-end gap-1 self-stretch">
-            <div className="flex px-4 justify-between items-center self-stretch">
-              <h1 className="text-text-default text-headline2 font-semibold">
-                알림 목록
-              </h1>
-              <button className="flex h-8 px-3 flex-col justify-center items-center border border-px border-border-default rounded-lg bg-background-default">
-                <p className="text-text-default text-caption1 font-semibold">
-                  모두 읽음
-                </p>
-              </button>
-            </div>
-          </main>
-          {alerts_mock.map((a) => {
-            return (
-              <div key={a.id} className="w-full flexw">
-                <AlertComponent
-                  isSucceded={a.isSucceded}
-                  message={a.message}
-                  storeName={a.storeName}
-                  isRead={a.isRead}
-                  menus={a.menus}
-                  menuQuantity={a.menuQuantity}
-                  pickupDate={a.pickupDate}
-                />
-              </div>
-            );
-          })}
-        </>
-      ) : (
-        <>
-          <main className="flex pt-2 flex-col items-end gap-1 self-stretch">
-            <div className="flex px-4 justify-between items-center self-stretch">
-              <h1 className="text-text-default text-headline2 font-semibold">
-                알림 목록
-              </h1>
-            </div>
-          </main>
-          <div className="w-full h-dvh flex justify-center pt-40">
-            <div className="flex flex-col items-center gap-3">
-              <NoAlarmIllust />
-              <p className="text-text-subtle text-body font-medium">
-                알림이 없습니다
-              </p>
-            </div>
-          </div>
-        </>
-      )}
-      <ReadyStatusModal />
+      <AlertListSection
+        notifications={notifications}
+        onReadAll={() => markAllAsRead()}
+        isMarkingAll={isMarkingAll}
+        onNotificationClick={handleNotificationClick}
+      />
     </div>
   );
 }
