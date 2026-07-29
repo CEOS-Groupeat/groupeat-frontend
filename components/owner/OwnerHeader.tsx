@@ -1,5 +1,6 @@
 import Bell from '@/public/icons/icon-bell.svg';
 import Link from 'next/link';
+import OwnerAlertIconButton from '../alert/OwnerAlertIconButton';
 
 export default function OwnerHeader() {
   return (
@@ -16,9 +17,11 @@ export default function OwnerHeader() {
               </p>
             </div>
           </div>
-          <Link href="/owner/alert">
-            <Bell className="text-icon-disable" />
-          </Link>
+          <OwnerAlertIconButton
+          iconColor='text-icon-disable'
+            badgeColor="bg-brand-default"
+            badgeTextColor="text-text-inverse"
+          />
         </div>
       </div>
     </div>
