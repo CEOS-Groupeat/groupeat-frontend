@@ -31,7 +31,7 @@ export default function CartIconButton({
       }
       className="relative size-6"
     >
-      <CartIcon className={`size-6 ${iconColor}`} />
+      <CartIcon className={`pl-[1px] pt-0.5 pr-1 size-6 ${iconColor}`} />
       {totalCount > 0 && (
         <div
           aria-hidden="true"
