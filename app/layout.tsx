@@ -22,7 +22,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://groupeat.co.kr'),
+  metadataBase: new URL('https://www.groupeat.co.kr'),
   title: {
     template: '%s | 그루핏(Groupeat)',
     default: 'Groupeat - 단체주문의 고민이 멈추는 곳',
@@ -69,7 +69,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '그루핏(Groupeat)',
     description: '행사에 딱 맞는 음식을 가장 쉽고 빠르게',
-    url: 'https://groupeat.co.kr',
+    url: 'https://www.groupeat.co.kr',
     siteName: 'Groupeat',
     images: [
       {
