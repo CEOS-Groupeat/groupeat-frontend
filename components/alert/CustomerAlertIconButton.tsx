@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import BellIcon from '@/public/icons/icon-bell.svg';
+import BellIcon from '@/public/icons/icon-customer-bell.svg';
 import { useUnreadCount } from '@/hooks/notifications/useUnreadCount';
 
 interface CustomerAlertIconButtonProps {
@@ -30,7 +30,7 @@ export default function CustomerAlertIconButton({
       }
       className="relative size-6"
     >
-      <BellIcon className={`size-6 ${iconColor}`} />
+      <BellIcon className={`  size-6 ${iconColor}`} />
       {unreadCount > 0 && (
         <div
           aria-hidden="true"
