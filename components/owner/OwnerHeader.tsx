@@ -1,5 +1,3 @@
-import Bell from '@/public/icons/icon-bell.svg';
-import Link from 'next/link';
 import OwnerAlertIconButton from '../alert/OwnerAlertIconButton';
 
 export default function OwnerHeader() {
