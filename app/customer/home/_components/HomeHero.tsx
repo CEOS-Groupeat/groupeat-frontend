@@ -2,8 +2,8 @@
 
 import Link from 'next/link';
 import Logo from '@/public/icons/icon-logo_customer_home.svg';
-import Bell from '@/public/icons/icon-bell.svg';
 import CartIconButton from '@/components/cart/CartIconButton';
+import CustomerAlertIconButton from '@/components/alert/CustomerAlertIconButton';
 
 export default function HomeHero() {
   return (
@@ -18,9 +18,10 @@ export default function HomeHero() {
           </div>
 
           <div className="flex items-center gap-3 text-icon-inverse">
-            <Link href="/customer/alert" className="w-full">
-              <Bell />
-            </Link>
+            <CustomerAlertIconButton
+              badgeColor="bg-icon-inverse"
+              badgeTextColor="text-brand-default"
+            />
             <CartIconButton
               badgeColor="bg-icon-inverse"
               badgeTextColor="text-brand-default"
