@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { useCartStore } from '@/store/useCartStore';
@@ -15,7 +15,7 @@ import CartSummaryBar from './_components/CartSummaryBar';
 import CartEmptyState from './_components/CartEmptyState';
 import ToastError from '@/components/ui/ToastError';
 
-export default function CartPage() {
+function CartPageContent() {
   const router = useRouter();
   const setCheckoutCart = useCartStore((state) => state.setCheckoutCart);
   const setDiscountRate = useCartStore((state) => state.setDiscountRate);
@@ -148,5 +148,19 @@ export default function CartPage() {
         </>
       )}
     </div>
+  );
+}
+
+export default function CartPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="w-full min-h-screen flex items-center justify-center bg-background-default">
+          <div className="animate-spin w-8 h-8 border-4 border-brand-default border-t-transparent rounded-full" />
+        </div>
+      }
+    >
+      <CartPageContent />
+    </Suspense>
   );
 }

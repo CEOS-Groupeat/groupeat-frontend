@@ -21,7 +21,7 @@ export default function CustomerAlertPage() {
     referenceId?: number
   ) => {
     if (notificationId) markAsRead(notificationId);
-    if (referenceId) router.push(`/customer/order/${referenceId}`);
+    if (referenceId) router.push(`/customer/order/${referenceId}?from=alert`);
   };
 
   if (isLoading) {
