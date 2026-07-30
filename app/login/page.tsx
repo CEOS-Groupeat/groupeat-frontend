@@ -5,7 +5,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Lottie from 'lottie-react';
 import loginMotion from '@/public/lottie/LoginMotion_Groupeat_transparent.json';
-import Image from 'next/image';
+import SkyBackground from '@/public/illust/illust_Login-Sky.svg';
+import SkyCloudBackground from '@/public/illust/illust_Login-Cloud.svg';
 import LogoText from '@/public/images/image_logo_text_brand.svg';
 import NaverLoginButton from '@/public/components/loginbutton_naver.svg';
 import KakaoLoginButton from '@/public/components/loginbutton_kakao.svg';
@@ -60,15 +61,20 @@ export default function HomePage() {
   return (
     <div className="relative w-full max-w-md mx-auto min-h-screen flex flex-col px-4 overflow-hidden bg-background-default">
       <div className="absolute inset-0 z-1">
-        <Image
-          src="/illust/illust_Login-Sky.png"
-          alt="로그인 하늘 배경화면"
-          width={408}
-          height={286}
-          priority
-          className="object-cover object-top"
+        {/* 1. 하늘 배경 - 맨 뒤 */}
+        <SkyBackground
+          className="absolute inset-0 w-full h-auto z-2"
+          preserveAspectRatio="xMidYMid slice"
         />
-        <div className="absolute inset-0 flex items-start justify-center pt-20">
+        {/* 2. 하늘+구름 - 하늘 위 */}
+        <SkyCloudBackground
+          className="absolute inset-0 w-full h-auto z-3"
+          preserveAspectRatio="xMidYMid slice"
+        />
+      </div>
+
+      <div className="relative z-5 w-full flex flex-col items-center mt-[42dvh]">
+        <div className="absolute bottom-full mb-[-21px] w-full flex justify-center pointer-events-none">
           <Lottie
             animationData={loginMotion}
             loop
@@ -76,9 +82,7 @@ export default function HomePage() {
             style={{ width: '500px', maxWidth: '100%' }}
           />
         </div>
-      </div>
 
-      <div className="relative z-10 w-full flex flex-col items-center mt-[42dvh]">
         <div className="w-full flex flex-col gap-8">
           <div className="w-full flex flex-col items-center gap-2.5">
             <LogoText />

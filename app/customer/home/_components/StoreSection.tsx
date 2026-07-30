@@ -61,7 +61,7 @@ export default function StoreSection({
       <div className="relative flex">
         <div
           className={`flex gap-2 ${
-            isComingSoon ? 'overflow-hidden' : 'overflow-x-auto scrollbar-hide'
+            isComingSoon ? 'w-full overflow-hidden' : 'overflow-x-auto scrollbar-hide'
           }`}
         >
           {stores.map((store) => (
@@ -69,7 +69,7 @@ export default function StoreSection({
           ))}
         </div>
         {isComingSoon && (
-          <div className="absolute top-0 left-0 right-0 bottom-0 w-[343px] flex flex-col gap-1 bg-background-transparent rounded-xl backdrop-blur-sm items-center justify-center">
+          <div className="absolute inset-0 flex flex-col gap-1 bg-background-transparent rounded-xl backdrop-blur-sm items-center justify-center">
             <IllustClientHome className="size-11 mb-1" />
             <span className="text-label-normal text-body font-semibold">
               아직 준비 중인 기능이에요
