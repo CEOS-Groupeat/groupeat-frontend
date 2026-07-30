@@ -3,6 +3,8 @@
 import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import Lottie from 'lottie-react';
+import loginMotion from '@/public/lottie/LoginMotion_Groupeat_transparent.json';
 import Image from 'next/image';
 import LogoText from '@/public/images/image_logo_text_brand.svg';
 import NaverLoginButton from '@/public/components/loginbutton_naver.svg';
@@ -56,15 +58,24 @@ export default function HomePage() {
   };
 
   return (
-    <div className="relative w-full max-w-md mx-auto min-h-screen flex flex-col px-4 overflow-hidden">
-      <div className="absolute inset-0 z-hide">
+    <div className="relative w-full max-w-md mx-auto min-h-screen flex flex-col px-4 overflow-hidden bg-background-default">
+      <div className="absolute inset-0 z-1">
         <Image
-          src="/illust/illust_login.png"
-          alt="로그인 배경화면"
-          fill
+          src="/illust/illust_Login-Sky.png"
+          alt="로그인 하늘 배경화면"
+          width={408}
+          height={286}
           priority
           className="object-cover object-top"
         />
+        <div className="absolute inset-0 flex items-start justify-center pt-20">
+          <Lottie
+            animationData={loginMotion}
+            loop
+            autoplay
+            style={{ width: '500px', maxWidth: '100%' }}
+          />
+        </div>
       </div>
 
       <div className="relative z-10 w-full flex flex-col items-center mt-[42dvh]">
