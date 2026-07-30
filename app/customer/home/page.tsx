@@ -58,7 +58,7 @@ export default function CustomerHomePage() {
             <StoreSection {...section} />
           </div>
         ))}
-        <div className="mb-11 pl-4">
+        <div className="mb-11 px-4">
           <StoreSection {...section2[0]} variant="large" isComingSoon />
         </div>
 
