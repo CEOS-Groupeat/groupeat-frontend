@@ -17,7 +17,7 @@ export default function PickerButton({
     <button
       type="button"
       onClick={onClick}
-      className="w-[109px] h-[60px] px-2.5 py-2 bg-static-white rounded-lg outline outline-1 outline-offset-[-1px] outline-border-subtle flex flex-col gap-2"
+      className="flex-1 w-[109px] h-[60px] px-2.5 py-2 bg-static-white rounded-lg outline outline-1 outline-offset-[-1px] outline-border-subtle flex flex-col gap-2"
     >
       <div className="flex items-center gap-1">
         {icon}
