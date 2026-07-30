@@ -117,38 +117,48 @@ export default function StoreDetail() {
 
           <div className="flex flex-col items-start gap-3 self-stretch">
             <div className="flex flex-col items-start gap-1.5">
-              <div className="flex items-center gap-1">
-                  <BellIcon className="mt-0.5 text-brand-default size-4 shrink-0" />
-                <p className="text-brand-default text-label2 font-semibold leading-4">
+              <div className="flex items-start gap-1">
+                <div className="pt-[1px]">
+                  <BellIcon className="text-brand-default size-4 shrink-0" />
+                </div>
+                <p className="text-brand-default text-label2 font-semibold leading-[18px] tracking-normal">
                   최소 {store.minOrderDays}일 전 주문
                 </p>
               </div>
 
-              <div className="flex items-center gap-1">
-                  <AlertIcon className="mt-0.5 text-brand-default size-4 shrink-0" />
-                <p className="text-brand-default text-label2 font-semibold leading-4">
+              <div className="flex items-start gap-1">
+                <div className="pt-[1px]">
+                  <AlertIcon className="text-brand-default size-4 shrink-0" />
+                </div>
+                <p className="text-brand-default text-label2 font-semibold leading-[18px] tracking-normal">
                   주문 가능 수량 최소 {store.minOrderQuantity ?? 0}개 ~ 최대{' '}
                   {store.maxOrderQuantity ?? 99}개
                 </p>
               </div>
 
-              <div className="flex items-center gap-1">
-                  <Place className="mt-0.5 text-icon-subtlest size-4 shrink-0" />
-                <p className="text-text-subtle text-label2 leading-4">
+              <div className="flex items-start gap-1">
+                <div className="pt-[1px]">
+                  <Place className="text-icon-subtlest size-4 shrink-0" />
+                </div>
+                <p className="text-text-subtle text-label2 font-normal leading-[18px] tracking-normal">
                   {store.address}
                 </p>
               </div>
 
-              <div className="flex items-center gap-1">
-                  <Phone className="mt-0.5 text-icon-subtlest size-4 shrink-0" />
-                <p className="text-text-subtle text-label2 leading-4">
+              <div className="flex items-start gap-1">
+                <div className="pt-[1px]">
+                  <Phone className="text-icon-subtlest size-4 shrink-0" />
+                </div>
+                <p className="text-text-subtle text-label2 font-normal leading-[18px] tracking-normal">
                   Tel. {store.phoneNumber}
                 </p>
               </div>
 
               <div className="flex items-start gap-1">
-                  <Calendar className="mt-0.5 text-icon-subtlest size-4 shrink-0" />
-                <p className="text-text-subtle text-label2 leading-4.5">
+                <div className="pt-[1px]">
+                  <Calendar className="text-icon-subtlest size-4 shrink-0" />
+                </div>
+                <p className="text-text-subtle text-label2 font-normal leading-[18px] tracking-normal">
                   {formatClosedDays(store.closedDays)}
                 </p>
               </div>

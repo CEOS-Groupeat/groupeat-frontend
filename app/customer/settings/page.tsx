@@ -78,7 +78,7 @@ export default function CustomerSettingsPage() {
 
           <main className="w-full flex flex-col items-center gap-5 px-4 bg-background-default">
             <section className="w-full flex flex-col items-center gap-3">
-              <div className="flex flex-col items-center gap-4">
+              <div className="flex flex-col items-center gap-3">
                 <ProfileIcon className="w-21 h-21" />
                 <p className="text-text-default text-headline2 font-semibold">
                   {account?.name ?? ''}
