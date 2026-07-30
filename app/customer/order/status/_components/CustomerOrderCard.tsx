@@ -32,7 +32,7 @@ export default function CustomerOrderCard({
   const menuSummary = order.menuSummary ?? '';
 
   const handleCardClick = () => {
-    router.push(`/customer/order/${order.orderId}`);
+    router.push(`/customer/order/${order.orderId}?from=status`);
   };
 
   const handleStoreClick = (e: MouseEvent<HTMLButtonElement>) => {

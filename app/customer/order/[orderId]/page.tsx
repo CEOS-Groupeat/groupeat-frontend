@@ -1,6 +1,6 @@
 'use client';
 
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchClient } from '@/lib/fetchClient';
 import { useState } from 'react';
@@ -79,6 +79,7 @@ const CANCEL_REASONS = [
 export default function CustomerOrderDetail() {
   const router = useRouter();
   const params = useParams();
+  const searchParams = useSearchParams();
   const orderId = params.orderId as string;
   const queryClient = useQueryClient();
 
@@ -99,6 +100,17 @@ export default function CustomerOrderDetail() {
     },
     enabled: !!orderId,
   });
+
+  const handleBack = () => {
+    const from = searchParams.get('from');
+
+    if (from === 'alert') {
+      router.replace('/customer/alert');
+    } else {
+      // from === 'status' | 'payment' | null(직접 접근 등) 전부 주문현황으로
+      router.replace('/customer/order/status');
+    }
+  };
 
   const cancelMutation = useMutation({
     mutationFn: async () => {
@@ -167,7 +179,7 @@ export default function CustomerOrderDetail() {
     <div className="w-full flex pb-16 flex-col items-center gap-5 bg-white">
       <header className="w-full flex pt-10 items-start gap-2.5 self-stretch pb-1">
         <div className="w-full flex p-4 items-center justify-between self-stretch">
-          <button type="button" onClick={() => router.back()}>
+          <button type="button" onClick={handleBack}>
             <ArrowLeft className="w-5 h-5 cursor-pointer" />
           </button>
           <h1 className="text-text-default text-headline3 font-semibold">

@@ -27,6 +27,11 @@ function PaymentSuccessContent() {
       return;
     }
 
+    const appendFromPayment = (path: string) => {
+      const separator = path.includes('?') ? '&' : '?';
+      return `${path}${separator}from=payment`;
+    };
+
     const confirmPayment = async () => {
       if (isRequested.current) return;
       isRequested.current = true;
@@ -44,11 +49,11 @@ function PaymentSuccessContent() {
         });
 
         if (res.isSuccess) {
-          if (destination) {
-            router.replace(destination);
-          } else {
-            router.replace(`/customer/order/${res.data.paymentId}`);
-          }
+          const target = destination
+            ? appendFromPayment(destination)
+            : `/customer/order/${res.data.paymentId}?from=payment`;
+
+          router.replace(target);
         } else {
           alert('결제 승인에 실패했습니다: ' + res.message);
           router.replace('/payment/fail');
