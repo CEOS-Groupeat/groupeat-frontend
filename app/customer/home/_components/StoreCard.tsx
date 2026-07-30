@@ -24,16 +24,18 @@ export default function StoreCard({
       type="button"
       onClick={() => router.push(`/customer/store/${store.id}`)}
       className={`rounded-xl outline outline-1 outline-offset-[-1px] outline-border-subtle overflow-hidden shrink-0 font-['Pretendard'] text-left
-      ${variant === 'large' ? 'w-[343px]' : 'w-48'}`}
+      ${variant === 'large' ? 'w-full' : 'w-48'}`}
     >
       <div
-        className={`relative h-[90px] ${variant === 'large' ? 'w-[343px]' : 'w-48'}`}
+        className={`relative h-[90px] ${variant === 'large' ? 'w-full' : 'w-48'}`}
       >
         <Image
           src={store.image}
           alt={store.name}
           fill
-          sizes={variant === 'large' ? '343px' : '192px'}
+          sizes={
+            variant === 'large' ? '(max-width: 400px) 100vw, 343px' : '192px'
+          }
           className="object-cover"
         />
       </div>
