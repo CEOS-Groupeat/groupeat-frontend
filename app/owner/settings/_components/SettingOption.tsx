@@ -14,7 +14,7 @@ export default function SettingOption({ text, icon }: SettingOptionProps) {
     <div className="w-full flex h-12 pb-3 flex-col justify-center items-start border-b border-border-subtle">
       <div className="w-full flex items-center gap-3">
         {icon === 'profile' ? <MyIcon /> : icon === 'bag' ? <BagIcon/> : icon === 'alarm' ? <AlarmBellIcon /> : icon === 'terms' ? <TermsIcon /> : icon === 'review' ? <ReviewIcon /> : null}
-        <p className="text-text-default text-body font-medium">{text}</p>
+        <p className="text-text-default text-body font-medium pt-[1px]">{text}</p>
       </div>
     </div>
   );

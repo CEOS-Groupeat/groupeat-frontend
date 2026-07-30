@@ -6,7 +6,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { fetchClient } from '@/lib/fetchClient';
 
 // useSearchParams 사용하는 부분을 별도 컴포넌트로 분리
-function PaymentSuccessContent() { // TODO: 팀원 확인
+function PaymentSuccessContent() {
+  // TODO: 팀원 확인
   const router = useRouter();
   const searchParams = useSearchParams();
   const isRequested = useRef(false);
@@ -63,7 +64,7 @@ function PaymentSuccessContent() { // TODO: 팀원 확인
   }, [router, searchParams]);
 
   return (
-    <div className="w-full min-h-screen flex items-center justify-center font-['Pretendard']">
+    <div className="w-full min-h-screen flex items-center justify-center font-['Pretendard'] bg-background-default">
       <div className="flex flex-col items-center gap-4">
         <div className="animate-spin w-8 h-8 border-4 border-brand-default border-t-transparent rounded-full" />
         <p className="text-text-default text-headline3 font-semibold">
@@ -79,7 +80,7 @@ export default function PaymentSuccessPage() {
   return (
     <Suspense
       fallback={
-        <div className="w-full min-h-screen flex items-center justify-center">
+        <div className="w-full min-h-screen flex items-center justify-center bg-background-default">
           <div className="animate-spin w-8 h-8 border-4 border-brand-default border-t-transparent rounded-full" />
         </div>
       }
