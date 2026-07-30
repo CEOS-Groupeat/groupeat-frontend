@@ -2,12 +2,47 @@
 'use client';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSetupFcm } from '@/lib/firebase/_hooks/useSetupFcm';
+import { listenForegroundMessages } from '@/lib/firebase/messaging';
+import FcmForegroundToast from '@/components/ui/FcmForegroundToast';
 
 function FcmSetup() {
   useSetupFcm();
-  return null;
+
+  const [notification, setNotification] = useState<{
+    title: string;
+    body: string;
+  } | null>(null);
+
+  useEffect(() => {
+    let unsubscribe: (() => void) | null = null;
+
+    listenForegroundMessages((payload) => {
+      setNotification({
+        title: payload.notification?.title ?? '알림',
+        body: payload.notification?.body ?? '',
+      });
+
+      setTimeout(() => setNotification(null), 5000);
+    }).then((unsub) => {
+      unsubscribe = unsub;
+    });
+
+    return () => {
+      unsubscribe?.();
+    };
+  }, []);
+
+  if (!notification) return null;
+
+  return (
+    <FcmForegroundToast
+      title={notification.title}
+      body={notification.body}
+      onClose={() => setNotification(null)}
+    />
+  );
 }
 
 export default function Providers({ children }: { children: React.ReactNode }) {
