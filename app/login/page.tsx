@@ -77,7 +77,7 @@ export default function HomePage() {
             style={{
               width: '500px',
               height: 'auto',
-              position: 'fixed',
+              position: 'absolute',
               left: '51%',
               transform: 'translateX(-50%) translateY(-82%)',
             }}
