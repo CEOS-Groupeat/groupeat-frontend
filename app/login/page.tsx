@@ -3,10 +3,10 @@
 import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import SkyCloudBackground from '@/public/illust/illust_Login-Cloud.svg';
+import DimLayer from '@/public/illust/illust_dim_layer.svg';
 import Lottie from 'lottie-react';
 import loginMotion from '@/public/lottie/LoginMotion_Groupeat_transparent.json';
-import SkyBackground from '@/public/illust/illust_Login-Sky.svg';
-import SkyCloudBackground from '@/public/illust/illust_Login-Cloud.svg';
 import LogoText from '@/public/images/image_logo_text_brand.svg';
 import NaverLoginButton from '@/public/components/loginbutton_naver.svg';
 import KakaoLoginButton from '@/public/components/loginbutton_kakao.svg';
@@ -59,39 +59,43 @@ export default function HomePage() {
   };
 
   return (
-    <div className="relative w-full max-w-md mx-auto min-h-screen flex flex-col px-4 overflow-hidden bg-background-default">
-      <div className="absolute inset-0 z-1">
-        {/* 1. 하늘 배경 - 맨 뒤 */}
-        <SkyBackground
-          className="absolute inset-0 w-full h-auto z-2"
-          preserveAspectRatio="xMidYMid slice"
-        />
-        {/* 2. 하늘+구름 - 하늘 위 */}
+    <div className="relative w-full max-w-md mx-auto min-h-screen flex flex-col overflow-hidden bg-background-default">
+      <div className="absolute top-0 left-0 w-full h-full z-0">
+        {/* 1. 하늘+구름  */}
         <SkyCloudBackground
-          className="absolute inset-0 w-full h-auto z-3"
+          className="absolute w-[393px]"
           preserveAspectRatio="xMidYMid slice"
         />
       </div>
 
-      <div className="relative z-5 w-full flex flex-col items-center mt-[42dvh]">
-        <div className="absolute bottom-full mb-[-21px] w-full flex justify-center pointer-events-none">
+      <div className="relative z-5 w-full flex flex-col items-center mt-[42dvh] bg-background-default overflow-visible">
+        <div className="absolute bottom-full w-full flex justify-center">
           <Lottie
             animationData={loginMotion}
             loop
             autoplay
-            style={{ width: '500px', maxWidth: '100%' }}
+            style={{
+              width: '500px',
+              height: 'auto',
+              position: 'fixed',
+              left: '51%',
+              transform: 'translateX(-50%) translateY(-82%)',
+            }}
           />
         </div>
 
-        <div className="w-full flex flex-col gap-8">
-          <div className="w-full flex flex-col items-center gap-2.5">
-            <LogoText />
-            <h1 className="text-[#777A83] text-body font-medium leading-6">
+        <div className="w-full flex flex-col gap-8 px-4">
+          <div className="relative w-full flex flex-col items-center gap-2.5">
+            <DimLayer
+              className="absolute bottom-3 w-[500px] h-auto pointer-events-none z-9"
+            />
+            <LogoText className="relative z-10" />
+            <h1 className="relative z-10 text-[#777A83] text-body font-medium leading-6">
               우리 행사에 딱 맞는 단체주문 음식점 찾기
             </h1>
           </div>
 
-          <div className="w-full flex flex-col justify-center items-center">
+          <div className="w-full flex flex-col justify-center items-center z-11">
             {/* 소셜 로그인 버튼 영역 */}
             <div className="w-full flex justify-center">
               <div className="w-full flex flex-col items-center justify-center gap-3">
