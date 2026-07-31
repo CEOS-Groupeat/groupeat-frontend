@@ -26,7 +26,7 @@
 <rect width="375" height="171" fill="url(#blurStop2)"/>
 </mask>
 
-<clipPath id="bgClip">
+<clipPath id="bgClip" transform="translate(12 12)">
 <rect width="375" height="171"/>
 </clipPath>
 </defs>
