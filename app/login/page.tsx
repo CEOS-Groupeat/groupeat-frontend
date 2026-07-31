@@ -4,7 +4,7 @@ import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import SkyCloudBackground from '@/public/illust/illust_Login-Cloud.svg';
-import DimLayer from '@/public/illust/illust_dim_layer.svg';
+import DimLayer from '@/public/illust/illust_dim_layer_no_blur.svg';
 import Lottie from 'lottie-react';
 import loginMotion from '@/public/lottie/LoginMotion_Groupeat_transparent.json';
 import LogoText from '@/public/images/image_logo_text_brand.svg';
