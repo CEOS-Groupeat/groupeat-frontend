@@ -13,6 +13,7 @@ import Calendar from '@/public/icons/icon-calendar-storeDetail.svg';
 import ArrowUp from '@/public/icons/icon_arrow_up.svg';
 import ArrowDown from '@/public/icons/icon_arrow_down.svg';
 import { useStoreDetail } from '@/app/customer/store/_hooks/useStoreDetail';
+import NoExistStoreModal from './NoExistStoreModal';
 
 const DAY_MAP: Record<string, string> = {
   MONDAY: '월요일',
@@ -41,6 +42,10 @@ export default function StoreDetail() {
 
   const { data: store, isLoading, isError } = useStoreDetail(storeId);
 
+  const handleCloseModal = () => {
+    router.back();
+  };
+
   if (isLoading)
     return (
       <div className="p-8 text-center text-text-subtlest">
@@ -49,9 +54,12 @@ export default function StoreDetail() {
     );
   if (isError || !store)
     return (
-      <div className="p-8 text-center text-brand-default">
-        가게 정보를 불러오는데 실패했습니다.
-      </div>
+      <>
+        <div className="p-8 text-center text-brand-default">
+          가게 정보를 불러오는데 실패했습니다.
+        </div>
+        <NoExistStoreModal onClose={handleCloseModal} />
+      </>
     );
 
   return (
