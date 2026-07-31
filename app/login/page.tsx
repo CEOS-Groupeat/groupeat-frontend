@@ -87,7 +87,7 @@ export default function HomePage() {
         <div className="w-full flex flex-col gap-8 px-4">
           <div className="relative w-full flex flex-col items-center gap-2.5">
             <DimLayer
-              className="absolute bottom-3 w-[500px] h-auto pointer-events-none z-9"
+              className="absolute -bottom-1 w-[393px] h-auto pointer-events-none z-9"
             />
             <LogoText className="relative z-10" />
             <h1 className="relative z-10 text-[#777A83] text-body font-medium leading-6">
