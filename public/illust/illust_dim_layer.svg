@@ -1,9 +1,43 @@
 <svg viewBox="0 0 375 171" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="375" height="171" fill="url(#paint0_linear_6398_45549)"/>
 <defs>
 <linearGradient id="paint0_linear_6398_45549" x1="187.5" y1="0" x2="187.5" y2="171" gradientUnits="userSpaceOnUse">
-<stop stop-color="white" stop-opacity="0"/>
-<stop offset="1" stop-color="white"/>
+<stop offset="0" stop-color="white" stop-opacity="0"/>
+<stop offset="0.45
+" stop-color="white" stop-opacity="0.9"/>
+<stop offset="1" stop-color="white" stop-opacity="1"/>
 </linearGradient>
+
+<linearGradient id="blurStop1" x1="187.5" y1="0" x2="187.5" y2="171" gradientUnits="userSpaceOnUse">
+<stop offset="0" stop-color="white" stop-opacity="0"/>
+<stop offset="0.33" stop-color="white" stop-opacity="1"/>
+<stop offset="1" stop-color="white" stop-opacity="1"/>
+</linearGradient>
+<linearGradient id="blurStop2" x1="187.5" y1="0" x2="187.5" y2="171" gradientUnits="userSpaceOnUse">
+<stop offset="0" stop-color="white" stop-opacity="0"/>
+<stop offset="0.66" stop-color="white" stop-opacity="0"/>
+<stop offset="0.85" stop-color="white" stop-opacity="1"/>
+<stop offset="1" stop-color="white" stop-opacity="1"/>
+</linearGradient>
+
+<mask id="blurMask1">
+<rect width="375" height="171" fill="url(#blurStop1)"/>
+</mask>
+<mask id="blurMask2">
+<rect width="375" height="171" fill="url(#blurStop2)"/>
+</mask>
+
+<clipPath id="bgClip">
+<rect width="375" height="171"/>
+</clipPath>
 </defs>
+
+<foreignObject x="-12" y="-12" width="399" height="195" mask="url(#blurMask1)">
+<div xmlns="http://www.w3.org/1999/xhtml" style="backdrop-filter:blur(4px);clip-path:url(#bgClip);height:100%;width:100%"></div>
+</foreignObject>
+
+<foreignObject x="-12" y="-12" width="399" height="195" mask="url(#blurMask2)">
+<div xmlns="http://www.w3.org/1999/xhtml" style="backdrop-filter:blur(12px);clip-path:url(#bgClip);height:100%;width:100%"></div>
+</foreignObject>
+
+<rect width="375" height="171" fill="url(#paint0_linear_6398_45549)"/>
 </svg>
